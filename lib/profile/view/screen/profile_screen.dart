@@ -8,6 +8,7 @@ import 'package:snipp/profile/view/widget/sliver_header_widget.dart';
 
 class TestWidget extends StatefulWidget {
   const TestWidget({super.key});
+  static const String routeName = '/test';
 
   @override
   State<TestWidget> createState() => _TestWidgetState();
@@ -219,7 +220,7 @@ class _TestWidgetState extends State<TestWidget> {
 
                   // SizedBox(height: 10,)
                   SizedBox(
-                    height: 400.h,
+                    height: 50.h,
                   )
                 ],
               ),
