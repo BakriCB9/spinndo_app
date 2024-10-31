@@ -25,22 +25,27 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
         designSize: const Size(412, 870),
         builder: (context, _) {
-          return  MaterialApp(
-            theme: ThemeData(appBarTheme: AppBarTheme(backgroundColor: Colors.blue)),
+          return MaterialApp(
+            theme: ThemeData(
+                appBarTheme: AppBarTheme(backgroundColor: Colors.blue)),
             home: RegisterScreen(),
             initialRoute: RegisterScreen.routeName,
             routes: {
               EmployeeDetails.routeName: (context) => EmployeeDetails(),
               LoginScreen.routeName: (context) => LoginScreen(),
-              ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
-              RegisterScreen.routeName: (context) => RegisterScreen(), // Define registration page as in previous code
-              UploadProfileImage.routeName: (context) => UploadProfileImage(), // Define registration page as in previous code
-              VerficationCodeScreen.routeName: (context) => VerficationCodeScreen(), // Define registration page as in previous code
-              TestWidget.routeName: (context) => TestWidget(), // Define registration page as in previous code
+              ForgotPasswordScreen.routeName: (context) =>
+                  ForgotPasswordScreen(),
+              RegisterScreen.routeName: (context) =>
+                  RegisterScreen(), // Define registration page as in previous code
+              UploadProfileImage.routeName: (context) =>
+                  UploadProfileImage(), // Define registration page as in previous code
+              VerficationCodeScreen.routeName: (context) =>
+                  VerficationCodeScreen(), // Define registration page as in previous code
+              TestWidget.routeName: (context) =>
+                  TestWidget(), // Define registration page as in previous code
             },
             debugShowCheckedModeBanner: false,
           );
         });
   }
 }
-

@@ -15,6 +15,9 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    
+    
+    
     final double maxHeaderHeight = size.height * .3;
 
     final double maxImageSize = size.height * 0.22;

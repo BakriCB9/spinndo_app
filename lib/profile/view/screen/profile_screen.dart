@@ -1,9 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/profile/view/widget/profile_info/details_info.dart';
-import 'package:snipp/profile/view/widget/profile_info/diploma_and_protofile.dart';
+import 'package:snipp/profile/view/widget/profile_info/active_day/custom_day_of_active.dart';
+import 'package:snipp/profile/view/widget/profile_info/job_items/description.dart';
+import 'package:snipp/profile/view/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
+
+import 'package:snipp/profile/view/widget/protofile_and_diploma/diploma_and_protofile.dart';
+import 'package:snipp/profile/view/widget/profile_info/user_account/user_account.dart';
 import 'package:snipp/profile/view/widget/sliver_header_widget.dart';
 
 class TestWidget extends StatefulWidget {
@@ -18,21 +21,11 @@ class _TestWidgetState extends State<TestWidget> {
   ScrollController _control = ScrollController();
   @override
   void initState() {
-    //  print('the value of offset is ############ ${_control.offset} ');
-    // Timer.periodic(Duration(seconds: 5), (_){
-    //   if(_control.hasClients){
-    //     _control.jumpTo(_control.offset+10);
-    //   }
-    // });
     super.initState();
   }
 
   int typeSelect = 1;
-  List<String> listImage = [
-    'asset/images/messi.jpg',
-    'asset/images/messi.jpg',
-    'asset/images/messi.jpg'
-  ];
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -52,176 +45,68 @@ class _TestWidgetState extends State<TestWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  const InfoDetails(
-                      icon: Icons.person_2_outlined,
-                      title: 'First Name',
-                      content: 'Bakri'),
-
-                  const InfoDetails(
-                      icon: Icons.person_2_outlined,
-                      title: 'Last Name',
-                      content: 'aweja'),
-                  const InfoDetails(
-                    icon: Icons.email_outlined,
-                    title: 'Email',
-                    content: 'Bakkaraweja@gmail.com',
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15.w),
-                    child: Text(
-                      'Description',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-                    width: double.infinity,
-                    height: 150.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                        borderRadius: BorderRadius.circular(20.r)),
-                    child: Text(
-                      'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-                      style: TextStyle(fontSize: 13.sp, color: Colors.grey),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Row(
-                    children: [
-                      // Expanded(
-                      //     child: InkWell(
-                      //   onTap: () {},
-                      //   child: Container(
-                      //     height: 30.h,
-                      //     decoration: BoxDecoration(
-                      //         border: Border(
-                      //             bottom: BorderSide(
-                      //                 color: Colors.blue, width: 2.w))),
-                      //     child: Text(
-                      //       'Diploma',
-                      //       textAlign: TextAlign.center,
-                      //       style: TextStyle(
-                      //           fontSize: 14.sp,
-                      //           color: Colors.blue,
-                      //           fontWeight: FontWeight.w500),
-                      //     ),
-                      //   ),
-                      // )),
-                      // Expanded(
-                      //     child: InkWell(
-                      //   onTap: () {},
-                      //   child: Container(
-                      //     height: 30.h,
-                      //     decoration: BoxDecoration(
-                      //         border: Border(
-                      //             bottom: BorderSide(
-                      //                 color: Colors.blue, width: 2.w))),
-                      //     child: Text(
-                      //       'Protofile',
-                      //       style: TextStyle(
-                      //           fontSize: 14.sp,
-                      //           fontWeight: FontWeight.w500,
-                      //           color: Colors.blue),
-                      //       textAlign: TextAlign.center,
-                      //     ),
-                      //   ),
-                      // ))
-                      Expanded(
-                        child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                typeSelect = 1;
-                              });
-                            },
-                            child: DiplomaAndProtofile(
-                                active: typeSelect == 1,
-                                type: 1,
-                                text: 'Diploma')),
-                      ),
-
-                      Expanded(
-                        child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                typeSelect = 2;
-                              });
-                            },
-                            child: DiplomaAndProtofile(
-                                active: typeSelect == 2,
-                                type: 2,
-                                text: 'Protofile')),
-                      ),
-                    ],
-                  ),
-                  // Spacer()
-                  // Expanded(
-                  //   child: Container(
-                  //     width: double.infinity,
-                  //     height: 200.h,
-                  //     child: GridView(
-                  //     //  shrinkWrap: true,
-                  //      // physics: NeverScrollableScrollPhysics(),
-                  //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //           crossAxisCount: 2,
-                  //           crossAxisSpacing: 10,
-                  //           mainAxisSpacing: 10),
-                  //       children: listImage.map((e) => AspectRatio(
-                  //                 aspectRatio: 1,
-                  //                 child: Image.asset('asset/images/messi.jpg',fit: BoxFit.cover,),
-                  //               )).toList(),
-                  //       //itemCount: 6,
+                  SizedBox(height: 15.h),
+                  const UserAccount(),
+                  SizedBox(height: 15.h),
+                  const CustomDescription(),
+                  SizedBox(height: 10.h),
+                  const CustomDayActive(),
+                  SizedBox(height: 30.h),
+                  // SizedBox(height: 30.h),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: InkWell(
+                  //           onTap: () {
+                  //             setState(() {
+                  //               typeSelect = 1;
+                  //             });
+                  //           },
+                  //           child: DiplomaAndProtofile(
+                  //               active: typeSelect == 1,
+                  //               type: 1,
+                  //               text: 'Diploma')),
                   //     ),
-                  //   ),
+                  //     Expanded(
+                  //       child: InkWell(
+                  //           onTap: () {
+                  //             setState(() {
+                  //               typeSelect = 2;
+                  //             });
+                  //           },
+                  //           child: DiplomaAndProtofile(
+                  //               active: typeSelect == 2,
+                  //               type: 2,
+                  //               text: 'Protofile')),
+                  //     ),
+                  //   ],
                   // ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                              child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.asset(
-                                    'asset/images/info.png',
-                                    fit: BoxFit.cover,
-                                  ))),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Expanded(
-                              child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.asset(
-                                    'asset/images/info.png',
-                                    fit: BoxFit.cover,
-                                  )))
-                        ],
-                      )
-                    ],
-                  ),
-
-                  // SizedBox(height: 10,)
-                  SizedBox(
-                    height: 50.h,
-                  )
+                  // SizedBox(
+                  //   height: 20.h,
+                  // ),
+                  // Column(children: [
+                  //   Row(children: [
+                  //     Expanded(
+                  //         child: AspectRatio(
+                  //             aspectRatio: 1,
+                  //             child: Image.asset(
+                  //               'asset/images/info.png',
+                  //               fit: BoxFit.cover,
+                  //             ))),
+                  //     SizedBox(
+                  //       width: 10.w,
+                  //     ),
+                  //     Expanded(
+                  //         child: AspectRatio(
+                  //             aspectRatio: 1,
+                  //             child: Image.asset(
+                  //               'asset/images/info.png',
+                  //               fit: BoxFit.cover,
+                  //             )))
+                  //   ])
+                  // ]),
+                  CustomDiplomaAndProtofile(),
+                  SizedBox(height: 100.h)
                 ],
               ),
             ),
