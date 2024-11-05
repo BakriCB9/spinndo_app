@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/screen/login_screen.dart';
+import 'package:snipp/auth/view/log_in/sign_in_screen.dart';
+import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -9,24 +10,27 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   final TextEditingController confirmPasswordController = TextEditingController();
 
   void _resetPassword() {
     // Add logic to reset the password, like calling an API
-    Navigator.of(context).pushNamed(LoginScreen.routeName);
-
+    if(formKey.currentState?.validate() == true) {
+      Navigator.of(context).pushNamed(SignInScreen.routeName);
+    }
     print("Password reset successfully");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF0F8FF),
       appBar: AppBar(
-        title: Text('Reset Password',),
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -38,30 +42,62 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'New Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            TextField(
-              controller: confirmPasswordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Confirm Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            ElevatedButton(
-              onPressed: _resetPassword,
-              child: Text('Reset Password', style: TextStyle(fontSize: 18.sp,color: Colors.blue)),
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w)),
+            Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: passwordController,
+                      icon: Icons.lock,
+                      isPassword: true,
+                      labelText: 'Password',
+                      validator: (p1) {
+                        if (p1 == null || p1.isEmpty) {
+                          return "Password cannott be empty";
+                        } else if (p1.length < 6) {
+                          return "should be at least 6 charcters";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomTextFormField(
+                     validator: (p1) {
+            if (p1 == null || p1.isEmpty) {
+            return "Password cannott be empty";
+            } else if (p1.length < 6) {
+            return "should be at least 6 charcters";
+            }else if(passwordController.text!=confirmPasswordController.text){
+            return "Diffrent Password";
+            }
+
+            return null;
+            },
+                      controller: confirmPasswordController,
+                      icon: Icons.lock,
+                      isPassword: true,
+                      labelText: 'Confirm Password',
+                    ),
+                  ],
+                )),
+
+            Spacer(),            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(bottom: 40.h),
+              child: ElevatedButton(
+                onPressed: _resetPassword,
+
+
+                child: Text('Verify', style: TextStyle(fontSize: 18.sp,color: Colors.blue)),
+                style : ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.white),
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.blue,width: 1),
+                        borderRadius: BorderRadius.circular(30.r))) ,
+                    padding: WidgetStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 16.h))),
               ),
             ),
           ],

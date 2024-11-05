@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/shared/widget/custom_text_form_field.dart';
+import 'package:snipp/shared/widget/custom_text_form_field_bakri.dart';
 
 class EditJobDetails extends StatefulWidget {
   const EditJobDetails({super.key});
@@ -27,19 +27,19 @@ class _EditJobDetailsState extends State<EditJobDetails> {
         child: Column(
           children: [
             SizedBox(height: 60.h),
-            CustomTextFromField(
+            CustomTextFromFieldBakri(
               label: 'Work',
               icon: Icons.work_outline,
               initialvalue: 'Doctor',
             ),
             SizedBox(height: 30.h),
-            CustomTextFromField(
+            CustomTextFromFieldBakri(
               label: 'Title job',
               icon: Icons.work_outline,
               initialvalue: 'Dentist',
             ),
             SizedBox(height: 30.h),
-            CustomTextFromField(
+            CustomTextFromFieldBakri(
               label: 'Location',
               icon: Icons.location_on_outlined,
               initialvalue: 'Doctor',
@@ -47,7 +47,7 @@ class _EditJobDetailsState extends State<EditJobDetails> {
             SizedBox(
               height: 30.h,
             ),
-            CustomTextFromField(
+            CustomTextFromFieldBakri(
               maxlines: 20,
               label: 'Description',
               icon: Icons.description_outlined,

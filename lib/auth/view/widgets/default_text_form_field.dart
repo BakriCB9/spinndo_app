@@ -34,10 +34,10 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       controller: widget.controller,
       decoration: InputDecoration(
         hintText: widget.hintText,
-
         label: widget.labelText != null
             ? Text(
-                widget.labelText!,style: TextStyle(color: Colors.blue.shade600),
+                widget.labelText!,style: TextStyle(fontWeight: FontWeight.w300
+        ),
 
               )
             : null,
@@ -53,17 +53,19 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
             : null,
         prefixIcon: Icon(widget.icon, color: Colors.blue),
           enabled: true,
+filled: true,
+          fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black,width: 1),
-            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Colors.grey.shade300,width: 2),
+            borderRadius: BorderRadius.circular(15),
           ),
           focusedBorder:OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black,width: 1),
-            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Colors.grey.shade300,width: 2),
+            borderRadius: BorderRadius.circular(15),
           ) ,
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black,width: 1),
-      borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(color: Colors.grey.shade300,width: 2),
+            borderRadius: BorderRadius.circular(15),
     ),
         // counter: SizedBox()
       ),
@@ -75,6 +77,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.newline,
       inputFormatters: [
+
         LengthLimitingTextInputFormatter(200),
       ],
       // maxLength: 10,

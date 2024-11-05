@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextFromField extends StatefulWidget {
+class CustomTextFromFieldBakri extends StatefulWidget {
   final String label;
   // final String? content;
   final String? initialvalue;
   final IconData ?icon;
   final int? maxlines;
-  const CustomTextFromField(
+  const CustomTextFromFieldBakri(
       {required this.label,this.maxlines ,this.icon,this.initialvalue, super.key});
 
   @override
-  State<CustomTextFromField> createState() => _CustomTextFromFieldState();
+  State<CustomTextFromFieldBakri> createState() => _CustomTextFromFieldBakriState();
 }
 
-class _CustomTextFromFieldState extends State<CustomTextFromField> {
+class _CustomTextFromFieldBakriState extends State<CustomTextFromFieldBakri> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/shared/widget/custom_text_form_field.dart';
+import 'package:snipp/shared/widget/custom_text_form_field_bakri.dart';
 
 class EditUserAccountScreen extends StatefulWidget {
   const EditUserAccountScreen({super.key});
@@ -63,25 +63,25 @@ class _EditUserAccountScreenState extends State<EditUserAccountScreen> {
                 ),
               ),
               SizedBox(height: 20.h),
-              CustomTextFromField(
+              CustomTextFromFieldBakri(
                 icon: Icons.person_2_outlined,
                 label: 'First Name',
                 initialvalue: 'Bakri',
               ),
               SizedBox(height: 40.h),
-              CustomTextFromField(
+              CustomTextFromFieldBakri(
                 icon: Icons.person_2_outlined,
                 label: 'Last Name',
                 initialvalue: 'aweja',
               ),
               SizedBox(height: 40.h),
-              CustomTextFromField(
+              CustomTextFromFieldBakri(
                 icon: Icons.email_outlined,
                 label: 'Email',
                 initialvalue: 'bakriaweja@gmail.com',
               ),
               SizedBox(height: 40.h),
-              CustomTextFromField(
+              CustomTextFromFieldBakri(
                 icon: Icons.phone,
                 label: 'Phone',
                 initialvalue: '0959280119',

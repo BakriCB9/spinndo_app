@@ -26,7 +26,7 @@ class _UploadProfileImageState extends State<UploadProfileImage> {
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Align(
               alignment: Alignment.center,
@@ -52,12 +52,12 @@ class _UploadProfileImageState extends State<UploadProfileImage> {
                       width: avatarRadius * 0.4,
                       height: avatarRadius * 0.4,
                       decoration: const BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.blue,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.camera_alt,
-                        color: Colors.black,
+                        color: Colors.white,
                         size: avatarRadius * 0.15,
                       ),
                     ),
@@ -87,26 +87,27 @@ class _UploadProfileImageState extends State<UploadProfileImage> {
                     padding: WidgetStatePropertyAll(
                         EdgeInsets.symmetric(vertical: 10.h))),
               ),
-            ), Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.w),
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: ()  {
-                  Navigator.of(context).pushNamed(TestWidget.routeName);
-
-                },
-                child: Text(
-                  "Next ->",
-                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
-                ),
-                style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.r))),
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 10.h))),
-              ),
             ),
+            // Container(
+            //   margin: EdgeInsets.symmetric(horizontal: 10.w),
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: ()  {
+            //       Navigator.of(context).pushNamed(TestWidget.routeName);
+            //
+            //     },
+            //     child: Text(
+            //       "Next ->",
+            //       style: TextStyle(fontSize: 20.sp, color: Colors.white),
+            //     ),
+            //     style: ButtonStyle(
+            //         backgroundColor: WidgetStatePropertyAll(Colors.blue),
+            //         shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(15.r))),
+            //         padding: WidgetStatePropertyAll(
+            //             EdgeInsets.symmetric(vertical: 10.h))),
+            //   ),
+            // ),
           ],
         ),
       ),
