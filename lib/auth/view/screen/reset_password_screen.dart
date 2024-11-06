@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/log_in/sign_in_screen.dart';
+import 'package:snipp/auth/view/screen/sign_in_screen.dart';
 import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -34,11 +34,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.lock, size: 100.h, color: Colors.blue),
+            Icon(Icons.lock, size: 200.h, color: Colors.blue),
             SizedBox(height: 20.h),
             Text(
               'Enter a new password',
-              style: TextStyle(fontSize: 18.sp),
+              style: TextStyle(fontSize: 32.sp),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
@@ -90,7 +90,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 onPressed: _resetPassword,
 
 
-                child: Text('Verify', style: TextStyle(fontSize: 18.sp,color: Colors.blue)),
+                child: Text('Verify', style: TextStyle(fontSize: 32.sp,color: Colors.blue)),
                 style : ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.white),
                     shape: WidgetStatePropertyAll(RoundedRectangleBorder(

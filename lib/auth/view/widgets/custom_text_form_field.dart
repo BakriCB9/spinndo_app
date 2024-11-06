@@ -33,16 +33,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.shade300,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
-        ),
-        color: Colors.white
-      ),
+
       child: TextFormField(
         controller: widget.controller,
         decoration: InputDecoration(
@@ -68,10 +59,20 @@ class _CustomTextFormField extends State<CustomTextFormField> {
           prefixIcon: Icon(widget.icon, color: Colors.blue.shade300),
           enabled: true,
 
-          filled: false,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          border: InputBorder.none,
+          filled: true,
+          fillColor: Colors.white,
+
+          focusedErrorBorder:OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade300,width: 2),borderRadius: BorderRadius.all(Radius.circular(15))
+          ),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade300,width: 2),borderRadius: BorderRadius.all(Radius.circular(15))
+          ),
+          enabledBorder:  OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade300,width: 2),borderRadius: BorderRadius.all(Radius.circular(15))
+          ),focusedBorder:  OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300,width: 2),borderRadius: BorderRadius.all(Radius.circular(15))
+        ),
           // counter: SizedBox()
         ),
         onChanged:widget.isPassword? (value) {

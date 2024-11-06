@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/log_in/sign_in_screen.dart';
+import 'package:snipp/auth/view/screen/sign_in_screen.dart';
 
 class PickPictureDialog extends StatefulWidget {
   const PickPictureDialog({super.key});

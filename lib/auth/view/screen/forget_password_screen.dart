@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/auth/view/screen/reset_password_screen.dart';
-import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
+
+import '../widgets/custom_text_form_field.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -16,10 +17,12 @@ class ForgotPasswordScreen extends StatelessWidget {
   }
   final formKey = GlobalKey<FormState>();
 
+  ForgotPasswordScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF0F8FF),
+      backgroundColor: const Color(0xFFF0F8FF),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
@@ -35,7 +38,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   "Reset Password",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 28.sp,
+                      fontSize: 48.sp,
                       fontFamily: "WorkSans"),
                 ),
                 SizedBox(
@@ -44,20 +47,21 @@ class ForgotPasswordScreen extends StatelessWidget {
                 Text(
                   "we will send an email to you with code to reset password",
                   style:
-                  TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w300),
+                  TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w300),
                 ),
               ],
             ),
-            Icon(Icons.lock_reset, size: 100.h, color: Colors.blue),
+            Icon(Icons.lock_reset, size: 200.sp, color: Colors.blue),
             SizedBox(height: 20.h),
             Text(
               'Enter your email to reset your password',
-              style: TextStyle(fontSize: 18.sp,),
+              style: TextStyle(fontSize: 32.sp,),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
 
             Form(key: formKey,
+
               child: TextFormField(validator:  (p1) {
                 if (p1 == null || p1.isEmpty) {
                   return "Password cannott be empty";
@@ -68,14 +72,14 @@ class ForgotPasswordScreen extends StatelessWidget {
               },
                 controller: emailController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Email',labelStyle: TextStyle(color: Colors.grey.shade800),
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300)
+                      borderSide: BorderSide(color: Colors.blue.shade300),borderRadius: BorderRadius.all(Radius.circular(30.r))
                   ),
                   enabledBorder:  OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300)
+                      borderSide: BorderSide(color: Colors.blue.shade300),borderRadius: BorderRadius.all(Radius.circular(30.r))
                   ),focusedBorder:  OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue.shade300)
+                    borderSide: BorderSide(color: Colors.blue.shade300),borderRadius: BorderRadius.all(Radius.circular(30.r))
                 ),fillColor: Colors.white,
                   filled: true,
                 ),
@@ -84,20 +88,20 @@ class ForgotPasswordScreen extends StatelessWidget {
 
               ),
             ),
-Spacer(),            Container(
+const Spacer(),            Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 40.h),
               child: ElevatedButton(
                 onPressed: () => _navigateToResetPassword(context),
-
-                child: Text('Verify', style: TextStyle(fontSize: 18.sp,color: Colors.blue)),
                 style : ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
+                    backgroundColor: const WidgetStatePropertyAll(Colors.white),
                     shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue,width: 1),
+                        side: const BorderSide(color: Colors.blue,width: 1),
                         borderRadius: BorderRadius.circular(30.r))) ,
                     padding: WidgetStatePropertyAll(
                         EdgeInsets.symmetric(vertical: 16.h))),
+
+                child: Text('Verify', style: TextStyle(fontSize: 32.sp,color: Colors.blue)),
               ),
             ),
           ],

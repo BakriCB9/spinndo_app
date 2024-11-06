@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/model/working_day.dart';
+import 'package:snipp/auth/view/screen/deploma_protofile_image_screen.dart';
 import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 import 'package:snipp/auth/view/widgets/default_text_form_field.dart';
 import 'package:snipp/date.dart';
@@ -79,7 +79,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                   SizedBox(height: 8.h),
                   Text(
                     'Spinndo',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle( fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -116,7 +116,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                               value: category,
                               child: Text(
                                 category,
-                                style: TextStyle(fontSize: 16.sp),
+                                style: TextStyle(fontSize: 32.sp),
                               ),
                             );
                           }).toList(),
@@ -184,7 +184,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                         "Select Days",
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Colors.grey.shade700),
                       ),
                     ],
@@ -398,14 +398,14 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(TestWidget.routeName,
-                        arguments: pickedImage);
+                    Navigator.of(context).pushNamed(DeplomaProtofileImageScreen.routeName,
+                        );
                   },
                   child: Text(
                     "Next",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.sp,
+                        fontSize: 32.sp,
                         fontWeight: FontWeight.bold),
                   ),
                   style: ButtonStyle(

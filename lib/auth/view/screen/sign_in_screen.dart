@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/sign_up/sign_up_screen.dart';
+import 'package:snipp/auth/view/screen/sign_up_screen.dart';
 import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 
-import 'screen/forget_password_screen.dart';
-import 'screen/verfication_code_screen.dart';
-import 'widgets/default_text_form_field.dart';
+import 'forget_password_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -19,15 +16,14 @@ class SignInScreen extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  bool isLogIn = true;
 
   @override
   Widget build(BuildContext context) {
+    double avatarRadius = MediaQuery.of(context).size.width * 0.3;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      // extendBodyBehindAppBar: true,
-      backgroundColor: Color(0xFFF0F8FF),
-      appBar: AppBar(
+
+      backgroundColor: const Color(0xFFF0F8FF),
+      appBar: AppBar(elevation: 0,forceMaterialTransparency: true,
         actions: [
           TextButton(
               onPressed: () {
@@ -49,15 +45,26 @@ class SignInScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                Icon(Icons.account_circle, size: 100.h, color: Colors.blue),
-                SizedBox(height: 10),
-                Text(
+                CircleAvatar(
+                    radius: avatarRadius * 0.7,
+                    backgroundColor: Colors.blue.shade300,
+
+                    child:  Icon(
+                      Icons.person,
+                      size: avatarRadius,
+                      color: Colors.white,
+                    )
+
+                ),
+
+                const SizedBox(height: 10),
+                const Text(
                   'Spinndo',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Form(
                 key: formKey,
                 child: Column(
@@ -92,7 +99,7 @@ class SignInScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                 child: InkWell(
                     onTap: () {
                       Navigator.of(context)
@@ -104,63 +111,64 @@ class SignInScreen extends StatelessWidget {
                         color: Colors.blue,
                         fontFamily: "WorkSans",
                         fontWeight: FontWeight.w300,
-                        fontSize: 16.sp,
+                        fontSize: 32.sp,
                       ),
                     )),
               ),
             ),
-            Spacer(flex: 3,),
-            Container(
+            const Spacer(flex: 3,),
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if (formKey.currentState?.validate() == true) {
+
                     Navigator.of(context).pushNamed(
-                        VerficationCodeScreen.routeName,
-                        arguments: isLogIn);
-                  }
+                        TestWidget.routeName,
+                        );
+
                 },
-                child: Text(
-                  "Log in",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold),
-                ),
                 style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                    backgroundColor: const WidgetStatePropertyAll(Colors.blue),
                     shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r))),
                     padding: WidgetStatePropertyAll(
                         EdgeInsets.symmetric(vertical: 12.h))),
+                child: Text(
+                  "Log in",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             SizedBox(
               height: 20.h,
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-
+                  Navigator.of(context).pushNamed(
+                      SignUpScreen.routeName);
                 },
+                style: ButtonStyle(
+                    backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        side: const BorderSide(color: Colors.blue, width: 1),
+                        borderRadius: BorderRadius.circular(30.r))),
+                    padding: WidgetStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 16.h))),
                 child: Text(
                   "Create new account",
                   style: TextStyle(
                       color: Colors.blue,
-                      fontSize: 18.sp,
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.bold),
                 ),
-                style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue, width: 1),
-                        borderRadius: BorderRadius.circular(30.r))),
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 16.h))),
               ),
             ),
-            Spacer()
+            const Spacer()
           ],
         ),
       ),

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/auth/view/screen/sign_in_screen.dart';
-import 'package:snipp/auth/view/sign_up/employee/employee_details.dart';
+import 'package:snipp/auth/view/screen/employee_details.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 
 import '../../../shared/image_functions.dart';
-import '../screen/verfication_code_screen.dart';
+import 'verfication_code_screen.dart';
 
 class AccountTypeScreen extends StatefulWidget {
    AccountTypeScreen({super.key});
@@ -41,7 +41,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
               "Congurations",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 28.sp,
+                  fontSize: 48.sp,
                   fontFamily: "WorkSans"),
             ),
             Spacer(),
@@ -94,7 +94,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                 },
                 child: Text(
                   "Upload Profile Image",
-                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                  style: TextStyle(fontSize: 36.sp, color: Colors.white),
                 ),
                 style:  ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.blue),
@@ -113,7 +113,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                   "Choose your account type:",
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
-                      fontSize: 22.sp,
+                      fontSize: 40.sp,
                       fontFamily: "WorkSans"),
                 ),
 
@@ -181,7 +181,7 @@ class _AccountTypeScreenState extends State<AccountTypeScreen> {
                   "Next",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18.sp,
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.bold),
                 ),
                 style: ButtonStyle(
