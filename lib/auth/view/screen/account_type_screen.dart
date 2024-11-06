@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/log_in/sign_in_screen.dart';
-import 'package:snipp/auth/view/screen/employee_details.dart';
-import 'package:snipp/auth/view/screen/upload_profile_image.dart';
+import 'package:snipp/auth/view/screen/sign_in_screen.dart';
+import 'package:snipp/auth/view/sign_up/employee/employee_details.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 
 import '../../../shared/image_functions.dart';

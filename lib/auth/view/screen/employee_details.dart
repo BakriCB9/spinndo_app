@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/auth/model/working_day.dart';
-import 'package:snipp/auth/view/screen/upload_profile_image.dart';
 import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 import 'package:snipp/auth/view/widgets/default_text_form_field.dart';
+import 'package:snipp/date.dart';
+import 'package:snipp/profile/view/screen/edit_date_time.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 import 'package:snipp/shared/image_functions.dart';
 
@@ -19,7 +20,13 @@ class EmployeeDetails extends StatefulWidget {
 }
 
 class _EmployeeDetailsState extends State<EmployeeDetails> {
-  List<String> categories = ['  barber', '  doctor', '  teacher', '  chef', '  lawyer'];
+  List<String> categories = [
+    '  barber',
+    '  doctor',
+    '  teacher',
+    '  chef',
+    '  lawyer'
+  ];
   String? selectedCategory;
   final jobTitleController = TextEditingController();
   final addressController = TextEditingController();
@@ -36,31 +43,6 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
     'Saturday',
     'Sunday'
   ];
-  final Map<String, WorkingDay> workingHours = {};
-
-  @override
-  void initState() {
-    super.initState();
-    for (var day in daysOfWeek) {
-      workingHours[day] = WorkingDay();
-    }
-  }
-
-  Future<void> _selectTime(String day, bool isStart) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTime != null) {
-      setState(() {
-        if (isStart) {
-          workingHours[day]?.startTime = pickedTime;
-        } else {
-          workingHours[day]?.endTime = pickedTime;
-        }
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +56,8 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.symmetric(          horizontal: 20.w,
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.w,
           ),
           child: Column(
             children: [
@@ -83,12 +66,15 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                   CircleAvatar(
                     radius: avatarRadius * 0.7,
                     backgroundColor: Colors.blue.shade300,
-                    backgroundImage:   argsPic == null ? null : FileImage(argsPic),
-                    child:argsPic==null?Icon(
-                      Icons.person,
-                      size: avatarRadius,
-                      color: Colors.white,
-                    ):null,
+                    backgroundImage:
+                        argsPic == null ? null : FileImage(argsPic),
+                    child: argsPic == null
+                        ? Icon(
+                            Icons.person,
+                            size: avatarRadius,
+                            color: Colors.white,
+                          )
+                        : null,
                   ),
                   SizedBox(height: 8.h),
                   Text(
@@ -101,17 +87,27 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.grey.shade300),borderRadius: BorderRadius.all(Radius.circular(15.r))),
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15.r),
+                  ),
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(Icons.category,color: Colors.blue.shade300,),
+                    Icon(
+                      Icons.category,
+                      color: Colors.blue.shade300,
+                    ),
                     Expanded(
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           hint: Text(
                             "  Select Category",
-                            style: TextStyle(fontWeight: FontWeight.w300,color: Colors.grey.shade700),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey.shade700),
                           ),
                           value: selectedCategory,
                           isExpanded: true,
@@ -164,125 +160,158 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                 minLines: 1,
               ),
               SizedBox(height: 20.h),
-          //     InkWell(
-          //       child: Container(
-          // width: double.infinity,     padding: EdgeInsets.symmetric(vertical: 10),             decoration: BoxDecoration(
-          //               border: Border.all(width: 2, color: Colors.grey.shade300),borderRadius: BorderRadius.all(Radius.circular(15.r))),
-          //           child: Row(
-          //             children: [
-          //               Icon(Icons.date_range,color: Colors.blue.shade300,),Text(
-          //                 "  Select Days",
-          //                 style: TextStyle(color: Colors.grey.shade700),
-          //               ),
-          //             ],
-          //           )),
-          //       onTap: () {
-          //         showDialog(
-          //           context: context,
-          //           builder: (context) {
-          //             return AlertDialog(
-          //               content: StatefulBuilder(
-          //                 builder: (context, setState) {
-          //                   return AlertDialog(
-          //                     title: const Text('Select Working Days'),
-          //                     content: SingleChildScrollView(
-          //                       child: Column(
-          //                         mainAxisSize: MainAxisSize.min,
-          //                         children: daysOfWeek.map((day) {
-          //                           final dayInfo = workingHours[day]!;
-          //                           return AnimatedContainer(
-          //                             duration: const Duration(milliseconds: 300),
-          //                             curve: Curves.easeInOut,
-          //                             child: Card(
-          //                               elevation: 2,
-          //                               margin: const EdgeInsets.symmetric(
-          //                                   vertical: 6),
-          //                               child: ExpansionTile(
-          //                                 title: Row(
-          //                                   children: [
-          //                                     Checkbox(
-          //                                       value: dayInfo.isSelected,
-          //                                       onChanged: (bool? value) {
-          //                                         setState(() {
-          //                                           dayInfo.isSelected =
-          //                                               value ?? false;
-          //                                           if (!dayInfo.isSelected) {
-          //                                             dayInfo.startTime = null;
-          //                                             dayInfo.endTime = null;
-          //                                           }
-          //                                         });
-          //                                       },
-          //                                     ),
-          //                                     Text(
-          //                                       day,
-          //                                       style: const TextStyle(
-          //                                           fontSize: 16,
-          //                                           fontWeight: FontWeight.bold),
-          //                                     ),
-          //                                   ],
-          //                                 ),
-          //                                 children: dayInfo.isSelected
-          //                                     ? [
-          //                                         Padding(
-          //                                           padding: const EdgeInsets
-          //                                               .symmetric(
-          //                                               horizontal: 16.0),
-          //                                           child: Column(
-          //                                             children: [
-          //                                               ListTile(
-          //                                                 title: Text(
-          //                                                   dayInfo.startTime !=
-          //                                                           null
-          //                                                       ? "Start: ${dayInfo.startTime!.format(context)}"
-          //                                                       : "Select Start Time",
-          //                                                 ),
-          //                                                 trailing: const Icon(
-          //                                                     Icons.access_time),
-          //                                                 onTap: () =>
-          //                                                     _selectTime(
-          //                                                         day, true),
-          //                                               ),
-          //                                               ListTile(
-          //                                                 title: Text(
-          //                                                   dayInfo.endTime !=
-          //                                                           null
-          //                                                       ? "End: ${dayInfo.endTime!.format(context)}"
-          //                                                       : "Select End Time",
-          //                                                 ),
-          //                                                 trailing: const Icon(
-          //                                                     Icons.access_time),
-          //                                                 onTap: () =>
-          //                                                     _selectTime(
-          //                                                         day, false),
-          //                                               ),
-          //                                             ],
-          //                                           ),
-          //                                         ),
-          //                                       ]
-          //                                     : [],
-          //                               ),
-          //                             ),
-          //                           );
-          //                         }).toList(),
-          //                       ),
-          //                     ),
-          //                     actions: [
-          //                       TextButton(
-          //                         onPressed: () {
-          //                           Navigator.of(context)
-          //                               .pop(); // Close the dialog
-          //                         },
-          //                         child: const Text('Done'),
-          //                       ),
-          //                     ],
-          //                   );
-          //                 },
-          //               ),
-          //             );
-          //           },
-          //         );
-          //       },
-          //     ),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15.r),
+                  ),
+                ),
+                child: TextButton(
+                  onPressed: ()  {
+                    dialog();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.timelapse_outlined,
+                        color: Colors.blue.shade300,
+                      ),
+                      SizedBox(width: 12.w,),
+                      Text(
+                        "Select Days",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 18,
+                            color: Colors.grey.shade700),
+                      ),
+                    ],
+                  ),
+
+                ),
+              ),
+              SizedBox(height: 20,),
+              //     InkWell(
+              //       child: Container(
+              // width: double.infinity,     padding: EdgeInsets.symmetric(vertical: 10),             decoration: BoxDecoration(
+              //               border: Border.all(width: 2, color: Colors.grey.shade300),borderRadius: BorderRadius.all(Radius.circular(15.r))),
+              //           child: Row(
+              //             children: [
+              //               Icon(Icons.date_range,color: Colors.blue.shade300,),Text(
+              //                 "  Select Days",
+              //                 style: TextStyle(color: Colors.grey.shade700),
+              //               ),
+              //             ],
+              //           )),
+              //       onTap: () {
+              //         showDialog(
+              //           context: context,
+              //           builder: (context) {
+              //             return AlertDialog(
+              //               content: StatefulBuilder(
+              //                 builder: (context, setState) {
+              //                   return AlertDialog(
+              //                     title: const Text('Select Working Days'),
+              //                     content: SingleChildScrollView(
+              //                       child: Column(
+              //                         mainAxisSize: MainAxisSize.min,
+              //                         children: daysOfWeek.map((day) {
+              //                           final dayInfo = workingHours[day]!;
+              //                           return AnimatedContainer(
+              //                             duration: const Duration(milliseconds: 300),
+              //                             curve: Curves.easeInOut,
+              //                             child: Card(
+              //                               elevation: 2,
+              //                               margin: const EdgeInsets.symmetric(
+              //                                   vertical: 6),
+              //                               child: ExpansionTile(
+              //                                 title: Row(
+              //                                   children: [
+              //                                     Checkbox(
+              //                                       value: dayInfo.isSelected,
+              //                                       onChanged: (bool? value) {
+              //                                         setState(() {
+              //                                           dayInfo.isSelected =
+              //                                               value ?? false;
+              //                                           if (!dayInfo.isSelected) {
+              //                                             dayInfo.startTime = null;
+              //                                             dayInfo.endTime = null;
+              //                                           }
+              //                                         });
+              //                                       },
+              //                                     ),
+              //                                     Text(
+              //                                       day,
+              //                                       style: const TextStyle(
+              //                                           fontSize: 16,
+              //                                           fontWeight: FontWeight.bold),
+              //                                     ),
+              //                                   ],
+              //                                 ),
+              //                                 children: dayInfo.isSelected
+              //                                     ? [
+              //                                         Padding(
+              //                                           padding: const EdgeInsets
+              //                                               .symmetric(
+              //                                               horizontal: 16.0),
+              //                                           child: Column(
+              //                                             children: [
+              //                                               ListTile(
+              //                                                 title: Text(
+              //                                                   dayInfo.startTime !=
+              //                                                           null
+              //                                                       ? "Start: ${dayInfo.startTime!.format(context)}"
+              //                                                       : "Select Start Time",
+              //                                                 ),
+              //                                                 trailing: const Icon(
+              //                                                     Icons.access_time),
+              //                                                 onTap: () =>
+              //                                                     _selectTime(
+              //                                                         day, true),
+              //                                               ),
+              //                                               ListTile(
+              //                                                 title: Text(
+              //                                                   dayInfo.endTime !=
+              //                                                           null
+              //                                                       ? "End: ${dayInfo.endTime!.format(context)}"
+              //                                                       : "Select End Time",
+              //                                                 ),
+              //                                                 trailing: const Icon(
+              //                                                     Icons.access_time),
+              //                                                 onTap: () =>
+              //                                                     _selectTime(
+              //                                                         day, false),
+              //                                               ),
+              //                                             ],
+              //                                           ),
+              //                                         ),
+              //                                       ]
+              //                                     : [],
+              //                               ),
+              //                             ),
+              //                           );
+              //                         }).toList(),
+              //                       ),
+              //                     ),
+              //                     actions: [
+              //                       TextButton(
+              //                         onPressed: () {
+              //                           Navigator.of(context)
+              //                               .pop(); // Close the dialog
+              //                         },
+              //                         child: const Text('Done'),
+              //                       ),
+              //                     ],
+              //                   );
+              //                 },
+              //               ),
+              //             );
+              //           },
+              //         );
+              //       },
+              //     ),
 
               // Container(
               //   margin: EdgeInsets.symmetric(horizontal: 10.w),
@@ -335,43 +364,42 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               //             EdgeInsets.symmetric(vertical: 10.h))),
               //   ),
               // ),
-             // Row(children: List.generate(3, (index){
-             //   return Padding(
-             //     padding: const EdgeInsets.all(8.0),
-             //     child: CircleAvatar(
-             //         backgroundImage: pickedImages!=null && pickedImages!.length>index?FileImage(pickedImages![index]):null,
-             //         child: pickedImages==null||pickedImages!.length<=index?Icon(Icons.image,size: 30.sp,color: Colors.blue,):null),
-             //   );
-             // }),),
-             //  SizedBox(height: 20.h,),
-             //  Container(
-             //    margin: EdgeInsets.symmetric(horizontal: 10.w),
-             //    width: double.infinity,
-             //    child: ElevatedButton(
-             //      onPressed: () {
-             //        Navigator.of(context).pushNamed(UploadProfileImage.routeName);
-             //      },
-             //      child: Text(
-             //        "Next >>",
-             //        style: TextStyle(color: Colors.white, fontSize: 18.sp),
-             //      ),
-             //      style: ButtonStyle(
-             //          backgroundColor: WidgetStatePropertyAll(Colors.blue),
-             //          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-             //              borderRadius: BorderRadius.circular(15.r))),
-             //          padding: WidgetStatePropertyAll(
-             //              EdgeInsets.symmetric(vertical: 10.h))),
-             //    ),
-             //  ),
-             //  SizedBox(height: 20.h,),
+              // Row(children: List.generate(3, (index){
+              //   return Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: CircleAvatar(
+              //         backgroundImage: pickedImages!=null && pickedImages!.length>index?FileImage(pickedImages![index]):null,
+              //         child: pickedImages==null||pickedImages!.length<=index?Icon(Icons.image,size: 30.sp,color: Colors.blue,):null),
+              //   );
+              // }),),
+              //  SizedBox(height: 20.h,),
+              //  Container(
+              //    margin: EdgeInsets.symmetric(horizontal: 10.w),
+              //    width: double.infinity,
+              //    child: ElevatedButton(
+              //      onPressed: () {
+              //        Navigator.of(context).pushNamed(UploadProfileImage.routeName);
+              //      },
+              //      child: Text(
+              //        "Next >>",
+              //        style: TextStyle(color: Colors.white, fontSize: 18.sp),
+              //      ),
+              //      style: ButtonStyle(
+              //          backgroundColor: WidgetStatePropertyAll(Colors.blue),
+              //          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              //              borderRadius: BorderRadius.circular(15.r))),
+              //          padding: WidgetStatePropertyAll(
+              //              EdgeInsets.symmetric(vertical: 10.h))),
+              //    ),
+              //  ),
+              //  SizedBox(height: 20.h,),
               Container(
                 margin: EdgeInsets.only(bottom: 20.h),
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-Navigator.of(context).pushNamed(TestWidget.routeName,arguments: pickedImage);
-
-
+                    Navigator.of(context).pushNamed(TestWidget.routeName,
+                        arguments: pickedImage);
                   },
                   child: Text(
                     "Next",
@@ -388,11 +416,14 @@ Navigator.of(context).pushNamed(TestWidget.routeName,arguments: pickedImage);
                           EdgeInsets.symmetric(vertical: 12.h))),
                 ),
               ),
-
             ],
           ),
         ),
       ),
     );
   }
+  dialog(){
+    showDialog(context: context, builder:(context)=>AlertDialog(content: WorkingSchedulePage(),));
+  }
+
 }

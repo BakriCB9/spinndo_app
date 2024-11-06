@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/log_in/sign_in_screen.dart';
+import 'package:snipp/auth/view/screen/sign_in_screen.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 
 import '../screen/verfication_code_screen.dart';

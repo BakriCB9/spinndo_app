@@ -5,9 +5,9 @@ import 'package:snipp/auth/view/sign_up/sign_up_screen.dart';
 import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 
-import '../screen/forget_password_screen.dart';
-import '../screen/verfication_code_screen.dart';
-import '../widgets/default_text_form_field.dart';
+import 'screen/forget_password_screen.dart';
+import 'screen/verfication_code_screen.dart';
+import 'widgets/default_text_form_field.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
