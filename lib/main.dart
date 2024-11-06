@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/animation.dart';
 import 'package:snipp/auth/view/screen/deploma_protofile_image_screen.dart';
 import 'package:snipp/auth/view/screen/sign_in_screen.dart';
 import 'package:snipp/auth/view/screen/employee_details.dart';

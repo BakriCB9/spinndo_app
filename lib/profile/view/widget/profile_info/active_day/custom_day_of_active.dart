@@ -21,20 +21,9 @@ class CustomDayActive extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: Colors.blue),
             ),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditDateTimeScreen(dayAtcive: [
-                            'Saturday',
-                            'Sunday',
-                            'Monday',
-                            'Tuesday',
-                            'Wednesday',
-                            'Thursday',
-                            'Friday'
-                          ])));
-                },
-                icon: const Icon(Icons.edit_calendar_outlined))
+            IconButton(onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WorkingSchedulePage( )));
+                }, icon: Icon(Icons.edit_calendar_outlined))
           ],
         ),
         Column(

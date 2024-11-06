@@ -1,52 +1,134 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/profile/view/widget/profile_info/active_day/box_of_from_to.dart';
 import 'package:snipp/shared/const_variable.dart';
 
-class EditDateTimeScreen extends StatefulWidget {
-  final List<String> dayAtcive;
-//     List<String> days = [
-//   'Saturday',
-//   'Sunday',
-//   'Monday',
-//   'Tuesday',
-//   'Wednesday',
-//   'Thursday',
-//   'Friday'
-// ];
-  const EditDateTimeScreen({required this.dayAtcive, super.key});
+// class EditDateTimeScreen extends StatefulWidget {
+//   final List<String> dayAtcive;
+// //     List<String> days = [
+// //   'Saturday',
+// //   'Sunday',
+// //   'Monday',
+// //   'Tuesday',
+// //   'Wednesday',
+// //   'Thursday',
+// //   'Friday'
+// // ];
 
-  @override
-  State<EditDateTimeScreen> createState() => _EditDateTimeScreenState();
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/profile/view/widget/profile_info/active_day/box_of_from_to.dart';
+
+class WorkingDay {
+  bool isSelected;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
+
+  WorkingDay({
+    this.isSelected = false,
+    this.startTime,
+    this.endTime,
+  });
 }
 
-class _EditDateTimeScreenState extends State<EditDateTimeScreen> {
-  var result;
-  int ans=1;
+class WorkingSchedulePage extends StatefulWidget {
+  @override
+  _WorkingSchedulePageState createState() => _WorkingSchedulePageState();
+}
+
+class _WorkingSchedulePageState extends State<WorkingSchedulePage>
+    with SingleTickerProviderStateMixin {
+  final List<String> daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
+  final Map<String, WorkingDay> workingHours = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var day in daysOfWeek) {
+      workingHours[day] = WorkingDay();
+    }
+  }
+
+  // Function to show time picker and set the selected time
+  Future<void> _selectTime(String day, bool isStart) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null) {
+      setState(() {
+        if (isStart) {
+          workingHours[day]?.startTime = pickedTime;
+        } else {
+          workingHours[day]?.endTime = pickedTime;
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select your date'),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text('Working Schedule'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-            children: days.asMap().entries.map((day) {
-           result = widget.dayAtcive.contains(day.value);
-          print('the value is $result');
-          final ans = day;
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: daysOfWeek.map((day) {
+          final dayInfo = workingHours[day]!;
 
           return Column(
             children: [
               Row(
-                children: [Checkbox(value: result, onChanged: (value) {
-                  setState(() {
-                    result=value??result;
-                  });
-                })],
+                children: [
+                  Checkbox(
+                      activeColor: Colors.green,
+                      value: dayInfo.isSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          dayInfo.isSelected = value ?? false;
+                          if (!dayInfo.isSelected) {
+                            dayInfo.startTime = null;
+                            dayInfo.endTime = null;
+                          }
+                        });
+                      }),
+                  SizedBox(width: 5.w),
+                  Text(day)
+                ],
+              ),
+              AnimatedSize(
+                duration: Duration(milliseconds: 300),
+                child: Row(
+                  children: [
+                    Expanded(flex: 1, child: SizedBox()),
+                    Expanded(
+                        flex: 2,
+                        child: dayInfo.isSelected
+                            ? BoxFromDateToDate(time: 'From 12:00 pm')
+                            : SizedBox()),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: dayInfo.isSelected
+                            ? BoxFromDateToDate(time: 'To 6:00 Pm')
+                            : SizedBox())
+                  ],
+                ),
               )
             ],
           );
-        }).toList()),
+        }).toList(),
       ),
     );
   }
