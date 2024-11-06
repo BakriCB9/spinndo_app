@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/animation.dart';
 import 'package:snipp/auth/view/log_in/sign_in_screen.dart';
 import 'package:snipp/auth/view/screen/employee_details.dart';
 import 'package:snipp/auth/view/screen/forget_password_screen.dart';
@@ -32,8 +33,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 fontFamily: "ElMessiri",
                 appBarTheme: AppBarTheme(backgroundColor: Colors.blue)),
-            // home: RegisterScreen(),
-            initialRoute: SignUpScreen.routeName,
+            //  home: AnimationTest(),
+            initialRoute: TestWidget.routeName,
             routes: {
               EmployeeDetails.routeName: (context) => EmployeeDetails(),
               // SelectJobTime.routeName: (context) => SelectJobTime(),
