@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/screen/deploma_protofile_image_screen.dart';
-import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
-import 'package:snipp/auth/view/widgets/default_text_form_field.dart';
+import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/date.dart';
-import 'package:snipp/profile/view/screen/profile_screen.dart';
-import 'package:snipp/shared/image_functions.dart';
+import 'package:snipp/core/utils/image_functions.dart';
+
+import 'deploma_protofile_image_screen.dart';
 
 class EmployeeDetails extends StatefulWidget {
   const EmployeeDetails({super.key});
@@ -45,6 +44,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
 
   @override
   Widget build(BuildContext context) {
+    File? Pic = ModalRoute.of(context)!.settings.arguments as File?;
     File? argsPic = ModalRoute.of(context)!.settings.arguments as File?;
     double avatarRadius = MediaQuery.of(context).size.width * 0.3;
     final size = MediaQuery.of(context).size;
@@ -78,7 +78,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                   SizedBox(height: 8.h),
                   Text(
                     'Spinndo',
-                    style: TextStyle( fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -169,7 +169,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                   ),
                 ),
                 child: TextButton(
-                  onPressed: ()  {
+                  onPressed: () {
                     dialog();
                   },
                   child: Row(
@@ -178,7 +178,9 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                         Icons.timelapse_outlined,
                         color: Colors.blue.shade300,
                       ),
-                      SizedBox(width: 12.w,),
+                      SizedBox(
+                        width: 12.w,
+                      ),
                       Text(
                         "Select Days",
                         style: TextStyle(
@@ -188,10 +190,11 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                       ),
                     ],
                   ),
-
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               //     InkWell(
               //       child: Container(
               // width: double.infinity,     padding: EdgeInsets.symmetric(vertical: 10),             decoration: BoxDecoration(
@@ -397,8 +400,9 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(DeplomaProtofileImageScreen.routeName,
-                        );
+                    Navigator.of(context).pushNamed(
+                      DeplomaProtofileImageScreen.routeName,
+                    );
                   },
                   child: Text(
                     "Next",
@@ -421,8 +425,12 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
       ),
     );
   }
-  dialog(){
-    showDialog(context: context, builder:(context)=>AlertDialog(content: WorkingSchedulePage(),));
-  }
 
+  dialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: WorkingSchedulePage(),
+            ));
+  }
 }

@@ -1,11 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
+import 'package:snipp/features/auth/data/data_sources/auth_api_data_source.dart';
+import 'package:snipp/features/auth/data/models/verify_code_request.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/screens/account_type_screen.dart';
 
-import 'account_type_screen.dart';
+import '../../data/data_sources/auth_data_source.dart';
 
 class VerficationCodeScreen extends StatefulWidget {
-    static const String routeName = '/verfication';
+  static const String routeName = '/verfication';
 
   const VerficationCodeScreen({super.key});
 
@@ -14,8 +21,6 @@ class VerficationCodeScreen extends StatefulWidget {
 }
 
 class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
-
-
   TextEditingController codeController = TextEditingController();
   int _start = 30;
   bool _canResend = false;
@@ -50,8 +55,6 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
     super.dispose();
   }
 
-
-
   void resendCode() {
     if (_canResend) {
       startTimer();
@@ -59,14 +62,14 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
     }
   }
 
+  final _authCubit = AuthCubit();
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFFF0F8FF),
       // resizeToAvoidBottomInset: true,
       appBar: AppBar(
-
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -81,7 +84,9 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
                   fontSize: 48.sp,
                   fontFamily: "WorkSans"),
             ),
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: 10.h,
+            ),
             Icon(Icons.email, size: 200.h, color: Colors.blue),
             SizedBox(height: 20.h),
             Text(
@@ -94,7 +99,7 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
               child: Form(
                 key: formKey,
                 child: TextFormField(
-                  validator:  (p1) {
+                  validator: (p1) {
                     if (p1 == null || p1.isEmpty) {
                       return "Password cannott be empty";
                     } else if (p1.length < 6) {
@@ -109,43 +114,59 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300)
-                    ),
-                    enabledBorder:  OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue.shade300)
-                    ),focusedBorder:  OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300)
-                  ),
+                        borderSide: BorderSide(color: Colors.blue.shade300)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue.shade300)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue.shade300)),
                     hintText: 'Enter Code',
                     fillColor: Colors.white,
-
                     filled: true,
                   ),
                 ),
               ),
             ),
             SizedBox(height: 20.h),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: (){
-    if(formKey.currentState?.validate() == true) {
-      // if(!isLogIn) {
-      //   isClient ? Navigator.of(context).pushNamed(TestWidget.routeName) :
-      //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-      // }else{
-     Navigator.of(context).pushNamed(AccountTypeScreen.routeName);
-      // }
-    }
-                },
-                style : ButtonStyle(
-                  backgroundColor: const WidgetStatePropertyAll(Colors.white),
-                shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                    side: const BorderSide(color: Colors.blue,width: 1),
-                    borderRadius: BorderRadius.circular(30.r))) ,
-                padding: WidgetStatePropertyAll(
-                    EdgeInsets.symmetric(vertical: 16.h))),
-                child: Text('Verify', style: TextStyle(fontSize: 32.sp,color: Colors.blue)),
+            BlocListener(
+              bloc: _authCubit,
+              listener: (_, state) {
+                if (state is LoginLoading) {
+                  UIUtils.showLoading(context);
+                } else if (state is LoginSuccess) {
+                  UIUtils.hideLoading(context);
+                  // Navigator.of(context).pushNamed();
+                } else if (state is LoginError) {
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(state.message);
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _verifyCode
+                  //     () {
+                  //   if (formKey.currentState?.validate() == true) {
+                  //     // if(!isLogIn) {
+                  //     //   isClient ? Navigator.of(context).pushNamed(TestWidget.routeName) :
+                  //     //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+                  //     // }else{
+                  //     Navigator.of(context)
+                  //         .pushNamed(AccountTypeScreen.routeName);
+                  //     // }
+                  //   }
+                  // },
+                  ,
+                  style: ButtonStyle(
+                      backgroundColor:
+                          const WidgetStatePropertyAll(Colors.white),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          side: const BorderSide(color: Colors.blue, width: 1),
+                          borderRadius: BorderRadius.circular(30.r))),
+                      padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 16.h))),
+                  child: Text('Verify',
+                      style: TextStyle(fontSize: 32.sp, color: Colors.blue)),
+                ),
               ),
             ),
             SizedBox(height: 20.h),
@@ -170,5 +191,28 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
       ),
     );
   }
-}
 
+  _verifyCode() {
+// if(formKey.currentState?.validate()==true){
+//     Navigator.of(context).pushNamed(
+//       TestWidget.routeName,
+//     );
+// }
+    TextEditingController? emailController =
+        ModalRoute.of(context)!.settings.arguments as TextEditingController?;
+    if (formKey.currentState?.validate() == true) {
+      // if(!isLogIn) {
+      //   isClient ? Navigator.of(context).pushNamed(TestWidget.routeName) :
+      //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+      // }else{
+      Navigator.of(context).pushNamed(AccountTypeScreen.routeName);
+      // }
+    }
+    _authCubit.verifyCode(VerifyCodeRequest(
+        email: "hekmatfanari@gmail.com", code: codeController.text));
+    final x =   AuthAPIDataSource().verifyCode(VerifyCodeRequest(email:  "hekmatfanari@gmail.com", code: codeController.text));
+    print("5555555555555");
+    print(x);
+    print("5555555555555");
+  }
+}

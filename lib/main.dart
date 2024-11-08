@@ -1,18 +1,19 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/animation.dart';
-import 'package:snipp/auth/view/screen/deploma_protofile_image_screen.dart';
-import 'package:snipp/auth/view/screen/sign_in_screen.dart';
-import 'package:snipp/auth/view/screen/employee_details.dart';
-import 'package:snipp/auth/view/screen/forget_password_screen.dart';
-
-import 'package:snipp/auth/view/screen/verfication_code_screen.dart';
-import 'package:snipp/auth/view/screen/account_type_screen.dart';
-import 'package:snipp/auth/view/screen/sign_up_screen.dart';
-import 'package:snipp/profile/view/screen/profile_screen.dart';
+import 'package:snipp/core/app_bloc_observer.dart';
+import 'package:snipp/features/auth/presentation/screens/account_type_screen.dart';
+import 'package:snipp/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
+import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
+import 'package:snipp/features/auth/presentation/screens/forget_password_screen.dart';
+import 'package:snipp/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:snipp/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
+import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 void main() {
+  Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: true,
       builder: (_) {
@@ -44,8 +45,8 @@ class MyApp extends StatelessWidget {
               SignUpScreen.routeName: (context) => SignUpScreen(),
               SignInScreen.routeName: (context) => SignInScreen(),
               VerficationCodeScreen.routeName: (context) =>
-                  VerficationCodeScreen(),
-              TestWidget.routeName: (context) => const TestWidget(),
+                  const VerficationCodeScreen(),
+              Profile_Screen.routeName: (context) => const Profile_Screen(),
             },
             debugShowCheckedModeBanner: false,
           );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:snipp/profile/view/widget/profile_info/active_day/box_of_from_to.dart';
 
 class AnimationTest extends StatefulWidget {
   const AnimationTest({super.key});
@@ -8,7 +7,8 @@ class AnimationTest extends StatefulWidget {
   State<AnimationTest> createState() => _AnimationTestState();
 }
 
-class _AnimationTestState extends State<AnimationTest> with SingleTickerProviderStateMixin {
+class _AnimationTestState extends State<AnimationTest>
+    with SingleTickerProviderStateMixin {
   bool ischeck = false;
 
   @override
@@ -26,29 +26,28 @@ class _AnimationTestState extends State<AnimationTest> with SingleTickerProvider
             },
           ),
           AnimatedSize(
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
             curve: Curves.easeInOut,
-            
             child: Row(
               children: [
                 Expanded(
                   child: Container(
-                   // height: ischeck ? 100 : 0,  // Changes height based on ischeck
+                    // height: ischeck ? 100 : 0,  // Changes height based on ischeck
                     color: Colors.green,
-                    child: ischeck ? Text('Bakri aweja') : null,
+                    child: ischeck ? const Text('Bakri aweja') : null,
                   ),
                 ),
-                 Expanded(
-                   child: Container(
-                   // height: ischeck ? 100 : 0,  // Changes height based on ischeck
+                Expanded(
+                  child: Container(
+                    // height: ischeck ? 100 : 0,  // Changes height based on ischeck
                     color: Colors.red,
-                    child: ischeck ? Text('Bakri aweja') : null,
-                                   ),
-                 )
+                    child: ischeck ? const Text('Bakri aweja') : null,
+                  ),
+                )
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: Container(
               color: Colors.red,

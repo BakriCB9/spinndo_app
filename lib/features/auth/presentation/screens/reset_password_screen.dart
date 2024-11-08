@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/screen/sign_in_screen.dart';
-import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
+import 'package:snipp/core/widgets/custom_text_form_field.dart';
+
+import 'sign_in_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -12,11 +13,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   void _resetPassword() {
     // Add logic to reset the password, like calling an API
-    if(formKey.currentState?.validate() == true) {
+    if (formKey.currentState?.validate() == true) {
       Navigator.of(context).pushNamed(SignInScreen.routeName);
     }
     print("Password reset successfully");
@@ -64,17 +66,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       height: 20.h,
                     ),
                     CustomTextFormField(
-                     validator: (p1) {
-            if (p1 == null || p1.isEmpty) {
-            return "Password cannott be empty";
-            } else if (p1.length < 6) {
-            return "should be at least 6 charcters";
-            }else if(passwordController.text!=confirmPasswordController.text){
-            return "Diffrent Password";
-            }
+                      validator: (p1) {
+                        if (p1 == null || p1.isEmpty) {
+                          return "Password cannott be empty";
+                        } else if (p1.length < 6) {
+                          return "should be at least 6 charcters";
+                        } else if (passwordController.text !=
+                            confirmPasswordController.text) {
+                          return "Diffrent Password";
+                        }
 
-            return null;
-            },
+                        return null;
+                      },
                       controller: confirmPasswordController,
                       icon: Icons.lock,
                       isPassword: true,
@@ -82,20 +85,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                   ],
                 )),
-
-            Spacer(),            Container(
+            Spacer(),
+            Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 40.h),
               child: ElevatedButton(
                 onPressed: _resetPassword,
-
-
-                child: Text('Verify', style: TextStyle(fontSize: 32.sp,color: Colors.blue)),
-                style : ButtonStyle(
+                child: Text('Verify',
+                    style: TextStyle(fontSize: 32.sp, color: Colors.blue)),
+                style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Colors.white),
                     shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue,width: 1),
-                        borderRadius: BorderRadius.circular(30.r))) ,
+                        side: BorderSide(color: Colors.blue, width: 1),
+                        borderRadius: BorderRadius.circular(30.r))),
                     padding: WidgetStatePropertyAll(
                         EdgeInsets.symmetric(vertical: 16.h))),
               ),

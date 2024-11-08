@@ -19,7 +19,15 @@ class WorkingSchedulePage extends StatefulWidget {
 
 class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
   // List of days of the week
-  final List<String> daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  final List<String> daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
 
   // Map to keep track of selected days and their working hours using WorkingHour model
   final Map<String, WorkingHour> workingHours = {};
@@ -90,7 +98,9 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
                       Expanded(
                         child: ListTile(
                           title: Text(
-                            startTime != null ? "Start: ${startTime.format(context)}" : 'Select Start Time',
+                            startTime != null
+                                ? "Start: ${startTime.format(context)}"
+                                : 'Select Start Time',
                           ),
                           trailing: Icon(Icons.access_time),
                           onTap: () => _selectTime(day, 'start'),
@@ -99,7 +109,9 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
                       Expanded(
                         child: ListTile(
                           title: Text(
-                            endTime != null ? "End: ${endTime.format(context)}" : 'Select End Time',
+                            endTime != null
+                                ? "End: ${endTime.format(context)}"
+                                : 'Select End Time',
                           ),
                           trailing: Icon(Icons.access_time),
                           onTap: () => _selectTime(day, 'end'),
@@ -195,9 +207,9 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
 //               Row(
 //                 children: [
 //                   Checkbox(
-                    
+
 //                     activeColor: Colors.green,
-                    
+
 //                       value: dayInfo.isSelected,
 //                       onChanged: (value) {
 //                         setState(() {

@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/screen/sign_in_screen.dart';
-import 'package:snipp/profile/view/screen/profile_screen.dart';
+import 'package:snipp/core/widgets/custom_text_form_field.dart';
+import 'package:snipp/features/auth/data/models/register_request.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
+import '../../../../core/utils/ui_utils.dart';
+import 'sign_in_screen.dart';
 import 'verfication_code_screen.dart';
-import '../widgets/custom_text_form_field.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
 
   static const String routeName = '/signup';
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
 
   final firstNameContoller = TextEditingController();
@@ -22,6 +33,7 @@ class SignUpScreen extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
+  final _authCubit = AuthCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +41,15 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
 
-    backgroundColor: const Color(0xFFF0F8FF),
-      appBar: AppBar(elevation: 0,forceMaterialTransparency: true,
+      backgroundColor: const Color(0xFFF0F8FF),
+      appBar: AppBar(
+        elevation: 0,
+        forceMaterialTransparency: true,
         actions: [
           TextButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(
-                  TestWidget.routeName,
+                  Profile_Screen.routeName,
                 );
               },
               child: Text(
@@ -48,40 +62,33 @@ class SignUpScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 20.w,
-
         ),
         child: SingleChildScrollView(
           child: Column(
-
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
               CircleAvatar(
                   radius: avatarRadius * 0.7,
                   backgroundColor: Colors.blue.shade300,
-
-                  child:  Icon(
+                  child: Icon(
                     Icons.person,
                     size: avatarRadius,
                     color: Colors.white,
-                  )
-
-              ),
+                  )),
               SizedBox(height: 10.h),
-              Text(
-                'Spinndo',
-                style: TextStyle( fontWeight: FontWeight.bold),textAlign: TextAlign.center
-              ),
+              Text('Spinndo',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center),
               SizedBox(height: 20.h),
               // const Spacer(flex: 1,),
-              Form(key: formKey,
+              Form(
+                key: formKey,
                 child: Column(
                   children: [
                     CustomTextFormField(
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
                           return "Name cannott be empty";
-
                         }
                         return null;
                       },
@@ -95,8 +102,7 @@ class SignUpScreen extends StatelessWidget {
                     CustomTextFormField(
                       validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return           "Name cannott be empty";
-
+                          return "Name cannott be empty";
                         }
                         return null;
                       },
@@ -108,9 +114,9 @@ class SignUpScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     CustomTextFormField(
-                      validator:  (p0) {
+                      validator: (p0) {
                         if (p0 == null || p0.isEmpty) {
-                          return  "please enter an email";
+                          return "please enter an email";
                         }
                         return null;
                       },
@@ -144,7 +150,8 @@ class SignUpScreen extends StatelessWidget {
                           return "Password cannott be empty";
                         } else if (p1.length < 6) {
                           return "should be at least 6 charcters";
-                        }else if(passwordController.text!=confirmPasswordController.text){
+                        } else if (passwordController.text !=
+                            confirmPasswordController.text) {
                           return "Diffrent Password";
                         }
 
@@ -158,24 +165,40 @@ class SignUpScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h,),
-
               SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(VerficationCodeScreen.routeName);
-
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: const WidgetStatePropertyAll(Colors.blue),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.r))),
-                      padding: WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(vertical: 12.h))),
-                  child: Text(
-                    "Next",
-                    style: TextStyle(color: Colors.white, fontSize: 24.sp,fontWeight: FontWeight.bold),
+                height: 20.h,
+              ),
+              BlocListener<AuthCubit, AuthState>(
+                bloc: _authCubit,
+                listener: (_, state) {
+                  if (state is RegisterLoading) {
+                    UIUtils.showLoading(context);
+                  } else if (state is RegisterSuccess) {
+                    UIUtils.hideLoading(context);
+                    // Navigator.of(context).pushNamed();
+                  } else if (state is RegisterError) {
+                    UIUtils.hideLoading(context);
+                    UIUtils.showMessage(state.message);
+                  }
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _register,
+                    style: ButtonStyle(
+                        backgroundColor:
+                            const WidgetStatePropertyAll(Colors.blue),
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.r))),
+                        padding: WidgetStatePropertyAll(
+                            EdgeInsets.symmetric(vertical: 12.h))),
+                    child: Text(
+                      "Next",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
@@ -183,27 +206,35 @@ class SignUpScreen extends StatelessWidget {
               // const Spacer(),
               Center(
                 child: Padding(
-                  padding:  EdgeInsets.only(bottom: 30.h),
+                  padding: EdgeInsets.only(bottom: 30.h),
                   child: InkWell(
                       onTap: () {
-                      Navigator.of(context).pushNamed(SignInScreen.routeName);
-
+                        Navigator.of(context).pushNamed(SignInScreen.routeName);
                       },
                       child: Text(
                         'I already have an account',
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: 24.sp,
-                fontFamily: "WorkSans",fontWeight: FontWeight.w600
-                        ),
+                            fontFamily: "WorkSans",
+                            fontWeight: FontWeight.w600),
                       )),
                 ),
               ),
-
             ],
           ),
         ),
       ),
     );
+  }
+
+  _register() {
+    Navigator.of(context)
+        .pushNamed(VerficationCodeScreen.routeName,arguments: emailController);
+    _authCubit.register(RegisterRequest(
+        first_name: firstNameContoller.text,
+        last_name: lastNameContoller.text,
+        email: emailController.text,
+        password: passwordController.text));
   }
 }

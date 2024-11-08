@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/profile/view/screen/profile_screen.dart';
+import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
-import '../../../shared/image_functions.dart';
+import '../../../../core/utils/image_functions.dart';
 
 class DeplomaProtofileImageScreen extends StatefulWidget {
   DeplomaProtofileImageScreen({super.key});
@@ -78,36 +78,40 @@ class _DeplomaProtofileImageScreenState
                   fontWeight: FontWeight.bold,
                   fontSize: 36.sp,
                   fontFamily: "WorkSans"),
-            ),  SizedBox(height: 10.h),
-        Wrap(
-          spacing: 10,
-          children: List.generate(profileImages.length + 1, (index) {
-            return GestureDetector(
-              onTap: index == profileImages.length ? multiDialog : null,
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.blue, width: 1.5),
-                ),
-                child: index == profileImages.length
-                    ? Center(child: Icon(Icons.add_a_photo, color: Colors.blue))
-                    : ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(profileImages[index], fit: BoxFit.cover),
-                ),
-              ),
-            );
-          }),
-        ) ,
+            ),
+            SizedBox(height: 10.h),
+            Wrap(
+              spacing: 10,
+              children: List.generate(profileImages.length + 1, (index) {
+                return GestureDetector(
+                  onTap: index == profileImages.length ? multiDialog : null,
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.blue, width: 1.5),
+                    ),
+                    child: index == profileImages.length
+                        ? Center(
+                            child: Icon(Icons.add_a_photo, color: Colors.blue))
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(profileImages[index],
+                                fit: BoxFit.cover),
+                          ),
+                  ),
+                );
+              }),
+            ),
             Spacer(),
             Container(
               margin: EdgeInsets.only(bottom: 20.h),
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(TestWidget.routeName,
+                  Navigator.of(context).pushNamed(
+                    Profile_Screen.routeName,
                   );
                 },
                 child: Text(
@@ -125,7 +129,6 @@ class _DeplomaProtofileImageScreenState
                         EdgeInsets.symmetric(vertical: 12.h))),
               ),
             ),
-
           ],
         ),
       ),
@@ -136,120 +139,122 @@ class _DeplomaProtofileImageScreenState
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                      onPressed: () async {
-                        File? temp = await ImageFunctions.CameraPicker();
-                        if (temp != null) {
-                          pickedImage = temp;
-                        }
-                        Navigator.pop(context);
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        Icons.camera_alt_outlined,
-                        size: 40,
-                        color: Colors.blue,
-                      )),
-                  SizedBox(
-                    height: 3.h,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () async {
+                            File? temp = await ImageFunctions.CameraPicker();
+                            if (temp != null) {
+                              pickedImage = temp;
+                            }
+                            Navigator.pop(context);
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 40,
+                            color: Colors.blue,
+                          )),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Text("camera")
+                    ],
                   ),
-                  Text("camera")
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                      onPressed: () async {
-                        File? temp = await ImageFunctions.galleryPicker();
-                        if (temp != null) {
-                          pickedImage = temp;
-                        }
-                        Navigator.pop(context);
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () async {
+                            File? temp = await ImageFunctions.galleryPicker();
+                            if (temp != null) {
+                              pickedImage = temp;
+                            }
+                            Navigator.pop(context);
 
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        Icons.camera_alt_outlined,
-                        size: 40,
-                        color: Colors.blue,
-                      )),
-                  SizedBox(
-                    height: 3.h,
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 40,
+                            color: Colors.blue,
+                          )),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Text("gallery")
+                    ],
                   ),
-                  Text("gallery")
                 ],
               ),
-            ],
-          ),
-        ));
+            ));
   }
+
   multiDialog() {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                      onPressed: () async {
-                        File? temp = await ImageFunctions.CameraPicker();
-                        if (temp != null) {
-                          profileImages.add(temp);
-                        }
-                        Navigator.pop(context);
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        Icons.camera_alt_outlined,
-                        size: 40,
-                        color: Colors.blue,
-                      )),
-                  SizedBox(
-                    height: 3.h,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () async {
+                            File? temp = await ImageFunctions.CameraPicker();
+                            if (temp != null) {
+                              profileImages.add(temp);
+                            }
+                            Navigator.pop(context);
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 40,
+                            color: Colors.blue,
+                          )),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Text("camera")
+                    ],
                   ),
-                  Text("camera")
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                      onPressed: () async {
-                        List<File>? temps = await ImageFunctions.galleryImagesPicker();
-                        if (temps != null) {
-                          profileImages = temps;
-                        }
-                        Navigator.pop(context);
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () async {
+                            List<File>? temps =
+                                await ImageFunctions.galleryImagesPicker();
+                            if (temps != null) {
+                              profileImages = temps;
+                            }
+                            Navigator.pop(context);
 
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        Icons.camera_alt_outlined,
-                        size: 40,
-                        color: Colors.blue,
-                      )),
-                  SizedBox(
-                    height: 3.h,
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 40,
+                            color: Colors.blue,
+                          )),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Text("gallery")
+                    ],
                   ),
-                  Text("gallery")
                 ],
               ),
-            ],
-          ),
-        ));
+            ));
   }
 }

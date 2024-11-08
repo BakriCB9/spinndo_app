@@ -1,34 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/auth/view/screen/sign_up_screen.dart';
-import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
-import 'package:snipp/profile/view/screen/profile_screen.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
+import 'package:snipp/core/widgets/custom_text_form_field.dart';
+import 'package:snipp/features/auth/data/models/login_request.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 import 'forget_password_screen.dart';
+import 'sign_up_screen.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   SignInScreen({super.key});
 
   static const String routeName = '/signin';
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
+  final _authCubit = AuthCubit();
 
   @override
   Widget build(BuildContext context) {
     double avatarRadius = MediaQuery.of(context).size.width * 0.3;
     return Scaffold(
-
       backgroundColor: const Color(0xFFF0F8FF),
-      appBar: AppBar(elevation: 0,forceMaterialTransparency: true,
+      appBar: AppBar(
+        elevation: 0,
+        forceMaterialTransparency: true,
         actions: [
           TextButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(
-                  TestWidget.routeName,
+                  Profile_Screen.routeName,
                 );
               },
               child: Text(
@@ -48,15 +61,11 @@ class SignInScreen extends StatelessWidget {
                 CircleAvatar(
                     radius: avatarRadius * 0.7,
                     backgroundColor: Colors.blue.shade300,
-
-                    child:  Icon(
+                    child: Icon(
                       Icons.person,
                       size: avatarRadius,
                       color: Colors.white,
-                    )
-
-                ),
-
+                    )),
                 const SizedBox(height: 10),
                 const Text(
                   'Spinndo',
@@ -116,29 +125,45 @@ class SignInScreen extends StatelessWidget {
                     )),
               ),
             ),
-            const Spacer(flex: 3,),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-
-                    Navigator.of(context).pushNamed(
-                        TestWidget.routeName,
-                        );
-
-                },
-                style: ButtonStyle(
-                    backgroundColor: const WidgetStatePropertyAll(Colors.blue),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.r))),
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 12.h))),
-                child: Text(
-                  "Log in",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold),
+            const Spacer(
+              flex: 3,
+            ),
+            BlocListener(
+              bloc: _authCubit,
+              listener: (_, state) {
+                if (state is LoginLoading) {
+                  UIUtils.showLoading(context);
+                } else if (state is LoginSuccess) {
+                  UIUtils.hideLoading(context);
+                  // Navigator.of(context).pushNamed();
+                } else if (state is LoginError) {
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(state.message);
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _login,
+                  //     () {
+                  //   Navigator.of(context).pushNamed(
+                  //     TestWidget.routeName,
+                  //   );
+                  // },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          const WidgetStatePropertyAll(Colors.blue),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r))),
+                      padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 12.h))),
+                  child: Text(
+                    "Log in",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),
@@ -149,8 +174,7 @@ class SignInScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(
-                      SignUpScreen.routeName);
+                  Navigator.of(context).pushNamed(SignUpScreen.routeName);
                 },
                 style: ButtonStyle(
                     backgroundColor: const WidgetStatePropertyAll(Colors.white),
@@ -173,5 +197,16 @@ class SignInScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _login() {
+// if(formKey.currentState?.validate()==true){
+//     Navigator.of(context).pushNamed(
+//       TestWidget.routeName,
+//     );
+// }
+    _authCubit.login(LoginRequest(
+        email: emailController.text, password: passwordController.text));  Navigator.of(context).pushNamed(
+        Profile_Screen.routeName);
   }
 }
