@@ -34,6 +34,7 @@ class ImageFunctions {
       }
     }
   }
+
   static Future<List<File>?> galleryImagesPicker() async {
     PermissionStatus status;
     if (Platform.isAndroid) {
@@ -47,14 +48,12 @@ class ImageFunctions {
       status = await Permission.phone.request();
     }
     if (status.isGranted) {
-     List<XFile?> images = await ImagePicker().pickMultiImage();
+      List<XFile?> images = await ImagePicker().pickMultiImage();
       if (images != null) {
-        return images.map((file)=>File(file!.path)).toList();
+        return images.map((file) => File(file!.path)).toList();
       } else {
         return null;
       }
     }
   }
-
-
 }

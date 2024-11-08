@@ -6,7 +6,6 @@ import 'package:snipp/auth/view/screen/deploma_protofile_image_screen.dart';
 import 'package:snipp/auth/view/widgets/custom_text_form_field.dart';
 import 'package:snipp/auth/view/widgets/default_text_form_field.dart';
 import 'package:snipp/date.dart';
-import 'package:snipp/profile/view/screen/edit_date_time.dart';
 import 'package:snipp/profile/view/screen/profile_screen.dart';
 import 'package:snipp/shared/image_functions.dart';
 
