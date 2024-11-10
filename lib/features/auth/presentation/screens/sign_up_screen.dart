@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 import '../../../../core/utils/ui_utils.dart';
@@ -21,23 +23,18 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final emailController = TextEditingController();
 
-  final firstNameContoller = TextEditingController();
-
-  final lastNameContoller = TextEditingController();
-
-  final passwordController = TextEditingController();
-
-  final confirmPasswordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
-  final _authCubit = AuthCubit();
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
-    double avatarRadius = MediaQuery.of(context).size.width * 0.3;
+    double avatarRadius = MediaQuery
+        .of(context)
+        .size
+        .width * 0.3;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
 
@@ -92,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      controller: firstNameContoller,
+                      controller: _authCubit.firstNameContoller,
                       icon: Icons.person,
                       labelText: 'First name',
                     ),
@@ -106,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      controller: lastNameContoller,
+                      controller: _authCubit.lastNameContoller,
                       icon: Icons.person,
                       labelText: 'Last name',
                     ),
@@ -120,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      controller: emailController,
+                      controller: _authCubit.emailController,
                       icon: Icons.email,
                       labelText: 'Email',
                     ),
@@ -136,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      controller: passwordController,
+                      controller: _authCubit.passwordController,
                       icon: Icons.lock,
                       isPassword: true,
                       labelText: 'Password',
@@ -150,14 +147,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return "Password cannott be empty";
                         } else if (p1.length < 6) {
                           return "should be at least 6 charcters";
-                        } else if (passwordController.text !=
-                            confirmPasswordController.text) {
+                        } else if (_authCubit.passwordController.text !=
+                            _authCubit.passwordController.text) {
                           return "Diffrent Password";
                         }
 
                         return null;
                       },
-                      controller: confirmPasswordController,
+                      controller: _authCubit.confirmPasswordController,
                       icon: Icons.lock,
                       isPassword: true,
                       labelText: 'Confirm Password',
@@ -168,6 +165,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(
                 height: 20.h,
               ),
+              BlocBuilder<AuthCubit , AuthState>(
+                bloc: _authCubit,
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Radio<bool>(
+                              value: true,
+                              activeColor: Colors.blue,
+                              hoverColor: Colors.blue,
+                              groupValue: _authCubit.isClient,
+                              onChanged: (value) {
+                                  _authCubit.onChooseAccountType(value!);
+                              },
+                            ),
+                            Text(
+                              'Client',
+                              style: TextStyle(fontSize: 20),
+                            )
+                          ],
+                        ),
+                        SizedBox(width: 16),
+                        Row(
+                          children: [
+                            Radio<bool>(
+                              activeColor: Colors.blue,
+                              hoverColor: Colors.blue,
+                              value: false,
+                              groupValue: _authCubit.isClient,
+                              onChanged: (value) {
+_authCubit.onChooseAccountType(value!)  ;
+                              },
+                            ),
+                            Text('Employee', style: TextStyle(fontSize: 20))
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
               BlocListener<AuthCubit, AuthState>(
                 bloc: _authCubit,
                 listener: (_, state) {
@@ -187,7 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: _register,
                     style: ButtonStyle(
                         backgroundColor:
-                            const WidgetStatePropertyAll(Colors.blue),
+                        const WidgetStatePropertyAll(Colors.blue),
                         shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.r))),
                         padding: WidgetStatePropertyAll(
@@ -229,12 +272,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   _register() {
-    Navigator.of(context)
-        .pushNamed(VerficationCodeScreen.routeName,arguments: emailController);
-    _authCubit.register(RegisterRequest(
-        first_name: firstNameContoller.text,
-        last_name: lastNameContoller.text,
-        email: emailController.text,
-        password: passwordController.text));
+
+if(_authCubit.isClient){
+  _authCubit.register(RegisterRequest(
+      first_name: _authCubit.firstNameContoller.text,
+      last_name: _authCubit.lastNameContoller.text,
+      email: _authCubit.emailController.text,
+      password: _authCubit.passwordController.text));
+  Navigator.of(context).pushNamed(
+    VerficationCodeScreen.routeName,
+  );
+}else{
+    Navigator.of(context).pushNamed(
+    EmployeeDetails.routeName);
+}
   }
 }

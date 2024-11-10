@@ -6,3 +6,7 @@ class ApiConstant {
   static const String registerServiceProviderEndPoint =
       '/registerServiceProvider';
 }
+
+class CacheConstant {
+  static const String tokenKey = 'token';
+}

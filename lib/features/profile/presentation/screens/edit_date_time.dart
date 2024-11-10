@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/profile/presentation/widget/profile_info/active_day/box_of_from_to.dart';
 
 // class EditDateTimeScreen extends StatefulWidget {
@@ -108,7 +109,7 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
                     Expanded(
                         flex: 2,
                         child: dayInfo.isSelected
-                            ? BoxFromDateToDate(time: 'From 12:00 pm')
+                            ? BoxFromDateToDate(time: 'From 12:00 pm', type: 1, dateSelect: DateSelect(day: "day", start: "start", end: "end"),)
                             : SizedBox()),
                     SizedBox(
                       width: 20.w,
@@ -116,7 +117,7 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
                     Expanded(
                         flex: 2,
                         child: dayInfo.isSelected
-                            ? BoxFromDateToDate(time: 'To 6:00 Pm')
+                            ? BoxFromDateToDate(time: 'To 6:00 Pm', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 2,)
                             : SizedBox())
                   ],
                 ),

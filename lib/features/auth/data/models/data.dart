@@ -1,17 +1,13 @@
-class Data {
-  int? id;
-  String? role;
-  String? token;
-  dynamic isApproved;
+import 'package:snipp/features/auth/domain/entities/user.dart';
 
-  Data({this.id, this.role, this.token,this.isApproved});
-
+class Data extends User{
+Data({required super.id,required super.isApproved,required super.role,required super.token});
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json['id'] as int?,
-        role: json['role'] as String?,
+        id: json['id'] as int,
+        role: json['role'] as String,
     isApproved: json['isApproved'] as dynamic,
 
-        token: json['token'] as String?,
+        token: json['token'] as String,
       );
 
   Map<String, dynamic> toJson() => {

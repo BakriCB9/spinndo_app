@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/utils/ui_utils.dart';
-import 'package:snipp/features/auth/data/data_sources/auth_api_data_source.dart';
+import 'package:snipp/features/auth/data/data_sources/remote/auth_api_remote_data_source.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 import 'package:snipp/features/auth/presentation/screens/account_type_screen.dart';
+import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
-import '../../data/data_sources/auth_data_source.dart';
+import '../../../../core/di/service_locator.dart';
 
 class VerficationCodeScreen extends StatefulWidget {
   static const String routeName = '/verfication';
@@ -62,7 +63,7 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
     }
   }
 
-  final _authCubit = AuthCubit();
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -198,21 +199,17 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
 //       TestWidget.routeName,
 //     );
 // }
-    TextEditingController? emailController =
-        ModalRoute.of(context)!.settings.arguments as TextEditingController?;
+
     if (formKey.currentState?.validate() == true) {
       // if(!isLogIn) {
       //   isClient ? Navigator.of(context).pushNamed(TestWidget.routeName) :
       //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
       // }else{
-      Navigator.of(context).pushNamed(AccountTypeScreen.routeName);
+      Navigator.of(context).pushNamed(Profile_Screen.routeName);
       // }
     }
     _authCubit.verifyCode(VerifyCodeRequest(
-        email: "hekmatfanari@gmail.com", code: codeController.text));
-    final x =   AuthAPIDataSource().verifyCode(VerifyCodeRequest(email:  "hekmatfanari@gmail.com", code: codeController.text));
-    print("5555555555555");
-    print(x);
-    print("5555555555555");
+        email:_authCubit.emailController.text , code: codeController.text));
+
   }
 }

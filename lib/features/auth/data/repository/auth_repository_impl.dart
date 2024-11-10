@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 import 'package:snipp/core/error/app_exception.dart';
 import 'package:snipp/core/error/failure.dart';
 import 'package:snipp/features/auth/data/data_sources/local/auth_local_data_source.dart';
@@ -6,46 +7,67 @@ import 'package:snipp/features/auth/data/data_sources/remote/auth_remote_data_so
 import 'package:snipp/features/auth/data/models/login_request.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/data/models/register_response.dart';
+import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
+import 'package:snipp/features/auth/data/models/register_service_provider_response.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/data/models/verify_code_response.dart';
+import 'package:snipp/features/auth/domain/entities/user.dart';
+import 'package:snipp/features/auth/domain/repository/auth_repository.dart';
 
-import '../models/login_response.dart';
+@Singleton(as: AuthRepository)
 
-class AuthRepository {
+class AuthRepositoryImpl implements AuthRepository{
   final AuthRemoteDataSource _authRemoteDataSource;
   final AuthLocalDataSource _authLocalDataSource;
 
-  AuthRepository(this._authRemoteDataSource, this._authLocalDataSource);
+  AuthRepositoryImpl(this._authRemoteDataSource, this._authLocalDataSource);
 
-  Future<Either<Failure,LoginResponse>> login(LoginRequest requestData) async {
+  @override
+  Future<Either<Failure,User>> login(LoginRequest requestData) async {
     try {
       final response = await _authRemoteDataSource.login(requestData);
-      if (response.data!.token != null) {
-        await _authLocalDataSource.saveToken(response.data!.token!);
-        return Right(response);
-      } else {
-        return Left(RemotFailure("message"));
-      }
-    } on AppException catch(exception){
+      await _authLocalDataSource.saveToken(response.data!.token);
+
+      return Right(response.data!);
+        } on AppException catch(exception){
       return Left(RemotFailure(exception.message));
     }
   }
 
-  Future<RegisterResponse> register(RegisterRequest requestData) async {
-    return _authRemoteDataSource.register(requestData);
+  @override
+  Future<Either<Failure,RegisterResponse>> register(RegisterRequest requestData) async {
+    try {
+      final response = await _authRemoteDataSource.register(requestData);
+      // await _authLocalDataSource.saveToken(response.data!.token);
+
+      return Right(response);
+    } on AppException catch(exception){
+      return Left(RemotFailure(exception.message));
+    }
+
   }
 
-  Future<Either<Failure,VerifyCodeResponse>> verifyCode(VerifyCodeRequest requestData) async {
+  Future<Either<Failure,User>> verifyCode(VerifyCodeRequest requestData) async {
+
     try {
       final response = await _authRemoteDataSource.verifyCode(requestData);
-      if (response.data!.token != null) {
-        await _authLocalDataSource.saveToken(response.data!.token!);
-        return Right(response);
-      } else {
-        return Left(RemotFailure("message"));
-      }
+      await _authLocalDataSource.saveToken(response.data!.token);
+
+      return Right(response.data!);
     } on AppException catch(exception){
       return Left(RemotFailure(exception.message));
     }
   }
+
+  @override
+  Future<Either<Failure, RegisterServiceProviderResponse>> registerService(RegisterServiceProviderRequest requestData)async{
+    try {
+      final response = await _authRemoteDataSource.registerService(requestData);
+      return Right(response);
+    } on AppException catch(exception){
+      return Left(RemotFailure(exception.message));
+    }
+  }
+
+
 }

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 
 class BoxFromDateToDate extends StatefulWidget {
   final String time;
-  const BoxFromDateToDate({required this.time, super.key});
+  DateSelect dateSelect;
+  final int type;
+
+  BoxFromDateToDate(
+      {required this.time,
+      super.key,
+      required this.dateSelect,
+      required this.type});
 
   @override
   State<BoxFromDateToDate> createState() => _BoxFromDateToDateState();
@@ -12,6 +20,7 @@ class BoxFromDateToDate extends StatefulWidget {
 
 class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
   late TimeOfDay _date;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +41,9 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
             setState(() {
               if (value != null) {
                 print('the value is $value');
-                _date = value;
+                widget.type == 1
+                    ? widget.dateSelect.start = value.format(context)
+                    : widget.dateSelect.end = value.format(context);
                 //print('the date is   ############################# ${_date.hour} and ${_date.minute}');
               }
             });
@@ -48,7 +59,7 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              '${_date.format(context) ?? TimeOfDay.now()}',
+              '${widget.type == 1 ? widget.dateSelect.start : widget.dateSelect.end}',
               //widget.time,
               style: TextStyle(fontSize: 13.sp, color: Colors.grey),
             ),

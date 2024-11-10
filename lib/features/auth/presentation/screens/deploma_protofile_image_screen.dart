@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 import '../../../../core/utils/image_functions.dart';
@@ -18,8 +22,7 @@ class DeplomaProtofileImageScreen extends StatefulWidget {
 
 class _DeplomaProtofileImageScreenState
     extends State<DeplomaProtofileImageScreen> {
-  File? pickedImage;
-  List<File> profileImages = [];
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +59,7 @@ class _DeplomaProtofileImageScreenState
                   height: 150,
                   width: double.infinity,
                   padding: EdgeInsets.all(10),
-                  child: pickedImage == null
+                  child: _authCubit.pickedImage == null
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -67,7 +70,7 @@ class _DeplomaProtofileImageScreenState
                                     fontSize: 16, color: Colors.blue)),
                           ],
                         )
-                      : Image.file(pickedImage!, fit: BoxFit.cover),
+                      : Image.file(_authCubit.pickedImage!, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -82,9 +85,12 @@ class _DeplomaProtofileImageScreenState
             SizedBox(height: 10.h),
             Wrap(
               spacing: 10,
-              children: List.generate(profileImages.length + 1, (index) {
+              children:
+                  List.generate(_authCubit.profileImages.length + 1, (index) {
                 return GestureDetector(
-                  onTap: index == profileImages.length ? multiDialog : null,
+                  onTap: index == _authCubit.profileImages.length
+                      ? multiDialog
+                      : null,
                   child: Container(
                     width: 100,
                     height: 100,
@@ -92,12 +98,12 @@ class _DeplomaProtofileImageScreenState
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.blue, width: 1.5),
                     ),
-                    child: index == profileImages.length
+                    child: index == _authCubit.profileImages.length
                         ? Center(
                             child: Icon(Icons.add_a_photo, color: Colors.blue))
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.file(profileImages[index],
+                            child: Image.file(_authCubit.profileImages[index],
                                 fit: BoxFit.cover),
                           ),
                   ),
@@ -110,12 +116,31 @@ class _DeplomaProtofileImageScreenState
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  _authCubit.registerService(RegisterServiceProviderRequest(
+                      first_name: _authCubit.firstNameContoller.text,
+                      last_name: _authCubit.lastNameContoller.text,
+                      email: _authCubit.emailController.text,
+                      working_days: _authCubit.dateSelect,
+                      password: _authCubit.passwordController.text,
+                      nameService: _authCubit.serviceNameController.text,
+                      descriptionService:
+                          _authCubit.serviceDescriptionController.text,
+                      categoryIdService: _authCubit.categoryId,
+                      cityIdService: _authCubit.cityId,
+                      websiteService: _authCubit.website,
+                      certificate:  _authCubit.pickedImage!,
+                      longitudeService: "-122.4194",
+                      latitudeService: "37.7749",
+                      images: [
+                        _authCubit.profileImages[0],
+                        _authCubit.profileImages[1]
+                      ]));
                   Navigator.of(context).pushNamed(
-                    Profile_Screen.routeName,
+                    VerficationCodeScreen.routeName,
                   );
                 },
                 child: Text(
-                  "Next",
+                  "Sign Up",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 32.sp,
@@ -150,7 +175,7 @@ class _DeplomaProtofileImageScreenState
                           onPressed: () async {
                             File? temp = await ImageFunctions.CameraPicker();
                             if (temp != null) {
-                              pickedImage = temp;
+                              _authCubit.pickedImage = temp;
                             }
                             Navigator.pop(context);
                             setState(() {});
@@ -174,7 +199,7 @@ class _DeplomaProtofileImageScreenState
                           onPressed: () async {
                             File? temp = await ImageFunctions.galleryPicker();
                             if (temp != null) {
-                              pickedImage = temp;
+                              _authCubit.pickedImage = temp;
                             }
                             Navigator.pop(context);
 
@@ -211,7 +236,7 @@ class _DeplomaProtofileImageScreenState
                           onPressed: () async {
                             File? temp = await ImageFunctions.CameraPicker();
                             if (temp != null) {
-                              profileImages.add(temp);
+                              _authCubit.profileImages.add(temp);
                             }
                             Navigator.pop(context);
                             setState(() {});
@@ -236,7 +261,7 @@ class _DeplomaProtofileImageScreenState
                             List<File>? temps =
                                 await ImageFunctions.galleryImagesPicker();
                             if (temps != null) {
-                              profileImages = temps;
+                              _authCubit.profileImages = temps;
                             }
                             Navigator.pop(context);
 

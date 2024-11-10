@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/app_bloc_observer.dart';
+import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/features/auth/presentation/screens/account_type_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
@@ -13,6 +14,7 @@ import 'package:snipp/features/auth/presentation/screens/verfication_code_screen
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 void main() {
+  configureDependencies();
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: true,

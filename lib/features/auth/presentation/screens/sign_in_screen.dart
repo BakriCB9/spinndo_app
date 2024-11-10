@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/utils/ui_utils.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/login_request.dart';
@@ -27,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final formKey = GlobalKey<FormState>();
 
-  final _authCubit = AuthCubit();
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +207,7 @@ class _SignInScreenState extends State<SignInScreen> {
 //     );
 // }
     _authCubit.login(LoginRequest(
-        email: emailController.text, password: passwordController.text));  Navigator.of(context).pushNamed(
-        Profile_Screen.routeName);
+        email: emailController.text, password: passwordController.text));
+    Navigator.of(context).pushNamed(Profile_Screen.routeName);
   }
 }

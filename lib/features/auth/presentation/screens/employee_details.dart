@@ -1,10 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/date.dart';
 import 'package:snipp/core/utils/image_functions.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/profile/presentation/widget/profile_info/active_day/box_of_from_to.dart';
 
 import 'deploma_protofile_image_screen.dart';
 
@@ -26,9 +31,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
     '  lawyer'
   ];
   String? selectedCategory;
-  final jobTitleController = TextEditingController();
-  final addressController = TextEditingController();
-  final descriptionController = TextEditingController();
+
   File? pickedImage;
   List<File>? pickedImages = [];
 
@@ -41,6 +44,8 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
     'Saturday',
     'Sunday'
   ];
+
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -140,19 +145,19 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               ),
               SizedBox(height: 20.h),
               CustomTextFormField(
-                controller: jobTitleController,
+                controller: _authCubit.serviceNameController,
                 icon: Icons.work,
                 labelText: 'Job Title',
               ),
               SizedBox(height: 20.h),
               CustomTextFormField(
-                controller: addressController,
+                controller: _authCubit.addressController,
                 icon: Icons.location_on_outlined,
                 labelText: 'Address',
               ),
               SizedBox(height: 20.h),
               CustomTextFormField(
-                controller: descriptionController,
+                controller: _authCubit.serviceDescriptionController,
                 icon: Icons.description,
                 labelText: 'Description',
                 maxLines: 5,
@@ -170,7 +175,72 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    dialog();
+                    showModalBottomSheet(constraints: BoxConstraints(maxHeight: size.height*0.5,minHeight: size.height*0.25),
+                      context: context,
+                      builder: (context) {
+                        return Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: 16.0.w,vertical: 20.h),
+                          child: BlocBuilder<AuthCubit,AuthState>(
+                            bloc: _authCubit,
+  builder: (context, state) {
+    return ListView(
+                            children: _authCubit.dateSelect.map(
+                                  (e) {
+                                return Row(
+                                  children: [
+                                    Expanded(flex: 1,
+                                      child: Checkbox(fillColor: WidgetStatePropertyAll(e.isSelect?Colors.green:Colors.white),
+                                        value: e.isSelect,
+                                        onChanged: (value) {
+_authCubit.onSelectDay(value!, e);
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(flex: 10,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  e.day,
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp, color: Colors.grey),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          Expanded(
+                                              flex: 5,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: BoxFromDateToDate(type: 1,dateSelect: e,
+                                                          time: 'From ${e.start}')),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  Expanded(
+                                                      child:
+                                                      BoxFromDateToDate(dateSelect:e,type: 2,time: 'To ${e.end}'))
+                                                ],
+                                              ))
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ).toList(),
+                          );
+  },
+),
+                        );
+                      },
+                    );
                   },
                   child: Row(
                     children: [
@@ -427,10 +497,11 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
   }
 
   dialog() {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              content: WorkingSchedulePage(),
-            ));
+    // showDialog(
+    //     context: context,
+    //     builder: (context) => AlertDialog(
+    //           content: WorkingSchedulePage(),
+    //         ));
+
   }
 }
