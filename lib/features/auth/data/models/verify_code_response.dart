@@ -1,8 +1,9 @@
-import 'data.dart';
+import '../data.dart';
 
 class VerifyCodeResponse {
   String? status;
   String? message;
+
   Data? data;
 
   VerifyCodeResponse({this.status, this.message, this.data});
