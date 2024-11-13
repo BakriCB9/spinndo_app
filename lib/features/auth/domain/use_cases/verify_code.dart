@@ -7,12 +7,12 @@ import 'package:snipp/features/auth/data/models/login_response.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/domain/entities/user.dart';
 import 'package:snipp/features/auth/domain/repository/auth_repository.dart';
-@singleton
 
+@singleton
 class VerifyCode {
   final AuthRepository _authRepository;
 
   VerifyCode(this._authRepository);
-  Future<Either<Failure, User>> call(VerifyCodeRequest requestData)=>_authRepository.verifyCode(
-      requestData);
+  Future<Either<Failure, User>> call(VerifyCodeRequest requestData) =>
+      _authRepository.verifyCode(requestData);
 }

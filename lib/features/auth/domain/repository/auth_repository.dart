@@ -11,7 +11,8 @@ import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {
-  Future<Either<Failure, RegisterResponse>> register(RegisterRequest requestData);
+  Future<Either<Failure, RegisterResponse>> register(
+      RegisterRequest requestData);
 
   Future<Either<Failure, RegisterServiceProviderResponse>> registerService(
       RegisterServiceProviderRequest requestData);

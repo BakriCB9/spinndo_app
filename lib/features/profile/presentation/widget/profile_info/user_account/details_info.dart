@@ -7,9 +7,9 @@ class InfoDetails extends StatelessWidget {
   final IconData icon;
   const InfoDetails(
       {required this.icon,
-      required this.title,
-      required this.content,
-      super.key});
+        required this.title,
+        required this.content,
+        super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +27,13 @@ class InfoDetails extends StatelessWidget {
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title,
                   style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 22.sp,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500)),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(content,
-                    style: TextStyle(color: Colors.grey, fontSize: 13.sp)),
+                    style: TextStyle(color: Colors.grey, fontSize: 20.sp)),
               )
             ])
           ])),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
@@ -115,8 +116,8 @@ class _DeplomaProtofileImageScreenState
               margin: EdgeInsets.only(bottom: 20.h),
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  _authCubit.registerService(RegisterServiceProviderRequest(
+                onPressed: () async {
+                  final request = RegisterServiceProviderRequest(
                       first_name: _authCubit.firstNameContoller.text,
                       last_name: _authCubit.lastNameContoller.text,
                       email: _authCubit.emailController.text,
@@ -128,13 +129,25 @@ class _DeplomaProtofileImageScreenState
                       categoryIdService: _authCubit.categoryId,
                       cityIdService: _authCubit.cityId,
                       websiteService: _authCubit.website,
-                      certificate:  _authCubit.pickedImage!,
+                      certificate: _authCubit.pickedImage!,
                       longitudeService: "-122.4194",
                       latitudeService: "37.7749",
                       images: [
                         _authCubit.profileImages[0],
                         _authCubit.profileImages[1]
-                      ]));
+                      ]);
+
+                  final formData = await request.toFormData();
+                  try {
+                    final response = await Dio().post(
+                      'YOUR_API_ENDPOINT',
+                      data: formData,
+                    );
+                    print("Response: ${response.data}");
+                  } catch (e) {
+                    print("Error: $e");
+                  }
+                  _authCubit.registerService(request);
                   Navigator.of(context).pushNamed(
                     VerficationCodeScreen.routeName,
                   );

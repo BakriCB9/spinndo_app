@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:snipp/features/profile/presentation/widget/profile_info/active_day/custom_day_of_active.dart';
 import 'package:snipp/features/profile/presentation/widget/profile_info/job_items/description.dart';
 import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
@@ -16,10 +18,12 @@ class Profile_Screen extends StatefulWidget {
 }
 
 class _Profile_ScreenState extends State<Profile_Screen> {
+  final _profileCubit=serviceLocator.get<ProfileCubit>();
   ScrollController _control = ScrollController();
   @override
   void initState() {
     super.initState();
+    _profileCubit.getClient();
   }
 
   int typeSelect = 1;
@@ -44,7 +48,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 15.h),
-                  const UserAccount(),
+                  const UserAccount(client: ,),
                   SizedBox(height: 15.h),
                   const CustomDescription(),
                   SizedBox(height: 10.h),

@@ -21,6 +21,7 @@ class RegisterError extends AuthState {
 
   RegisterError(this.message);
 }
+
 class RegisterServiceSuccess extends AuthState {}
 
 class RegisterServiceLoading extends AuthState {}
@@ -40,9 +41,7 @@ class VerifyCodeError extends AuthState {
 
   VerifyCodeError(this.message);
 }
-class ChooseAccountState extends AuthState{
 
-}
-class SelectDayState extends AuthState{
+class ChooseAccountState extends AuthState {}
 
-}
+class SelectDayState extends AuthState {}

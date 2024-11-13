@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_date_time.dart';
 import 'package:snipp/core/const_variable.dart';
 
@@ -11,66 +13,114 @@ class CustomDayActive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _authCubit = serviceLocator.get<AuthCubit>();
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Active Days',
-              style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue),
-            ),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WorkingSchedulePage()));
-                },
-                icon: Icon(Icons.edit_calendar_outlined))
-          ],
+      Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Active Days',
+          style: TextStyle(
+              fontSize: 25.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.blue),
         ),
-        Column(
-          children: days
-              .map((e) => Padding(
-                    padding: EdgeInsets.only(top: 10.h),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                e,
-                                style: TextStyle(
-                                    fontSize: 13.sp, color: Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10.w),
-                        Expanded(
-                            flex: 4,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: BoxFromDateToDate(
-                                        time: 'From 9:00 Am', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 1,)),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Expanded(
-                                    child:
-                                        BoxFromDateToDate(time: 'To 6:00 Pm', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 2,))
-                              ],
-                            ))
-                      ],
-                    ),
-                  ))
-              .toList(),
-        ),
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WorkingSchedulePage()));
+            },
+            icon: Icon(Icons.edit_calendar_outlined))
+      ],
+    ),
+    Column(
+    children: _authCubit.dateSelect
+        .map((e) => Padding(
+    padding: EdgeInsets.only(top: 10.h),
+    child: e.isSelect == true
+    ? Row(
+    children: [
+    Expanded(
+    child: Align(
+    alignment: Alignment.topLeft,
+    child: FittedBox(
+    fit: BoxFit.scaleDown,
+    child: Text(
+    e.day,
+    style: TextStyle(
+    fontSize: 25.sp, color: Colors.grey),
+    ),
+    ),
+    ),
+    ),
+    SizedBox(width: 10.w),
+    Expanded(
+    flex: 4,
+    child: Row(
+    children: [
+    Expanded(
+    child: BoxFromDateToDate(
+    time: 'From 9:00 Am',
+    dateSelect: e,
+    type: 1,
+    )),
+    SizedBox(
+    width: 10.w,
+    ),
+    Expanded(
+    child: BoxFromDateToDate(
+    time: 'To 6:00 Pm',
+    dateSelect: e,
+    type: 2,
+    ))
+    ],
+    ))
+    ],
+    )
+        : SizedBox(),
+    ))
+        .toList(),
+    ),
+        //    days
+        //       .map((e) => Padding(
+        //             padding: EdgeInsets.only(top: 10.h),
+        //             child: Row(
+        //               children: [
+        //                 Expanded(
+        //                   child: Align(
+        //                     alignment: Alignment.topLeft,
+        //                     child: FittedBox(
+        //                       fit: BoxFit.scaleDown,
+        //                       child: Text(
+        //                         e,
+        //                         style: TextStyle(
+        //                             fontSize: 25.sp, color: Colors.grey),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                 ),
+        //                 SizedBox(width: 10.w),
+        //                 Expanded(
+        //                     flex: 4,
+        //                     child: Row(
+        //                       children: [
+        //                         Expanded(
+        //                             child: BoxFromDateToDate(
+        //                                 time: 'From 9:00 Am', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 1,)),
+        //                         SizedBox(
+        //                           width: 10.w,
+        //                         ),
+        //                         Expanded(
+        //                             child:
+        //                                 BoxFromDateToDate(time: 'To 6:00 Pm', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 2,))
+        //                       ],
+        //                     ))
+        //               ],
+        //             ),
+        //           ))
+        //       .toList(),
+        // ),
       ],
     );
   }

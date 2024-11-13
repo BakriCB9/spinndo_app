@@ -11,5 +11,6 @@ abstract class AuthRemoteDataSource {
   Future<RegisterResponse> register(RegisterRequest requestBody);
   Future<LoginResponse> login(LoginRequest requestBody);
   Future<VerifyCodeResponse> verifyCode(VerifyCodeRequest requestBody);
-  Future<RegisterServiceProviderResponse> registerService(RegisterServiceProviderRequest requestBody);
+  Future<RegisterServiceProviderResponse> registerService(
+      RegisterServiceProviderRequest requestBody);
 }

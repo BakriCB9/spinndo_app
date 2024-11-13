@@ -13,15 +13,15 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   const CustomTextFormField(
       {Key? key,
-      this.labelText,
-      this.validator,
-      this.isPassword = false,
-      this.hintText,
-      this.maxLines = 1,
-      this.minLines = 1,
-      required this.controller,
-      this.icon,
-      this.keyboardType})
+        this.labelText,
+        this.validator,
+        this.isPassword = false,
+        this.hintText,
+        this.maxLines = 1,
+        this.minLines = 1,
+        required this.controller,
+        this.icon,
+        this.keyboardType})
       : super(key: key);
 
   @override
@@ -30,74 +30,92 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormField extends State<CustomTextFormField> {
   bool isObsecure = false;
+  late FocusNode _focus;
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode();
+  }
+
+  @override
+  dispose() {
+    _focus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextFormField(
-        controller: widget.controller,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
+    return TextFormField(
+      focusNode: _focus,
+      onTapOutside: (_) {
+        _focus.unfocus();
+      },
+      onFieldSubmitted: (_) {
+        _focus.unfocus();
+      },
 
-          label: widget.labelText != null
-              ? Text(
-                  widget.labelText!,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w300, color: Colors.grey.shade700),
-                )
-              : null,
-          suffixIcon: widget.controller.text.isNotEmpty
-              ? widget.isPassword
-                  ? IconButton(
-                      style: ButtonStyle(
-                          foregroundColor:
-                              WidgetStatePropertyAll(Colors.blue.shade300)),
-                      onPressed: () {
-                        isObsecure = !isObsecure;
-                        setState(() {});
-                      },
-                      icon: isObsecure
-                          ? const Icon(Icons.visibility_off_outlined)
-                          : const Icon(Icons.visibility_outlined))
-                  : null
-              : null,
-          prefixIcon: Icon(widget.icon, color: Colors.blue.shade300),
-          enabled: true,
+      controller: widget.controller,
+      decoration: InputDecoration(
+        hintText: widget.hintText,
 
-          filled: true,
-          fillColor: Colors.white,
-
-          focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          // counter: SizedBox()
-        ),
-        onChanged: widget.isPassword
-            ? (value) {
-                setState(() {});
-              }
+        label: widget.labelText != null
+            ? Text(
+          widget.labelText!,
+          style: TextStyle(
+              fontWeight: FontWeight.w300, color: Colors.grey.shade700),
+        )
             : null,
-        obscureText: isObsecure,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        validator: widget.validator,
-        keyboardType: widget.keyboardType ?? TextInputType.multiline,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        textInputAction: TextInputAction.newline,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(200),
-        ],
-        // maxLength: 10,
+        suffixIcon: widget.controller.text.isNotEmpty
+            ? widget.isPassword
+            ? IconButton(
+            style: ButtonStyle(
+                foregroundColor:
+                WidgetStatePropertyAll(Colors.blue.shade300)),
+            onPressed: () {
+              isObsecure = !isObsecure;
+              setState(() {});
+            },
+            icon: isObsecure
+                ? const Icon(Icons.visibility_off_outlined)
+                : const Icon(Icons.visibility_outlined))
+            : null
+            : null,
+        prefixIcon: Icon(widget.icon, color: Colors.blue.shade300),
+        enabled: true,
+
+        filled: true,
+        fillColor: Colors.white,
+
+        focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        // counter: SizedBox()
       ),
+      onChanged: widget.isPassword
+          ? (value) {
+        setState(() {});
+      }
+          : null,
+      obscureText: isObsecure,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
+      validator: widget.validator,
+      keyboardType: widget.keyboardType ?? TextInputType.multiline,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      textInputAction: TextInputAction.done,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(200),
+      ],
+      // maxLength: 10,
     );
   }
 }

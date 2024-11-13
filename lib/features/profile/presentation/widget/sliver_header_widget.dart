@@ -22,10 +22,10 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
 
     final percent = shrinkOffset / (maxHeaderHeight);
     final currentImageSize =
-        (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
+    (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
     final currentImagePosition =
-        ((size.width / 2 - minImageSize) * (1 - percent))
-            .clamp(minImageSize, maxImageSize);
+    ((size.width / 2 - minImageSize) * (1 - percent))
+        .clamp(minImageSize, maxImageSize);
     final double currentPositionforText = (maxHeaderHeight / 2) * (1 - percent);
     final double initPositionForText = size.height * 0.24;
 
@@ -55,22 +55,22 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
               left: 0,
               top: topSpace,
               child: CustomIconButton(ontap: () {}, icon: Icons.arrow_back)),
-          CustomPosition(
-              right: rightSpace,
-              top: topSpace,
-              child: CustomIconButton(ontap: () {}, icon: Icons.edit)),
+          // CustomPosition(
+          //     right: rightSpace,
+          //     top: topSpace,
+          //     child: CustomIconButton(ontap: () {}, icon: Icons.edit)),
           CustomPosition(
               top: isImageBig
                   ? max(currentPositionforText, topSPaceForImage)
                   : initPositionForText * (1 - percent),
               left: isImageBig
                   ? max(
-                      ((size.width / 1.1)) * (1 - percent), minImageSize * 2.2)
+                  ((size.width / 1.1)) * (1 - percent), minImageSize * 2.2)
                   : rightSpace,
               isAnimated: true,
               child: Text(
                 'bakri aweja',
-                style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                style: TextStyle(fontSize: 30.sp, color: Colors.white),
               )),
         ],
       ),

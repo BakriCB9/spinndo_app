@@ -13,21 +13,18 @@ import '../../models/login_request.dart';
 import '../../models/login_response.dart';
 import '../../models/register_request.dart';
 import 'auth_remote_data_source.dart';
-@Singleton(as: AuthRemoteDataSource)
 
+@Singleton(as: AuthRemoteDataSource)
 class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
-  final _dio = Dio(BaseOptions(
-    baseUrl: ApiConstant.baseUrl,
-    receiveDataWhenStatusError: true,
-  ));
+  final Dio _dio;
+
+  AuthAPIRemoteDataSource({required Dio dio}) : _dio = dio;
 
   @override
   Future<LoginResponse> login(LoginRequest requestBody) async {
     try {
-
       final response = await _dio.post(ApiConstant.loginEndPoint,
           data: requestBody.toJson());
-
 
       return LoginResponse.fromJson(response.data);
     } catch (exception) {
@@ -59,7 +56,7 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
 
   @override
   Future<VerifyCodeResponse> verifyCode(VerifyCodeRequest requestBody) async {
-    try{
+    try {
       final response = await _dio.post(ApiConstant.verifyCodeEndPoint,
           data: requestBody.toJson());
       return VerifyCodeResponse.fromJson(response.data);
@@ -72,14 +69,17 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       throw RemoteAppException(message);
     }
   }
-  @override
-  Future<RegisterServiceProviderResponse> registerService(RegisterServiceProviderRequest requestBody) async {
-    try{
-      print("1111111111111111111111111111111111111111");
 
-      final response = await _dio.post(ApiConstant.registerServiceProviderEndPoint,
-          data: requestBody.toJson());
-     print(response);
+  @override
+  Future<RegisterServiceProviderResponse> registerService(
+      RegisterServiceProviderRequest requestBody) async {
+    try {
+      print("1111111111111111111111111111111111111111");
+/////////////////////////////////////
+      final formData = await requestBody.toFormData();
+      final response = await _dio
+          .post(ApiConstant.registerServiceProviderEndPoint, data: formData);
+      print(response);
       print("1111111111111111111111111111111111111111");
 
       return RegisterServiceProviderResponse.fromJson(response.data);

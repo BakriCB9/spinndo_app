@@ -13,8 +13,11 @@ import 'package:snipp/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
+import 'features/home/presentation/screens/home_screen.dart';
+
 void main() {
-  configureDependencies();
+  configureDependencies();  WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: true,
@@ -35,8 +38,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 fontFamily: "ElMessiri",
                 appBarTheme: const AppBarTheme(backgroundColor: Colors.blue)),
-            // home: RegisterScreen(),
-            initialRoute: SignUpScreen.routeName,
+            home: HomeScreen(),
+            // initialRoute: SignUpScreen.routeName,
             routes: {
               EmployeeDetails.routeName: (context) => const EmployeeDetails(),
               DeplomaProtofileImageScreen.routeName: (context) =>
@@ -47,7 +50,7 @@ class MyApp extends StatelessWidget {
               SignUpScreen.routeName: (context) => SignUpScreen(),
               SignInScreen.routeName: (context) => SignInScreen(),
               VerficationCodeScreen.routeName: (context) =>
-                  const VerficationCodeScreen(),
+              const VerficationCodeScreen(),
               Profile_Screen.routeName: (context) => const Profile_Screen(),
             },
             debugShowCheckedModeBanner: false,

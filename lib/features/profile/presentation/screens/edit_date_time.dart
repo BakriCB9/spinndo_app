@@ -109,7 +109,12 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
                     Expanded(
                         flex: 2,
                         child: dayInfo.isSelected
-                            ? BoxFromDateToDate(time: 'From 12:00 pm', type: 1, dateSelect: DateSelect(day: "day", start: "start", end: "end"),)
+                            ? BoxFromDateToDate(
+                                time: 'From 12:00 pm',
+                                type: 1,
+                                dateSelect: DateSelect(
+                                    day: "day", start: "start", end: "end"),
+                              )
                             : SizedBox()),
                     SizedBox(
                       width: 20.w,
@@ -117,7 +122,12 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
                     Expanded(
                         flex: 2,
                         child: dayInfo.isSelected
-                            ? BoxFromDateToDate(time: 'To 6:00 Pm', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 2,)
+                            ? BoxFromDateToDate(
+                                time: 'To 6:00 Pm',
+                                dateSelect: DateSelect(
+                                    day: "day", start: "start", end: "end"),
+                                type: 2,
+                              )
                             : SizedBox())
                   ],
                 ),

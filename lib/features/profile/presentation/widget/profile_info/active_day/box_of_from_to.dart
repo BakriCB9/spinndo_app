@@ -10,58 +10,53 @@ class BoxFromDateToDate extends StatefulWidget {
 
   BoxFromDateToDate(
       {required this.time,
-      super.key,
-      required this.dateSelect,
-      required this.type});
+        super.key,
+        required this.dateSelect,
+        required this.type});
 
   @override
   State<BoxFromDateToDate> createState() => _BoxFromDateToDateState();
 }
 
 class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
-  late TimeOfDay _date;
-
   @override
   void initState() {
     super.initState();
-    _date = TimeOfDay.now();
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showTimePicker(
-                context: context,
-                //firstDate: DateTime.now(),
-                //lastDate: DateTime.now());
-                initialTime: TimeOfDay.now())
+      onTap: widget.dateSelect.isSelect
+          ? () {
+        showTimePicker(context: context, initialTime: TimeOfDay.now(),)
             .then(
-          (value) {
+              (value) {
             setState(() {
               if (value != null) {
                 print('the value is $value');
                 widget.type == 1
                     ? widget.dateSelect.start = value.format(context)
                     : widget.dateSelect.end = value.format(context);
-                //print('the date is   ############################# ${_date.hour} and ${_date.minute}');
               }
             });
           },
         );
-      },
+      }
+          : null,
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue),
+            border: Border.all(
+                color: widget.dateSelect.isSelect ? Colors.blue : Colors.grey),
             borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              '${widget.type == 1 ? widget.dateSelect.start : widget.dateSelect.end}',
+              '${widget.type == 1 ? (widget.dateSelect.start ?? 'Select start time') : (widget.dateSelect.end ?? 'Select end time')}',
               //widget.time,
-              style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+              style: TextStyle(fontSize: 25.sp, color: Colors.grey),
             ),
           ),
         ),

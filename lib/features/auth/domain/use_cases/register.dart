@@ -6,12 +6,13 @@ import 'package:snipp/features/auth/domain/repository/auth_repository.dart';
 
 import '../../../../core/error/failure.dart';
 import '../entities/user.dart';
-@singleton
 
+@singleton
 class Register {
   final AuthRepository _authRepository;
 
   Register(this._authRepository);
 
-  Future<Either<Failure, RegisterResponse>> call(RegisterRequest requestData)=>_authRepository.register(requestData);
+  Future<Either<Failure, RegisterResponse>> call(RegisterRequest requestData) =>
+      _authRepository.register(requestData);
 }
