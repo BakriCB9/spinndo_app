@@ -8,9 +8,10 @@ import 'package:snipp/features/auth/data/data_sources/local/auth_local_data_sour
 class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
   final SharedPreferences _sharedPreferences;
 
-  AuthSharedPrefLocalDataSource({required SharedPreferences sharedPreferences}) : _sharedPreferences = sharedPreferences;
+  AuthSharedPrefLocalDataSource({required SharedPreferences sharedPreferences})
+      : _sharedPreferences = sharedPreferences;
   @override
-  String getToken()  {
+  String getToken() {
     try {
       return _sharedPreferences.getString(CacheConstant.tokenKey)!;
     } catch (_) {
@@ -24,6 +25,24 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
       await _sharedPreferences.setString(CacheConstant.tokenKey, token);
     } catch (_) {
       throw LocalAppException('Failed to store token');
+    }
+  }
+
+  @override
+  int  getUserId() {
+    try {
+      return _sharedPreferences.getInt(CacheConstant.userId)!;
+    } catch (_) {
+      throw LocalAppException('Failed to get User id');
+    }
+  }
+
+  @override
+  Future<void> saveUserId(int id) async {
+    try {
+      await _sharedPreferences.setInt(CacheConstant.userId, id);
+    } catch (_) {
+      throw LocalAppException('Failed to store User Id');
     }
   }
 }

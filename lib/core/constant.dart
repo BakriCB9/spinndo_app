@@ -12,4 +12,5 @@ class ApiConstant {
 
 class CacheConstant {
   static const String tokenKey = 'token';
+  static const String userId='user_id';
 }

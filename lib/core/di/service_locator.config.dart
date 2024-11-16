@@ -42,6 +42,8 @@ import 'package:snipp/features/profile/domain/repository/profile_repository.dart
     as _i319;
 import 'package:snipp/features/profile/domain/use_cases/get_client_profile.dart'
     as _i0;
+import 'package:snipp/features/profile/domain/use_cases/get_provider_profile.dart'
+    as _i729;
 import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart'
     as _i846;
 
@@ -62,11 +64,14 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
-    gh.lazySingleton<_i378.ProfileRemoteDataSource>(
-        () => _i595.ProfileApiRemoteDataSource(dio: gh<_i361.Dio>()));
     gh.singleton<_i1002.AuthLocalDataSource>(() =>
         _i920.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.lazySingleton<_i378.ProfileRemoteDataSource>(
+        () => _i595.ProfileApiRemoteDataSource(
+              gh<_i361.Dio>(),
+              gh<_i1002.AuthLocalDataSource>(),
+            ));
     gh.singleton<_i668.AuthRemoteDataSource>(
         () => _i448.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
     gh.singleton<_i199.AuthRepository>(() => _i533.AuthRepositoryImpl(
@@ -84,13 +89,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i629.ProfileRepositoryImpl(gh<_i378.ProfileRemoteDataSource>()));
     gh.lazySingleton<_i0.GetClientProfile>(
         () => _i0.GetClientProfile(gh<_i319.ProfileRepository>()));
-    gh.lazySingleton<_i846.ProfileCubit>(
-        () => _i846.ProfileCubit(gh<_i0.GetClientProfile>()));
+    gh.lazySingleton<_i729.GetProviderProfile>(
+        () => _i729.GetProviderProfile(gh<_i319.ProfileRepository>()));
     gh.singleton<_i673.AuthCubit>(() => _i673.AuthCubit(
           gh<_i514.Login>(),
           gh<_i903.Register>(),
           gh<_i378.VerifyCode>(),
           gh<_i19.RegisterService>(),
+        ));
+    gh.lazySingleton<_i846.ProfileCubit>(() => _i846.ProfileCubit(
+          gh<_i0.GetClientProfile>(),
+          gh<_i729.GetProviderProfile>(),
         ));
     return this;
   }

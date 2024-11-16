@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/profile/data/models/provider_model/image.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_image_screen.dart';
 import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/diploma_and_protofile.dart';
 import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/row_of_images.dart';
 
 class CustomDiplomaAndProtofile extends StatefulWidget {
-  const CustomDiplomaAndProtofile({super.key});
+  final String imageCertificate;
+  final List<ImagesPath> images;
+  const CustomDiplomaAndProtofile(
+      {required this.images, required this.imageCertificate, super.key});
 
   @override
   State<CustomDiplomaAndProtofile> createState() =>
@@ -16,7 +20,6 @@ class CustomDiplomaAndProtofile extends StatefulWidget {
 
 //take diploma and protofile image form api
 class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
-  final _authCubit = serviceLocator.get<AuthCubit>();
   int typeSelect = 1;
   @override
   Widget build(BuildContext context) {
@@ -74,9 +77,8 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
         ///depend on the typeSelect (using if to choose which list)
         RowOfImages(
           typeSelect: typeSelect,
-          moreImage: typeSelect == 2
-              ? _authCubit.profileImages:null,
-          imagePic: typeSelect==1?_authCubit.pickedImage:null,
+          moreImage: widget.images,
+          imagePic: widget.imageCertificate,
         ),
       ],
     );

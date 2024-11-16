@@ -26,6 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _authRemoteDataSource.login(requestData);
       await _authLocalDataSource.saveToken(response.data!.token);
+      await _authLocalDataSource.saveUserId(response.data!.id);
 
       return Right(response.data!);
     } on AppException catch (exception) {
@@ -38,7 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
       RegisterRequest requestData) async {
     try {
       final response = await _authRemoteDataSource.register(requestData);
-      // await _authLocalDataSource.saveToken(response.data!.token);
+          await _authLocalDataSource.saveToken(response.data!);
 
       return Right(response);
     } on AppException catch (exception) {

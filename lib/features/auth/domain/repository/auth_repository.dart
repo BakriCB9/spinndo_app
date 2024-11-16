@@ -1,8 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:snipp/core/error/failure.dart';
-import 'package:snipp/features/auth/data/models/data.dart';
 import 'package:snipp/features/auth/data/models/login_request.dart';
-import 'package:snipp/features/auth/data/models/login_response.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/data/models/register_response.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';

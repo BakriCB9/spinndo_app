@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
+// import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
@@ -25,7 +26,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
 
-  final _authCubit = serviceLocator.get<AuthCubit>();
+  
+  final _authCubit=serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {

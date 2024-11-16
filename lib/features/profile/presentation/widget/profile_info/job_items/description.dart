@@ -7,7 +7,11 @@ import 'package:snipp/features/profile/presentation/widget/profile_info/job_item
 import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 
 class CustomDescription extends StatelessWidget {
-  const CustomDescription({super.key});
+  final String category;
+  final String serviceName;
+  final String description;
+  const CustomDescription({required this.category, required this.serviceName,
+  required this.description,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class CustomDescription extends StatelessWidget {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditJobDetails()));
+                      builder: (context) =>const  EditJobDetails()));
                 },
                 icon: const Icon(Icons.edit))
           ],
@@ -36,9 +40,9 @@ class CustomDescription extends StatelessWidget {
         InfoDetails(
             icon: Icons.work_outline_outlined,
             title: 'Work',
-            content: 'art'),
+            content:category ),
         InfoDetails(
-            icon: Icons.maps_home_work, title: 'Title', content: '${_authCubit.serviceNameController.text}'),
+            icon: Icons.maps_home_work, title: 'Title', content: serviceName),
         InfoDetails(
             icon: Icons.location_on_outlined,
             title: 'Location',
@@ -55,7 +59,7 @@ class CustomDescription extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
             child: ShowMoreAndShowLess(
                 txt:
-                '${_authCubit.serviceDescriptionController.text}' )),
+                description )),
         SizedBox(
           height: 10.h,
         ),
