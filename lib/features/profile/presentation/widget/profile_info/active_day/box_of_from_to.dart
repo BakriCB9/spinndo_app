@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 
 class BoxFromDateToDate extends StatefulWidget {
@@ -10,9 +9,9 @@ class BoxFromDateToDate extends StatefulWidget {
 
   BoxFromDateToDate(
       {required this.time,
-        super.key,
-        required this.dateSelect,
-        required this.type});
+      super.key,
+      required this.dateSelect,
+      required this.type});
 
   @override
   State<BoxFromDateToDate> createState() => _BoxFromDateToDateState();
@@ -29,20 +28,32 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
     return InkWell(
       onTap: widget.dateSelect.isSelect
           ? () {
-        showTimePicker(context: context, initialTime: TimeOfDay.now(),)
-            .then(
-              (value) {
-            setState(() {
-              if (value != null) {
-                print('the value is $value');
-                widget.type == 1
-                    ? widget.dateSelect.start = value.format(context)
-                    : widget.dateSelect.end = value.format(context);
-              }
-            });
-          },
-        );
-      }
+              showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              ).then(
+                (value) {
+                  setState(() {
+                    if (value != null) {
+                      TimeOfDay aux =
+                          TimeOfDay(hour: value.hour, minute: value.minute);
+                      if (widget.type == 2) {
+                        aux = TimeOfDay(
+                            hour: value.hour + 12, minute: value.minute);
+                      } else {
+                        aux.hour.toString().padLeft(2, '0');
+                      }
+
+                      widget.type == 1
+                          ? widget.dateSelect.start =
+                              '0${aux.format(context).split(' ')[0]}'
+                          : widget.dateSelect.end =
+                              aux.format(context).split(' ')[0];
+                    }
+                  });
+                },
+              );
+            }
           : null,
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -54,8 +65,9 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              '${widget.type == 1 ? (widget.dateSelect.start ?? 'Select start time') : (widget.dateSelect.end ?? 'Select end time')}',
-              //widget.time,
+              widget.type == 1
+                  ? (widget.dateSelect.start ?? 'Select start time')
+                  : (widget.dateSelect.end ?? 'Select end time'),
               style: TextStyle(fontSize: 25.sp, color: Colors.grey),
             ),
           ),

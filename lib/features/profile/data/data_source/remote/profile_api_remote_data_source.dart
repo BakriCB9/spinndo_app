@@ -40,11 +40,11 @@ class ProfileApiRemoteDataSource extends ProfileRemoteDataSource {
   @override
   Future<ProviderResponse> getServiceProviderProfile() async {
     try {
-      //final String userToken = _authLocalDataSource.getToken();
-      //final int user_id = _authLocalDataSource.getUserId();
-      final user_id = 5;
-      final String userToken =
-          "3|ZrU3kyulNnnfrN1YdrO8VbadnZ8cwq2WOfxtfKM0ecb80aef";
+      final String userToken = _authLocalDataSource.getToken();
+      final int user_id = _authLocalDataSource.getUserId();
+     // final user_id = 5;
+      //final String userToken =
+         // "3|ZrU3kyulNnnfrN1YdrO8VbadnZ8cwq2WOfxtfKM0ecb80aef";
       final response = await _dio.get(
           '${ApiConstant.profileServiceProviderEndPoint}/$user_id',
           options: Options(headers: {

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 class RegisterServiceProviderRequest {
-  final String first_name;
-  final String last_name;
+  final String firstName;
+  final String lastName;
   final String email;
   final String password;
   final String nameService;
@@ -14,18 +14,18 @@ class RegisterServiceProviderRequest {
   final String websiteService;
   final String longitudeService;
   final String latitudeService;
-  late final Map<String, dynamic> service;
-  final List<DateSelect> working_days;
+
+  final List<DateSelect> listOfDay;
   final File certificate;
   final List<File> images;
 
   RegisterServiceProviderRequest(
-      {required this.first_name,
-      required this.last_name,
+      {required this.firstName,
+      required this.lastName,
       required this.certificate,
       required this.images,
       required this.email,
-      required this.working_days,
+      required this.listOfDay,
       required this.password,
       required this.nameService,
       required this.descriptionService,
@@ -35,11 +35,14 @@ class RegisterServiceProviderRequest {
       required this.longitudeService,
       required this.latitudeService});
 
-  /// Asynchronous method to create `FormData` for Dio.
+  // Asynchronous method to create `FormData` for Dio.
   Future<FormData> toFormData() async {
-    // Convert the `working_days` to a JSON-friendly format.
-    final workingDaysJson = working_days.map((day) => day.toJson()).toList();
-
+    final List<Map<String, String?>> days = [];
+    for (int i = 0; i < listOfDay.length; i++) {
+      if (listOfDay[i].isSelect) {
+        days.add(listOfDay[i].toJson());
+      }
+    }
     // Convert certificate and images to MultipartFile
     final certificateFile = await MultipartFile.fromFile(
       certificate.path,
@@ -54,8 +57,8 @@ class RegisterServiceProviderRequest {
       }),
     );
     return FormData.fromMap({
-      "first_name": first_name,
-      "last_name": last_name,
+      "first_name": firstName,
+      "last_name": lastName,
       "email": email,
       "password": password,
       "service": {
@@ -66,9 +69,9 @@ class RegisterServiceProviderRequest {
         "website": websiteService,
         "longitude": longitudeService,
         "latitude": latitudeService,
-        "working_days": workingDaysJson,
+        "working_days": days,
         "certificate": certificateFile,
-        "images": imageFiles,
+        "images": imageFiles
       },
     });
   }
@@ -79,10 +82,6 @@ class DateSelect {
   bool isSelect;
   String? start;
   String? end;
-  DateSelect(
-      {required this.day,
-       this.start,
-       this.end,
-      this.isSelect = false});
-  Map<String, String?> toJson() => {'day': day, 'start': start, 'end': end};
+  DateSelect({required this.day, this.start, this.end, this.isSelect = false});
+  Map<String, String?> toJson() => {"day": day, "start": start, "end": end};
 }

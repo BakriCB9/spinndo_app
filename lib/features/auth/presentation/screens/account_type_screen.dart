@@ -6,7 +6,7 @@ import 'package:snipp/core/utils/image_functions.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 import 'employee_details.dart';
-import 'verfication_code_screen.dart';
+
 
 class AccountTypeScreen extends StatefulWidget {
   AccountTypeScreen({super.key});

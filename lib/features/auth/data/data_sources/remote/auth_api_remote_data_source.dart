@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:snipp/core/constant.dart';
+
 import 'package:snipp/core/error/app_exception.dart';
 import 'package:snipp/features/auth/data/models/register_response.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
@@ -48,6 +49,7 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       var message = 'Failed to register';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
+
         if (errorMessage != null) message = errorMessage;
       }
       throw RemoteAppException(message);
@@ -59,11 +61,13 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
     try {
       final response = await _dio.post(ApiConstant.verifyCodeEndPoint,
           data: requestBody.toJson());
+          print('the data response  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  is ${response.data}');
       return VerifyCodeResponse.fromJson(response.data);
     } catch (exception) {
       var message = 'Failed to register';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
+        print('the error message is $errorMessage');
         if (errorMessage != null) message = errorMessage;
       }
       throw RemoteAppException(message);
@@ -74,25 +78,20 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
   Future<RegisterServiceProviderResponse> registerService(
       RegisterServiceProviderRequest requestBody) async {
     try {
-      print("1111111111111111111111111111111111111111");
-/////////////////////////////////////
-      final formData = await requestBody.toFormData();
-      final response = await _dio
-          .post(ApiConstant.registerServiceProviderEndPoint, data: formData);
-      print(response);
-      print("1111111111111111111111111111111111111111");
+      final requestSend = await requestBody.toFormData();
 
+      final response = await _dio
+          .post(ApiConstant.registerServiceProviderEndPoint, data: requestSend);
       return RegisterServiceProviderResponse.fromJson(response.data);
     } catch (exception) {
-      print("1111111111111111111111111111111111111111");
-      print(exception);
-      print("1111111111111111111111111111111111111111");
-
       var message = 'Failed to register';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
+        print('the message error ${errorMessage}');
+        print('the exception error ${exception}');
         if (errorMessage != null) message = errorMessage;
       }
+
       throw RemoteAppException(message);
     }
   }

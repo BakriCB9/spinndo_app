@@ -7,7 +7,7 @@ class Data extends User {
       required super.role,
       required super.token});
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json['id'] as int,
+        id: json['id'] as dynamic,
         role: json['role'] as String,
         isApproved: json['isApproved'] as dynamic,
         token: json['token'] as String,

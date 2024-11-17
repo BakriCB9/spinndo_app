@@ -10,7 +10,6 @@ import 'package:snipp/features/auth/data/models/register_response.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_response.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
-import 'package:snipp/features/auth/data/models/verify_code_response.dart';
 import 'package:snipp/features/auth/domain/entities/user.dart';
 import 'package:snipp/features/auth/domain/repository/auth_repository.dart';
 
@@ -52,6 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _authRemoteDataSource.verifyCode(requestData);
       await _authLocalDataSource.saveToken(response.data!.token);
+      await _authLocalDataSource.saveUserId(response.data!.id);
 
       return Right(response.data!);
     } on AppException catch (exception) {

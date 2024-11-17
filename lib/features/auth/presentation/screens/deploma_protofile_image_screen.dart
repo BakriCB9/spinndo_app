@@ -1,13 +1,14 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
-import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 
 import '../../../../core/utils/image_functions.dart';
 
@@ -29,17 +30,15 @@ class _DeplomaProtofileImageScreenState
     return Scaffold(
       backgroundColor: Color(0xFFF0F8FF),
       appBar: AppBar(
-        backgroundColor: Color(0xFFF0F8FF),
+        backgroundColor: const Color(0xFFF0F8FF),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.w,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Upload Deploma Image",
+              "Upload Certificate Image",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36.sp,
@@ -49,122 +48,220 @@ class _DeplomaProtofileImageScreenState
               height: 20.h,
             ),
             GestureDetector(
-              onTap: () {
-                singleDialog();
-              },
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                onTap: () {
+                  singleDialog();
+                },
                 child: Container(
-                  height: 150,
                   width: double.infinity,
-                  padding: EdgeInsets.all(10),
+                  height: 350.h,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.1),
+                      //border: Border.all(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(30.r)),
                   child: _authCubit.pickedImage == null
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.image, size: 40, color: Colors.blue),
-                            SizedBox(height: 8),
-                            Text("Upload Diploma Image",
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Upload your Certificate',
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.blue)),
-                          ],
+                                    color: Colors.blue, fontSize: 35.sp),
+                              ),
+                              Icon(
+                                Icons.upload_file_rounded,
+                                color: Colors.blue,
+                              )
+                            ],
+                          ),
                         )
-                      : Image.file(_authCubit.pickedImage!, fit: BoxFit.cover),
-                ),
-              ),
-            ),
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(30.r),
+                          child: Image(
+                            image: FileImage(
+                              _authCubit.pickedImage!,
+                            ),
+                            fit: BoxFit.cover,
+                          )),
+                )),
             SizedBox(height: 20.h),
+
             Text(
-              "Upload Deploma Image",
+              "Upload Protofile Image",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 36.sp,
+                  fontSize: 35.sp,
                   fontFamily: "WorkSans"),
             ),
-            SizedBox(height: 10.h),
-            Wrap(
-              spacing: 10,
-              children:
-                  List.generate(_authCubit.profileImages.length + 1, (index) {
-                return GestureDetector(
-                  onTap: index == _authCubit.profileImages.length
-                      ? multiDialog
-                      : null,
-                  child: Container(
-                    width: 100,
-                    height: 100,
+            SizedBox(height: 40.h),
+            _authCubit.profileImages.isEmpty
+                ? Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue, width: 1.5),
+                        color: Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(30.r)),
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    child: const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('No Images Add yet '),
+                          Icon(Icons.error)
+                        ],
+                      ),
                     ),
-                    child: index == _authCubit.profileImages.length
-                        ? Center(
-                            child: Icon(Icons.add_a_photo, color: Colors.blue))
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(_authCubit.profileImages[index],
-                                fit: BoxFit.cover),
+                  )
+                : Row(
+                    children: _authCubit.profileImages.asMap().entries.map(
+                      (e) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: Stack(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 20.w),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    border: Border.all(color: Colors.grey),
+                                    color: Colors.grey.withOpacity(0.2)),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Image(
+                                      image: FileImage(e.value),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                  right: 12,
+                                  bottom: -MediaQuery.of(context).size.height *
+                                      0.02,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _authCubit.profileImages.removeAt(e.key);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.08,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.08,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ))
+                            ],
                           ),
+                        );
+                      },
+                    ).toList(),
                   ),
-                );
-              }),
+            SizedBox(height: 20.h),
+            Center(
+              child: TextButton(
+                  onPressed: _authCubit.profileImages.length == 3
+                      ? () {
+                          UIUtils.showMessage(
+                              'You Can not upload more than 3 Image');
+                        }
+                      : () {
+                          multiDialog();
+                        },
+                  child: Text(
+                    'Upload Image',
+                    style: TextStyle(fontSize: 30.sp, color: Colors.blue),
+                  )),
             ),
-            Spacer(),
-            Container(
-              margin: EdgeInsets.only(bottom: 20.h),
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final request = RegisterServiceProviderRequest(
-                      first_name: _authCubit.firstNameContoller.text,
-                      last_name: _authCubit.lastNameContoller.text,
-                      email: _authCubit.emailController.text,
-                      working_days: _authCubit.dateSelect,
-                      password: _authCubit.passwordController.text,
-                      nameService: _authCubit.serviceNameController.text,
-                      descriptionService:
-                          _authCubit.serviceDescriptionController.text,
-                      categoryIdService: _authCubit.categoryId,
-                      cityIdService: _authCubit.cityId,
-                      websiteService: _authCubit.website,
-                      certificate: _authCubit.pickedImage!,
-                      longitudeService: "-122.4194",
-                      latitudeService: "37.7749",
-                      images: [
-                        _authCubit.profileImages[0],
-                        _authCubit.profileImages[1]
-                      ]);
 
-                  final formData = await request.toFormData();
-                  try {
-                    final response = await Dio().post(
-                      'YOUR_API_ENDPOINT',
-                      data: formData,
-                    );
-                    print("Response: ${response.data}");
-                  } catch (e) {
-                    print("Error: $e");
-                  }
-                  _authCubit.registerService(request);
-                  Navigator.of(context).pushNamed(
-                    VerficationCodeScreen.routeName,
-                  );
-                },
-                child: Text(
-                  "Sign Up",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold),
+            // Wrap(
+            //   direction: Axis.horizontal,
+            //   spacing: 10,
+            //   children:
+            //       List.generate(_authCubit.profileImages.length + 1, (index) {
+            //     return GestureDetector(
+            //       onTap: index == _authCubit.profileImages.length
+            //           ? multiDialog
+            //           : null,
+            //       child: Container(
+            //         width: 150.w,
+            //         height: 150.h,
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(10),
+            //           border: Border.all(color: Colors.blue, width: 1.5),
+            //         ),
+            //         child: index == _authCubit.profileImages.length
+            //             ? Center(
+            //                 child:
+            //                     Icon(Icons.add_a_photo, color: Colors.blue))
+            //             : ClipRRect(
+            //                 borderRadius: BorderRadius.circular(10),
+            //                 child: Image.file(
+            //                     _authCubit.profileImages[index]!,
+            //                     fit: BoxFit.cover),
+            //               ),
+            //       ),
+            //     );
+            //   }),
+            // ),
+            //SizedBox(height: 30.h),
+            const Spacer(),
+            BlocListener<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is RegisterServiceLoading) {
+                  UIUtils.showLoading(context,'asset/animation/loading.json');
+                } else if (state is RegisterServiceError) {
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(state.message);
+                } else if (state is RegisterServiceSuccess) {
+                  UIUtils.hideLoading(context);
+                  Navigator.of(context)
+                      .pushNamed(VerficationCodeScreen.routeName);
+                }
+              },
+              child: Container(
+                margin: EdgeInsets.only(bottom: 20.h),
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    _authCubit.registerService(RegisterServiceProviderRequest(
+                        firstName: _authCubit.firstNameContoller.text,
+                        lastName: _authCubit.lastNameContoller.text,
+                        email: _authCubit.emailController.text,
+                        listOfDay: _authCubit.dateSelect,
+                        password: _authCubit.passwordController.text,
+                        nameService: _authCubit.serviceNameController.text,
+                        descriptionService:
+                            _authCubit.serviceDescriptionController.text,
+                        categoryIdService: _authCubit.categoryId,
+                        cityIdService: _authCubit.cityId,
+                        websiteService: _authCubit.website,
+                        certificate: _authCubit.pickedImage!,
+                        longitudeService: "-122.4194",
+                        latitudeService: "37.7749",
+                        images: _authCubit.profileImages));
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r))),
+                      padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 12.h))),
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-                style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.blue),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.r))),
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 12.h))),
               ),
             ),
           ],
@@ -226,9 +323,28 @@ class _DeplomaProtofileImageScreenState
                       SizedBox(
                         height: 3.h,
                       ),
-                      Text("gallery")
+                      Text("gallery"),
                     ],
                   ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            _authCubit.pickedImage = null;
+
+                            Navigator.of(context).pop();
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.blue,
+                            size: 40,
+                          )),
+                      Text('Delete')
+                    ],
+                  )
                 ],
               ),
             ));

@@ -5,13 +5,16 @@ import 'package:snipp/core/constant.dart';
 
 @module
 abstract class RegisterModule {
-
   @lazySingleton
   Dio get dio => Dio(BaseOptions(
-    baseUrl: ApiConstant.baseUrl,
-    receiveDataWhenStatusError: true,
-  ));
+      baseUrl: ApiConstant.baseUrl,
+      receiveDataWhenStatusError: true,
+      connectTimeout:const  Duration(seconds: 30),
+      receiveTimeout:const  Duration(seconds: 30)
+      
+      ));
 
   @preResolve
-  Future<SharedPreferences> get sharedPrefrences => SharedPreferences.getInstance();
+  Future<SharedPreferences> get sharedPrefrences =>
+      SharedPreferences.getInstance();
 }

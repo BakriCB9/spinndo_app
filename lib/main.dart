@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/app_bloc_observer.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 
 import 'package:snipp/features/auth/presentation/screens/account_type_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
@@ -17,10 +18,10 @@ import 'package:snipp/features/profile/presentation/screens/profile_screen.dart'
 
 import 'features/home/presentation/screens/home_screen.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();  
-  
+  await configureDependencies();
+
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: true,
@@ -34,19 +35,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => serviceLocator.get<ProfileCubit>(),
-      child: ScreenUtilInit(
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => serviceLocator.get<AuthCubit>(),
+          ),
+          BlocProvider(create: (_) => serviceLocator.get<ProfileCubit>())
+        ],
+        child: ScreenUtilInit(
             designSize: const Size(720, 1640),
             builder: (context, _) {
               return MaterialApp(
                 theme: ThemeData(
                     fontFamily: "ElMessiri",
-                    appBarTheme: const AppBarTheme(backgroundColor: Colors.blue)),
+                    appBarTheme:
+                        const AppBarTheme(backgroundColor: Colors.blue)),
                 //home: HomeScreen(),
-                 initialRoute: SignUpScreen.routeName,
+                initialRoute: Profile_Screen.routeName,
                 routes: {
-                  EmployeeDetails.routeName: (context) => const EmployeeDetails(),
+                  EmployeeDetails.routeName: (context) =>
+                      const EmployeeDetails(),
                   DeplomaProtofileImageScreen.routeName: (context) =>
                       DeplomaProtofileImageScreen(),
                   AccountTypeScreen.routeName: (context) => AccountTypeScreen(),
@@ -55,12 +63,11 @@ class MyApp extends StatelessWidget {
                   SignUpScreen.routeName: (context) => SignUpScreen(),
                   SignInScreen.routeName: (context) => SignInScreen(),
                   VerficationCodeScreen.routeName: (context) =>
-                  const VerficationCodeScreen(),
+                      const VerficationCodeScreen(),
                   Profile_Screen.routeName: (context) => const Profile_Screen(),
                 },
                 debugShowCheckedModeBanner: false,
               );
-            })
-    );
+            }));
   }
 }

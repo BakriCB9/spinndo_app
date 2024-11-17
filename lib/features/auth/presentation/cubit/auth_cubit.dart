@@ -23,13 +23,13 @@ class AuthCubit extends Cubit<AuthState> {
   final VerifyCode _verifyCode;
   final RegisterService _registerService;
   List<DateSelect> dateSelect = [
-    DateSelect(day: "Sunday"),
-    DateSelect(day: "Monday"),
-    DateSelect(day: "Tuseday"),
-    DateSelect(day: "Wednesday"),
-    DateSelect(day: "Thursday"),
-    DateSelect(day: "Friday"),
-    DateSelect(day: "Saturday"),
+    DateSelect(day: "sunday"),
+    DateSelect(day: "monday"),
+    DateSelect(day: "tuseday"),
+    DateSelect(day: "wednesday"),
+    DateSelect(day: "thursday"),
+    DateSelect(day: "friday"),
+    DateSelect(day: "saturday"),
   ];
   String cityId = '1';
   String website = '';
@@ -54,8 +54,8 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _register(requestData);
 
     result.fold(
-          (failure) => emit(RegisterError(failure.message)),
-          (response) => emit(RegisterSuccess()),
+      (failure) => emit(RegisterError(failure.message)),
+      (response) => emit(RegisterSuccess()),
     );
   }
 
@@ -64,8 +64,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _login(requestData);
     result.fold(
-          (failure) => emit(LoginError(failure.message)),
-          (response) => emit(LoginSuccess()),
+      (failure) => emit(LoginError(failure.message)),
+      (response) => emit(LoginSuccess()),
     );
   }
 
@@ -74,8 +74,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _verifyCode(requestData);
     result.fold(
-          (failure) => emit(VerifyCodeError(failure.message)),
-          (response) => emit(VerifyCodeSuccess()),
+      (failure) => emit(VerifyCodeError(failure.message)),
+      (response) => emit(VerifyCodeSuccess()),
     );
   }
 
@@ -85,12 +85,9 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _registerService(requestData);
 
-    print(
-        'the final result is BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  ${result} ');
-
     result.fold(
-          (failure) => emit(RegisterServiceError(failure.message)),
-          (response) => emit(RegisterServiceSuccess()),
+      (failure) => emit(RegisterServiceError(failure.message)),
+      (response) => emit(RegisterServiceSuccess()),
     );
   }
 

@@ -1,7 +1,7 @@
 class User {
-  final int id;
+  final dynamic id;
   final String role;
-  final bool? isApproved;
+  final dynamic isApproved;
   final String token;
 
   User({
