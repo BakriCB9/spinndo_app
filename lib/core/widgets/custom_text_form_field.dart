@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:snipp/core/theming/colors_manager.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String? hintText;
@@ -56,21 +57,19 @@ class _CustomTextFormField extends State<CustomTextFormField> {
 
       controller: widget.controller,
       decoration: InputDecoration(
+
         hintText: widget.hintText,
 
         label: widget.labelText != null
             ? Text(
           widget.labelText!,
-          style: TextStyle(
-              fontWeight: FontWeight.w300, color: Colors.grey.shade700),
+
         )
             : null,
         suffixIcon: widget.controller.text.isNotEmpty
             ? widget.isPassword
             ? IconButton(
-            style: ButtonStyle(
-                foregroundColor:
-                WidgetStatePropertyAll(Colors.blue.shade300)),
+
             onPressed: () {
               isObsecure = !isObsecure;
               setState(() {});
@@ -80,24 +79,14 @@ class _CustomTextFormField extends State<CustomTextFormField> {
                 : const Icon(Icons.visibility_outlined))
             : null
             : null,
-        prefixIcon: Icon(widget.icon, color: Colors.blue.shade300),
+        prefixIcon: Icon(widget.icon, ),
         enabled: true,
 
         filled: true,
-        fillColor: Colors.white,
 
-        focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
+
+
+
         // counter: SizedBox()
       ),
       onChanged: widget.isPassword
