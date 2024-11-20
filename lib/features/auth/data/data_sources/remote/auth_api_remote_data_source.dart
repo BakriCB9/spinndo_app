@@ -7,6 +7,10 @@ import 'package:snipp/core/error/app_exception.dart';
 import 'package:snipp/features/auth/data/models/register_response.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_response.dart';
+import 'package:snipp/features/auth/data/models/resend_code_request.dart';
+import 'package:snipp/features/auth/data/models/resend_code_response.dart';
+import 'package:snipp/features/auth/data/models/reset_password_request.dart';
+import 'package:snipp/features/auth/data/models/reset_password_response.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/data/models/verify_code_response.dart';
 
@@ -64,7 +68,7 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
           print('the data response  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  is ${response.data}');
       return VerifyCodeResponse.fromJson(response.data);
     } catch (exception) {
-      var message = 'Failed to register';
+      var message = 'Failed to verify Code';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
         print('the error message is $errorMessage');
@@ -92,6 +96,40 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
         if (errorMessage != null) message = errorMessage;
       }
 
+      throw RemoteAppException(message);
+    }
+  }
+
+  @override
+  Future<ResendCodeResponse> resendCode(ResendCodeRequest requestBody)  async {
+    try {
+      final response = await _dio.post(ApiConstant.resendCodeEndPoint,
+          data: requestBody.toJson());
+      return ResendCodeResponse.fromJson(response.data);
+    } catch (exception) {
+      var message = 'Failed to resend code';
+      if (exception is DioException) {
+        final errorMessage = exception.response?.data['message'];
+
+        if (errorMessage != null) message = errorMessage;
+      }
+      throw RemoteAppException(message);
+    }
+  }
+
+  @override
+  Future<ResetPasswordResponse> resetPassword(ResetPasswordRequest requestBody)  async {
+    try {
+      final response = await _dio.post(ApiConstant.resetPasswordEndPoint,
+          data: requestBody.toJson());
+      return ResetPasswordResponse.fromJson(response.data);
+    } catch (exception) {
+      var message = 'Failed to reset password';
+      if (exception is DioException) {
+        final errorMessage = exception.response?.data['message'];
+
+        if (errorMessage != null) message = errorMessage;
+      }
       throw RemoteAppException(message);
     }
   }

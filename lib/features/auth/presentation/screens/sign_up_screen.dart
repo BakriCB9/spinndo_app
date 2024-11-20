@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/resources/color_manager.dart';
+import 'package:snipp/core/resources/theme_manager.dart';
+
 // import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
+import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/utils/ui_utils.dart';
+import '../../../../core/utils/validator.dart';
 import 'sign_in_screen.dart';
 import 'verfication_code_screen.dart';
 
@@ -30,252 +36,199 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double avatarRadius = MediaQuery.of(context).size.width * 0.3;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F8FF),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.w,
+    // double avatarRadius = MediaQuery.of(context).size.width * 0.3;
+    final localization = AppLocalizations.of(context)!;
+
+    return CustomAuthForm(
+        child: Column(children: [
+      Form(
+        key: formKey,
+        child: Column(
+          children: [
+            CustomTextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return localization.enterName;
+                } else if (!Validator.hasMinLength(
+                  value,
+                  minLength: 2,
+                )) {
+                  return localization.nameLessThanTwo;
+                }
+                return null;
+              },
+              controller: _authCubit.firstNameContoller,
+              icon: Icons.person,
+              labelText: localization.firstName,
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            CustomTextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return localization.enterName;
+                } else if (!Validator.hasMinLength(
+                  value,
+                  minLength: 2,
+                )) {
+                  return localization.nameLessThanTwo;
+                }
+                return null;
+              },
+              controller: _authCubit.lastNameContoller,
+              icon: Icons.person,
+              labelText: localization.lastName,
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            CustomTextFormField(
+              validator: (value) {
+                if (!Validator.isEmail(value)) {
+                  return localization.validEmail;
+                }
+                return null;
+              },
+              controller: _authCubit.emailController,
+              icon: Icons.email,
+              labelText: localization.email,
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            CustomTextFormField(
+              validator: (value) {
+                if (!Validator.isPassword(value)) {
+                  return localization.passwordLessThanSix;
+                }
+                return null;
+              },
+              controller: _authCubit.passwordController,
+              icon: Icons.lock,
+              isPassword: true,
+              labelText: localization.password,
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            CustomTextFormField(
+              validator: (value) {
+                if (!Validator.isPassword(value)) {
+                  return localization.passwordLessThanSix;
+                } else if (_authCubit.passwordController.text !=
+                    _authCubit.confirmPasswordController.text) {
+                  return localization.passwordNotMatched;
+                }
+                return null;
+              },
+              controller: _authCubit.confirmPasswordController,
+              icon: Icons.lock,
+              isPassword: true,
+              labelText: localization.confirmPassword,
+            ),
+          ],
         ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
+      ),
+      SizedBox(
+        height: 20.h,
+      ),
+      BlocBuilder<AuthCubit, AuthState>(
+        bloc: _authCubit,
+        builder: (context, state) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        Profile_Screen.routeName,
-                      );
-                    },
-                    child: Text(
-                      "sign in as guest",
-                      style: TextStyle(color: Colors.blue.shade400),
+                Row(
+                  children: [
+                    Radio<bool>(
+                      value: true,
+                      activeColor: ColorManager.primary,
+                      hoverColor: ColorManager.primary,
+                      groupValue: _authCubit.isClient,
+                      onChanged: (value) {
+                        _authCubit.onChooseAccountType(value!);
+                      },
                     ),
-                  ),
+                    Text(localization.client,
+                        style: Theme.of(context).textTheme.bodyMedium)
+                  ],
                 ),
-                CircleAvatar(
-                    radius: avatarRadius * 0.7,
-                    backgroundColor: Colors.blue.shade300,
-                    child: Icon(
-                      Icons.person,
-                      size: avatarRadius,
-                      color: Colors.white,
-                    )),
-                SizedBox(height: 10.h),
-                const Text('Spinndo',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center),
-                SizedBox(height: 20.h),
-                // const Spacer(flex: 1,),
-                Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      CustomTextFormField(
-                        validator: (p0) {
-                          if (p0 == null || p0.isEmpty) {
-                            return "Name cannott be empty";
-                          }
-                          return null;
-                        },
-                        controller: _authCubit.firstNameContoller,
-                        icon: Icons.person,
-                        labelText: 'First name',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomTextFormField(
-                        validator: (p0) {
-                          if (p0 == null || p0.isEmpty) {
-                            return "Name cannott be empty";
-                          }
-                          return null;
-                        },
-                        controller: _authCubit.lastNameContoller,
-                        icon: Icons.person,
-                        labelText: 'Last name',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomTextFormField(
-                        validator: (p0) {
-                          if (p0 == null || p0.isEmpty) {
-                            return "please enter an email";
-                          }
-                          return null;
-                        },
-                        controller: _authCubit.emailController,
-                        icon: Icons.email,
-                        labelText: 'Email',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomTextFormField(
-                        validator: (p1) {
-                          if (p1 == null || p1.isEmpty) {
-                            return "Password cannott be empty";
-                          } else if (p1.length < 6) {
-                            return "should be at least 6 charcters";
-                          }
-                          return null;
-                        },
-                        controller: _authCubit.passwordController,
-                        icon: Icons.lock,
-                        isPassword: true,
-                        labelText: 'Password',
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomTextFormField(
-                        validator: (p1) {
-                          if (p1 == null || p1.isEmpty) {
-                            return "Password cannott be empty";
-                          } else if (p1.length < 6) {
-                            return "should be at least 6 charcters";
-                          } else if (_authCubit.passwordController.text !=
-                              _authCubit.passwordController.text) {
-                            return "Diffrent Password";
-                          }
-
-                          return null;
-                        },
-                        controller: _authCubit.confirmPasswordController,
-                        icon: Icons.lock,
-                        isPassword: true,
-                        labelText: 'Confirm Password',
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                BlocBuilder<AuthCubit, AuthState>(
-                  bloc: _authCubit,
-                  builder: (context, state) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                activeColor: Colors.blue,
-                                hoverColor: Colors.blue,
-                                groupValue: _authCubit.isClient,
-                                onChanged: (value) {
-                                  _authCubit.onChooseAccountType(value!);
-                                },
-                              ),
-                              const Text(
-                                'Client',
-                                style: TextStyle(fontSize: 20),
-                              )
-                            ],
-                          ),
-                          SizedBox(width: 16.w),
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                activeColor: Colors.blue,
-                                hoverColor: Colors.blue,
-                                value: false,
-                                groupValue: _authCubit.isClient,
-                                onChanged: (value) {
-                                  _authCubit.onChooseAccountType(value!);
-                                },
-                              ),
-                              const Text('Employee',
-                                  style: TextStyle(fontSize: 20))
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-
-                BlocConsumer<AuthCubit, AuthState>(
-                    bloc: _authCubit,
-                    listener: (_, state) {
-                      if (state is RegisterLoading) {
-                        UIUtils.showLoading(
-                            context, 'asset/animation/loading.json');
-                      } else if (state is RegisterSuccess) {
-                        UIUtils.hideLoading(context);
-                        Navigator.of(context).pushNamed(
-                          VerficationCodeScreen.routeName,
-                        );
-                      } else if (state is RegisterError) {
-                        UIUtils.hideLoading(context);
-                        UIUtils.showMessage(state.message);
-                      }
-                    },
-                    buildWhen: (previous, current) {
-                      if ((previous is AuthInitial ||
-                              previous is ChooseAccountState) &&
-                          current is ChooseAccountState) {
-                        return true;
-                      }
-                      return false;
-                    },
-                    builder: (context, state) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _register,
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  const WidgetStatePropertyAll(Colors.blue),
-                              shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.r))),
-                              padding: WidgetStatePropertyAll(
-                                  EdgeInsets.symmetric(vertical: 12.h))),
-                          child: Text(
-                            _authCubit.isClient ? "Sing up" : "Next",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30.sp,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      );
-                    }),
-                SizedBox(height: 20.h),
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 30.h),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(SignInScreen.routeName);
-                        },
-                        child: Text(
-                          'I already have an account',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 24.sp,
-                              fontFamily: "WorkSans",
-                              fontWeight: FontWeight.w600),
-                        )),
-                  ),
+                SizedBox(width: 16.w),
+                Row(
+                  children: [
+                    Radio<bool>(
+                      activeColor: ColorManager.primary,
+                      hoverColor: ColorManager.primary,
+                      value: false,
+                      groupValue: _authCubit.isClient,
+                      onChanged: (value) {
+                        _authCubit.onChooseAccountType(value!);
+                      },
+                    ),
+                    Text(localization.employee,
+                        style: Theme.of(context).textTheme.bodyMedium),
+                  ],
                 ),
               ],
             ),
-          ),
-        ),
+          );
+        },
       ),
-    );
+      BlocConsumer<AuthCubit, AuthState>(
+          bloc: _authCubit,
+          listener: (_, state) {
+            if (state is RegisterLoading) {
+              UIUtils.showLoading(context, 'asset/animation/loading.json');
+            } else if (state is RegisterSuccess) {
+              UIUtils.hideLoading(context);
+              Navigator.of(context).pushNamed(
+                VerficationCodeScreen.routeName,
+              );
+            } else if (state is RegisterError) {
+              UIUtils.hideLoading(context);
+              UIUtils.showMessage(state.message);
+              if (state.message.contains("The email has already been taken.")) {
+                Navigator.of(context).pushNamed(
+                  VerficationCodeScreen.routeName,
+                );
+              }
+            }
+          },
+          buildWhen: (previous, current) {
+            if ((previous is AuthInitial || previous is ChooseAccountState) &&
+                current is ChooseAccountState) {
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            return SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _register,
+                child: Text(
+                    _authCubit.isClient
+                        ? localization.signUp
+                        : localization.next,
+                    style: Theme.of(context).textTheme.bodyLarge),
+              ),
+            );
+          }),
+      SizedBox(height: 20.h),
+      Center(
+          child: Padding(
+        padding: EdgeInsets.only(bottom: 30.h),
+        child: InkWell(
+            onTap: () {
+              Navigator.of(context).pushNamed(SignInScreen.routeName);
+            },
+            child: Text(localization.alreadyHaveAccount,
+                style: Theme.of(context).textTheme.titleMedium)),
+      ))
+    ]));
   }
 
   _register() {

@@ -4,6 +4,10 @@ import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/data/models/register_response.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_response.dart';
+import 'package:snipp/features/auth/data/models/resend_code_request.dart';
+import 'package:snipp/features/auth/data/models/resend_code_response.dart';
+import 'package:snipp/features/auth/data/models/reset_password_request.dart';
+import 'package:snipp/features/auth/data/models/reset_password_response.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/data/models/verify_code_response.dart';
 
@@ -13,4 +17,7 @@ abstract class AuthRemoteDataSource {
   Future<VerifyCodeResponse> verifyCode(VerifyCodeRequest requestBody);
   Future<RegisterServiceProviderResponse> registerService(
       RegisterServiceProviderRequest requestBody);
+  Future<ResendCodeResponse> resendCode(ResendCodeRequest requestBody);
+  Future<ResetPasswordResponse> resetPassword(ResetPasswordRequest requestBody);
+
 }

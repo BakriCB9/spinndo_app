@@ -48,7 +48,7 @@ class ImageFunctions {
       status = await Permission.phone.request();
     }
     if (status.isGranted) {
-      List<XFile?> images = await ImagePicker().pickMultiImage();
+      List<XFile?> images = await ImagePicker().pickMultiImage(limit: 2);
       if (images != null) {
         return images.map((file) => File(file!.path)).toList();
       } else {
@@ -56,4 +56,6 @@ class ImageFunctions {
       }
     }
   }
+
+
 }

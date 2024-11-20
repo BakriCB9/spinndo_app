@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/resources/color_manager.dart';
 import 'package:snipp/core/utils/ui_utils.dart';
+import 'package:snipp/core/utils/validator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/login_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
+import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'forget_password_screen.dart';
 import 'sign_up_screen.dart';
@@ -29,185 +34,119 @@ class _SignInScreenState extends State<SignInScreen> {
   final formKey = GlobalKey<FormState>();
 
   final _authCubit = serviceLocator.get<AuthCubit>();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
-  Widget build(BuildContext context) {
-    double avatarRadius = MediaQuery.of(context).size.width * 0.3;
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F8FF),
-      appBar: AppBar(
-        elevation: 0,
-        forceMaterialTransparency: true,
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  Profile_Screen.routeName,
-                );
-              },
-              child: Text(
-                "sign in as guest",
-                style: TextStyle(color: Colors.blue.shade400),
-              ))
-        ],
-        backgroundColor: Colors.transparent,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 36.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                CircleAvatar(
-                    radius: avatarRadius * 0.7,
-                    backgroundColor: Colors.blue.shade300,
-                    child: Icon(
-                      Icons.person,
-                      size: avatarRadius,
-                      color: Colors.white,
-                    )),
-                const SizedBox(height: 10),
-                const Text(
-                  'Spinndo',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    CustomTextFormField(
-                      controller: emailController,
-                      icon: Icons.email,
-                      labelText: 'Email',
-                      validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return "please enter an email";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20.h),
-                    CustomTextFormField(
-                      controller: passwordController,
-                      icon: Icons.lock,
-                      labelText: 'Password',
-                      validator: (p1) {
-                        if (p1 == null || p1.isEmpty) {
-                          return "Password cannott be empty";
-                        } else if (p1.length < 6) {
-                          return "should be at least 6 charcters";
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                )),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                child: InkWell(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(ForgotPasswordScreen.routeName);
+  Widget build(BuildContext context) {    final localization = AppLocalizations.of(context)!;
+final style=Theme.of(context).elevatedButtonTheme.style!;
+  return CustomAuthForm(child:  Column(
+        children: [
+          Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isEmail(value)) {
+                        return localization.validEmail;
+                      }
+                      return null;
                     },
-                    child: Text(
-                      'Forget password?',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontFamily: "WorkSans",
-                        fontWeight: FontWeight.w300,
-                        fontSize: 32.sp,
-                      ),
-                    )),
-              ),
-            ),
-            const Spacer(
-              flex: 3,
-            ),
-            BlocListener(
-              bloc: _authCubit,
-              listener: (_, state) {
-                if (state is LoginLoading) {
-                  UIUtils.showLoading(context);
-                } else if (state is LoginSuccess) {
-                  UIUtils.hideLoading(context);
-                  // Navigator.of(context).pushNamed();
-                } else if (state is LoginError) {
-                  UIUtils.hideLoading(context);
-                  UIUtils.showMessage(state.message);
-                }
-              },
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _login,
-                  //     () {
-                  //   Navigator.of(context).pushNamed(
-                  //     TestWidget.routeName,
-                  //   );
-                  // },
-                  style: ButtonStyle(
-                      backgroundColor:
-                          const WidgetStatePropertyAll(Colors.blue),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.r))),
-                      padding: WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(vertical: 12.h))),
-                  child: Text(
-                    "Log in",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold),
+                    controller: _authCubit.emailController,
+                    icon: Icons.email,
+                    labelText: localization.email,
                   ),
-                ),
-              ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isPassword(value)) {
+                        return localization.passwordLessThanSix;
+                      }
+                      return null;
+                    },
+                    controller: _authCubit.passwordController,
+                    icon: Icons.lock,
+                    isPassword: true,
+                    labelText: localization.password,
+                  ),
+                ],
+              )),
+          SizedBox(height: 20.h,),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(ForgotPasswordScreen.routeName);
+                    _authCubit.passwordController.clear();
+                    _authCubit.confirmPasswordController.clear();
+                    _authCubit.emailController.clear();
+                  },
+                  child: Text(
+                    localization.forgetPassword,
+                    style:Theme.of(context).textTheme.titleMedium
+                  )),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            SizedBox(
+          ),
+          SizedBox(height: 10.h,),
+
+          BlocListener(
+            bloc: _authCubit,
+            listener: (_, state) {
+              if (state is LoginLoading) {
+                UIUtils.showLoading(context);
+              } else if (state is LoginSuccess) {
+                UIUtils.hideLoading(context);
+                Navigator.of(context).pushNamed(Profile_Screen.routeName);
+              } else if (state is LoginError) {
+                UIUtils.hideLoading(context);
+                UIUtils.showMessage(state.message);
+              }
+            },
+            child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(SignUpScreen.routeName);
-                },
-                style: ButtonStyle(
-                    backgroundColor: const WidgetStatePropertyAll(Colors.white),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.blue, width: 1),
-                        borderRadius: BorderRadius.circular(30.r))),
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 16.h))),
+                onPressed: _login,
+
+
                 child: Text(
-                  "Create new account",
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold),
+                 localization.login,
+                  style: Theme.of(context).textTheme.bodyLarge
                 ),
               ),
             ),
-            const Spacer()
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(SignUpScreen.routeName);
+              },
+              style:style.copyWith(
+                backgroundColor:MaterialStateProperty.all( _drawerCubit.themeMode==ThemeMode.light?ColorManager.white:ColorManager.primary)
+              ),
+              child: Text(
+               localization.createNewAccount,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: _drawerCubit.themeMode==ThemeMode.light?ColorManager.primary:ColorManager.white )
+
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   _login() {
-// if(formKey.currentState?.validate()==true){
-//     Navigator.of(context).pushNamed(
-//       TestWidget.routeName,
-//     );
-// }
+
     _authCubit.login(LoginRequest(
         email: emailController.text, password: passwordController.text));
-    Navigator.of(context).pushNamed(Profile_Screen.routeName);
   }
 }

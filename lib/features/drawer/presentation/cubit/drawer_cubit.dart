@@ -8,17 +8,17 @@ import 'package:snipp/features/drawer/presentation/cubit/drawer_states.dart';
 
 @lazySingleton
 class DrawerCubit extends Cubit<DrawerStates> {
-  DrawerCubit(super.initialState,  { required  this.sharedPreferences}) ;
+  DrawerCubit(  { required  this.sharedPreferences}) :super(DrawerInitial());
    final SharedPreferences sharedPreferences;
   ThemeMode themeMode = ThemeMode.light;
   String languageCode = 'en';
   Color get backgroundColor =>
-      themeMode == ThemeMode.light ? ColorManager.backgroundWhite :ColorManager.babyBlue ;
+      themeMode == ThemeMode.light ? ColorManager.secondPrimary :ColorManager.babyBlue ;
 
   void changeTheme(ThemeMode selctedTheme) {
     themeMode = selctedTheme;
     saveTheme(themeMode);
-  // emit()
+  emit(DrawerThemeState());
   }
   Future<void> saveTheme(ThemeMode themeMode) async {
     String newTheme = themeMode == ThemeMode.dark ? "dark" : "light";
@@ -39,7 +39,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
     if (selctedLanguage == languageCode) return;
     languageCode = selctedLanguage;
     saveLanguage(languageCode);
-// emit(state)
+    emit(DrawerThemeState());
   }
   Future<void> saveLanguage( String language) async {
 

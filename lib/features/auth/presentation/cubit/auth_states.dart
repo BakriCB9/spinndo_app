@@ -41,7 +41,29 @@ class VerifyCodeError extends AuthState {
 
   VerifyCodeError(this.message);
 }
+class ResendCodeSuccess extends AuthState {}
+
+class ResendCodeLoading extends AuthState {}
+
+class ResendCodeError extends AuthState {
+  final String message;
+
+  ResendCodeError(this.message);
+}
+class ResetPasswordSuccess extends AuthState {}
+
+class ResetPasswordLoading extends AuthState {}
+
+class ResetPasswordError extends AuthState {
+  final String message;
+
+  ResetPasswordError(this.message);
+}
 
 class ChooseAccountState extends AuthState {}
 
-class SelectDayState extends AuthState {}
+class CardState extends AuthState {}
+class CanResendState extends AuthState{
+
+
+}

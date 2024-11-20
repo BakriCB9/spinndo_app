@@ -3,4 +3,6 @@ abstract class AuthLocalDataSource {
 String getToken();
 Future<void> saveUserId(int  id);
 int  getUserId();
+  Future<void> saveUserRole(String role);
+  String  getUserRole();
 }

@@ -38,7 +38,7 @@ class CustomDayActive extends StatelessWidget {
           children: _authCubit.dateSelect
               .map((e) => Padding(
                     padding: EdgeInsets.only(top: 10.h),
-                    child: e.isSelect == true
+                    child: e.daySelect == true
                         ? Row(
                             children: [
                               Expanded(

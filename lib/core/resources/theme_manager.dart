@@ -7,33 +7,17 @@ import 'package:snipp/core/resources/values_manager.dart';
 import 'color_manager.dart';
 import 'font_manager.dart';
 
-
-ThemeData getAppTheme() {
-  return ThemeData(
+class ThemeManager {
+  static ThemeData lightTheme=ThemeData(
     /// Main Colors
     primaryColor: ColorManager.primary,
     primaryColorLight: ColorManager.blueGrey,
     primaryColorDark: ColorManager.darkPrimary,
-    disabledColor: ColorManager.grey,
-    primarySwatch: Colors.deepPurple,
-    // splashColor: ColorManager.lightPrimary,
-    scaffoldBackgroundColor: ColorManager.blueGrey,
+    scaffoldBackgroundColor: ColorManager.secondPrimary,
 
-    /// App Bar Theme
-    // appBarTheme: AppBarTheme(
-    //   color: Colors.transparent,
-    //   shadowColor: Colors.transparent,
-    //
-    //   elevation: 0,
-    // ),
+    elevatedButtonTheme:ElevatedButtonThemeData(
 
-    /// Button Theme
-    ///
-    ///
-
-      elevatedButtonTheme:ElevatedButtonThemeData(
-
-        style: ButtonStyle(
+      style: ButtonStyle(
           backgroundColor:
           const WidgetStatePropertyAll(ColorManager.primary),
           shape: WidgetStatePropertyAll(
@@ -42,6 +26,7 @@ ThemeData getAppTheme() {
                   BorderRadius.circular(30.r))),
           padding: WidgetStatePropertyAll(
               EdgeInsets.symmetric(vertical: 12.h))),),
+    textButtonTheme: TextButtonThemeData(),
     buttonTheme: const ButtonThemeData(
       shape: StadiumBorder(),
       disabledColor: ColorManager.grey,
@@ -49,100 +34,104 @@ ThemeData getAppTheme() {
       // splashColor: ColorManager.lightPrimary,
     ),
 
-    /// Elevated Button Theme
-    // elevatedButtonTheme: ElevatedButtonThemeData(
-    //   style: ElevatedButton.styleFrom(
-    //     textStyle: getRegularStyle(
-    //       color: ColorManager.white,
-    //       fontSize: FontSize.s18,
-    //     ),
-    //     backgroundColor: ColorManager.primary,
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(AppSize.s12),
-    //     ),
-    //   ),
-    // ),
 
-    /// Text Theme
+
     textTheme: TextTheme(
-
+      //guest
       titleSmall: getRegularStyle(
-        color: ColorManager.grey,
-        fontSize: FontSize.s13
+          color: ColorManager.primary,
+          fontSize: FontSize.s24.sp
       ),
+      //text butt
       titleMedium: getMediumStyle(
-        color: ColorManager.lightGrey,
-        fontSize: FontSize.s24,
+          color: ColorManager.primary,
+          fontSize: FontSize.s28.sp,
+          fontFamily: "WorkSans",
+          fontWeight: FontWeight.w600
       ),
+      //title spinndo
       titleLarge: getBoldStyle(
-        color: ColorManager.green,
-        fontSize: FontSize.s32,
+        color: ColorManager.primary,
+        fontSize: FontSize.s54.sp,
+      ),
+      //text in body
+      bodySmall: getRegularStyle(
+          color: ColorManager.black,
+          fontSize: FontSize.s32.sp
+      ),
+      //client word
+      bodyMedium: getMediumStyle(
+        color: ColorManager.darkGrey,
+        fontSize: FontSize.s36.sp,
       ),
 
-      bodySmall: getRegularStyle(
-        color: ColorManager.grey,
-        fontSize: FontSize.s13
-      ),
-      bodyMedium: getMediumStyle(
-        color: ColorManager.grey,
-        fontSize: FontSize.s24,
-      ),
+      //elevated butt
       bodyLarge: getBoldStyle(
         color: ColorManager.white,
-        fontSize: FontSize.s32,
+        fontSize: FontSize.s32.sp,
       ),
     ),
 
-    /// Input Decoration
     inputDecorationTheme: InputDecorationTheme(
+
       fillColor: Colors.white,
       prefixIconColor: ColorManager.primary,
       suffixIconColor: ColorManager.primary,
-      contentPadding: const EdgeInsets.all(AppPadding.p8),
+      contentPadding: EdgeInsets.all(AppPadding.p8.sp),
       // hintStyle: getRegularStyle(
       //   color: ColorManager.grey,
       //   fontSize: FontSize.s13,
       // ),
       labelStyle: getThinStyle(
-        color: ColorManager.darkGrey,
+          color: ColorManager.darkGrey,
+          fontSize: FontSize.s32.sp
+      ),
+      hintStyle:  getThinStyle(
+          color: ColorManager.darkGrey,
+          fontSize: FontSize.s32.sp
       ),
       errorStyle: getRegularStyle(
-        color: ColorManager.green,
+          color: Colors.red,
+          fontSize: FontSize.s28.sp
+
       ),
+      filled: true,
+
       enabledBorder:  OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
         borderSide: BorderSide(
           color: ColorManager.lightGrey,
-          width: AppSize.s1_5.w,
+          width: AppSize.s1.w,
         ),
       ),
       focusedBorder:  OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
         borderSide: BorderSide(
           color: ColorManager.lightGrey,
-          width: AppSize.s1_5.w,
+          width: AppSize.s1.w,
         ),
       ),
       errorBorder:  OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
         borderSide: BorderSide(
           color: ColorManager.green,
-          width: AppSize.s4.w,
+          width: AppSize.s1.w,
         ),
       ),     border:  OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s8)),
+      borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
       borderSide: BorderSide(
         color: ColorManager.babyBlue,
-        width: AppSize.s4.w,
+        width: AppSize.s1.w,
       ),
     ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
         borderSide: BorderSide(
           color: ColorManager.lightGrey,
-          width: AppSize.s1_5.w,
+          width: AppSize.s1.w,
         ),
       ),
+
     ),
 
 
@@ -159,15 +148,15 @@ ThemeData getAppTheme() {
     ),
 
     /// Icon Theme
-    iconTheme: const IconThemeData(
-      color: Colors.white70,
-    ),
-
-    /// Card Theme
-    cardTheme: const CardTheme(
-      color: ColorManager.white,
-      shadowColor: ColorManager.grey,
-      elevation: AppSize.s4,
-    ),
+    // iconTheme: const IconThemeData(
+    //   color: Colors.white70,
+    // ),
   );
+  static ThemeData darkTheme = ThemeData(
+      scaffoldBackgroundColor: Colors.transparent,
+      primaryColor: ColorManager.darkPrimary,
+  );
+
+
+
 }

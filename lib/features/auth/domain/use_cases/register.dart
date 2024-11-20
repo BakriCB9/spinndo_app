@@ -5,7 +5,6 @@ import 'package:snipp/features/auth/data/models/register_response.dart';
 import 'package:snipp/features/auth/domain/repository/auth_repository.dart';
 
 import '../../../../core/error/failure.dart';
-import '../entities/user.dart';
 
 @singleton
 class Register {

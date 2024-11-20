@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lottie/lottie.dart';
 import 'package:snipp/core/widgets/loading_indicator.dart';
 
 class UIUtils {
@@ -10,34 +9,31 @@ class UIUtils {
         context: context,
         barrierDismissible: false,
         builder: (_) => PopScope(
-          canPop: false,
-          child: pathAnimation!=null? Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Lottie.asset('asset/animation/loading.json'),
-              
-              Text('Loading...',style: TextStyle(fontSize: 30.sp),)
-            ],
-          ):const  LoadingIndicator()
-          // pathAnimation == null
-          //           ? const LoadingIndicator()
-          //           : Lottie.asset(pathAnimation) 
-          
-          
-          // AlertDialog(
-          //   content: SizedBox(
-          //       //height: MediaQuery.of(context).size.height * 0.2,
-          //       child: 
-
-          //       // const Column(
-          //       //   mainAxisAlignment: MainAxisAlignment.center,
-          //       //   children: [
-          //       //     LoadingIndicator(),
-          //       //   ],
-          //       // ),  
-          //       ),
-          // ),
+            canPop: false,
+            child: AlertDialog(
+              backgroundColor: Colors.blue,
+              content: Container(
+                width:double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.r),
+                    color: Colors.blue),
+                height: MediaQuery.of(context).size.height * 0.2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const LoadingIndicator(),
+                    SizedBox(height: 20.h,),
+                    Text(
+                      'Please Loading...',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 25.sp),
+                    )
+                  ],
+                ),
+              ),
+            )
         ),
       );
 

@@ -11,3 +11,6 @@ class RemotFailure extends Failure {
 class LocalFailure extends Failure {
   LocalFailure(super.message);
 }
+class GoogleMapFailure extends Failure {
+  GoogleMapFailure(super.message);
+}

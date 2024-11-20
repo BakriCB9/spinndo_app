@@ -33,25 +33,28 @@ TextStyle getThinStyle({
 TextStyle getRegularStyle({
   double fontSize = FontSize.s24,
   String fontFamily = FontConstants.fontFamily,
-  required Color color,
-}) {
-  return getTextStyle(
-    fontSize: fontSize,
-    fontFamily: fontFamily,
-    fontWeight: FontWeightManager.regular,
-    color: color,
-  );
-}
-TextStyle getMediumStyle({
-  double fontSize = FontSize.s24,
-  String fontFamily = FontConstants.fontFamily,
+   FontWeight fontWeight= FontWeightManager.regular,
 
   required Color color,
 }) {
   return getTextStyle(
     fontSize: fontSize,
     fontFamily: fontFamily,
-    fontWeight: FontWeightManager.medium,
+    fontWeight:fontWeight,
+    color: color,
+  );
+}
+TextStyle getMediumStyle({
+  double fontSize = FontSize.s24,
+  String fontFamily = FontConstants.fontFamily,
+  FontWeight fontWeight= FontWeightManager.regular,
+
+  required Color color,
+}) {
+  return getTextStyle(
+    fontSize: fontSize,
+    fontFamily: fontFamily,
+    fontWeight:fontWeight,
     color: color,
   );
 }
@@ -69,6 +72,7 @@ TextStyle getSemiBoldStyle({
 }
 
 TextStyle getBoldStyle({
+
   String fontFamily = FontConstants.fontFamily,
   double fontSize = FontSize.s24,
   required Color color,

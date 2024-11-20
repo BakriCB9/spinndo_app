@@ -26,7 +26,7 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.dateSelect.isSelect
+      onTap: widget.dateSelect.daySelect
           ? () {
               showTimePicker(
                 context: context,
@@ -59,7 +59,7 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             border: Border.all(
-                color: widget.dateSelect.isSelect ? Colors.blue : Colors.grey),
+                color: widget.dateSelect.daySelect ? Colors.blue : Colors.grey),
             borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: FittedBox(

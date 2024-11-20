@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/utils/ui_utils.dart';
+import 'package:snipp/features/auth/data/models/resend_code_request.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 import '../../../../core/di/service_locator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../../core/resources/color_manager.dart';
+import '../../../drawer/presentation/cubit/drawer_cubit.dart';
 
 class VerficationCodeScreen extends StatefulWidget {
   static const String routeName = '/verfication';
@@ -15,36 +21,16 @@ class VerficationCodeScreen extends StatefulWidget {
   const VerficationCodeScreen({super.key});
 
   @override
-  _VerficationCodeScreenState createState() => _VerficationCodeScreenState();
+  State<VerficationCodeScreen> createState() => _VerficationCodeScreenState();
 }
 
 class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
   TextEditingController codeController = TextEditingController();
-  int _start = 30;
-  bool _canResend = false;
+  final bool _canResend = false;
   late Timer _timer;
   final formKey = GlobalKey<FormState>();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
-  @override
-  void initState() {
-    super.initState();
-    startTimer();
-  }
-
-  void startTimer() {
-    _start = 30;
-    _canResend = false;
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_start > 0) {
-          _start--;
-        } else {
-          _canResend = true;
-          timer.cancel();
-        }
-      });
-    });
-  }
 
   @override
   void dispose() {
@@ -53,151 +39,142 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
     super.dispose();
   }
 
-  void resendCode() {
-    if (_canResend) {
-      startTimer();
-      // Add resend code logic here
-    }
-  }
 
-  final _authCubit = serviceLocator.get<AuthCubit>();
+  final _authCubit = serviceLocator.get<AuthCubit>()..verifyCodeTime();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F8FF),
-      // resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+  Widget build(BuildContext context) {final localization = AppLocalizations.of(context)!;
+  final style=Theme.of(context).elevatedButtonTheme.style!;
+    return CustomAuthForm(
+      hasTitle: false,
+      hasAvatar: false,
+      child: Container(
+        height: 1200.h,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Check your email",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 48.sp,
-                  fontFamily: "WorkSans"),
+                localization.resetPassword,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(fontFamily: "WorkSans")
             ),
             SizedBox(
-              height: 10.h,
+              height: 20.h,
             ),
-            Icon(Icons.email, size: 200.h, color: Colors.blue),
-            SizedBox(height: 20.h),
+            Icon(Icons.email, size: 200.h, color: Theme.of(context).primaryColor),
+            SizedBox(height: 40.h),
             Text(
-              'Enter the verification code sent to your email ${_authCubit.emailController.text}',
-              style: TextStyle(fontSize: 32.sp),
+              '${localization.enterVerificationCode}${_authCubit.emailController.text}',
+              style:    Theme.of(context).textTheme.bodySmall!.copyWith(fontFamily: "WorkSans"),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
-            Expanded(
-              child: Form(
-                key: formKey,
-                child: TextFormField(
-                  validator: (p1) {
-                    if (p1 == null || p1.isEmpty) {
-                      return "Password cannott be empty";
-                    } else if (p1.length < 6) {
-                      return "should be at least 6 charcters";
-                    }
-                    return null;
-                  },
-                  controller: codeController,
-                  maxLength: 6,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue.shade300)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue.shade300)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue.shade300)),
-                    hintText: 'Enter Code',
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
+            Form(
+              key: formKey,
+              child: TextFormField(
+                validator: (p1) {
+                 if (p1 == null || p1.length < 6) {
+                    return localization.enterCodeFrom6Digit;
+                  }
+                  return null;
+                },
+                controller: _authCubit.codeController,
+                maxLength: 6,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 32.sp),
+
+                decoration: InputDecoration(
+
+
+                  hintText: localization.enterCode,
+
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
-            BlocListener(
+            BlocConsumer<AuthCubit,AuthState>(
               bloc: _authCubit,
-              listener: (_, state) {
-                if (state is LoginLoading) {
-                  UIUtils.showLoading(context);
-                } else if (state is LoginSuccess) {
-                  UIUtils.hideLoading(context);
-                  // Navigator.of(context).pushNamed();
-                } else if (state is LoginError) {
+              builder: (context,state){
+
+
+
+
+                return Row(children: [
+                  FittedBox(fit: BoxFit.scaleDown,
+                    child: Text(
+                        _authCubit.canResend ? localization.didntReciveCode
+                            : '${localization.resendCodeIn} ${_authCubit.resendCodeTime} ${localization.seconds}',
+                        style:  Theme.of(context).textTheme.titleMedium!.copyWith(color: ColorManager.black)
+                    ),
+                  ),
+Spacer(),                  FittedBox(
+                    fit: BoxFit.scaleDown,child: TextButton(
+                      onPressed: _authCubit.canResend?(){
+                        _authCubit.resendCode(ResendCodeRequest(email: _authCubit.emailController.text)) ;
+                      }:null,
+                      child: Text(
+                          localization.resendCode,
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: _authCubit.canResend ? Theme.of(context).primaryColor : ColorManager.grey,
+                                    
+                          )
+                                    
+                      ),
+                    ),
+                  ),
+                ],);
+              },
+              listener: (BuildContext context, AuthState state) {
+                if (state is ResendCodeLoading) {
+                  UIUtils.showLoading(context,'asset/animation/loading.json');
+                } else if (state is ResendCodeError) {
                   UIUtils.hideLoading(context);
                   UIUtils.showMessage(state.message);
+                } else if (state is ResendCodeSuccess) {
+                  UIUtils.hideLoading(context);
+                  _authCubit.verifyCodeTime();
                 }
-              },
-              child: SizedBox(
-                width: double.infinity,
-                child: BlocListener<AuthCubit,AuthState>(
-                  listener: (contexxt,state ){
-                    if(state is  VerifyCodeLoading){
-                      UIUtils.showLoading(context);
-                    }
-                    else if(state is VerifyCodeError){
-                      UIUtils.showMessage(state.message);
-                    }
-                    else if (state is VerifyCodeSuccess){
-                      UIUtils.hideLoading(context);
-                      Navigator.of(context).pushReplacementNamed(Profile_Screen.routeName);
-                    }
-                  },
-                  child: ElevatedButton(
-                    onPressed: _verifyCode
-                    //     () {
-                    //   if (formKey.currentState?.validate() == true) {
-                    //     // if(!isLogIn) {
-                    //     //   isClient ? Navigator.of(context).pushNamed(TestWidget.routeName) :
-                    //     //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-                    //     // }else{
-                    //     Navigator.of(context)
-                    //         .pushNamed(AccountTypeScreen.routeName);
-                    //     // }
-                    //   }
-                    // },
-                    ,
-                    style: ButtonStyle(
-                        backgroundColor:
-                            const WidgetStatePropertyAll(Colors.white),
-                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                            side: const BorderSide(color: Colors.blue, width: 1),
-                            borderRadius: BorderRadius.circular(30.r))),
-                        padding: WidgetStatePropertyAll(
-                            EdgeInsets.symmetric(vertical: 16.h))),
-                    child: Text('Verify',
-                        style: TextStyle(fontSize: 32.sp, color: Colors.blue)),
-                  ),
-                ),
-              ),
-            ),
+              },),
+
             SizedBox(height: 20.h),
-            Text(
-              _canResend
-                  ? 'Didn\'t receive a code?'
-                  : 'Resend code in $_start seconds',
-              style: TextStyle(fontSize: 30.sp),
-            ),
-            TextButton(
-              onPressed: _canResend ? resendCode : null,
-              child: Text(
-                'Resend Code',
-                style: TextStyle(
-                  fontSize: 30.sp,
-                  color: _canResend ? Colors.blue : Colors.grey,
+            Spacer(),
+            SizedBox(
+              width: double.infinity,
+              child: BlocListener<AuthCubit,AuthState>(
+                bloc: _authCubit,
+                listener: (contexxt,state ){
+                  if(state is  VerifyCodeLoading){
+                    UIUtils.showLoading(context);
+                  }
+                  else if(state is VerifyCodeError){
+                    UIUtils.hideLoading(context);
+
+                    UIUtils.showMessage(state.message);
+                    if (state.message=="The email has already been taken.") {
+                      Navigator.of(context).pushNamed(
+                        VerficationCodeScreen.routeName,
+                      );
+                      _authCubit.resendCode(ResendCodeRequest(email: _authCubit.emailController.text));
+                    }
+                  }
+                  else if (state is VerifyCodeSuccess){
+                    UIUtils.hideLoading(context);
+                    Navigator.of(context).pushReplacementNamed(Profile_Screen.routeName);
+                  }
+                },
+                child: ElevatedButton(
+                  onPressed: _verifyCode
+
+                  ,
+                    style:style.copyWith(
+                        backgroundColor:MaterialStateProperty.all( _drawerCubit.themeMode==ThemeMode.light?ColorManager.white:ColorManager.primary)
+                    )           ,    child: Text(localization.verify,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: _drawerCubit.themeMode==ThemeMode.light?ColorManager.primary:ColorManager.white )
                 ),
               ),
             ),
+            ),SizedBox(height: 20.h),
+
           ],
         ),
       ),
@@ -205,23 +182,13 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
   }
 
   _verifyCode() {
-// if(formKey.currentState?.validate()==true){
-//     Navigator.of(context).pushNamed(
-//       TestWidget.routeName,
-//     );
-// }
+
 
     if (formKey.currentState?.validate() == true) {
-      // if(!isLogIn) {
-      //   isClient ? Navigator.of(context).pushNamed(TestWidget.routeName) :
-      //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-      // }else{
-       
-      //Navigator.of(context).pushNamed(Profile_Screen.routeName);
-      // }
+
       _authCubit.verifyCode(VerifyCodeRequest(
-        email: _authCubit.emailController.text, code: codeController.text));
+        email: _authCubit.emailController.text, code: _authCubit.codeController.text));
     }
-    
+
   }
 }

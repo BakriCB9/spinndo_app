@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/profile/data/models/provider_model/image.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_image_screen.dart';
 import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/diploma_and_protofile.dart';

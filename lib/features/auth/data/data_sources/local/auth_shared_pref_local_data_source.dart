@@ -10,6 +10,7 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
 
   AuthSharedPrefLocalDataSource({required SharedPreferences sharedPreferences})
       : _sharedPreferences = sharedPreferences;
+
   @override
   String getToken() {
     try {
@@ -29,7 +30,7 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
   }
 
   @override
-  int  getUserId() {
+  int getUserId() {
     try {
       return _sharedPreferences.getInt(CacheConstant.userId)!;
     } catch (_) {
@@ -43,6 +44,24 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
       await _sharedPreferences.setInt(CacheConstant.userId, id);
     } catch (_) {
       throw LocalAppException('Failed to store User Id');
+    }
+  }
+
+  @override
+  String getUserRole() {
+    try {
+      return _sharedPreferences.getString(CacheConstant.userRole)!;
+    } catch (_) {
+      throw LocalAppException('Failed to get role');
+    }
+  }
+
+  @override
+  Future<void> saveUserRole(String role)  async {
+    try {
+      await _sharedPreferences.setString(CacheConstant.userRole, role);
+    } catch (_) {
+      throw LocalAppException('Failed to store role');
     }
   }
 }

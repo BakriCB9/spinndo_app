@@ -29,9 +29,14 @@ import 'package:snipp/features/auth/domain/use_cases/login.dart' as _i514;
 import 'package:snipp/features/auth/domain/use_cases/register.dart' as _i903;
 import 'package:snipp/features/auth/domain/use_cases/register_service.dart'
     as _i19;
+import 'package:snipp/features/auth/domain/use_cases/resend_code.dart' as _i153;
+import 'package:snipp/features/auth/domain/use_cases/reset_password.dart'
+    as _i963;
 import 'package:snipp/features/auth/domain/use_cases/verify_code.dart' as _i378;
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart'
     as _i673;
+import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart'
+    as _i884;
 import 'package:snipp/features/profile/data/data_source/remote/profile_api_remote_data_source.dart'
     as _i595;
 import 'package:snipp/features/profile/data/data_source/remote/profile_remote_data_source.dart'
@@ -64,6 +69,8 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
+    gh.lazySingleton<_i884.DrawerCubit>(() =>
+        _i884.DrawerCubit(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.singleton<_i1002.AuthLocalDataSource>(() =>
         _i920.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -83,6 +90,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i903.Register(gh<_i199.AuthRepository>()));
     gh.singleton<_i19.RegisterService>(
         () => _i19.RegisterService(gh<_i199.AuthRepository>()));
+    gh.singleton<_i153.ResendCode>(
+        () => _i153.ResendCode(gh<_i199.AuthRepository>()));
+    gh.singleton<_i963.ResetPassword>(
+        () => _i963.ResetPassword(gh<_i199.AuthRepository>()));
     gh.singleton<_i378.VerifyCode>(
         () => _i378.VerifyCode(gh<_i199.AuthRepository>()));
     gh.lazySingleton<_i319.ProfileRepository>(
@@ -96,6 +107,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i903.Register>(),
           gh<_i378.VerifyCode>(),
           gh<_i19.RegisterService>(),
+          gh<_i153.ResendCode>(),
+          gh<_i963.ResetPassword>(),
         ));
     gh.lazySingleton<_i846.ProfileCubit>(() => _i846.ProfileCubit(
           gh<_i0.GetClientProfile>(),

@@ -1,116 +1,154 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/features/auth/presentation/screens/reset_password_screen.dart';
+import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
+import 'package:snipp/core/utils/validator.dart';
+import 'package:snipp/core/widgets/custom_text_form_field.dart';
+import 'package:snipp/features/auth/data/models/reset_password_request.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   static const String routeName = '/forget';
 
-  void _navigateToResetPassword(BuildContext context) {
-    if (formKey.currentState?.validate() == true) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
-      );
-    }
-  }
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   final formKey = GlobalKey<FormState>();
+  final TextEditingController passwordController = TextEditingController();
 
+  final TextEditingController confirmPasswordController =TextEditingController();
   ForgotPasswordScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF0F8FF),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+  Widget build(BuildContext context) {final localization = AppLocalizations.of(context)!;
+    return CustomAuthForm(hasAvatar: false,hasTitle: false,child:
+    Container(
+      height: 1200.h,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Reset Password",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 48.sp,
-                      fontFamily: "WorkSans"),
+                  localization.resetPassword,
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(fontFamily: "WorkSans")
                 ),
                 SizedBox(
                   height: 4.h,
                 ),
                 Text(
-                  "we will send an email to you with code to reset password",
+                 localization.resetPasswordTitle,
                   style:
-                      TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w300),
+                  Theme.of(context).textTheme.bodySmall!.copyWith(fontFamily: "WorkSans")
                 ),
               ],
             ),
-            Icon(Icons.lock_reset, size: 200.sp, color: Colors.blue),
-            SizedBox(height: 20.h),
+            Expanded(child: Align(alignment: Alignment.center,child: Icon(Icons.lock_reset, size: 200.sp, color: Theme.of(context).primaryColor))),
+            SizedBox(height: 50.h),
             Text(
-              'Enter your email to reset your password',
-              style: TextStyle(
-                fontSize: 32.sp,
-              ),
-              textAlign: TextAlign.center,
+             localization.emailResetPassword,
+              style:                Theme.of(context).textTheme.bodySmall!.copyWith(fontFamily: "WorkSans")
+      ,
+              textAlign: TextAlign.start,
             ),
             SizedBox(height: 20.h),
             Form(
               key: formKey,
-              child: TextFormField(
-                validator: (p1) {
-                  if (p1 == null || p1.isEmpty) {
-                    return "Password cannott be empty";
-                  } else if (p1.length < 6) {
-                    return "should be at least 6 charcters";
-                  }
-                  return null;
-                },
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: Colors.grey.shade800),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300),
-                      borderRadius: BorderRadius.all(Radius.circular(30.r))),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300),
-                      borderRadius: BorderRadius.all(Radius.circular(30.r))),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue.shade300),
-                      borderRadius: BorderRadius.all(Radius.circular(30.r))),
-                  fillColor: Colors.white,
-                  filled: true,
-                ),
-                keyboardType: TextInputType.emailAddress,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isEmail(value)) {
+                        return localization.validEmail;
+                      }
+                      return null;
+                    },
+                    controller: _authCubit.emailController,
+                    icon: Icons.email,
+                    labelText: localization.email,
+                  ),
+                  SizedBox(height: 50.h),
+                  Text(
+                    localization.newPasswordTitle,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.start,
+                  ),
+                  SizedBox(height: 20.h),
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isPassword(value)) {
+                        return localization.passwordLessThanSix;
+                      }
+                      return null;
+                    },
+                    controller: _authCubit.passwordController,
+                    icon: Icons.lock,
+                    isPassword: true,
+                    labelText: localization.newPassword,
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isPassword(value)) {
+                        return localization.passwordLessThanSix;
+                      } else if (_authCubit.passwordController.text !=
+                          _authCubit.confirmPasswordController.text) {
+                        return localization.passwordNotMatched;
+                      }
+                      return null;
+                    },
+                    controller: _authCubit.confirmPasswordController,
+                    icon: Icons.lock,
+                    isPassword: true,
+                    labelText: localization.confirmNewPassword,
+                  ),
+                ],
               ),
+
             ),
-            const Spacer(),
-            Container(
+Spacer(),
+            BlocListener<AuthCubit  , AuthState>(
+              bloc: _authCubit,
+          listener: (context, state) {
+            if (state is ResetPasswordLoading) {
+              UIUtils.showLoading(context,'asset/animation/loading.json');
+            } else if (state is ResetPasswordError) {
+              UIUtils.hideLoading(context);
+              UIUtils.showMessage(state.message);
+            } else if (state is ResetPasswordSuccess) {
+              UIUtils.hideLoading(context);
+              Navigator.of(context).pushNamed(SignInScreen.routeName);
+
+            }
+          },
+          child: Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 40.h),
               child: ElevatedButton(
-                onPressed: () => _navigateToResetPassword(context),
-                style: ButtonStyle(
-                    backgroundColor: const WidgetStatePropertyAll(Colors.white),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.blue, width: 1),
-                        borderRadius: BorderRadius.circular(30.r))),
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 16.h))),
-                child: Text('Verify',
-                    style: TextStyle(fontSize: 32.sp, color: Colors.blue)),
+                onPressed: () {
+                  if (formKey.currentState?.validate() == true) {
+                  _authCubit.resetPassword(ResetPasswordRequest(_authCubit.passwordController.text, email: _authCubit.emailController.text));
+
+                  }
+                },
+
+                child: Text(localization.verify,
+                    style: Theme.of(context).textTheme.bodyLarge
               ),
             ),
-          ],
         ),
-      ),
+            )],
+        ),
+    ),
     );
   }
 }

@@ -39,7 +39,7 @@ class RegisterServiceProviderRequest {
   Future<FormData> toFormData() async {
     final List<Map<String, String?>> days = [];
     for (int i = 0; i < listOfDay.length; i++) {
-      if (listOfDay[i].isSelect) {
+      if (listOfDay[i].daySelect) {
         days.add(listOfDay[i].toJson());
       }
     }
@@ -79,9 +79,10 @@ class RegisterServiceProviderRequest {
 
 class DateSelect {
   String day;
-  bool isSelect;
+  bool daySelect;
   String? start;
   String? end;
-  DateSelect({required this.day, this.start, this.end, this.isSelect = false});
+  bool arrowSelect;
+  DateSelect({required this.day, this.start, this.end, this.daySelect = false,this.arrowSelect=true});
   Map<String, String?> toJson() => {"day": day, "start": start, "end": end};
 }
