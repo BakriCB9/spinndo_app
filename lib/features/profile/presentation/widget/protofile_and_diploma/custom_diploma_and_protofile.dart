@@ -69,13 +69,13 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
             ),
           ],
         ),
-        SizedBox(height: 15.h),
+        // SizedBox(height: 15.h),
 
-        ///here i have to pass the list of diploma or protofile
-        ///depend on the typeSelect (using if to choose which list)
+        // ///here i have to pass the list of diploma or protofile
+        // ///depend on the typeSelect (using if to choose which list)
         RowOfImages(
           typeSelect: typeSelect,
-          moreImage: widget.images,
+           moreImage: widget.images,
           imagePic: widget.imageCertificate,
         ),
       ],

@@ -15,12 +15,12 @@ import 'package:snipp/features/profile/presentation/widget/profile_info/active_d
 // //   'Friday'
 // // ];
 
-class WorkingDay {
+class WorkingDayss {
   bool isSelected;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
 
-  WorkingDay({
+  WorkingDayss({
     this.isSelected = false,
     this.startTime,
     this.endTime,
@@ -43,13 +43,13 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
     'Saturday',
     'Sunday'
   ];
-  final Map<String, WorkingDay> workingHours = {};
+  final Map<String, WorkingDayss> workingHours = {};
 
   @override
   void initState() {
     super.initState();
     for (var day in daysOfWeek) {
-      workingHours[day] = WorkingDay();
+      workingHours[day] = WorkingDayss();
     }
   }
 
@@ -112,8 +112,8 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
                             ? BoxFromDateToDate(
                                 time: 'From 12:00 pm',
                                 type: 1,
-                                dateSelect: DateSelect(
-                                    day: "day", start: "start", end: "end"),
+                                // dateSelect: DateSelect(
+                                //     day: "day", start: "start", end: "end"),
                               )
                             : SizedBox()),
                     SizedBox(
@@ -124,8 +124,8 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage>
                         child: dayInfo.isSelected
                             ? BoxFromDateToDate(
                                 time: 'To 6:00 Pm',
-                                dateSelect: DateSelect(
-                                    day: "day", start: "start", end: "end"),
+                                // dateSelect: DateSelect(
+                                //     day: "day", start: "start", end: "end"),
                                 type: 2,
                               )
                             : SizedBox())

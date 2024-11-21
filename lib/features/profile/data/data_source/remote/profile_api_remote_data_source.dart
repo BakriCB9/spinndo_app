@@ -18,21 +18,23 @@ class ProfileApiRemoteDataSource extends ProfileRemoteDataSource {
   @override
   Future<ClientProfileRespoonse> getClientProfile() async {
     try {
-      //final String userToken = _authLocalDataSource.getToken();
-      //final int user_id = _authLocalDataSource.getUserId();
-      final user_id = 44;
-      final String userToken =
-          "31|kwc6MUsBVaX4GZreOzzqtIcJqkJ4c09DwJ7OgNOA01365e31";
+      final String userToken = _authLocalDataSource.getToken();
+      final int user_id = _authLocalDataSource.getUserId();
+      // print('the token is from api is ${userToken}');
+      // print('the user id is now ${user_id}');
+      // final user_id = 44;
+      // final String userToken =
+      //     "31|kwc6MUsBVaX4GZreOzzqtIcJqkJ4c09DwJ7OgNOA01365e31";
       final response = await _dio.get(
           '${ApiConstant.profilCelientEndPotint}/$user_id',
           options: Options(headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $userToken"
           }));
-      print("the result from api is ${response.data}");
+     // print("the result from api is ${response.data}");
       return ClientProfileRespoonse.fromJson(response.data);
     } catch (exciption) {
-      print('we threom exception now there are som error');
+      print('we threom exception now there are som error ${exciption}');
       throw RemoteAppException("Failed to get client");
     }
   }
@@ -40,8 +42,11 @@ class ProfileApiRemoteDataSource extends ProfileRemoteDataSource {
   @override
   Future<ProviderResponse> getServiceProviderProfile() async {
     try {
+      print('bakkkakakakakaaaaaaaaaaaaaaaaaaaaaaaaa');
       final String userToken = _authLocalDataSource.getToken();
       final int user_id = _authLocalDataSource.getUserId();
+print('the token is from api is ${userToken}');
+      print('the user id is now ${user_id}');
      // final user_id = 5;
       //final String userToken =
          // "3|ZrU3kyulNnnfrN1YdrO8VbadnZ8cwq2WOfxtfKM0ecb80aef";
@@ -51,7 +56,9 @@ class ProfileApiRemoteDataSource extends ProfileRemoteDataSource {
             "Content-Type": "application/json",
             "Authorization": "Bearer $userToken"
           }));
-
+          print('th eresponse is WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWwQQQQQQQQQQQQQQ ${response.data}');
+     final val=ProviderResponse.fromJson(response.data);
+     print('the ans is $val');
       return ProviderResponse.fromJson(response.data);
     } catch (exciption) {
       throw RemoteAppException("Failed to get client");

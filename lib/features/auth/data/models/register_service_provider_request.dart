@@ -48,7 +48,13 @@ class RegisterServiceProviderRequest {
       certificate.path,
       filename: certificate.path.split('/').last,
     );
-    final imageFiles = await Future.wait(
+
+    // List<MultipartFile> multiOfImages = images.map((e) async {
+    //   return await MultipartFile.fromFile(e.path,
+    //       filename: e.path.split('/').last);
+    // }).toList();
+
+    List<MultipartFile> imageFiles = await Future.wait(
       images.map((image) async {
         return await MultipartFile.fromFile(
           image.path,
@@ -56,11 +62,26 @@ class RegisterServiceProviderRequest {
         );
       }),
     );
+    final imageOne=await MultipartFile.fromFile(
+          images[0].path,
+          filename: images[0].path.split('/').last,
+        );
+        final imageTwo=await MultipartFile.fromFile(
+          images[1].path,
+          filename: images[1].path.split('/').last,
+        );
+  print('the certitifacate is yyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${certificateFile.filename}');
+  for(int i=0;i<imageFiles.length;i++){
+    print('the value of first is   ${imageFiles[i].filename}');
+  }
+   print('the file of images is rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr  ${imageFiles}');
     return FormData.fromMap({
       "first_name": firstName,
       "last_name": lastName,
       "email": email,
       "password": password,
+      "service[images][1]":imageOne,
+      "service[images][0]": imageTwo,
       "service": {
         "name": nameService,
         "description": descriptionService,
@@ -71,7 +92,7 @@ class RegisterServiceProviderRequest {
         "latitude": latitudeService,
         "working_days": days,
         "certificate": certificateFile,
-        "images": imageFiles
+        
       },
     });
   }
@@ -83,6 +104,11 @@ class DateSelect {
   String? start;
   String? end;
   bool arrowSelect;
-  DateSelect({required this.day, this.start, this.end, this.daySelect = false,this.arrowSelect=true});
+  DateSelect(
+      {required this.day,
+      this.start,
+      this.end,
+      this.daySelect = false,
+      this.arrowSelect = true});
   Map<String, String?> toJson() => {"day": day, "start": start, "end": end};
 }

@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
                       locale: Locale(
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       //home: HomeScreen(),
-                      initialRoute: FilterScreen.routeName,
+                      initialRoute: SignUpScreen.routeName,
                       routes: {
                         EmployeeDetails.routeName: (context) =>
                             const EmployeeDetails(),

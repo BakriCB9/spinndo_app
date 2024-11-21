@@ -36,10 +36,11 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     final double rightSpace = size.width * 0.03;
 
     return Container(
-      color: Theme.of(context)
-          .appBarTheme
-          .backgroundColor!
-          .withOpacity(percent * 2 < 1 ? percent * 2 : 1),
+      color: Colors.blue,
+      // color: Theme.of(context)
+      //     .appBarTheme
+      //     .
+      //     .withOpacity(percent * 2 < 1 ? percent * 2 : 1),
       child: Stack(
         children: [
           CustomPosition(

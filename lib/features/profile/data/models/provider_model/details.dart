@@ -9,7 +9,7 @@ class Details {
 	dynamic website;
 	String? longitude;
 	String? latitude;
-	int? isApproved;
+	dynamic isApproved;
 	String? certificatePath;
 	Category? category;
 	dynamic city;

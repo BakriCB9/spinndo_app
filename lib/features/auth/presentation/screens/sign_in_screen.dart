@@ -147,6 +147,6 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
   _login() {
 
     _authCubit.login(LoginRequest(
-        email: emailController.text, password: passwordController.text));
+        email: _authCubit.emailController.text, password: _authCubit.passwordController.text));
   }
 }

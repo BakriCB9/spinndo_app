@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
+//import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/profile/data/models/provider_model/working_day.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_date_time.dart';
-import 'package:snipp/core/const_variable.dart';
+// import 'package:snipp/core/const_variable.dart';
 
 import 'box_of_from_to.dart';
 
 class CustomDayActive extends StatelessWidget {
-  const CustomDayActive({super.key});
+  final List<WorkingDay>listOfworkday;
+  const CustomDayActive({required this.listOfworkday,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +37,11 @@ class CustomDayActive extends StatelessWidget {
           ],
         ),
         Column(
-          children: _authCubit.dateSelect
+          children:listOfworkday
               .map((e) => Padding(
                     padding: EdgeInsets.only(top: 10.h),
-                    child: e.daySelect == true
-                        ? Row(
+                    
+                       child:   Row(
                             children: [
                               Expanded(
                                 child: Align(
@@ -47,7 +49,7 @@ class CustomDayActive extends StatelessWidget {
                                   child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                      e.day,
+                                      e.day!,
                                       style: TextStyle(
                                           fontSize: 25.sp, color: Colors.grey),
                                     ),
@@ -62,7 +64,7 @@ class CustomDayActive extends StatelessWidget {
                                       Expanded(
                                           child: BoxFromDateToDate(
                                         time: 'From 9:00 Am',
-                                        dateSelect: e,
+                                        
                                         type: 1,
                                       )),
                                       SizedBox(
@@ -71,14 +73,14 @@ class CustomDayActive extends StatelessWidget {
                                       Expanded(
                                           child: BoxFromDateToDate(
                                         time: 'To 6:00 Pm',
-                                        dateSelect: e,
+                                        
                                         type: 2,
                                       ))
                                     ],
                                   ))
                             ],
                           )
-                        : SizedBox(),
+                        
                   ))
               .toList(),
         ),

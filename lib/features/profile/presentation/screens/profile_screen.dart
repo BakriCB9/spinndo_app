@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:snipp/core/const_variable.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/loading_indicator.dart';
 import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
@@ -26,7 +27,6 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   final ScrollController _control = ScrollController();
   @override
   void initState() {
-
     super.initState();
     _profileCubit.getProviderProfile();
   }
@@ -37,85 +37,97 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
-      if (state is GetProfileLoading) {
-        return const LoadingIndicator();
-      } else if (state is GetProfileError) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                state.message,
-                style: TextStyle(
-                    fontSize: 30.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: 20.h),
-              Lottie.asset('asset/animation/error.json'),
-              SizedBox(height: 30.h,),
-              ElevatedButton(
-                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue)),
-                  onPressed: () {
-                    _profileCubit.getProviderProfile();
-                  },
-                  child: Text(
-                    'Reload',
-                    style: TextStyle(fontSize: 25.sp, color: Colors.white),
-                  ))
-            ],
-          ),
-        );
-      } else if (state is GetProfileSucces) {
-        final respon = state.client;
-        return CustomScrollView(
+      backgroundColor: Colors.white,
+      body: BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
+        if (state is GetProfileLoading) {
+          return const LoadingIndicator();
+        } else if (state is GetProfileError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  state.message,
+                  style: TextStyle(
+                      fontSize: 30.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(height: 20.h),
+                Lottie.asset('asset/animation/error.json'),
+                SizedBox(
+                  height: 30.h,
+                ),
+                ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.blue)),
+                    onPressed: () {
+                      _profileCubit.getProviderProfile();
+                    },
+                    child: Text(
+                      'Reload',
+                      style: TextStyle(fontSize: 25.sp, color: Colors.white),
+                    ))
+              ],
+            ),
+          );
+        } else if (state is GetProfileSucces) {
+          final ans = state.client.details!.workingDays;
+          // return Text('successs data');
+          final respon = state.client;
+          return CustomScrollView(
             controller: _control,
             slivers: [
-            SliverPersistentHeader(
-            delegate: SliverPersistentDelegate(size),
-    pinned: true,
-    ),
-    SliverFillRemaining(
-    hasScrollBody: false,
-    child: Padding(
-    padding:
-    EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    SizedBox(height: 15.h),
-    UserAccount(
-    firstName: respon.firstName!,
-    lastName: respon.lastName!,
-    email: respon.email!,
-    ),
-    SizedBox(height: 15.h),
-    CustomDescription(
-    category: respon.details!.category!.name!,
-    description: respon.details!.description!,
-    serviceName: respon.details!.name!,
-    ),
-      SizedBox(height: 10.h),
-      CustomDayActive(),
-      SizedBox(height: 30.h),
-      CustomDiplomaAndProtofile(
-        imageCertificate: respon.details!.certificatePath!,
-        images: respon.details!.images!,
-      ),
-      SizedBox(height: 100.h)
-    ],
-    ),
-    ),
-    ),
+              SliverPersistentHeader(
+                delegate: SliverPersistentDelegate(size),
+                pinned: true,
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 15.h),
+                      UserAccount(
+                        firstName: state.client.firstName!,
+                        lastName: state.client.lastName!,
+                        email: state.client.email!,
+                      ),
+                      SizedBox(height: 15.h),
+                      CustomDescription(
+                        category:
+                            respon.details?.category?.name ?? "No category",
+                        description:
+                            respon.details?.description ?? "No description",
+                        serviceName: respon.details?.name ?? "No emial yet",
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomDayActive(
+                        listOfworkday: state.client.details!.workingDays!,
+                      ),
+                      SizedBox(height: 30.h),
+                      CustomDiplomaAndProtofile(
+                        imageCertificate:
+                            respon.details?.certificatePath ?? listImage[0],
+                               images: respon.details?.images??[],
+                      ),
+                      SizedBox(height: 100.h)
+                    ],
+                  ),
+                ),
+              ),
             ],
-        );
-      } else {
-        return const SizedBox();
-      }
-        }),
+          );
+        } else {
+          return const SizedBox(
+            child: Text("No data yet"),
+          );
+        }
+      }),
     );
   }
 }
