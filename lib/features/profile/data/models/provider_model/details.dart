@@ -1,34 +1,35 @@
+import '../../../domain/entities/provider_profile/provider_profile_details_job.dart';
 import 'category.dart';
 import 'image.dart';
 import 'working_day.dart';
 
-class Details {
-	int? id;
-	String? name;
-	String? description;
-	dynamic website;
-	String? longitude;
-	String? latitude;
-	dynamic isApproved;
-	String? certificatePath;
-	Category? category;
-	dynamic city;
-	List<WorkingDay>? workingDays;
-	List<ImagesPath>? images;
+class Details extends ProviderProfileDetailsJob {
+	//int? id;
+	// String? name;
+	// String? description;
+	// dynamic website;
+	// String? longitude;
+	// String? latitude;
+	// dynamic isApproved;
+	// String? certificatePath;
+	// Category? category;
+	// dynamic city;
+	// List<WorkingDay>? workingDays;
+	// List<ImagesPath>? images;
 
 	Details({
-		this.id, 
-		this.name, 
-		this.description, 
-		this.website, 
-		this.longitude, 
-		this.latitude, 
-		this.isApproved, 
-		this.certificatePath, 
-		this.category, 
-		this.city, 
-		this.workingDays, 
-		this.images, 
+		super.id,
+		super.name,
+		super.description,
+		super.website,
+		super.longitude,
+		super.latitude,
+		super.isApproved,
+		super.certificatePath,
+		super.category,
+		super.city,
+		super.workingDays,
+		super.images,
 	});
 
 	factory Details.fromJson(Map<String, dynamic> json) => Details(
@@ -52,18 +53,18 @@ class Details {
 						.toList(),
 			);
 
-	Map<String, dynamic> toJson() => {
-				'id': id,
-				'name': name,
-				'description': description,
-				'website': website,
-				'longitude': longitude,
-				'latitude': latitude,
-				'is_approved': isApproved,
-				'certificate_path': certificatePath,
-				'category': category?.toJson(),
-				'city': city,
-				'working_days': workingDays?.map((e) => e.toJson()).toList(),
-				'images': images?.map((e) => e.toJson()).toList(),
-			};
+	// Map<String, dynamic> toJson() => {
+	// 			'id': id,
+	// 			'name': name,
+	// 			'description': description,
+	// 			'website': website,
+	// 			'longitude': longitude,
+	// 			'latitude': latitude,
+	// 			'is_approved': isApproved,
+	// 			'certificate_path': certificatePath,
+	// 			'category': category?.toJson(),
+	// 			'city': city,
+	// 			'working_days': workingDays?.map((e) => e.toJson()).toList(),
+	// 			'images': images?.map((e) => e.toJson()).toList(),
+	// 		};
 }

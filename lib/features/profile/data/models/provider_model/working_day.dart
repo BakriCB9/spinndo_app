@@ -1,4 +1,6 @@
-class WorkingDay {
+import 'package:snipp/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
+
+class WorkingDay extends ProviderPriofileWorkingday {
 	String? day;
 	String? start;
 	String? end;

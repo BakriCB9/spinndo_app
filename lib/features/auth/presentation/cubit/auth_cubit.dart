@@ -31,16 +31,6 @@ class AuthCubit extends Cubit<AuthState> {
   final RegisterService _registerService;
 
 
-  // final Map<String, Map<String, String>> _timeRanges = {
-  //   "Monday": {"start": "08:00", "end": "15:00"},
-  //   "Tuesday": {"start": "08:00", "end": "15:00"},
-  //   "Wednesday": {"start": "08:00", "end": "15:00"},
-  //   "Thursday": {"start": "08:00", "end": "15:00"},
-  //   "Friday": {"start": "08:00", "end": "15:00"},
-  //   "Saturday": {"start": "08:00", "end": "15:00"},
-  //   "Sunday": {"start": "08:00", "end": "15:00"},
-  // };
-
 
   List<DateSelect> dateSelect = [
     DateSelect(day: "sunday",start: "08:00",end: "15:00"),

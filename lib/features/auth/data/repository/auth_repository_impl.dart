@@ -34,7 +34,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(response.data!);
     } on AppException catch (exception) {
-      return Left(RemotFailure(exception.message));
+      return Left(Failure(exception.message));
     }
   }
 
@@ -47,7 +47,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(response);
     } on AppException catch (exception) {
-      return Left(RemotFailure(exception.message));
+      return Left(Failure(exception.message));
     }
   }
 
@@ -62,7 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(response.data!);
     } on AppException catch (exception) {
-      return Left(RemotFailure(exception.message));
+      return Left(Failure(exception.message));
     }
   }
 
@@ -73,7 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _authRemoteDataSource.registerService(requestData);
       return Right(response);
     } on AppException catch (exception) {
-      return Left(RemotFailure(exception.message));
+      return Left(Failure(exception.message));
     }
   }
 
@@ -84,7 +84,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(response);
     } on AppException catch (exception) {
-      return Left(RemotFailure(exception.message));
+      return Left(Failure(exception.message));
     }
   }
 
@@ -95,7 +95,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right(response);
     } on AppException catch (exception) {
-      return Left(RemotFailure(exception.message));
+      return Left(Failure(exception.message));
     }
   }
 }

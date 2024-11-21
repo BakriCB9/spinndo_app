@@ -1,9 +1,9 @@
-class Category {
-	int? id;
-	String? name;
-	dynamic hasChildren;
+import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_category.dart';
 
-	Category({this.id, this.name, this.hasChildren});
+class Category extends ProviderProfileCategory{
+
+
+	Category({super.id, super.name, super.hasChildren});
 
 	factory Category.fromJson(Map<String, dynamic> json) => Category(
 				id: json['id'] as int?,

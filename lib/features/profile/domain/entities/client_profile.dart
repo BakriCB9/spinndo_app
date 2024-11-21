@@ -1,4 +1,4 @@
-class Client {
+class ClientProfile {
 
   final int? id;
   final String? firstName;
@@ -6,7 +6,7 @@ class Client {
   final String? email;
   final dynamic imagePath;
 
-  const Client({
+  const ClientProfile({
   this.id,
   this.firstName,
   this.lastName,

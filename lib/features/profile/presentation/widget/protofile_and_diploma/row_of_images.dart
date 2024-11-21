@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/features/profile/data/models/provider_model/image.dart';
+import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 
 import '../../../../../core/widgets/cash_network.dart';
 
 class RowOfImages extends StatelessWidget {
   String? imagePic;
-  List<ImagesPath>? moreImage;
+  List<ProviderProfileImage>? moreImage;
   int typeSelect;
 
   RowOfImages(
@@ -18,7 +19,7 @@ class RowOfImages extends StatelessWidget {
   Widget build(BuildContext context) {
     return typeSelect == 2
         ? Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children:
       // [Text('No thing yet')]
        
@@ -37,9 +38,9 @@ class RowOfImages extends StatelessWidget {
         //         Hero(tag: e.key, child: CashImage(path: e.value.path!)),
         //       ),
         //     ));
-        CachedNetworkImage(imageUrl: e.value.path!);
+        Align(alignment: Alignment.topLeft,child: CashImage(path: e.value.path!));
       }).toList(),
     )
-        :CashImage(path: imagePic!);
+        :Align(alignment: Alignment.topLeft,child: CashImage(path: imagePic!));
   }
 }

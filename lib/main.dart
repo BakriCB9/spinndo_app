@@ -20,6 +20,7 @@ import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 import 'package:snipp/features/service/presentation/screens/cat_select.dart';
 import 'package:snipp/features/service/presentation/screens/service_screen.dart';
+import 'package:snipp/geo.dart';
 import 'package:snipp/mapss.dart';
 
 Future<void> main() async {
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
                       initialRoute: SignUpScreen.routeName,
                       routes: {
                         EmployeeDetails.routeName: (context) =>
-                            const EmployeeDetails(),
+                        const EmployeeDetails(),        MapWithDioBounds.routeName: (context) =>
+                         MapWithDioBounds(),
                         ServiceScreen.routeName: (context) => ServiceScreen(),
                         FilterScreen.routeName: (context) => FilterScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>

@@ -1,7 +1,7 @@
 
-import 'package:snipp/features/profile/domain/entities/client.dart';
+import 'package:snipp/features/profile/domain/entities/client_profile.dart';
 
-class ClientModel extends Client{
+class ClientModel extends ClientProfile{
 
   const ClientModel({
     super.id,

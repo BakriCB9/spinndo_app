@@ -37,6 +37,10 @@ import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart'
     as _i673;
 import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart'
     as _i884;
+import 'package:snipp/features/profile/data/data_source/local/profile_local_data_source.dart'
+    as _i587;
+import 'package:snipp/features/profile/data/data_source/local/profile_shared_pref_local_data_source.dart'
+    as _i514;
 import 'package:snipp/features/profile/data/data_source/remote/profile_api_remote_data_source.dart'
     as _i595;
 import 'package:snipp/features/profile/data/data_source/remote/profile_remote_data_source.dart'
@@ -49,8 +53,20 @@ import 'package:snipp/features/profile/domain/use_cases/get_client_profile.dart'
     as _i0;
 import 'package:snipp/features/profile/domain/use_cases/get_provider_profile.dart'
     as _i729;
+import 'package:snipp/features/profile/domain/use_cases/get_user_role.dart'
+    as _i743;
 import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart'
     as _i846;
+import 'package:snipp/features/service/data/data_sources/service_api_data_source.dart'
+    as _i16;
+import 'package:snipp/features/service/data/data_sources/service_data_source.dart'
+    as _i555;
+import 'package:snipp/features/service/data/repository/service_repository_impl.dart'
+    as _i43;
+import 'package:snipp/features/service/domain/repository/service_repository.dart'
+    as _i131;
+import 'package:snipp/features/service/presentation/cubit/service_cubit.dart'
+    as _i906;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -69,6 +85,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
+    gh.singleton<_i587.ProfileLocalDataSource>(() =>
+        _i514.ProfileSharedPrefLocalDataSource(
+            sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i884.DrawerCubit>(() =>
         _i884.DrawerCubit(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.singleton<_i1002.AuthLocalDataSource>(() =>
@@ -81,6 +100,14 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.singleton<_i668.AuthRemoteDataSource>(
         () => _i448.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
+    gh.lazySingleton<_i319.ProfileRepository>(() => _i629.ProfileRepositoryImpl(
+          gh<_i378.ProfileRemoteDataSource>(),
+          gh<_i587.ProfileLocalDataSource>(),
+        ));
+    gh.singleton<_i555.ServiceDataSource>(() => _i16.ServiceApiDataSource(
+          gh<_i1002.AuthLocalDataSource>(),
+          gh<_i361.Dio>(),
+        ));
     gh.singleton<_i199.AuthRepository>(() => _i533.AuthRepositoryImpl(
           gh<_i668.AuthRemoteDataSource>(),
           gh<_i1002.AuthLocalDataSource>(),
@@ -96,12 +123,21 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i963.ResetPassword(gh<_i199.AuthRepository>()));
     gh.singleton<_i378.VerifyCode>(
         () => _i378.VerifyCode(gh<_i199.AuthRepository>()));
-    gh.lazySingleton<_i319.ProfileRepository>(
-        () => _i629.ProfileRepositoryImpl(gh<_i378.ProfileRemoteDataSource>()));
+    gh.singleton<_i131.ServiceRepository>(
+        () => _i43.ServiceRepositoryImpl(gh<_i555.ServiceDataSource>()));
     gh.lazySingleton<_i0.GetClientProfile>(
         () => _i0.GetClientProfile(gh<_i319.ProfileRepository>()));
     gh.lazySingleton<_i729.GetProviderProfile>(
         () => _i729.GetProviderProfile(gh<_i319.ProfileRepository>()));
+    gh.lazySingleton<_i743.GetUserRole>(
+        () => _i743.GetUserRole(gh<_i319.ProfileRepository>()));
+    gh.lazySingleton<_i846.ProfileCubit>(() => _i846.ProfileCubit(
+          gh<_i0.GetClientProfile>(),
+          gh<_i729.GetProviderProfile>(),
+          gh<_i743.GetUserRole>(),
+        ));
+    gh.singleton<_i906.ServiceCubit>(
+        () => _i906.ServiceCubit(gh<_i514.Login>()));
     gh.singleton<_i673.AuthCubit>(() => _i673.AuthCubit(
           gh<_i514.Login>(),
           gh<_i903.Register>(),
@@ -109,10 +145,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i19.RegisterService>(),
           gh<_i153.ResendCode>(),
           gh<_i963.ResetPassword>(),
-        ));
-    gh.lazySingleton<_i846.ProfileCubit>(() => _i846.ProfileCubit(
-          gh<_i0.GetClientProfile>(),
-          gh<_i729.GetProviderProfile>(),
         ));
     return this;
   }

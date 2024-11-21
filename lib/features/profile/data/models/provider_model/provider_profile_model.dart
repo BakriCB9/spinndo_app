@@ -1,13 +1,13 @@
 import 'data.dart';
 
-class ProviderResponse {
+class ProviderProfileResponse {
 	String? status;
 	String? message;
 	Data? data;
 
-	ProviderResponse({this.status, this.message, this.data});
+	ProviderProfileResponse({this.status, this.message, this.data});
 
-	factory ProviderResponse.fromJson(Map<String, dynamic> json) => ProviderResponse(
+	factory ProviderProfileResponse.fromJson(Map<String, dynamic> json) => ProviderProfileResponse(
 				status: json['status'] as String?,
 				message: json['message'] as String?,
 				data: json['data'] == null

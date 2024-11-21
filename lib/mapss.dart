@@ -29,8 +29,8 @@ class _MapssState extends State<Mapss> {
   @override
   void initState() {
     initialCameraPosition = CameraPosition(
-      target: LatLng(28.312489817005737, 29.495984785207053),
-      zoom: 1,
+      target: LatLng(34.971491695077844, 38.576888740408094),
+      zoom: 10,
     );
     // location = Location();
     locationService=LocationService();
@@ -55,7 +55,9 @@ class _MapssState extends State<Mapss> {
       body: Stack(
         children: [
           GoogleMap(
-            // zoomControlsEnabled: false,
+            zoomControlsEnabled: false,
+            zoomGesturesEnabled: true,minMaxZoomPreference: MinMaxZoomPreference(8, 20),
+
             markers: markers,
             onTap: (argument) async {
               _authCubit.lat = argument.latitude;
@@ -113,15 +115,15 @@ class _MapssState extends State<Mapss> {
             },
             onMapCreated: (controller) {
               googleMapController = controller;
-              getLocationData();
+              // getLocationData();
             },
             initialCameraPosition: initialCameraPosition,
-            // cameraTargetBounds: CameraTargetBounds(
-            //   LatLngBounds(
-            //     southwest: LatLng(24.84363152706268, 25.762095463302018),
-            //     northeast: LatLng(28.224121357993656, 31.123423735434987),
-            //   ),
-            // ),
+            cameraTargetBounds: CameraTargetBounds(
+              LatLngBounds(
+                southwest: LatLng(32.59463582246123, 36.27484717601601),
+                northeast: LatLng(37.22580755668586, 42.13458933992312),
+              ),
+            ),
           ),
           Positioned(
             bottom: 16,

@@ -4,13 +4,14 @@ import 'package:snipp/core/di/service_locator.dart';
 //import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/profile/data/models/provider_model/working_day.dart';
+import 'package:snipp/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_date_time.dart';
 // import 'package:snipp/core/const_variable.dart';
 
 import 'box_of_from_to.dart';
 
 class CustomDayActive extends StatelessWidget {
-  final List<WorkingDay>listOfworkday;
+  final List<ProviderPriofileWorkingday>listOfworkday;
   const CustomDayActive({required this.listOfworkday,super.key});
 
   @override

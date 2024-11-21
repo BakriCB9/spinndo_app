@@ -1,20 +1,14 @@
+import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile.dart';
+
 import 'details.dart';
 
-class Data  {
-	int? id;
-	String? firstName;
-	String? lastName;
-	String? email;
-	dynamic imagePath;
-	Details? details;
-
-	Data({
-		this.id, 
-		this.firstName, 
-		this.lastName, 
-		this.email, 
-		this.imagePath, 
-		this.details, 
+class Data extends ProviderProfile {
+	Data({super.id,
+		super.firstName,
+		super.lastName,
+		super.email,
+		super.imagePath,
+		super.details,
 	});
 
 	factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -28,12 +22,5 @@ class Data  {
 						: Details.fromJson(json['details'] as Map<String, dynamic>),
 			);
 
-	Map<String, dynamic> toJson() => {
-				'id': id,
-				'first_name': firstName,
-				'last_name': lastName,
-				'email': email,
-				'image_path': imagePath,
-				'details': details?.toJson(),
-			};
+
 }

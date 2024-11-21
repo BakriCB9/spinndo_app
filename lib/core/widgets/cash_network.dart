@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/resources/font_manager.dart';
 import 'package:snipp/core/widgets/loading_indicator.dart';
 
 class CashImage extends StatelessWidget {
@@ -8,12 +10,15 @@ class CashImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(imageUrl: path,placeholder: (context,_){
-      return const  LoadingIndicator();
-    },
-      errorWidget: (context, url, error) {
-        return const  Icon(Icons.error);
+    return SizedBox(
+      height: 350.w,width: 350.w,
+      child: CachedNetworkImage(imageUrl: path,fit: BoxFit.cover,placeholder: (context,_){
+        return const  LoadingIndicator();
       },
+        errorWidget: (context, url, error) {
+          return const  Icon(Icons.error);
+        },
+      ),
     );
   }
 }
