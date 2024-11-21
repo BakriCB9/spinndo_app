@@ -15,9 +15,9 @@ class ProviderResponse {
 						: Data.fromJson(json['data'] as Map<String, dynamic>),
 			);
 
-	Map<String, dynamic> toJson() => {
-				'status': status,
-				'message': message,
-				'data': data?.toJson(),
-			};
+	// Map<String, dynamic> toJson() => {
+	// 			'status': status,
+	// 			'message': message,
+	// 			'data': data?.toJson(),
+	// 		};
 }
