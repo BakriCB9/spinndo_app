@@ -8,12 +8,14 @@ class ApiConstant {
   static const String registerServiceProviderEndPoint =
       '/registerServiceProvider';
   static const String profilCelientEndPotint = '/profile/client';
-  static const String profileServiceProviderEndPoint =    '/profile/provider';
+  static const String profileServiceProviderEndPoint = '/profile/provider';
+  static const String getServices = '/services/getfilter';
+  static const String getAllCountries = '/countries/getAll';
+  static const String getAllCategory = '/categories/getAll';
 }
-
 
 class CacheConstant {
   static const String tokenKey = 'token';
-  static const String userId='user_id';
-  static const String userRole='user_role';
+  static const String userId = 'user_id';
+  static const String userRole = 'user_role';
 }

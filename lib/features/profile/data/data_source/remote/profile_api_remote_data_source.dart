@@ -11,7 +11,7 @@ import 'package:snipp/features/profile/data/models/provider_model/provider_profi
 class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   final Dio _dio;
 
-  ProfileApiRemoteDataSource(this._dio, AuthLocalDataSource authLocalDataSource);
+  ProfileApiRemoteDataSource(this._dio);
 
   @override
   Future<ClientProfileRespoonse> getClientProfile(int user_id,

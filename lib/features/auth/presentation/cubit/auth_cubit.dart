@@ -47,6 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
   final emailController = TextEditingController();
    double? lat;
    double? lang;
+   String location="enter your location";
   final firstNameContoller = TextEditingController();
 
   final lastNameContoller = TextEditingController();

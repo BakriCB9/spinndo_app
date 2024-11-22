@@ -9,9 +9,9 @@ import 'package:snipp/core/widgets/custom_text_form_field.dart';
 
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/screens/map_screen.dart';
 import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:snipp/mapss.dart';
 
 import 'deploma_protofile_image_screen.dart';
 
@@ -119,11 +119,12 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
           SizedBox(height: 20.h),
       InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(Mapss.routeName);
+          Navigator.of(context).pushNamed(MapScreen.routeName);
+
         },
         child: Container(child: Row(children: [
           Icon( Icons.location_on_outlined,),
-        Text(localization.address,)
+        Text(_authCubit.location)
         ],),
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           decoration: BoxDecoration(

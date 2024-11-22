@@ -2,9 +2,9 @@ import 'package:location/location.dart';
 import 'package:snipp/core/error/app_exception.dart';
 
 class LocationService {
-  Location location = Location();
+ static Location location = Location();
 
-  Future<void> checkAndRequestLocationService() async {
+ static Future<void> checkAndRequestLocationService() async {
     var isServiceEnabld = await location.serviceEnabled();
     if (!isServiceEnabld) {
       isServiceEnabld = await location.requestService();
@@ -15,7 +15,7 @@ class LocationService {
 
   }
 
-  Future<void> checkAndRequestLocationPermission() async {
+ static Future<void> checkAndRequestLocationPermission() async {
     var permissionStatus = await location.hasPermission();
     if (permissionStatus == PermissionStatus.deniedForever) {
       throw GoogleMapAppException();
@@ -30,7 +30,7 @@ class LocationService {
     }
 
   }
-  Future<LocationData> getLocationData( )async{
+static  Future<LocationData> getLocationData( )async{
     await checkAndRequestLocationService();
 
     await checkAndRequestLocationPermission();

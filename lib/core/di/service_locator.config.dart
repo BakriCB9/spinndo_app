@@ -85,6 +85,12 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
+    gh.singleton<_i555.ServiceDataSource>(
+        () => _i16.ServiceApiDataSource(gh<_i361.Dio>()));
+    gh.singleton<_i131.ServiceRepository>(
+        () => _i43.ServiceRepositoryImpl(gh<_i555.ServiceDataSource>()));
+    gh.lazySingleton<_i378.ProfileRemoteDataSource>(
+        () => _i595.ProfileApiRemoteDataSource(gh<_i361.Dio>()));
     gh.singleton<_i587.ProfileLocalDataSource>(() =>
         _i514.ProfileSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -93,20 +99,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i1002.AuthLocalDataSource>(() =>
         _i920.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
-    gh.lazySingleton<_i378.ProfileRemoteDataSource>(
-        () => _i595.ProfileApiRemoteDataSource(
-              gh<_i361.Dio>(),
-              gh<_i1002.AuthLocalDataSource>(),
-            ));
     gh.singleton<_i668.AuthRemoteDataSource>(
         () => _i448.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
     gh.lazySingleton<_i319.ProfileRepository>(() => _i629.ProfileRepositoryImpl(
           gh<_i378.ProfileRemoteDataSource>(),
           gh<_i587.ProfileLocalDataSource>(),
-        ));
-    gh.singleton<_i555.ServiceDataSource>(() => _i16.ServiceApiDataSource(
-          gh<_i1002.AuthLocalDataSource>(),
-          gh<_i361.Dio>(),
         ));
     gh.singleton<_i199.AuthRepository>(() => _i533.AuthRepositoryImpl(
           gh<_i668.AuthRemoteDataSource>(),
@@ -123,8 +120,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i963.ResetPassword(gh<_i199.AuthRepository>()));
     gh.singleton<_i378.VerifyCode>(
         () => _i378.VerifyCode(gh<_i199.AuthRepository>()));
-    gh.singleton<_i131.ServiceRepository>(
-        () => _i43.ServiceRepositoryImpl(gh<_i555.ServiceDataSource>()));
     gh.lazySingleton<_i0.GetClientProfile>(
         () => _i0.GetClientProfile(gh<_i319.ProfileRepository>()));
     gh.lazySingleton<_i729.GetProviderProfile>(

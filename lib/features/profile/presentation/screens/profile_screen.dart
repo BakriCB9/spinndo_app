@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:snipp/core/const_variable.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/loading_indicator.dart';
 import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:snipp/features/profile/presentation/cubit/profile_states.dart';
 import 'package:snipp/features/profile/presentation/widget/client_prfile_screen.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/active_day/custom_day_of_active.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/job_items/description.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
-import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
 import 'package:snipp/features/profile/presentation/widget/provider_profile_screen.dart';
-import 'package:snipp/features/profile/presentation/widget/sliver_header_widget.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});

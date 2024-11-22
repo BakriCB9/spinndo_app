@@ -10,6 +10,7 @@ import 'package:snipp/core/resources/theme_manager.dart';
 import 'package:snipp/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
 import 'package:snipp/features/auth/presentation/screens/forget_password_screen.dart';
+import 'package:snipp/features/auth/presentation/screens/map_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
@@ -21,7 +22,6 @@ import 'package:snipp/features/profile/presentation/screens/profile_screen.dart'
 import 'package:snipp/features/service/presentation/screens/cat_select.dart';
 import 'package:snipp/features/service/presentation/screens/service_screen.dart';
 import 'package:snipp/geo.dart';
-import 'package:snipp/mapss.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
                         ForgotPasswordScreen.routeName: (context) =>
                             ForgotPasswordScreen(),
                         SignUpScreen.routeName: (context) => SignUpScreen(),
-                        Mapss.routeName: (context) => Mapss(),
+                        MapScreen.routeName: (context) => MapScreen(),
                         SignInScreen.routeName: (context) => SignInScreen(),
                         VerficationCodeScreen.routeName: (context) =>
                             const VerficationCodeScreen(),

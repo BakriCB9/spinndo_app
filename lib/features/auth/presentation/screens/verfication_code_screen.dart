@@ -27,7 +27,6 @@ class VerficationCodeScreen extends StatefulWidget {
 class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
   TextEditingController codeController = TextEditingController();
   final bool _canResend = false;
-  late Timer _timer;
   final formKey = GlobalKey<FormState>();
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
@@ -35,7 +34,6 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
   @override
   void dispose() {
     codeController.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
