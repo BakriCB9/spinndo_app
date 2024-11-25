@@ -26,7 +26,7 @@ class UserAccount extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 25.sp,
                     fontWeight: FontWeight.w600,
-                    color: Colors.blue)),
+                    color:         Theme.of(context).primaryColor,)),
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(

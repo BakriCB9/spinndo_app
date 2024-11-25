@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/resources/color_manager.dart';
 import 'package:snipp/core/resources/theme_manager.dart';
 import 'package:snipp/features/drawer/model/languages.dart';
 import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
+import 'package:snipp/main.dart';
 
 class CustomDrawer extends StatelessWidget {
    CustomDrawer({super.key});
@@ -17,6 +20,8 @@ class CustomDrawer extends StatelessWidget {
    ];
   @override
   Widget build(BuildContext context) {
+    final email=    sharedPref.getString(CacheConstant.semailKey);
+    final name=    sharedPref.getString(CacheConstant.nameKey);
     return Drawer(
       child: Column(
         children: [
@@ -24,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                color: ColorManager.primary,
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 10),
@@ -54,11 +59,11 @@ class CustomDrawer extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(
-                        'Bakri aweja',
+                        name??'Bakri aweja',
                         style: TextStyle(fontSize: 30.sp, color: Colors.white),
                       ),
                       subtitle: Text(
-                        'bakkaraweja@gmail.com',
+                        email??'bakkaraweja@gmail.com',
                         style: TextStyle(fontSize: 25.sp, color: Colors.white),
                       ),
                     )
@@ -79,12 +84,12 @@ class CustomDrawer extends StatelessWidget {
                           : AppLocalizations.of(context)!.firstName, style: Theme
                           .of(context)
                           .textTheme
-                          .bodyLarge),
+                          .bodyLarge!.copyWith(color: Colors.black)),
                     ),
                     Expanded(
                       child: Switch(
                         activeColor: ColorManager.primary,
-                        activeTrackColor: ColorManager.secondPrimary,
+                        activeTrackColor: ColorManager.black,
                         value: _drawerCubit.themeMode == ThemeMode.dark,
                         onChanged: (value) {
                           if (value) {
@@ -104,7 +109,7 @@ class CustomDrawer extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .bodyLarge),
+                              .bodyLarge!.copyWith(color: Colors.black)),
                     ),
                     Expanded(
                       child: SizedBox(
@@ -114,7 +119,7 @@ class CustomDrawer extends StatelessWidget {
                                 value: languages.firstWhere(
                                       (lang) =>
                                   lang.code == _drawerCubit.languageCode,
-                                ),
+                                ),style: TextStyle(color: Colors.black),
                                 items: languages
                                     .map(
                                       (language) =>
@@ -125,7 +130,7 @@ class CustomDrawer extends StatelessWidget {
                                                 .of(context)
                                                 .textTheme
                                                 .bodyLarge!
-                                                .copyWith(fontWeight: FontWeight.w500)),
+                                                .copyWith(fontWeight: FontWeight.w500,color: Colors.black)),
                                       ),
                                 )
                                     .toList(),
@@ -147,13 +152,17 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-          const Expanded(
+           Expanded(
               flex: 3,
               child: Column(
                 children: [
-                  ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Profile'),
+                  InkWell(onTap: () {
+                    Navigator.of(context).pushNamed(Profile_Screen.routeName);
+                  },
+                    child: ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text('Profile'),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.settings),

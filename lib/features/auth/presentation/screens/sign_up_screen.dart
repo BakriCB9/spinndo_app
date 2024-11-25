@@ -3,40 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/resources/color_manager.dart';
-import 'package:snipp/core/resources/theme_manager.dart';
-
-// import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
 import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
-import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 import '../../../../core/utils/ui_utils.dart';
 import '../../../../core/utils/validator.dart';
 import 'sign_in_screen.dart';
 import 'verfication_code_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
   static const String routeName = '/signup';
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
 
   final _authCubit = serviceLocator.get<AuthCubit>();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   Widget build(BuildContext context) {
-    // double avatarRadius = MediaQuery.of(context).size.width * 0.3;
     final localization = AppLocalizations.of(context)!;
 
     return CustomAuthForm(
@@ -135,7 +126,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       BlocBuilder<AuthCubit, AuthState>(
         bloc: _authCubit,
+        buildWhen: (previous, current) {
+          if(current is  ChooseAccountState){return true;}
+          return false;
+        },
         builder: (context, state) {
+          print("ddddddddss");
+
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0.w),
             child: Row(
@@ -190,15 +187,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             } else if (state is RegisterError) {
               UIUtils.hideLoading(context);
               UIUtils.showMessage(state.message);
-              if (state.message.contains("The email has already been taken.")) {
-                Navigator.of(context).pushNamed(
-                  VerficationCodeScreen.routeName,
-                );
-              }
+
+            }
+            if (state is GetCategoryLoading) {
+              UIUtils.showLoading(context, 'asset/animation/loading.json');
+            } else if (state is GetCategorySuccess) {
+              UIUtils.hideLoading(context);
+              Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+
+            } else if (state is GetCategoryError) {
+              UIUtils.hideLoading(context);
+              UIUtils.showMessage(state.message);
+
             }
           },
           buildWhen: (previous, current) {
-            if ((previous is AuthInitial || previous is ChooseAccountState) &&
+            if (
+            //(previous is AuthInitial || previous is ChooseAccountState) &&
                 current is ChooseAccountState) {
               return true;
             }
@@ -208,12 +213,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             return SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _register,
+                onPressed: (){
+                  _register(context);
+                },
                 child: Text(
                     _authCubit.isClient
                         ? localization.signUp
                         : localization.next,
-                    style: Theme.of(context).textTheme.bodyLarge),
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:     _drawerCubit.themeMode== ThemeMode.dark
+                        ? ColorManager.primary
+                        : ColorManager.white)),
               ),
             );
           }),
@@ -223,15 +232,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: EdgeInsets.only(bottom: 30.h),
         child: InkWell(
             onTap: () {
+              _authCubit.emailController.clear();
+              _authCubit.passwordController.clear();
+              _authCubit.confirmPasswordController.clear();
+              _authCubit.firstNameContoller.clear();
+              _authCubit.lastNameContoller.clear();
               Navigator.of(context).pushNamed(SignInScreen.routeName);
             },
             child: Text(localization.alreadyHaveAccount,
-                style: Theme.of(context).textTheme.titleMedium)),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(color:   ColorManager.primary))),
       ))
     ]));
   }
 
-  _register() {
+  _register(BuildContext context) {
     if (_authCubit.isClient) {
       if (formKey.currentState!.validate()) {
         _authCubit.register(RegisterRequest(
@@ -244,8 +258,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } else {
       if (formKey.currentState!.validate()) {
-        Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+        _authCubit.getCategories();
       } else {
+
         return;
       }
     }

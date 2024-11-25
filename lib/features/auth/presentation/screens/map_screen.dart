@@ -1,172 +1,118 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/models/google_map_model.dart';
-import 'package:snipp/core/utils/map_helper/geocoding_service.dart';
-import 'package:snipp/core/utils/map_helper/google_map_service.dart';
-import 'package:snipp/core/utils/map_helper/location_service.dart';
+import 'package:snipp/core/widgets/loading_indicator.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 
-class MapScreen extends StatefulWidget {
+class MapScreen extends StatelessWidget {
   static const String routeName = '/map';
 
   const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
-}
-
-final _authCubit = serviceLocator.get<AuthCubit>();
-
-class _MapScreenState extends State<MapScreen> {
-  late CameraPosition initialCameraPosition;
-  late LocationService locationService;
-  late LatLng currentLatLng;
-  late LatLng selectedLatLng;
-
-  @override
-  void initState() {
-    initialCameraPosition = const CameraPosition(
-      target: LatLng(34.971491695077844, 38.576888740408094),
-      zoom: 10,
-    );
-    locationService = LocationService();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    googleMapController!.dispose();
-    super.dispose();
-  }
-
-  Set<Marker> markers = {};
-  GoogleMapController? googleMapController;
-  String regionName="";
-  String regionName2="";
-  var ll;
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()  {
-          showModalBottomSheet(backgroundColor: Colors.white,context: context, builder: (context) {
-            return Column(
-              children: [
-                InkWell(
-                  child: const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Select Current Location"),
-                      Icon(Icons.add_location,color: Colors.blue,)
-                    ],
-                  ),
-                  onTap: ()async{
 
-         currentLatLng=  await GoogleMapService.initCurrentLocation(googleMapController!);
-         initMarkers(markers);
-         _authCubit.lat=currentLatLng.latitude;
-         _authCubit.lang=currentLatLng.longitude;
-
-         ll=await GeocodingService.getAddressFromCoordinates(currentLatLng.latitude,currentLatLng.longitude);
-         _authCubit.location=ll['address_components'][1]['long_name'];
-
-                    Navigator.of(context).pop();
-         setState(() {
-
-         });
-                  },
-                ),
-                InkWell(
-                  child:  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Select $regionName  Location $regionName2"),
-                      const Icon(Icons.directions,color: Colors.blue)
-                    ],
-                  ),
-                  onTap: (){
-
-
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },);
-        },
-        backgroundColor: Colors.blue,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        child: const Icon(
-          Icons.save,
-          color: Colors.white,
-        ),
-      ),
       appBar: AppBar(
         title: const Text("Google Map"),
       ),
-      body: GoogleMap(
-        zoomControlsEnabled: false,
-        // minMaxZoomPreference: MinMaxZoomPreference(8, 50),
-        markers: markers,
-        onTap: (argument) async {
-        selectedLatLng=await  GoogleMapService.selectLocation(argument);
-        initMarkers(markers);
-        _authCubit.lat=selectedLatLng.latitude;
-        _authCubit.lang=selectedLatLng.longitude;
-
-     ll=await GeocodingService.getAddressFromCoordinates(selectedLatLng.latitude,selectedLatLng.longitude);
-        _authCubit.location=ll['address_components'][2]['long_name'];
-        print(_authCubit.location);
-        print(selectedLatLng.latitude);
-        setState(() {
-
-        });
+      body: BlocBuilder<AuthCubit, AuthState>(
+        bloc: _authCubit,
+        buildWhen: (previous, current) {
+          if (current is GetCurrentLocationSuccess ||
+              current is GetCurrentLocationLoading ||
+              current is GetCurrentLocationErrorr) return true;
+          return false;
         },
-        onMapCreated: (controller)async {
-          googleMapController = controller;
+        builder: (context, state) {
+          if (state is GetCurrentLocationLoading) {
+            return  Center(
+              child: LoadingIndicator(Theme.of(context).primaryColor),
+            );
+          } else if (state is GetCurrentLocationSuccess) {
+            return BlocBuilder<AuthCubit, AuthState>(
+              bloc: _authCubit,
+              buildWhen: (previous, current) {
+                if (current is SelectedLocationState) return true;
+                return false;
+              },
+              builder: (context, state) {
+                return Stack(alignment: Alignment.bottomCenter,
+                  children: [
+                    GoogleMap(
+                      zoomControlsEnabled: false,
+                      // minMaxZoomPreference: MinMaxZoomPreference(8, 50),
+                      markers: _authCubit.markers,
+                      onTap: (argument) {
+                        _authCubit.selectLocation(argument);
 
-          currentLatLng=  await GoogleMapService.initCurrentLocation(googleMapController!);
-          initMarkers(markers);
-          _authCubit.lat=currentLatLng.latitude;
-          _authCubit.lang=currentLatLng.longitude;
+                        _authCubit.initMarkerAddress();
+                        _authCubit.isCurrent = false;
+                      },
+                      onMapCreated: (controller) async {
+                        _authCubit.googleMapController = controller;
 
-          ll=await GeocodingService.getAddressFromCoordinates(currentLatLng.latitude,currentLatLng.longitude);
-          _authCubit.location=ll['address_components'][1]['long_name'];
-          setState(() {});
-          // getLocationData();
+                        _authCubit.initCurrentLocation();
+                        _authCubit.initMarkerAddress();
+                      },
+                      initialCameraPosition: CameraPosition(
+                          target:
+                              _authCubit.currentLocation ?? const LatLng(0, 0),
+                          zoom: 14),
+                    ),
+                    Positioned(
+                      bottom: 50.h,
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                _authCubit.initCurrentLocation();
+                                _authCubit.initMarkerAddress();
+                                _authCubit.isCurrent = true;
+                              },
+                              child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text("get current location",style: TextStyle(color: Colors.black,fontSize: 26.sp),),
+                              )),
+                          SizedBox(width: 50.w,),
+                          ElevatedButton(
+                              onPressed: () {
+                                _authCubit.initCurrentLocation();
+                                _authCubit.initMarkerAddress();
+                                _authCubit.getCountryAndCityNameFromCrocd(
+                                    _authCubit.isCurrent
+                                        ? _authCubit.currentLocation!.latitude
+                                        : _authCubit.selectedLocation!.latitude,
+                                    _authCubit.isCurrent
+                                        ? _authCubit.currentLocation!.longitude
+                                        : _authCubit.selectedLocation!.longitude);
+                                Navigator.pop(context);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child:  Text("Save Choosen location",style: TextStyle(color: Colors.black,fontSize: 26.sp),),
+                              )),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              },
+            );
+          } else if (state is GetCurrentLocationErrorr) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else {
+            return const SizedBox();
+          }
         },
-        initialCameraPosition: initialCameraPosition,
-        // cameraTargetBounds: CameraTargetBounds(
-        //   LatLngBounds(
-        //     southwest: LatLng(32.59463582246123, 36.27484717601601),
-        //     northeast: LatLng(37.22580755668586, 42.13458933992312),
-        //   ),
-        // ),
       ),
     );
   }
-
-  static void initMarkers(Set<Marker>markers) {
-    var myMarker = markerLocationData
-        .map(
-          (e) => Marker(
-        position: e.latLng,
-        infoWindow: InfoWindow(title: e.name),
-        markerId: MarkerId(
-          e.id.toString(),
-        ),
-      ),
-    )
-        .toSet();
-    markers.addAll(myMarker);
-  }
-
-
-
-//world view 0 ->3
-//country view 4->6
-//city view 10->12
-//street view 13->17
-//building view 18->20
-
-
 }
+
+final _authCubit = serviceLocator.get<AuthCubit>();

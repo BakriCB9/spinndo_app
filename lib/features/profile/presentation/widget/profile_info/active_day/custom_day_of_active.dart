@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/resources/color_manager.dart';
 //import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/profile/data/models/provider_model/working_day.dart';
@@ -27,14 +28,14 @@ class CustomDayActive extends StatelessWidget {
               style: TextStyle(
                   fontSize: 25.sp,
                   fontWeight: FontWeight.w600,
-                  color: Colors.blue),
+                  color:        Theme.of(context).primaryColor,),
             ),
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => WorkingSchedulePage()));
                 },
-                icon: Icon(Icons.edit_calendar_outlined))
+                icon: Icon(Icons.edit_calendar_outlined,color: ColorManager.grey2,))
           ],
         ),
         Column(
@@ -51,8 +52,7 @@ class CustomDayActive extends StatelessWidget {
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.day!,
-                                      style: TextStyle(
-                                          fontSize: 25.sp, color: Colors.grey),
+                                      style:  TextStyle(fontSize: 26.sp, color: Colors.black),
                                     ),
                                   ),
                                 ),

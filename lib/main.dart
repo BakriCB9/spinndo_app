@@ -1,12 +1,14 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snipp/core/app_bloc_observer.dart';
+import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:snipp/core/resources/theme_manager.dart';
-
 import 'package:snipp/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
 import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
 import 'package:snipp/features/auth/presentation/screens/forget_password_screen.dart';
@@ -20,16 +22,20 @@ import 'package:snipp/features/home/presentation/screens/home_screen.dart';
 import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 import 'package:snipp/features/service/presentation/screens/cat_select.dart';
+import 'package:snipp/features/service/presentation/screens/service_map_screen.dart';
 import 'package:snipp/features/service/presentation/screens/service_screen.dart';
 import 'package:snipp/geo.dart';
+
+late final SharedPreferences sharedPref;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
+  sharedPref = await SharedPreferences.getInstance();
 
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (_) {
         return const MyApp();
       }));
@@ -60,18 +66,28 @@ class MyApp extends StatelessWidget {
                       darkTheme: ThemeManager.darkTheme,
                       themeMode:
                           BlocProvider.of<DrawerCubit>(context).themeMode,
-                      localizationsDelegates:
-                          AppLocalizations.localizationsDelegates,
+                      localizationsDelegates:AppLocalizations.localizationsDelegates,
                       supportedLocales: AppLocalizations.supportedLocales,
                       locale: Locale(
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       //home: HomeScreen(),
-                      initialRoute: SignUpScreen.routeName,
+                      initialRoute:
+                          sharedPref.getString(CacheConstant.tokenKey) == null
+                              ? (sharedPref
+                                          .getString(CacheConstant.emailKey) ==
+                                      null
+                                  ? SignUpScreen.routeName
+                                  : VerficationCodeScreen.routeName)
+                              :  ServiceScreen.routeName,
                       routes: {
                         EmployeeDetails.routeName: (context) =>
-                        const EmployeeDetails(),        MapWithDioBounds.routeName: (context) =>
-                         MapWithDioBounds(),
+                             EmployeeDetails(),
+                        MapWithDioBounds.routeName: (context) =>
+                            MapWithDioBounds(),
                         ServiceScreen.routeName: (context) => ServiceScreen(),
+                        ServiceMapScreen.routeName: (context) =>
+                            ServiceMapScreen(),
+                        // FilterResultScreen.routeName: (context) => FilterResultScreen(),
                         FilterScreen.routeName: (context) => FilterScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>
                             const DeplomaProtofileImageScreen(),
@@ -81,7 +97,7 @@ class MyApp extends StatelessWidget {
                         MapScreen.routeName: (context) => MapScreen(),
                         SignInScreen.routeName: (context) => SignInScreen(),
                         VerficationCodeScreen.routeName: (context) =>
-                            const VerficationCodeScreen(),
+                             VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
                         HomeScreen.routeName: (context) => const HomeScreen(),

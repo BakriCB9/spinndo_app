@@ -19,9 +19,5 @@ class GetAllCountriesResponse {
 
 
 
-	Map<String, dynamic> toJson() => {
-				'status': status,
-				'message': message,
-				'data': data?.map((e) => e.toJson()).toList(),
-			};
+
 }

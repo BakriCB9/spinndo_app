@@ -9,32 +9,26 @@ import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/features/auth/data/models/login_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:snipp/features/service/presentation/screens/service_screen.dart';
 import 'forget_password_screen.dart';
 import 'sign_up_screen.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
   static const String routeName = '/signin';
 
-  @override
-  State<SignInScreen> createState() => _SignInScreenState();
-}
-
-class _SignInScreenState extends State<SignInScreen> {
-  final emailController = TextEditingController();
-
-  final passwordController = TextEditingController();
-
   final formKey = GlobalKey<FormState>();
 
   final _authCubit = serviceLocator.get<AuthCubit>();
+
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
+
+  @override
 
   @override
   Widget build(BuildContext context) {    final localization = AppLocalizations.of(context)!;
@@ -88,7 +82,9 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                   },
                   child: Text(
                     localization.forgetPassword,
-                    style:Theme.of(context).textTheme.titleMedium
+                    style:Theme.of(context).textTheme.titleMedium!.copyWith(color:     _drawerCubit.themeMode== ThemeMode.dark
+                        ? ColorManager.primary
+                        : ColorManager.primary)
                   )),
             ),
           ),
@@ -101,10 +97,15 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                 UIUtils.showLoading(context);
               } else if (state is LoginSuccess) {
                 UIUtils.hideLoading(context);
-                Navigator.of(context).pushNamed(Profile_Screen.routeName);
+                Navigator.of(context).pushNamed(ServiceScreen.routeName);
               } else if (state is LoginError) {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.message);
+                if(state.message=="This accouct is Inactive.You must insert verification code from your email."){
+
+
+                  Navigator.of(context).pushNamed(VerficationCodeScreen.routeName);
+                }
               }
             },
             child: SizedBox(
@@ -115,7 +116,11 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
 
                 child: Text(
                  localization.login,
-                  style: Theme.of(context).textTheme.bodyLarge
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color:     _drawerCubit.themeMode== ThemeMode.dark
+                          ? ColorManager.black
+                          : ColorManager.white
+                  )
                 ),
               ),
             ),
@@ -127,14 +132,16 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
+                _authCubit.emailController.clear();
+                _authCubit.passwordController.clear();
                 Navigator.of(context).pushNamed(SignUpScreen.routeName);
               },
               style:style.copyWith(
-                backgroundColor:MaterialStateProperty.all( _drawerCubit.themeMode==ThemeMode.light?ColorManager.white:ColorManager.primary)
+                backgroundColor:WidgetStateProperty.all( _drawerCubit.themeMode==ThemeMode.light?ColorManager.white:ColorManager.primary)
               ),
               child: Text(
                localization.createNewAccount,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: _drawerCubit.themeMode==ThemeMode.light?ColorManager.primary:ColorManager.white )
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: _drawerCubit.themeMode==ThemeMode.light?ColorManager.primary:ColorManager.black )
 
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/resources/color_manager.dart';
 import 'package:snipp/core/utils/ui_utils.dart';
 import 'package:snipp/core/utils/validator.dart';
 import 'package:snipp/core/widgets/custom_text_form_field.dart';
@@ -10,25 +11,23 @@ import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 import 'package:snipp/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   static const String routeName = '/forget';
 
   final _authCubit = serviceLocator.get<AuthCubit>();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   final formKey = GlobalKey<FormState>();
-  final TextEditingController passwordController = TextEditingController();
 
-  final TextEditingController confirmPasswordController =TextEditingController();
   ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {final localization = AppLocalizations.of(context)!;
-    return CustomAuthForm(hasAvatar: false,hasTitle: false,child:
-    Container(
-      height: 1200.h,
+    return CustomAuthForm(isGuest: false,hasAvatar: false,hasTitle: false,child:
+    SingleChildScrollView(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,7 +48,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(child: Align(alignment: Alignment.center,child: Icon(Icons.lock_reset, size: 200.sp, color: Theme.of(context).primaryColor))),
+            SizedBox(height: 30.h),
+            Align(alignment: Alignment.center,child: Icon(Icons.lock_reset, size: 200.sp, color: Theme.of(context).primaryColor)),
             SizedBox(height: 50.h),
             Text(
              localization.emailResetPassword,
@@ -115,7 +115,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
 
             ),
-Spacer(),
+            SizedBox(height: 50.h,),
             BlocListener<AuthCubit  , AuthState>(
               bloc: _authCubit,
           listener: (context, state) {
@@ -142,7 +142,9 @@ Spacer(),
                 },
 
                 child: Text(localization.verify,
-                    style: Theme.of(context).textTheme.bodyLarge
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:     _drawerCubit.themeMode== ThemeMode.dark
+                        ? ColorManager.black
+                        : ColorManager.white)
               ),
             ),
         ),

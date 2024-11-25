@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/resources/font_manager.dart';
 import 'package:snipp/core/resources/styles_manager.dart';
 import 'package:snipp/core/resources/theme_manager.dart';
-import 'package:snipp/core/theming/colors_manager.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String? hintText;
@@ -58,7 +57,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
       onFieldSubmitted: (_) {
         _focus.unfocus();
       },
-style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: FontSize.s32.sp),
+style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: FontSize.s32.sp,color: Colors.black),
       controller: widget.controller,
       decoration: InputDecoration(
 

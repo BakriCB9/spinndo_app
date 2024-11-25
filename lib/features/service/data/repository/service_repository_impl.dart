@@ -1,31 +1,71 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:injectable/injectable.dart';
-// import 'package:snipp/core/error/failure.dart';
-//
-// import 'package:snipp/features/service/data/data_sources/service_data_source.dart';
-//
-// import '../../domain/repository/service_repository.dart';
-//
-// @Singleton(as: ServiceRepository)
-// class ServiceRepositoryImpl implements ServiceRepository {
-//   final ServiceDataSource _serviceDataSource;
-//
-//   ServiceRepositoryImpl(this._serviceDataSource);
-//
-//
-//   @override
-//   Future<Either<Failure, Data>> login(LoginRequest requestData) async {
-//     try {
-//       final response = await _authRemoteDataSource.login(requestData);
-//       await _authLocalDataSource.saveToken(response.data!.token);
-//       await _authLocalDataSource.saveUserId(response.data!.id);
-//       await _authLocalDataSource.saveUserRole(response.data!.role);
-//
-//       return Right(response.data!);
-//     } on AppException catch (exception) {
-//       return Left(RemotFailure(exception.message));
-//     }
-//   }
-//
-//
-// }
+import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+import 'package:snipp/core/error/failure.dart';
+import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile.dart';
+
+import 'package:snipp/features/service/data/data_sources/service_data_source.dart';
+import 'package:snipp/features/service/data/models/get_services_request.dart';
+import 'package:snipp/features/service/domain/entities/categories.dart';
+import 'package:snipp/features/service/domain/entities/countries.dart';
+import 'package:snipp/features/service/domain/entities/services.dart';
+
+import '../../../../core/error/app_exception.dart';
+import '../../../profile/data/models/provider_model/data.dart';
+import '../../domain/repository/service_repository.dart';
+
+@LazySingleton(as: ServiceRepository)
+class ServiceRepositoryImpl implements ServiceRepository {
+  final ServiceDataSource _serviceDataSource;
+
+
+  ServiceRepositoryImpl(this._serviceDataSource);
+
+  @override
+  Future<Either<Failure, List<Categories>>> getCategories()async {
+    try {
+
+      final getCategoriesResponse = await _serviceDataSource.getAllCategory();
+      return Right(getCategoriesResponse.data!);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Countries>>> getCountries() async{
+    try {
+
+      final getCountriesResponse = await _serviceDataSource.getAllCountries();
+      return Right(getCountriesResponse.data!);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Services>>> getServices(GetServicesRequest requestData) async{
+    try {
+
+      final getServicesResponse = await _serviceDataSource.getServices(requestData);
+      return Right(getServicesResponse.data!);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Data>> showDetails(int id) async{
+    try {
+
+      final poviderService = await _serviceDataSource.getProviderService(id);
+      return Right(poviderService.data!);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+
+  }
+
+
+
+
+}

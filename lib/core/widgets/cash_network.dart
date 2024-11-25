@@ -13,7 +13,7 @@ class CashImage extends StatelessWidget {
     return SizedBox(
       height: 350.w,width: 350.w,
       child: CachedNetworkImage(imageUrl: path,fit: BoxFit.cover,placeholder: (context,_){
-        return const  LoadingIndicator();
+        return LoadingIndicator(Theme.of(context).primaryColor);
       },
         errorWidget: (context, url, error) {
           return const  Icon(Icons.error);

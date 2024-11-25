@@ -12,10 +12,15 @@ class ApiConstant {
   static const String getServices = '/services/getfilter';
   static const String getAllCountries = '/countries/getAll';
   static const String getAllCategory = '/categories/getAll';
+ static final String googleMapApiKey ='AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
 }
 
 class CacheConstant {
+
   static const String tokenKey = 'token';
+  static const String emailKey= 'email';
+  static const String semailKey= 'semail';
+  static const String nameKey= 'name';
   static const String userId = 'user_id';
   static const String userRole = 'user_role';
 }

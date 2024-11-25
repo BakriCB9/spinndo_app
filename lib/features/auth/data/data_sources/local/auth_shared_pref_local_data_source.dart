@@ -42,4 +42,44 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
       throw LocalAppException('Failed to store role');
     }
   }
+
+  @override
+  String getUserUnCompliteAccount() {
+    try {
+      return _sharedPreferences.getString(CacheConstant.emailKey)!;
+    } catch (_) {
+      throw LocalAppException('Failed to get email');
+    }
+  }
+
+  @override
+  Future<void> saveUserUnCompliteAccount(String email)async {
+    try {
+      await _sharedPreferences.setString(CacheConstant.emailKey, email);
+    } catch (_) {
+      throw LocalAppException('Failed to store email');
+  }}
+
+  @override
+  Future<void> deleteEmail() async{
+await _sharedPreferences.remove(CacheConstant.emailKey);
+  }
+
+  @override
+  Future<void> saveUserEmail(String email) async{
+    try {
+      await _sharedPreferences.setString(CacheConstant.semailKey, email);
+    } catch (_) {
+      throw LocalAppException('Failed to store email');
+    }
+  }
+
+  @override
+  Future<void> saveUserName(String name)async {
+    try {
+      await _sharedPreferences.setString(CacheConstant.nameKey, name);
+    } catch (_) {
+      throw LocalAppException('Failed to store name');
+    }
+  }
 }

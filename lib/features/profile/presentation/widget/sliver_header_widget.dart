@@ -36,7 +36,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     final double rightSpace = size.width * 0.03;
 
     return Container(
-      color: Colors.blue,
+      color:        Theme.of(context).primaryColor,
       // color: Theme.of(context)
       //     .appBarTheme
       //     .
@@ -50,12 +50,14 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
             child: CustomContainer(
                 shape: isImageBig ? BoxShape.circle : BoxShape.rectangle,
                 width: isImageBig ? currentImageSize : null,
-                image: 'asset/images/messi.jpg'),
+                image: 'asset/images/aaaa.png'),
           ),
           CustomPosition(
               left: 0,
               top: topSpace,
-              child: CustomIconButton(ontap: () {}, icon: Icons.arrow_back)),
+              child: CustomIconButton(ontap: () {
+                Navigator.pop(context);
+              }, icon: Icons.arrow_back)),
           // CustomPosition(
           //     right: rightSpace,
           //     top: topSpace,
@@ -68,11 +70,8 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                   ? max(
                   ((size.width / 1.1)) * (1 - percent), minImageSize * 2.2)
                   : rightSpace,
-              isAnimated: true,
-              child: Text(
-                'bakri aweja',
-                style: TextStyle(fontSize: 30.sp, color: Colors.white),
-              )),
+              isAnimated: true, child: SizedBox(),
+          )
         ],
       ),
     );

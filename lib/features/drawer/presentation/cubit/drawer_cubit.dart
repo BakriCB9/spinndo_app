@@ -13,7 +13,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
   ThemeMode themeMode = ThemeMode.light;
   String languageCode = 'en';
   Color get backgroundColor =>
-      themeMode == ThemeMode.light ? ColorManager.secondPrimary :ColorManager.babyBlue ;
+      themeMode == ThemeMode.light ? ColorManager.backgroundColor :ColorManager.grey2 ;
 
   void changeTheme(ThemeMode selctedTheme) {
     themeMode = selctedTheme;

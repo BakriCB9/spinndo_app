@@ -25,6 +25,8 @@ import 'package:snipp/features/auth/data/repository/auth_repository_impl.dart'
     as _i533;
 import 'package:snipp/features/auth/domain/repository/auth_repository.dart'
     as _i199;
+import 'package:snipp/features/auth/domain/use_cases/getCountryName.dart'
+    as _i338;
 import 'package:snipp/features/auth/domain/use_cases/login.dart' as _i514;
 import 'package:snipp/features/auth/domain/use_cases/register.dart' as _i903;
 import 'package:snipp/features/auth/domain/use_cases/register_service.dart'
@@ -65,6 +67,14 @@ import 'package:snipp/features/service/data/repository/service_repository_impl.d
     as _i43;
 import 'package:snipp/features/service/domain/repository/service_repository.dart'
     as _i131;
+import 'package:snipp/features/service/domain/use_cases/get_categories.dart'
+    as _i544;
+import 'package:snipp/features/service/domain/use_cases/get_countries.dart'
+    as _i592;
+import 'package:snipp/features/service/domain/use_cases/get_details.dart'
+    as _i1031;
+import 'package:snipp/features/service/domain/use_cases/get_services.dart'
+    as _i447;
 import 'package:snipp/features/service/presentation/cubit/service_cubit.dart'
     as _i906;
 
@@ -85,10 +95,20 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
-    gh.singleton<_i555.ServiceDataSource>(
-        () => _i16.ServiceApiDataSource(gh<_i361.Dio>()));
-    gh.singleton<_i131.ServiceRepository>(
+    gh.lazySingleton<_i555.ServiceDataSource>(() => _i16.ServiceApiDataSource(
+          gh<_i361.Dio>(),
+          gh<_i460.SharedPreferences>(),
+        ));
+    gh.lazySingleton<_i131.ServiceRepository>(
         () => _i43.ServiceRepositoryImpl(gh<_i555.ServiceDataSource>()));
+    gh.lazySingleton<_i544.GetCategories>(
+        () => _i544.GetCategories(gh<_i131.ServiceRepository>()));
+    gh.lazySingleton<_i592.GetCountries>(
+        () => _i592.GetCountries(gh<_i131.ServiceRepository>()));
+    gh.lazySingleton<_i1031.GetServiceProfile>(
+        () => _i1031.GetServiceProfile(gh<_i131.ServiceRepository>()));
+    gh.lazySingleton<_i447.GetServices>(
+        () => _i447.GetServices(gh<_i131.ServiceRepository>()));
     gh.lazySingleton<_i378.ProfileRemoteDataSource>(
         () => _i595.ProfileApiRemoteDataSource(gh<_i361.Dio>()));
     gh.singleton<_i587.ProfileLocalDataSource>(() =>
@@ -99,6 +119,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i1002.AuthLocalDataSource>(() =>
         _i920.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.singleton<_i906.ServiceCubit>(() => _i906.ServiceCubit(
+          gh<_i447.GetServices>(),
+          gh<_i592.GetCountries>(),
+          gh<_i544.GetCategories>(),
+          gh<_i1031.GetServiceProfile>(),
+        ));
     gh.singleton<_i668.AuthRemoteDataSource>(
         () => _i448.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
     gh.lazySingleton<_i319.ProfileRepository>(() => _i629.ProfileRepositoryImpl(
@@ -120,6 +146,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i963.ResetPassword(gh<_i199.AuthRepository>()));
     gh.singleton<_i378.VerifyCode>(
         () => _i378.VerifyCode(gh<_i199.AuthRepository>()));
+    gh.singleton<_i338.Getcountryname>(
+        () => _i338.Getcountryname(gh<_i199.AuthRepository>()));
     gh.lazySingleton<_i0.GetClientProfile>(
         () => _i0.GetClientProfile(gh<_i319.ProfileRepository>()));
     gh.lazySingleton<_i729.GetProviderProfile>(
@@ -131,8 +159,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i729.GetProviderProfile>(),
           gh<_i743.GetUserRole>(),
         ));
-    gh.singleton<_i906.ServiceCubit>(
-        () => _i906.ServiceCubit(gh<_i514.Login>()));
     gh.singleton<_i673.AuthCubit>(() => _i673.AuthCubit(
           gh<_i514.Login>(),
           gh<_i903.Register>(),
@@ -140,6 +166,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i19.RegisterService>(),
           gh<_i153.ResendCode>(),
           gh<_i963.ResetPassword>(),
+          gh<_i544.GetCategories>(),
+          gh<_i338.Getcountryname>(),
         ));
     return this;
   }

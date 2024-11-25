@@ -1,13 +1,13 @@
-class Data {
-	int? id;
-	String? name;
-	List<dynamic>? children;
+import 'package:snipp/features/service/domain/entities/categories.dart';
 
-	Data({this.id, this.name, this.children});
+class Data extends Categories{
+	final List<dynamic>? children;
+
+	Data({required super.id, required super.name, this.children});
 
 	factory Data.fromJson(Map<String, dynamic> json) => Data(
-				id: json['id'] as int?,
-				name: json['name'] as String?,
+				id: json['id'] as int,
+				name: json['name'] as String,
 				children: json['children'] as List<dynamic>?,
 			);
 

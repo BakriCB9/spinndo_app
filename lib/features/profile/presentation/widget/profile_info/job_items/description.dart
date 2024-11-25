@@ -26,7 +26,7 @@ class CustomDescription extends StatelessWidget {
               'Job Details',
               style: TextStyle(
                   fontSize: 25.sp,
-                  color: Colors.blue,
+                  color:         Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w600),
             ),
             IconButton(
@@ -53,7 +53,7 @@ class CustomDescription extends StatelessWidget {
         Text(
           'Description',
           style: TextStyle(
-              fontSize: 22.sp, color: Colors.blue, fontWeight: FontWeight.w600),
+              fontSize: 22.sp, color:         Theme.of(context).primaryColor, fontWeight: FontWeight.w600),
         ),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),

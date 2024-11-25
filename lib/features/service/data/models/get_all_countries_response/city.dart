@@ -1,16 +1,14 @@
-class City {
-	int? id;
-	String? name;
+import 'package:snipp/features/service/domain/entities/cities.dart';
 
-	City({this.id, this.name});
+class City extends Cities {
+	City({required super.name, required super.id});
+
 
 	factory City.fromJson(Map<String, dynamic> json) => City(
-				id: json['id'] as int?,
-				name: json['name'] as String?,
-			);
+		id: json['id'] as int,
+		name: json['name'] as String,
+	);
 
-	Map<String, dynamic> toJson() => {
-				'id': id,
-				'name': name,
-			};
+
+
 }

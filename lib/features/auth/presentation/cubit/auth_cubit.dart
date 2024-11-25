@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:location/location.dart';
+import 'package:snipp/core/constant.dart';
+import 'package:snipp/core/error/app_exception.dart';
+import 'package:snipp/core/utils/map_helper/location_service.dart';
 import 'package:snipp/features/auth/data/models/login_request.dart';
 import 'package:snipp/features/auth/data/models/register_request.dart';
 import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
@@ -17,11 +21,17 @@ import 'package:snipp/features/auth/domain/use_cases/resend_code.dart';
 import 'package:snipp/features/auth/domain/use_cases/reset_password.dart';
 import 'package:snipp/features/auth/domain/use_cases/verify_code.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:snipp/features/service/domain/entities/categories.dart';
+import 'package:snipp/features/service/domain/use_cases/get_categories.dart';
+
+import '../../../../core/models/google_map_model.dart';
+import '../../domain/use_cases/getCountryName.dart';
+
 
 @singleton
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
-      this._login, this._register, this._verifyCode, this._registerService, this._resendCode, this._resetPassword)
+      this._login, this._register, this._verifyCode, this._registerService, this._resendCode, this._resetPassword, this._getCategories, this._getCountryCityName)
       : super(AuthInitial());
   final Login _login;
   final Register _register;
@@ -29,6 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ResendCode _resendCode;
   final ResetPassword _resetPassword;
   final RegisterService _registerService;
+  final Getcountryname _getCountryCityName;
 
 
 
@@ -43,11 +54,14 @@ class AuthCubit extends Cubit<AuthState> {
   ];
   String cityId = '1';
   String website = '';
-  String categoryId = '1';
   final emailController = TextEditingController();
-   double? lat;
-   double? lang;
-   String location="enter your location";
+
+   String locationName="enter your location";
+   LatLng? currentLocation;
+   LatLng? selectedLocation;
+  Set<Marker> markers = {};
+  GoogleMapController? googleMapController;
+
   final firstNameContoller = TextEditingController();
 
   final lastNameContoller = TextEditingController();
@@ -61,9 +75,19 @@ class AuthCubit extends Cubit<AuthState> {
   final serviceDescriptionController = TextEditingController();
   bool isClient = true;
   int resendCodeTime=60;
+  Timer? timer;
   bool canResend=false;
-  File? pickedImage;
-  List<File> profileImages = [];
+  File? certificateImage;
+  File? firstImage;
+  File? secondImage ;
+  List<Categories>? categoriesList ;
+  final GetCategories _getCategories;
+  String ?selectedCategoryId;
+  late CameraPosition initialCameraPosition;
+  bool isCurrent=true;
+  bool isCountySuccess=false;
+  List<GoogleMapModel> markerLocationData = [
+  ];
   Future<void> register(RegisterRequest requestData) async {
     emit(RegisterLoading());
     final result = await _register(requestData);
@@ -160,7 +184,7 @@ class AuthCubit extends Cubit<AuthState> {
     canResend=false;
     emit(CanResendState());
 
-    Timer.periodic( Duration(seconds: 1), (timer){
+    timer=Timer.periodic( Duration(seconds: 1), (timer){
       if(resendCodeTime>0){
         resendCodeTime-=1;
         emit(CanResendState());
@@ -172,5 +196,112 @@ class AuthCubit extends Cubit<AuthState> {
         timer.cancel();
       }
     });
+  }
+  Future<void> getCategories() async {
+    emit(GetCategoryLoading());
+
+    final result = await _getCategories();
+    result.fold(
+            (failure) {
+          // failureMessegae=failure.message;
+          emit(GetCategoryError(failure.message));
+        },
+            (categories)  {
+          categoriesList=categories;
+          emit(GetCategorySuccess());
+        });
+  }
+void selectedCategoryEvent(Categories category){
+  selectedCategoryId = category.id.toString();
+  emit(SelectedCategoryState());
+}
+
+void initMarkerAddress(){
+markers.clear();
+  var myMarker = markerLocationData
+      .map(
+        (e) => Marker(
+      position: e.latLng,
+      infoWindow: InfoWindow(title: e.name),
+      markerId: MarkerId(
+        e.id.toString(),
+      ),
+    ),
+  )
+      .toSet();
+markers.addAll(myMarker);
+  markerLocationData.clear();
+}
+void initCurrentLocation()  {
+
+
+      CameraPosition newLocation = CameraPosition(
+          target:currentLocation!,
+          zoom: 15);
+      googleMapController!
+          .animateCamera(CameraUpdate.newCameraPosition(newLocation));
+
+      markerLocationData.add(GoogleMapModel(
+          id: 1,
+          name: "your current location",
+          latLng: currentLocation!));
+emit(SelectedLocationState());
+    }
+
+  Future<void>getCurrentLocation()async{
+    try{
+emit(
+    GetCurrentLocationLoading()
+
+);
+      LocationData getCurrentLocation = await LocationService.getLocationData();
+currentLocation=LatLng(getCurrentLocation.latitude!,getCurrentLocation.longitude!);
+emit(
+    GetCurrentLocationSuccess()
+
+);
+    } catch (e) {
+      emit(
+          GetCurrentLocationErrorr("Couldn't get your location")
+
+      );
+
+    }
+  }
+  void selectLocation(LatLng onSelectedLocation)  {
+
+      markerLocationData.add(GoogleMapModel(
+        id: 1,
+        name: "your Location",
+        latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
+      ));
+
+      selectedLocation= LatLng( onSelectedLocation.latitude,  onSelectedLocation.longitude);
+    emit(SelectedLocationState());
+  }
+void getCountryAndCityNameFromCrocd(double lat,double long)async{
+  emit(GetLocationCountryLoading());
+  final result = await _getCountryCityName(lat,long);
+
+  result.fold(
+        (failure) => emit(GetLocationCountryErrorr(failure.message)),
+        (response) {
+          isCountySuccess=true;
+        emit(GetLocationCountrySuccess(response));
+});
+}
+  void updateCertificateImage(File? image) {
+    certificateImage = image;
+    emit(CertificateImageUpdated(image));
+  }
+
+  void updateFirstImage(File? image) {
+    firstImage = image;
+    emit(FirstImageUpdated(image));
+  }
+
+  void updateSecondImage(File? image) {
+    secondImage = image;
+    emit(SecondImageUpdated(image));
   }
 }

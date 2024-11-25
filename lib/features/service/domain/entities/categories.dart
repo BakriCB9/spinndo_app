@@ -1,17 +1,11 @@
-// class Client {
-//
-//   final int? id;
-//   final String? firstName;
-//   final String? lastName;
-//   final String? email;
-//   final dynamic imagePath;
-//
-//   const Client({
-//   this.id,
-//   this.firstName,
-//   this.lastName,
-//   this.email,
-//   this.imagePath,
-//   });
-//
-//   }
+class Categories {
+
+  final int id;
+  final String name;
+// final List<>children
+  Categories({required this.name,required this.id});
+
+
+
+
+  }

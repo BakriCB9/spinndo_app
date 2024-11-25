@@ -1,16 +1,14 @@
 class ClientProfile {
 
-  final int? id;
-  final String? firstName;
-  final String? lastName;
-  final String? email;
+  final String firstName;
+  final String lastName;
+  final String email;
   final dynamic imagePath;
 
   const ClientProfile({
-  this.id,
-  this.firstName,
-  this.lastName,
-  this.email,
+  required this.firstName,
+  required this.lastName,
+  required this.email,
   this.imagePath,
   });
 

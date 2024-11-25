@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/resources/color_manager.dart';
 
 class InfoDetails extends StatelessWidget {
   final String title;
@@ -22,18 +23,18 @@ class InfoDetails extends StatelessWidget {
           color: Colors.white,
           width: double.infinity,
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Icon(icon, color: Colors.grey),
+            Icon(icon, color: ColorManager.grey2),
             SizedBox(width: 15.w),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title,
                   style: TextStyle(
                       fontSize: 22.sp,
-                      color: Colors.blue,
+                      color:        Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w500)),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(content,
-                    style: TextStyle(color: Colors.grey, fontSize: 20.sp)),
+                    style: TextStyle(color: Colors.black, fontSize: 22.sp)),
               )
             ])
           ])),

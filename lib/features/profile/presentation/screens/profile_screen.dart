@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/widgets/loading_indicator.dart';
+import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:snipp/features/profile/presentation/cubit/profile_states.dart';
 import 'package:snipp/features/profile/presentation/widget/client_prfile_screen.dart';
@@ -19,6 +20,7 @@ class Profile_Screen extends StatefulWidget {
 
 class _Profile_ScreenState extends State<Profile_Screen> {
   final _profileCubit = serviceLocator.get<ProfileCubit>();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   void initState() {
@@ -35,7 +37,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
       backgroundColor: Colors.white,
       body: BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
         if (state is GetProfileLoading) {
-          return const LoadingIndicator();
+          return  LoadingIndicator(Theme.of(context).primaryColor);
         } else if (state is GetProfileErrorr) {
           return Center(
             child: Column(
@@ -56,7 +58,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.blue)),
+                        backgroundColor: WidgetStatePropertyAll(                             Theme.of(context).primaryColor,
+                        )),
                     onPressed: () {
                       _profileCubit.getUserRole();
                     },

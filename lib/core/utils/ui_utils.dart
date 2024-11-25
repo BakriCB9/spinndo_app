@@ -11,17 +11,17 @@ class UIUtils {
         builder: (_) => PopScope(
             canPop: false,
             child: AlertDialog(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.transparent,
               content: Container(
                 width:double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.blue),
+                    color: Theme.of(context).primaryColor),
                 height: MediaQuery.of(context).size.height * 0.2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const LoadingIndicator(),
+                    const LoadingIndicator(Colors.white),
                     SizedBox(height: 20.h,),
                     Text(
                       'Please Loading...',
@@ -42,7 +42,7 @@ class UIUtils {
   static void showMessage(String message) {
     Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
     );
   }
 }

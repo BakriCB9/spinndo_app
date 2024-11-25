@@ -13,6 +13,8 @@ import 'package:snipp/features/auth/data/models/reset_password_request.dart';
 import 'package:snipp/features/auth/data/models/reset_password_response.dart';
 import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/data/models/verify_code_response.dart';
+import 'package:snipp/features/auth/domain/entities/country.dart';
+import 'package:snipp/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 
 import '../../models/login_request.dart';
 import '../../models/login_response.dart';
@@ -133,4 +135,43 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       throw RemoteAppException(message);
     }
   }
+
+  @override
+  Future<GetAllCategoryResponse> getAllCategory() async {
+    try{ final response = await _dio.get(
+      ApiConstant.getAllCategory,
+    );
+
+    return GetAllCategoryResponse.fromJson(response.data);}catch (exciption) {
+      throw RemoteAppException("Failed to get categories");
+    }
+  }
+  @override
+   Future<List<String>> getAddressFromCoordinates(
+      double lat,double long) async{
+    final String url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=${ApiConstant.googleMapApiKey}';
+
+    try {
+    final response = await _dio.get(url);
+
+    if (response.statusCode == 200) {
+    final data = response.data;
+
+    if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+      var cityName = data['results'][0]['address_components'][1]['long_name'];
+      var countryName = data['results'][0]['address_components'][4]['long_name'];
+
+    return [countryName,cityName];
+    } else {
+    throw Exception('No results found');
+    }
+    } else {
+    throw Exception('Failed to load geocoding data');
+    }
+    } catch (e) {
+    throw Exception('Error fetching address: $e');
+    }
+  }
+
 }

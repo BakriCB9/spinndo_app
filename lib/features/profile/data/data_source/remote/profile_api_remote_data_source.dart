@@ -48,7 +48,8 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
           options: Options(headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $user_token"
-          }));
+          })
+      );
       // print(
       //     'th eresponse is WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWwQQQQQQQQQQQQQQ ${response.data}');
       //

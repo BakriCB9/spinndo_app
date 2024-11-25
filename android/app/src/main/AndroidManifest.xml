@@ -12,7 +12,7 @@
 
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="snipp">
+        android:label="Spinndo">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ"/>
         <activity
