@@ -347,7 +347,8 @@ class _FilterScreenState extends State<FilterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.blue,
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: Text("Filters"),
         actions: [
           IconButton(
@@ -411,10 +412,13 @@ class _FilterScreenState extends State<FilterScreen> {
                             elevation: 20,
                             side: BorderSide.none,
                             showCheckmark: false,
-                            label: Text(feature, style: TextStyle(
-                                color:  selectedFeatures.contains(feature)
-                                    ? Colors.white
-                                    : Colors.black),),
+                            label: Text(
+                              feature,
+                              style: TextStyle(
+                                  color: selectedFeatures.contains(feature)
+                                      ? Colors.white
+                                      : Colors.black),
+                            ),
                             selected: selectedFeatures.contains(feature),
                             onSelected: (bool selected) {
                               setState(() {
@@ -463,24 +467,29 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
             Text("Distance", style: Theme.of(context).textTheme.headlineMedium),
             SizedBox(height: 8),
- selectedCountry==country[0]?Column(crossAxisAlignment: CrossAxisAlignment.start,
-   children: [           Slider(
-     activeColor: Colors.blue,
-     inactiveColor: Colors.grey.shade300,
-     value: _distance,
-     min: 0,
-     max: 25,
-     divisions: 5,
-     label: "${_distance.toInt()}%",
-     onChanged: (value) {
-       setState(() {
-         _distance = value;
-       });
-     },
-   ),
-     Text("${_distance.toInt()}km"),
-     SizedBox(height: 16),],
- ):SizedBox(),
+            selectedCountry == country[0]
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Slider(
+                        activeColor: Colors.blue,
+                        inactiveColor: Colors.grey.shade300,
+                        value: _distance,
+                        min: 0,
+                        max: 25,
+                        divisions: 5,
+                        label: "${_distance.toInt()}%",
+                        onChanged: (value) {
+                          setState(() {
+                            _distance = value;
+                          });
+                        },
+                      ),
+                      Text("${_distance.toInt()}km"),
+                      SizedBox(height: 16),
+                    ],
+                  )
+                : SizedBox(),
             Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -500,12 +509,17 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   child: Text("Reset All"),
                 ),
-                ElevatedButton(style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue)),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.blue)),
                   onPressed: () {
                     // Apply filters
                     print("Filters applied");
                   },
-                  child: Text("Apply",style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    "Apply",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
