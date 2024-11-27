@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -52,7 +53,6 @@ class AuthCubit extends Cubit<AuthState> {
     DateSelect(day: "friday",start: "08:00",end: "15:00"),
     DateSelect(day: "saturday",start: "08:00",end: "15:00"),
   ];
-  String cityId = '1';
   String website = '';
   final emailController = TextEditingController();
 
@@ -86,6 +86,7 @@ class AuthCubit extends Cubit<AuthState> {
   late CameraPosition initialCameraPosition;
   bool isCurrent=true;
   bool isCountySuccess=false;
+  String? cityName;
   List<GoogleMapModel> markerLocationData = [
   ];
   Future<void> register(RegisterRequest requestData) async {
@@ -100,7 +101,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(LoginRequest requestData) async {
     emit(LoginLoading());
-
+print("zzzzzzzzzzzzzzzzz");
+    print(requestData.email);
+    print(requestData);
     final result = await _login(requestData);
     result.fold(
       (failure) => emit(LoginError(failure.message)),
@@ -280,12 +283,14 @@ emit(
     emit(SelectedLocationState());
   }
 void getCountryAndCityNameFromCrocd(double lat,double long)async{
-  emit(GetLocationCountryLoading());
+  emit(GetLocationCountryLoading());          isCountySuccess=false;
+  cityName=null;
   final result = await _getCountryCityName(lat,long);
 
   result.fold(
         (failure) => emit(GetLocationCountryErrorr(failure.message)),
         (response) {
+          cityName=response.cityName;
           isCountySuccess=true;
         emit(GetLocationCountrySuccess(response));
 });
@@ -303,5 +308,21 @@ void getCountryAndCityNameFromCrocd(double lat,double long)async{
   void updateSecondImage(File? image) {
     secondImage = image;
     emit(SecondImageUpdated(image));
+
   }
+
+  String? mapStyle;
+
+  Future<void> loadMapStyle(bool isDark) async {
+    try {
+      mapStyle = await rootBundle.loadString("asset/map_styles/${isDark?"night_map_style.json":"light_map_style.json"}");
+      // emit(MapStyleLoading());
+    } catch (e) {
+      // emit(MapStyleError("Failed to load map style."));
+
+    }
+  }
+
 }
+
+

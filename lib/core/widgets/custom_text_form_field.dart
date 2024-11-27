@@ -50,6 +50,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       focusNode: _focus,
       onTapOutside: (_) {
         _focus.unfocus();
@@ -57,8 +58,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
       onFieldSubmitted: (_) {
         _focus.unfocus();
       },
-style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: FontSize.s32.sp,color: Colors.black),
-      controller: widget.controller,
+style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
 
         hintText: widget.hintText,
@@ -69,6 +69,7 @@ style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: FontSize.s32.s
 
         )
             : null,
+
         suffixIcon: widget.controller.text.isNotEmpty
             ? widget.isPassword
             ? IconButton(
@@ -78,11 +79,11 @@ style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: FontSize.s32.s
               setState(() {});
             },
             icon: isObsecure
-                ? const Icon(Icons.visibility_off_outlined)
-                : const Icon(Icons.visibility_outlined))
+                ?  Icon(Icons.visibility_off_outlined,size: 40.sp,)
+                :  Icon(Icons.visibility_outlined,size: 40.sp,))
             : null
             : null,
-        prefixIcon: Icon(widget.icon, ),
+        prefixIcon: Icon(widget.icon,size: 45.sp, ),
         enabled: true,
 
 
@@ -95,7 +96,7 @@ style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: FontSize.s32.s
         setState(() {});
       }
           : null,
-      obscureText: isObsecure,
+      obscureText: isObsecure,controller: widget.controller,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
       validator: widget.validator,

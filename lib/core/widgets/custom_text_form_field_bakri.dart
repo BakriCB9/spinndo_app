@@ -24,20 +24,21 @@ class _CustomTextFromFieldBakriState extends State<CustomTextFromFieldBakri> {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: widget.maxlines,
-      style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+      style: Theme.of(context).textTheme.bodyMedium,
       initialValue: widget.initialvalue,
+
       decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           label: Text(
             widget.label,
-            style: TextStyle(color: Colors.blue, fontSize: 17.sp),
+
           ),
           prefixIcon: Icon(
             widget.icon,
-            color: Colors.grey,
+            color: Theme.of(context).primaryColorLight,
           ),
           focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
           enabled: true,
           enabledBorder:
               UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),

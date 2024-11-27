@@ -105,13 +105,16 @@ String failureMessegae="";
  selectedCountryId = country.id;
 selectedCountryName = country.name;
 citiesList = country.cities;
+ isUpdat=false;
     emit(SelectedCountryCityServiceState());
   }
   void selectedCityService(Cities city){
     selectedCityId = city.id;
     selectedCityName = city.name;
+
     emit(SelectedCountryCityServiceState());
   }
+  bool isUpdat=false;
   Future<void>getCurrentLocationFilter()async{
     try{
       emit(
@@ -120,6 +123,7 @@ citiesList = country.cities;
       );
       LocationData getCurrentLocationData = await LocationService.getLocationData();
       getCurrentLocation=getCurrentLocationData;
+      isUpdat=true;
       emit(
           GetCurrentLocationFilterSuccess()
 

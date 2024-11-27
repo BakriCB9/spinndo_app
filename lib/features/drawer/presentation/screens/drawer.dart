@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/resources/color_manager.dart';
 import 'package:snipp/core/resources/theme_manager.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
 import 'package:snipp/features/drawer/model/languages.dart';
 import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,6 +15,7 @@ import 'package:snipp/main.dart';
 class CustomDrawer extends StatelessWidget {
    CustomDrawer({super.key});
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    Dio ?_dio;
 
    List<Languages> languages = [
      Languages(name: 'English', code: 'en'),
@@ -22,7 +25,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final email=    sharedPref.getString(CacheConstant.semailKey);
     final name=    sharedPref.getString(CacheConstant.nameKey);
-    return Drawer(
+    return Drawer(backgroundColor: _drawerCubit.themeMode==ThemeMode.dark?ColorManager.darkBlue:Colors.white,
       child: Column(
         children: [
           Expanded(
@@ -59,12 +62,18 @@ class CustomDrawer extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(
-                        name??'Bakri aweja',
-                        style: TextStyle(fontSize: 30.sp, color: Colors.white),
+                        name??'Ali',
+                         style:
+                          Theme
+                              .of(context)
+                              .textTheme.bodyMedium
                       ),
                       subtitle: Text(
-                        email??'bakkaraweja@gmail.com',
-                        style: TextStyle(fontSize: 25.sp, color: Colors.white),
+                        email??'Ali@gmail.com',
+                          style:
+                          Theme
+                              .of(context)
+                              .textTheme.bodyMedium
                       ),
                     )
                   ],
@@ -79,12 +88,10 @@ class CustomDrawer extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(_drawerCubit.themeMode == ThemeMode.dark
-                          ? AppLocalizations.of(context)!.firstName
-                          : AppLocalizations.of(context)!.firstName, style: Theme
+                      child: Text("Theme Mood",   style:
+                      Theme
                           .of(context)
-                          .textTheme
-                          .bodyLarge!.copyWith(color: Colors.black)),
+                          .textTheme.titleLarge!.copyWith(fontSize: 36.sp)),
                     ),
                     Expanded(
                       child: Switch(
@@ -105,11 +112,11 @@ class CustomDrawer extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(AppLocalizations.of(context)!.firstName,
-                          style: Theme
+                      child: Text("language",
+                          style:
+                          Theme
                               .of(context)
-                              .textTheme
-                              .bodyLarge!.copyWith(color: Colors.black)),
+                              .textTheme.titleLarge!.copyWith(fontSize: 36.sp))
                     ),
                     Expanded(
                       child: SizedBox(
@@ -119,7 +126,10 @@ class CustomDrawer extends StatelessWidget {
                                 value: languages.firstWhere(
                                       (lang) =>
                                   lang.code == _drawerCubit.languageCode,
-                                ),style: TextStyle(color: Colors.black),
+                                ),style :
+    Theme
+        .of(context)
+        .textTheme.bodyMedium,
                                 items: languages
                                     .map(
                                       (language) =>
@@ -143,7 +153,7 @@ class CustomDrawer extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(25),
                                 dropdownColor:
                                 _drawerCubit.themeMode == ThemeMode.dark
-                                    ? ColorManager.green
+                                    ? ColorManager.darkBlue
                                     : ColorManager.white)),
                       ),
                     )
@@ -160,17 +170,26 @@ class CustomDrawer extends StatelessWidget {
                     Navigator.of(context).pushNamed(Profile_Screen.routeName);
                   },
                     child: ListTile(
-                      leading: Icon(Icons.person),
-                      title: Text('Profile'),
+                      leading: Icon(Icons.person,color: ColorManager.primary,),
+                      title: Text('Profile',style:
+    Theme
+        .of(context)
+        .textTheme.titleLarge!.copyWith(fontSize: 32.sp)),
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Setting'),
+                    leading: Icon(Icons.settings,color: ColorManager.primary,),
+                    title: Text('Setting',style:
+                    Theme
+                        .of(context)
+                        .textTheme.titleLarge!.copyWith(fontSize: 32.sp)),
                   ),
                   ListTile(
-                    leading: Icon(Icons.login_outlined),
-                    title: Text('Log out'),
+                    leading: Icon(Icons.login_outlined,color: ColorManager.primary,),
+                    title: Text('Log out',style:
+                    Theme
+                        .of(context)
+                        .textTheme.titleLarge!.copyWith(fontSize: 32.sp)),
                   )
 
                 ],

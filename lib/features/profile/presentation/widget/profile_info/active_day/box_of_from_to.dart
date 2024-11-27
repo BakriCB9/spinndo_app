@@ -31,15 +31,14 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
       child: Container(
         padding:  EdgeInsets.all(8),
         decoration: BoxDecoration(
-            border: Border.all(
-                color:          Theme.of(context).primaryColor,),
+
             borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
               widget.time,
-              style:  TextStyle(fontSize: 26.sp, color: Colors.black),
+                style: Theme.of(context).textTheme.labelMedium
             ),
           ),
         ),

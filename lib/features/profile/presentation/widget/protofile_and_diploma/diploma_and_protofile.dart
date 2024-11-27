@@ -20,7 +20,7 @@ class DiplomaAndProtofile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40.h,
+      height: 50.h,
       decoration: BoxDecoration(
           border: Border(
               bottom: active
@@ -29,8 +29,8 @@ class DiplomaAndProtofile extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: 25.sp, color:         Theme.of(context).primaryColor, fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.labelMedium
+
       ),
     );
   }

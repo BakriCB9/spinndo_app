@@ -10,7 +10,7 @@ class RegisterServiceProviderRequest {
   final String nameService;
   final String descriptionService;
   final String categoryIdService;
-  final String cityIdService;
+  final String cityNameService;
   final String websiteService;
   final String longitudeService;
   final String latitudeService;
@@ -30,7 +30,7 @@ class RegisterServiceProviderRequest {
       required this.nameService,
       required this.descriptionService,
       required this.categoryIdService,
-      required this.cityIdService,
+      required this.cityNameService,
       required this.websiteService,
       required this.longitudeService,
       required this.latitudeService});
@@ -86,7 +86,7 @@ class RegisterServiceProviderRequest {
         "name": nameService,
         "description": descriptionService,
         "category_id": categoryIdService,
-        "city_id": cityIdService,
+        "city_name": cityNameService,
         "website": websiteService,
         "longitude": longitudeService,
         "latitude": latitudeService,

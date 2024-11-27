@@ -8,7 +8,7 @@ import 'package:snipp/features/auth/data/models/verify_code_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
 import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
-import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
+
 import 'package:snipp/features/service/presentation/screens/service_screen.dart';
 import 'package:snipp/main.dart';
 import '../../../../core/di/service_locator.dart';
@@ -32,158 +32,144 @@ class VerficationCodeScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
     final style = Theme.of(context).elevatedButtonTheme.style!;
     return CustomAuthForm(
-      canback: true,
+      canback: false,
       hasTitle: false,
       hasAvatar: false,
-      child: SizedBox(
-        height: 1200.h,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(localization.resendCode,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(fontFamily: "WorkSans")),
-            SizedBox(
-              height: 20.h,
-            ),
-            Icon(Icons.email,
-                size: 200.h, color: Theme.of(context).primaryColor),
-            SizedBox(height: 40.h),
-            Text(
-              '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey)?? _authCubit.emailController.text}',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(localization.resendCode,
               style: Theme.of(context)
                   .textTheme
-                  .bodySmall!
-                  .copyWith(fontFamily: "WorkSans"),
+                  .titleLarge!
+                  .copyWith(fontFamily: "WorkSans")),
+          SizedBox(
+            height: 20.h,
+          ),
+          Icon(Icons.email,
+              size: 200.h,),
+          SizedBox(height: 40.h),
+          Text(
+            '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey)?? _authCubit.emailController.text}',
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(fontFamily: "WorkSans"),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 40.h),
+          Form(
+            key: formKey,
+            child: TextFormField(
+              validator: (p1) {
+                if (p1 == null || p1.length < 6) {
+                  return localization.enterCodeFrom6Digit;
+                }
+                return null;
+              },
+              controller: _authCubit.codeController,
+              maxLength: 6,
+              maxLines: 1,
               textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20.h),
-            Form(
-              key: formKey,
-              child: TextFormField(
-                validator: (p1) {
-                  if (p1 == null || p1.length < 6) {
-                    return localization.enterCodeFrom6Digit;
-                  }
-                  return null;
-                },
-                controller: _authCubit.codeController,
-                maxLength: 6,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(fontSize: 32.sp),
-                decoration: InputDecoration(
-                  hintText: localization.enterCode,
-                ),
+              keyboardType: TextInputType.number,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontSize: 32.sp),
+              decoration: InputDecoration(
+                hintText: localization.enterCode,
               ),
             ),
-            BlocConsumer<AuthCubit, AuthState>(
-              bloc: _authCubit,
-              buildWhen: (previous, current) {
-                if(current is CanResendState)return true;
-                return false;
-              },
-              builder: (context, state) {
-                return Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FittedBox(fit: BoxFit.scaleDown,
-                        child: Text(
-                            _authCubit.canResend
-                                ? localization.didntReciveCode
-                                : '${localization.resendCodeIn} ${_authCubit.resendCodeTime} ${localization.seconds}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(color: ColorManager.black)),
-                      ),
-                      FittedBox(fit: BoxFit.scaleDown,
-                        child: TextButton(
-                          onPressed: _authCubit.canResend
-                              ? () {
-                                  _authCubit.resendCode(ResendCodeRequest(
-                                      email: _authCubit.emailController.text));
-                                }
-                              : null,
-                          child: Text(localization.resendCode,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                fontSize: 25.sp,
-                                    color: _authCubit.canResend
-                                        ? Theme.of(context).primaryColor
-                                        : ColorManager.grey,
-                                  )),
-                        ),
-                      ),
-                    ],
+          ),
+          BlocConsumer<AuthCubit, AuthState>(
+            bloc: _authCubit,
+            buildWhen: (previous, current) {
+              if(current is CanResendState)return true;
+              return false;
+            },
+            builder: (context, state) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FittedBox(fit: BoxFit.scaleDown,
+                    child: Text(
+                        _authCubit.canResend
+                            ? localization.didntReciveCode
+                            : '${localization.resendCodeIn} ${_authCubit.resendCodeTime} ${localization.seconds}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                         ),
                   ),
-                );
-              },
-              listener: (BuildContext context, AuthState state) {
-                if (state is ResendCodeLoading) {
-                  UIUtils.showLoading(context, 'asset/animation/loading.json');
-                } else if (state is ResendCodeError) {
+                  FittedBox(fit: BoxFit.scaleDown,
+                    child: TextButton(
+                      onPressed: _authCubit.canResend
+                          ? () {
+                              _authCubit.resendCode(ResendCodeRequest(
+                                  email: _authCubit.emailController.text));
+                            }
+                          : null,
+                      child: Text(localization.resendCode,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                            fontSize: 25.sp,
+                                color: _authCubit.canResend
+                                    ? ColorManager.primary
+                                    : ColorManager.grey,
+                              )),
+                    ),
+                  ),
+                ],
+              );
+            },
+            listener: (BuildContext context, AuthState state) {
+              if (state is ResendCodeLoading) {
+                UIUtils.showLoading(context, 'asset/animation/loading.json');
+              } else if (state is ResendCodeError) {
+                UIUtils.hideLoading(context);
+                UIUtils.showMessage(state.message);
+              } else if (state is ResendCodeSuccess) {
+                UIUtils.hideLoading(context);
+                _authCubit.verifyCodeTime();
+              }
+            },
+          ),
+          SizedBox(height: 50.h),
+          SizedBox(
+            width: double.infinity,
+            child: BlocListener<AuthCubit, AuthState>(
+              bloc: _authCubit,
+              listener: (contexxt, state) {
+                if (state is VerifyCodeLoading) {
+                  UIUtils.showLoading(context);
+                } else if (state is VerifyCodeError) {
                   UIUtils.hideLoading(context);
+
                   UIUtils.showMessage(state.message);
-                } else if (state is ResendCodeSuccess) {
+                  // if (state.message == "The email has already been taken.") {
+                  //   Navigator.of(context).pushNamed(
+                  //     SignUpScreen.routeName,
+                  //   );
+                  //   _authCubit.resendCode(ResendCodeRequest(
+                  //       email: _authCubit.emailController.text));
+                  // }
+                } else if (state is VerifyCodeSuccess) {
                   UIUtils.hideLoading(context);
-                  _authCubit.verifyCodeTime();
+                  Navigator.of(context)
+                      .pushReplacementNamed(ServiceScreen.routeName);
                 }
               },
-            ),
-            SizedBox(height: 20.h),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: BlocListener<AuthCubit, AuthState>(
-                bloc: _authCubit,
-                listener: (contexxt, state) {
-                  if (state is VerifyCodeLoading) {
-                    UIUtils.showLoading(context);
-                  } else if (state is VerifyCodeError) {
-                    UIUtils.hideLoading(context);
+              child: ElevatedButton(
+                onPressed: _verifyCode,
 
-                    UIUtils.showMessage(state.message);
-                    // if (state.message == "The email has already been taken.") {
-                    //   Navigator.of(context).pushNamed(
-                    //     SignUpScreen.routeName,
-                    //   );
-                    //   _authCubit.resendCode(ResendCodeRequest(
-                    //       email: _authCubit.emailController.text));
-                    // }
-                  } else if (state is VerifyCodeSuccess) {
-                    UIUtils.hideLoading(context);
-                    Navigator.of(context)
-                        .pushReplacementNamed(ServiceScreen.routeName);
-                  }
-                },
-                child: ElevatedButton(
-                  onPressed: _verifyCode,
-                  style: style.copyWith(
-                      backgroundColor: WidgetStateProperty.all(
-                          _drawerCubit.themeMode == ThemeMode.light
-                              ? ColorManager.white
-                              : ColorManager.primary)),
-                  child: Text(localization.verify,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: _drawerCubit.themeMode == ThemeMode.light
-                              ? ColorManager.primary
-                              : ColorManager.white)),
-                ),
+                child: Text(localization.verify,
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
-            SizedBox(height: 20.h),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

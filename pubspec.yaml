@@ -82,12 +82,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   generate: true
-l10n:
-  arb-dir: lib/l10n
-  template-arb-file: app_en.arb
-  output-localization-file: app_localizations.dart
+#l10n:
+#  arb-dir: lib/l10n
+#  template-arb-file: app_en.arb
+#  output-localization-file: app_localizations.dart
   # To add assets to your application, add an assets section, like this:
   assets:
+    - asset/map_styles/night_map_style.json
+    - asset/map_styles/light_map_style.json
     - asset/images/
     - asset/images/aaaa.png
     - asset/images/logo.svg

@@ -31,11 +31,8 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
           children: [
             Text(
               'Images',
-              style: TextStyle(
-                fontSize: 25.sp,
-                color:         Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w600,
-              ),
+                style: Theme.of(context).textTheme.labelLarge
+
             ),
             // IconButton(
             //     onPressed: () {
@@ -52,6 +49,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
           children: [
             Expanded(
               child: InkWell(
+                splashColor: Colors.transparent,
                   onTap: () {
                     setState(() {
                       typeSelect = 1;
@@ -62,6 +60,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
             ),
             Expanded(
               child: InkWell(
+                splashColor: Colors.transparent,
                   onTap: () {
                     setState(() {
                       typeSelect = 2;
@@ -76,6 +75,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
 
         // ///here i have to pass the list of diploma or protofile
         // ///depend on the typeSelect (using if to choose which list)
+        SizedBox(height: 30.h,),
         RowOfImages(
           typeSelect: typeSelect,
            moreImage: widget.images,

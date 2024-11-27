@@ -32,7 +32,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   sharedPref = await SharedPreferences.getInstance();
-
+  await ScreenUtil.ensureScreenSize();
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: false,
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
             create: (context) => serviceLocator.get<DrawerCubit>(),
           )
         ],
-        child: ScreenUtilInit(
+        child: ScreenUtilInit(splitScreenMode: true,
             designSize: const Size(720, 1640),
             builder: (context, _) {
               return Builder(builder: (context) {

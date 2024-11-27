@@ -36,129 +36,143 @@ class CustomAuthForm extends StatelessWidget {
       Languages(name: 'English', code: 'en'),
       Languages(name: 'العربية', code: 'ar'),
     ];
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Expanded(
-            child: Switch(
-              activeColor: ColorManager.primary,
-              inactiveTrackColor: ColorManager.white,
-              inactiveThumbColor: Theme.of(context).primaryColor,
-              activeTrackColor:  Theme.of(context).primaryColor,
-              value: _drawerCubit.themeMode == ThemeMode.dark,
-              onChanged: (value) {
-                if (value) {
-                  _drawerCubit.changeTheme(ThemeMode.dark);
-                } else {
-                  _drawerCubit.changeTheme(ThemeMode.light);
-                }
-              },
-            ),
-          ),
-          Expanded(
-            child: SizedBox(
-              width:90.w,
-              child: DropdownButtonHideUnderline(
-                  child: DropdownButton<Languages>(
-                      value: languages.firstWhere(
-                            (lang) =>
-                        lang.code == _drawerCubit.languageCode,
-                      ),   dropdownColor:    _drawerCubit.themeMode== ThemeMode.dark
-                  ? ColorManager.black
-                      : ColorManager.white
-                      ,items: languages
-                          .map(
-                            (language) =>
-                            DropdownMenuItem<Languages>(
-                              value: language,
-                              child: Text(language.name,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(fontWeight: FontWeight.w500,color:    _drawerCubit.themeMode == ThemeMode.dark
-    ? ColorManager.primary
-        : ColorManager.black)),
-                            ),
-                      )
-                          .toList(),
+    return Container(
+       decoration: _drawerCubit.themeMode==ThemeMode.dark?  BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                  "asset/images/bg.png"),
+              fit: BoxFit.fill)):null,
+      child: Scaffold(
 
-                      onChanged: (selectedLanguage) {
-                        if (selectedLanguage != null) {
-                          _drawerCubit
-                              .changeLanguage(selectedLanguage.code);
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(25),
-                    )),
-            ),
+        appBar: AppBar(
+leading: null,
+          actions: [IconButton(
+            icon: Icon(Icons.arrow_back,size: 1.sp,),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          isGuest
-              ? Expanded(
-                child: Align(
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(
-                    ServiceScreen.routeName,
-                  );
-                },
-                child: Text(localization.guest,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color:    _drawerCubit.themeMode == ThemeMode.dark
-                          ? ColorManager.primary
-                          : ColorManager.black
+
+            Expanded(
+              child: Transform.scale(scale: 0.8,
+                child: Switch(
+                  activeColor: ColorManager.primary,
+                  inactiveTrackColor: ColorManager.white,
+                  inactiveThumbColor: Theme.of(context).primaryColor,
+                  activeTrackColor:  Theme.of(context).primaryColor,
+                  value: _drawerCubit.themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    if (value) {
+                      _drawerCubit.changeTheme(ThemeMode.dark);
+                    } else {
+                      _drawerCubit.changeTheme(ThemeMode.light);
+                    }
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                width:90.w,
+                child: DropdownButtonHideUnderline(
+                    child: DropdownButton<Languages>(isExpanded: false,
+                        value: languages.firstWhere(
+                              (lang) =>
+                          lang.code == _drawerCubit.languageCode,
+                        ),   dropdownColor:    _drawerCubit.themeMode== ThemeMode.dark
+                    ? ColorManager.black
+                        : ColorManager.white
+                        ,items: languages
+                            .map(
+                              (language) =>
+                              DropdownMenuItem<Languages>(
+                                value: language,
+                                child: Text(language.name,
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(fontWeight: FontWeight.w500,color:    _drawerCubit.themeMode == ThemeMode.dark
+      ? ColorManager.primary
+          : ColorManager.black)),
+                              ),
+                        )
+                            .toList(),
+
+                        onChanged: (selectedLanguage) {
+                          if (selectedLanguage != null) {
+                            _drawerCubit
+                                .changeLanguage(selectedLanguage.code);
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(25),
+                      )),
+              ),
+            ),
+            isGuest
+                ? Expanded(
+                  child: Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      ServiceScreen.routeName,
+                    );
+                  },
+                  child: Text(localization.guest,
+                    style: Theme.of(context).textTheme.titleSmall
                   ),
-                ),
+                              ),
                             ),
-                          ),
-              )
-              : const SizedBox(),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.w,
+                )
+                : const SizedBox(),
+          ],
         ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    canback
-                        ? Align(
-                            alignment: Alignment.centerLeft,
-                            child: InkWell(
-                                onTap: () {
-                                  _authCubit.resendCodeTime = 60;
-                                  _authCubit.timer?.cancel();
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.w,
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
 
-                                  Navigator.of(context).pushReplacementNamed(
-                                      SignUpScreen.routeName);
-                                },
-                                child: Icon(Icons.arrow_back)),
-                          )
-                        : SizedBox(),
-              
-                  ],
-                ),
-                hasAvatar
-                    ? CircleAvatar(
-                        radius: 152.sp,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: ClipRRect(borderRadius: BorderRadius.circular(152.r),child: SvgPicture.asset("asset/images/logo.svg"))
-                        // Icon(
-                        //   Icons.person,
-                        //   size: 246.sp,
-                        //   color: ColorManager.white,
-                        // ),
-                      )
-                    : const SizedBox(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      canback
+                          ? Align(
+                              alignment: Alignment.centerLeft,
+                              child: InkWell(
+                                  onTap: () {
+                                    _authCubit.resendCodeTime = 60;
+                                    _authCubit.timer?.cancel();
 
-                child
-              ],
+                                    Navigator.of(context).pushReplacementNamed(
+                                        SignUpScreen.routeName);
+                                  },
+                                  child: Icon(Icons.arrow_back)),
+                            )
+                          : SizedBox(),
+
+                    ],
+                  ),
+                  hasAvatar
+                      ? CircleAvatar(
+                          radius: 170.r,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: ClipRRect(borderRadius: BorderRadius.circular(200.r),child: SvgPicture.asset("asset/images/logo.svg"))
+                          // Icon(
+                          //   Icons.person,
+                          //   size: 246.sp,
+                          //   color: ColorManager.white,
+                          // ),
+                        )
+                      : const SizedBox(),
+SizedBox(height: 60.h,),
+                  child
+                ],
+              ),
             ),
           ),
         ),

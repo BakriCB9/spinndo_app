@@ -11,7 +11,7 @@
     "login":"تسجيل دخول",
     "next":"التالي",
     "alreadyHaveAccount":"لديك حساب مسبقا",
-    "createNewAccount":"انشاء حساب جديد",
+    "createNewAccount":"أو انشاء حساب جديد",
     "enterName":"يرجى ادخال الاسم",
     "nameLessThanTwo":"يرجى ادخال على الاقل حرفان",
     "validEmail":"يرجى ادخال حساب صالح للعمل",

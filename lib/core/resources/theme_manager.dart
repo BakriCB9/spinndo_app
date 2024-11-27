@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snipp/core/resources/styles_manager.dart';
@@ -8,63 +7,80 @@ import 'color_manager.dart';
 import 'font_manager.dart';
 
 class ThemeManager {
-  static ThemeData lightTheme=ThemeData(
+  static ThemeData lightTheme = ThemeData(
     /// Main Colors
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorManager.white,
+        foregroundColor: ColorManager.black),
     primaryColor: ColorManager.primary,
+    iconTheme: IconThemeData(color: ColorManager.primary, size: 40.sp),
+    primaryColorLight: ColorManager.black,
+    primaryColorDark: Colors.white,
+    scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
+    appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        foregroundColor: ColorManager.black,
+        elevation: 0),
 
-    primaryColorLight: ColorManager.blueGrey,
-    primaryColorDark: ColorManager.black,
-    scaffoldBackgroundColor: ColorManager.white2,
-appBarTheme: AppBarTheme(backgroundColor: ColorManager.white2,foregroundColor: ColorManager.black,elevation: 0 ),
-
-    elevatedButtonTheme:ElevatedButtonThemeData(
-
-      style: ButtonStyle(foregroundColor:  WidgetStatePropertyAll(ColorManager.black),
-          backgroundColor:
-          const WidgetStatePropertyAll(ColorManager.primary),
-          shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.circular(30.r))),
-          padding: WidgetStatePropertyAll(
-              EdgeInsets.symmetric(vertical: 12.h))),),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+          foregroundColor: WidgetStatePropertyAll(ColorManager.black),
+          backgroundColor: const WidgetStatePropertyAll(ColorManager.primary),
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSize.s28.r))),
+          padding:
+              WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
+    ),
     textButtonTheme: TextButtonThemeData(),
-    buttonTheme: const ButtonThemeData(
-      shape: StadiumBorder(),
+    buttonTheme: ButtonThemeData(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSize.s28.r)),
       disabledColor: ColorManager.grey,
       buttonColor: ColorManager.primary,
       // splashColor: ColorManager.lightPrimary,
     ),
 
-
+    cardTheme: CardTheme(
+      color: ColorManager.greyWhite,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSize.s16.r),
+      ),
+      margin: EdgeInsets.only(bottom: AppSize.s16.sp),
+    ),
 
     textTheme: TextTheme(
+      labelLarge: getSemiBoldStyle(
+          color: ColorManager.primary, fontSize: FontSize.s32.sp),
+      labelMedium: getSemiBoldStyle(
+          color: ColorManager.black, fontSize: FontSize.s30.sp),
+      labelSmall:
+          getSemiBoldStyle(color: ColorManager.grey, fontSize: FontSize.s28.sp),
+
+      //drop down
+      displayMedium:
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
       //guest
-      titleSmall: getRegularStyle(
-          color: ColorManager.primary,
-          fontSize: FontSize.s24.sp
-      ),
+      titleSmall:
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s24.sp),
       //text butt
       titleMedium: getMediumStyle(
-          color: ColorManager.primary,
+          color: ColorManager.black,
           fontSize: FontSize.s28.sp,
           fontFamily: "WorkSans",
-          fontWeight: FontWeight.w600
-      ),
+          fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
-        color: ColorManager.primary,
+        color: ColorManager.black,
         fontSize: FontSize.s54.sp,
       ),
       //text in body
-      bodySmall: getRegularStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s32.sp
-      ),
+      bodySmall:
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s32.sp),
       //client word
       bodyMedium: getMediumStyle(
-        color: ColorManager.darkGrey,
-        fontSize: FontSize.s36.sp,
+        color: ColorManager.black,
+        fontSize: FontSize.s32.sp,
       ),
 
       //elevated butt
@@ -75,8 +91,141 @@ appBarTheme: AppBarTheme(backgroundColor: ColorManager.white2,foregroundColor: C
     ),
 
     inputDecorationTheme: InputDecorationTheme(
-
       fillColor: ColorManager.white,
+      prefixIconColor: ColorManager.primary,
+
+      suffixIconColor: ColorManager.primary,
+      contentPadding: EdgeInsets.all(AppPadding.p8.sp),
+      // hintStyle: getRegularStyle(
+      //   color: ColorManager.grey,
+      //   fontSize: FontSize.s13,
+      // ),
+      labelStyle:
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+      hintStyle:
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+      errorStyle: getRegularStyle(color: Colors.red, fontSize: FontSize.s20.sp),
+      filled: true,
+
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+    ),
+
+    // bottomSheetTheme: BottomSheetThemeData(
+    //   backgroundColor: ColorManager.primary.withOpacity(0.6),
+    //   elevation: 10,
+    //   clipBehavior: Clip.antiAlias,
+    //   shape: const RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.vertical(
+    //       top: Radius.circular(24),
+    //     ),
+    //   ),
+    // ),
+
+    /// Icon Theme
+    // iconTheme: const IconThemeData(
+    //   color: Colors.white70,
+    // ),
+  );
+  static ThemeData darkTheme = ThemeData(
+    /// Main Colors
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorManager.darkBlue,
+        foregroundColor: ColorManager.white),
+    primaryColor: ColorManager.primary,
+    iconTheme: IconThemeData(color: ColorManager.primary, size: 40.sp),
+
+    primaryColorLight: ColorManager.white,
+    primaryColorDark: ColorManager.darkBlue,
+    scaffoldBackgroundColor: Colors.transparent,
+    appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        foregroundColor: ColorManager.white,
+        elevation: 0),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+          foregroundColor: WidgetStatePropertyAll(ColorManager.white),
+          backgroundColor: const WidgetStatePropertyAll(ColorManager.primary),
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSize.s28.r))),
+          padding:
+              WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
+    ),
+    textButtonTheme: TextButtonThemeData(),
+    buttonTheme: ButtonThemeData(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSize.s28.r)),
+
+      disabledColor: ColorManager.grey,
+      buttonColor: ColorManager.primary,
+      // splashColor: ColorManager.lightPrimary,
+    ),
+
+    cardTheme: CardTheme(
+      color: ColorManager.darkBlue,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSize.s16.r),
+      ),
+      margin: EdgeInsets.only(bottom: AppSize.s16.sp),
+    ),
+
+    textTheme: TextTheme(
+      labelLarge: getSemiBoldStyle(
+          color: ColorManager.primary, fontSize: FontSize.s32.sp),
+      labelMedium: getSemiBoldStyle(
+          color: ColorManager.white, fontSize: FontSize.s30.sp),
+      labelSmall:
+          getSemiBoldStyle(color: ColorManager.grey, fontSize: FontSize.s28.sp),
+      //drop down
+      displayMedium:
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+      //guest
+      titleSmall:
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s24.sp),
+      //text butt
+      titleMedium: getMediumStyle(
+          color: ColorManager.white,
+          fontSize: FontSize.s28.sp,
+          fontFamily: "WorkSans",
+          fontWeight: FontWeight.w600),
+      //title spinndo
+      titleLarge: getBoldStyle(
+        color: ColorManager.white,
+        fontSize: FontSize.s54.sp,
+      ),
+      //text in body
+      bodySmall:
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s32.sp),
+      //client word
+      bodyMedium: getMediumStyle(
+        color: ColorManager.white,
+        fontSize: FontSize.s32.sp,
+      ),
+
+      //elevated butt
+      bodyLarge: getBoldStyle(
+        color: ColorManager.white,
+        fontSize: FontSize.s32.sp,
+      ),
+    ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      fillColor: ColorManager.darkBlue,
       prefixIconColor: ColorManager.primary,
       suffixIconColor: ColorManager.primary,
       contentPadding: EdgeInsets.all(AppPadding.p8.sp),
@@ -84,59 +233,30 @@ appBarTheme: AppBarTheme(backgroundColor: ColorManager.white2,foregroundColor: C
       //   color: ColorManager.grey,
       //   fontSize: FontSize.s13,
       // ),
-      labelStyle: getThinStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s32.sp
-      ),
-      hintStyle:  getThinStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s32.sp
-      ),
+      labelStyle:
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+      hintStyle:
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
       errorStyle: getRegularStyle(
-          color: Colors.red,
-          fontSize: FontSize.s28.sp
-
-      ),
+          color: Colors.red.shade400, fontSize: FontSize.s20.sp),
       filled: true,
 
-      enabledBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: ColorManager.grey2,
-          width: AppSize.s1.w,
-        ),
-      ),
-      focusedBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: ColorManager.grey2,
-          width: AppSize.s1.w,
-        ),
-      ),
-      errorBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: AppSize.s1.w,
-        ),
-      ),     border:  OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-      borderSide: BorderSide(
-        color: ColorManager.grey2,
-        width: AppSize.s1.w,
-      ),
-    ),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: AppSize.s1.w,
-        ),
-      ),
-
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r)),
+          borderSide: BorderSide.none),
     ),
-
-
 
     // bottomSheetTheme: BottomSheetThemeData(
     //   backgroundColor: ColorManager.primary.withOpacity(0.6),
@@ -154,153 +274,4 @@ appBarTheme: AppBarTheme(backgroundColor: ColorManager.white2,foregroundColor: C
     //   color: Colors.white70,
     // ),
   );
-  static ThemeData darkTheme =ThemeData(
-    /// Main Colors
-    primaryColor: ColorManager.black,
-
-    primaryColorLight: ColorManager.blueGrey,
-    primaryColorDark: ColorManager.black,
-    scaffoldBackgroundColor: ColorManager.lightBlack,
-    appBarTheme: AppBarTheme(backgroundColor: ColorManager.lightBlack,foregroundColor: ColorManager.primary,elevation: 0 ),
-
-    elevatedButtonTheme:ElevatedButtonThemeData(
-
-      style: ButtonStyle(foregroundColor:  WidgetStatePropertyAll(ColorManager.black),
-          backgroundColor:
-          const WidgetStatePropertyAll(ColorManager.primary),
-          shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.circular(30.r))),
-          padding: WidgetStatePropertyAll(
-              EdgeInsets.symmetric(vertical: 12.h))),),
-    textButtonTheme: TextButtonThemeData(),
-    buttonTheme: const ButtonThemeData(
-      shape: StadiumBorder(),
-      disabledColor: ColorManager.grey,
-      buttonColor: ColorManager.primary,
-      // splashColor: ColorManager.lightPrimary,
-    ),
-
-
-
-    textTheme: TextTheme(
-      //guest
-      titleSmall: getRegularStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s24.sp
-      ),
-      //text butt
-      titleMedium: getMediumStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s28.sp,
-          fontFamily: "WorkSans",
-          fontWeight: FontWeight.w600
-      ),
-      //title spinndo
-      titleLarge: getBoldStyle(
-        color: ColorManager.black,
-        fontSize: FontSize.s54.sp,
-      ),
-      //text in body
-      bodySmall: getRegularStyle(
-          color: ColorManager.primary,
-          fontSize: FontSize.s32.sp
-      ),
-      //client word
-      bodyMedium: getMediumStyle(
-        color: ColorManager.darkGrey,
-        fontSize: FontSize.s36.sp,
-      ),
-
-      //elevated butt
-      bodyLarge: getBoldStyle(
-        color: ColorManager.white,
-        fontSize: FontSize.s32.sp,
-      ),
-    ),
-
-    inputDecorationTheme: InputDecorationTheme(
-
-      fillColor: ColorManager.primary,
-      prefixIconColor: ColorManager.black,
-      suffixIconColor: ColorManager.black,
-      contentPadding: EdgeInsets.all(AppPadding.p8.sp),
-      // hintStyle: getRegularStyle(
-      //   color: ColorManager.grey,
-      //   fontSize: FontSize.s13,
-      // ),
-      labelStyle: getThinStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s32.sp
-      ),
-      hintStyle:  getThinStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s32.sp
-      ),
-      errorStyle: getRegularStyle(
-          color: Colors.red,
-          fontSize: FontSize.s28.sp
-
-      ),
-      filled: true,
-
-      enabledBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: ColorManager.grey2,
-          width: AppSize.s1.w,
-        ),
-      ),
-      focusedBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: ColorManager.grey2,
-          width: AppSize.s1.w,
-        ),
-      ),
-      errorBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: AppSize.s1.w,
-        ),
-      ),     border:  OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-      borderSide: BorderSide(
-        color: ColorManager.grey2,
-        width: AppSize.s1.w,
-      ),
-    ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s16.r)),
-        borderSide: BorderSide(
-          color: Colors.red,
-          width: AppSize.s1.w,
-        ),
-      ),
-
-    ),
-
-
-
-    // bottomSheetTheme: BottomSheetThemeData(
-    //   backgroundColor: ColorManager.primary.withOpacity(0.6),
-    //   elevation: 10,
-    //   clipBehavior: Clip.antiAlias,
-    //   shape: const RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.vertical(
-    //       top: Radius.circular(24),
-    //     ),
-    //   ),
-    // ),
-
-    /// Icon Theme
-    // iconTheme: const IconThemeData(
-    //   color: Colors.white70,
-    // ),
-  );
-
-
-
 }

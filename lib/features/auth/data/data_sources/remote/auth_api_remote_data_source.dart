@@ -30,9 +30,12 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
   @override
   Future<LoginResponse> login(LoginRequest requestBody) async {
     try {
+      print("ccccc");
+      print(requestBody.toJson());
       final response = await _dio.post(ApiConstant.loginEndPoint,
           data: requestBody.toJson());
-
+print(response);
+print("asdasd");
       return LoginResponse.fromJson(response.data);
     } catch (exception) {
       var message = 'Failed to login';

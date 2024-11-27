@@ -17,7 +17,7 @@ class Data extends Services {
 				categoryName: json['category'] ['name']as String?,
 				providerId: json['provider_id'] as int?,
 				providerName: json['provider_name'] as String?,
-				providerImage: json['provider_image'] as dynamic,
+				providerImage: json['image'] as dynamic,
 			);
 
 

@@ -49,7 +49,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 30.h),
-            Align(alignment: Alignment.center,child: Icon(Icons.lock_reset, size: 200.sp, color: Theme.of(context).primaryColor)),
+            Align(alignment: Alignment.center,child: Icon(Icons.lock_reset, size: 200.sp)),
             SizedBox(height: 50.h),
             Text(
              localization.emailResetPassword,
@@ -74,13 +74,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                     icon: Icons.email,
                     labelText: localization.email,
                   ),
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 40.h),
                   Text(
                     localization.newPasswordTitle,
                     style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.start,
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 30.h),
                   CustomTextFormField(
                     validator: (value) {
                       if (!Validator.isPassword(value)) {
@@ -94,7 +94,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     labelText: localization.newPassword,
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 30.h,
                   ),
                   CustomTextFormField(
                     validator: (value) {
@@ -132,7 +132,6 @@ class ForgotPasswordScreen extends StatelessWidget {
           },
           child: Container(
               width: double.infinity,
-              margin: EdgeInsets.only(bottom: 40.h),
               child: ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState?.validate() == true) {
@@ -142,9 +141,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 },
 
                 child: Text(localization.verify,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:     _drawerCubit.themeMode== ThemeMode.dark
-                        ? ColorManager.black
-                        : ColorManager.white)
+                    style: Theme.of(context).textTheme.bodyLarge
               ),
             ),
         ),

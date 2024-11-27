@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,9 +15,28 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
 
+    return Scaffold(
+      floatingActionButton: FloatingActionButton( onPressed: () {
+        _authCubit.getCountryAndCityNameFromCrocd(
+            _authCubit.isCurrent
+                ? _authCubit.currentLocation!.latitude
+                : _authCubit.selectedLocation!.latitude,
+            _authCubit.isCurrent
+                ? _authCubit.currentLocation!.longitude
+                : _authCubit
+                .selectedLocation!.longitude);
+        Navigator.pop(context);
+
+      },child: Icon(Icons.save,),),
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        actions: [IconButton(onPressed: () {
+
+          _authCubit.initCurrentLocation();
+          _authCubit.initMarkerAddress();
+          _authCubit.isCurrent = true;
+        }, icon: Icon(Icons.location_on))],
         title: const Text("Google Map"),
       ),
       body: BlocBuilder<AuthCubit, AuthState>(
@@ -29,7 +49,7 @@ class MapScreen extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is GetCurrentLocationLoading) {
-            return  Center(
+            return Center(
               child: LoadingIndicator(Theme.of(context).primaryColor),
             );
           } else if (state is GetCurrentLocationSuccess) {
@@ -40,12 +60,14 @@ class MapScreen extends StatelessWidget {
                 return false;
               },
               builder: (context, state) {
-                return Stack(alignment: Alignment.bottomCenter,
+                return Stack(
+                  alignment: Alignment.bottomCenter,
                   children: [
                     GoogleMap(
                       zoomControlsEnabled: false,
                       // minMaxZoomPreference: MinMaxZoomPreference(8, 50),
                       markers: _authCubit.markers,
+                    style: _authCubit.mapStyle,
                       onTap: (argument) {
                         _authCubit.selectLocation(argument);
 
@@ -54,50 +76,15 @@ class MapScreen extends StatelessWidget {
                       },
                       onMapCreated: (controller) async {
                         _authCubit.googleMapController = controller;
-
                         _authCubit.initCurrentLocation();
                         _authCubit.initMarkerAddress();
+
                       },
                       initialCameraPosition: CameraPosition(
                           target:
                               _authCubit.currentLocation ?? const LatLng(0, 0),
                           zoom: 14),
                     ),
-                    Positioned(
-                      bottom: 50.h,
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                _authCubit.initCurrentLocation();
-                                _authCubit.initMarkerAddress();
-                                _authCubit.isCurrent = true;
-                              },
-                              child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text("get current location",style: TextStyle(color: Colors.black,fontSize: 26.sp),),
-                              )),
-                          SizedBox(width: 50.w,),
-                          ElevatedButton(
-                              onPressed: () {
-                                _authCubit.initCurrentLocation();
-                                _authCubit.initMarkerAddress();
-                                _authCubit.getCountryAndCityNameFromCrocd(
-                                    _authCubit.isCurrent
-                                        ? _authCubit.currentLocation!.latitude
-                                        : _authCubit.selectedLocation!.latitude,
-                                    _authCubit.isCurrent
-                                        ? _authCubit.currentLocation!.longitude
-                                        : _authCubit.selectedLocation!.longitude);
-                                Navigator.pop(context);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child:  Text("Save Choosen location",style: TextStyle(color: Colors.black,fontSize: 26.sp),),
-                              )),
-                        ],
-                      ),
-                    )
                   ],
                 );
               },

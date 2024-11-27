@@ -53,7 +53,7 @@ class SignUpScreen extends StatelessWidget {
               labelText: localization.firstName,
             ),
             SizedBox(
-              height: 20.h,
+              height: 30.h,
             ),
             CustomTextFormField(
               validator: (value) {
@@ -72,7 +72,7 @@ class SignUpScreen extends StatelessWidget {
               labelText: localization.lastName,
             ),
             SizedBox(
-              height: 20.h,
+              height: 30.h,
             ),
             CustomTextFormField(
               validator: (value) {
@@ -86,7 +86,7 @@ class SignUpScreen extends StatelessWidget {
               labelText: localization.email,
             ),
             SizedBox(
-              height: 20.h,
+              height: 30.h,
             ),
             CustomTextFormField(
               validator: (value) {
@@ -101,7 +101,7 @@ class SignUpScreen extends StatelessWidget {
               labelText: localization.password,
             ),
             SizedBox(
-              height: 20.h,
+              height: 30.h,
             ),
             CustomTextFormField(
               validator: (value) {
@@ -131,7 +131,7 @@ class SignUpScreen extends StatelessWidget {
           return false;
         },
         builder: (context, state) {
-          print("ddddddddss");
+
 
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0.w),
@@ -157,6 +157,7 @@ class SignUpScreen extends StatelessWidget {
                 Row(
                   children: [
                     Radio<bool>(
+
                       activeColor: ColorManager.primary,
                       hoverColor: ColorManager.primary,
                       value: false,
@@ -220,32 +221,31 @@ class SignUpScreen extends StatelessWidget {
                     _authCubit.isClient
                         ? localization.signUp
                         : localization.next,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:     _drawerCubit.themeMode== ThemeMode.dark
-                        ? ColorManager.primary
-                        : ColorManager.white)),
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
             );
           }),
-      SizedBox(height: 20.h),
+      SizedBox(height: 30.h),
       Center(
-          child: Padding(
-        padding: EdgeInsets.only(bottom: 30.h),
-        child: InkWell(
-            onTap: () {
-              _authCubit.emailController.clear();
-              _authCubit.passwordController.clear();
-              _authCubit.confirmPasswordController.clear();
-              _authCubit.firstNameContoller.clear();
-              _authCubit.lastNameContoller.clear();
-              Navigator.of(context).pushNamed(SignInScreen.routeName);
-            },
-            child: Text(localization.alreadyHaveAccount,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(color:   ColorManager.primary))),
-      ))
+          child: InkWell(
+              onTap: () {
+                _authCubit.emailController.clear();
+                _authCubit.passwordController.clear();
+                _authCubit.confirmPasswordController.clear();
+                _authCubit.firstNameContoller.clear();
+                _authCubit.lastNameContoller.clear();
+                Navigator.of(context).pushNamed(SignInScreen.routeName);
+              },
+              child: Text(localization.alreadyHaveAccount,
+                  style: Theme.of(context).textTheme.titleMedium)))
     ]));
   }
 
   _register(BuildContext context) {
+    print("dddddddddddddd");
+    print(_authCubit.firstNameContoller);
+    print(_authCubit.lastNameContoller);
+    print("dddddddddddddd");
     if (_authCubit.isClient) {
       if (formKey.currentState!.validate()) {
         _authCubit.register(RegisterRequest(

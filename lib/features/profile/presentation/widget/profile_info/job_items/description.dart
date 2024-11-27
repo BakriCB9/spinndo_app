@@ -24,17 +24,14 @@ class CustomDescription extends StatelessWidget {
           children: [
             Text(
               'Job Details',
-              style: TextStyle(
-                  fontSize: 25.sp,
-                  color:         Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.labelLarge
             ),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>const  EditJobDetails()));
-                },
-                icon: const Icon(Icons.edit))
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: (context) =>const  EditJobDetails()));
+            //     },
+            //     icon: const Icon(Icons.edit))
           ],
         ),
         InfoDetails(
@@ -52,8 +49,7 @@ class CustomDescription extends StatelessWidget {
         ),
         Text(
           'Description',
-          style: TextStyle(
-              fontSize: 22.sp, color:         Theme.of(context).primaryColor, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.labelLarge
         ),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),

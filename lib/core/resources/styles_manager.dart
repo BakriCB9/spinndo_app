@@ -61,7 +61,7 @@ TextStyle getMediumStyle({
 
 TextStyle getSemiBoldStyle({
   String fontFamily = FontConstants.fontFamily,
-  double fontSize = FontSize.s24,
+  double fontSize = FontSize.s28,
   required Color color,
 }) {
   return getTextStyle(

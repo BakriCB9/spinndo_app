@@ -34,7 +34,11 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveToken(response.data!.token);
       await _authLocalDataSource.saveUserId(response.data!.id);
       await _authLocalDataSource.saveUserRole(response.data!.role);
+      _authLocalDataSource.saveUserEmail(requestData.email);
 
+      await _authLocalDataSource.saveUserUnCompliteAccount(
+        requestData.email,
+      );
       return Right(response.data!);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));
@@ -83,7 +87,8 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveUserUnCompliteAccount(
         requestData.email,
       );
-
+      _authLocalDataSource.saveUserEmail(requestData.email);
+      _authLocalDataSource.saveUserName(requestData.firstName);
       return Right(response);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));

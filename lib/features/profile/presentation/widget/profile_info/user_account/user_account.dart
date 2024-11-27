@@ -22,17 +22,13 @@ class UserAccount extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Account',
-                style: TextStyle(
-                    fontSize: 25.sp,
-                    fontWeight: FontWeight.w600,
-                    color:         Theme.of(context).primaryColor,)),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditUserAccountScreen()));
-                },
-                icon: const Icon(Icons.edit))
+            Text('Account', style: Theme.of(context).textTheme.labelLarge),
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: (context) => EditUserAccountScreen()));
+            //     },
+            //     icon: const Icon(Icons.edit))
           ],
         ),
         InfoDetails(

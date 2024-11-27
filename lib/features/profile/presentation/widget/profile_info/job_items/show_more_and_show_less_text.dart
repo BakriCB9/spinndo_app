@@ -21,19 +21,18 @@ class _ShowMoreAndShowLessState extends State<ShowMoreAndShowLess> {
         word.length < 30 || word.length - 30 < 20
             ? Text(
           word.join(' '),
-          style: TextStyle(fontSize: 32.sp, color: Colors.black),
+            style: Theme.of(context).textTheme.labelMedium
         )
             : isExpanded
             ? Text(
           word.join(' '),
-          style: TextStyle(
-            fontSize: 13.sp,
-            color: Colors.grey,
-          ),
+            style: Theme.of(context).textTheme.labelMedium
+
         )
             : Text(
           word.sublist(0, 30).join(' '),
-          style: TextStyle(fontSize: 32.sp, color: Colors.black),
+            style: Theme.of(context).textTheme.labelMedium
+
         ),
         SizedBox(
           width: 5.w,

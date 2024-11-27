@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/utils/map_helper/geocoding_service.dart';
@@ -21,6 +22,7 @@ class ServiceMapScreen extends StatefulWidget {
 class _ServiceMapScreenState extends State<ServiceMapScreen> {
   late CameraPosition initialCameraPosition;
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
+  final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   void initState() {
@@ -42,20 +44,23 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Google Map"),
+        title: const Text("Google Map"),        backgroundColor: Theme.of(context).primaryColorDark,
+
       ),
       body: GoogleMap(
         zoomControlsEnabled: false,
         minMaxZoomPreference: MinMaxZoomPreference(8, 50),
         markers: markers,
         initialCameraPosition: initialCameraPosition,
+        style: _authCubit.mapStyle,
 
       ),
     );
   }
 
    void initMarkers() {
-    var myMarker = markerLocationData
+
+   var myMarker = markerLocationData
         .map(
           (e) => Marker(
         position: e.latLng,
@@ -67,7 +72,8 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
     )
         .toSet();
     markers.addAll(myMarker);
-  }
+
+   }
 
 
 

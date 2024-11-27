@@ -51,7 +51,7 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                     labelText: localization.email,
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 30.h,
                   ),
                   CustomTextFormField(
                     validator: (value) {
@@ -82,9 +82,8 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                   },
                   child: Text(
                     localization.forgetPassword,
-                    style:Theme.of(context).textTheme.titleMedium!.copyWith(color:     _drawerCubit.themeMode== ThemeMode.dark
-                        ? ColorManager.primary
-                        : ColorManager.primary)
+                    style:Theme.of(context).textTheme.titleMedium!.copyWith(color:
+                         ColorManager.primary)
                   )),
             ),
           ),
@@ -116,32 +115,25 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
 
                 child: Text(
                  localization.login,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color:     _drawerCubit.themeMode== ThemeMode.dark
-                          ? ColorManager.black
-                          : ColorManager.white
-                  )
+                  style: Theme.of(context).textTheme.bodyLarge
                 ),
               ),
             ),
           ),
           SizedBox(
-            height: 20.h,
+            height: 30.h,
           ),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
+          Center(
+            child: InkWell(
+              onTap: () {
                 _authCubit.emailController.clear();
                 _authCubit.passwordController.clear();
                 Navigator.of(context).pushNamed(SignUpScreen.routeName);
               },
-              style:style.copyWith(
-                backgroundColor:WidgetStateProperty.all( _drawerCubit.themeMode==ThemeMode.light?ColorManager.white:ColorManager.primary)
-              ),
+
               child: Text(
                localization.createNewAccount,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: _drawerCubit.themeMode==ThemeMode.light?ColorManager.primary:ColorManager.black )
+                  style: Theme.of(context).textTheme.titleMedium
 
               ),
             ),

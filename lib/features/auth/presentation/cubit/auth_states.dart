@@ -125,3 +125,12 @@ class SecondImageUpdated extends AuthState {
   final File ?secondImage;
   SecondImageUpdated(this.secondImage);
 }
+class MapStyleError extends AuthState {
+  final String message;
+
+  MapStyleError(this.message);
+
+}class MapStyleLoading extends AuthState {
+
+
+}

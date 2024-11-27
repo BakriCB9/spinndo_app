@@ -25,17 +25,14 @@ class CustomDayActive extends StatelessWidget {
           children: [
             Text(
               'Active Days',
-              style: TextStyle(
-                  fontSize: 25.sp,
-                  fontWeight: FontWeight.w600,
-                  color:        Theme.of(context).primaryColor,),
+                style: Theme.of(context).textTheme.labelLarge
             ),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WorkingSchedulePage()));
-                },
-                icon: Icon(Icons.edit_calendar_outlined,color: ColorManager.grey2,))
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: (context) => WorkingSchedulePage()));
+            //     },
+            //     icon: Icon(Icons.edit_calendar_outlined,color: Theme.of(context).primaryColorLight,))
           ],
         ),
         Column(
@@ -52,7 +49,7 @@ class CustomDayActive extends StatelessWidget {
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.day!,
-                                      style:  TextStyle(fontSize: 26.sp, color: Colors.black),
+                                        style: Theme.of(context).textTheme.labelMedium
                                     ),
                                   ),
                                 ),

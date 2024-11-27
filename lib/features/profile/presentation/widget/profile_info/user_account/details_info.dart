@@ -20,21 +20,17 @@ class InfoDetails extends StatelessWidget {
       ),
       Container(
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-          color: Colors.white,
           width: double.infinity,
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Icon(icon, color: ColorManager.grey2),
+            Icon(icon, color:  Theme.of(context).primaryColorLight),
             SizedBox(width: 15.w),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title,
-                  style: TextStyle(
-                      fontSize: 22.sp,
-                      color:        Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500)),
+                   style: Theme.of(context).textTheme.labelSmall),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(content,
-                    style: TextStyle(color: Colors.black, fontSize: 22.sp)),
+                    style: Theme.of(context).textTheme.labelMedium),
               )
             ])
           ])),

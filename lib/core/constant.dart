@@ -12,6 +12,7 @@ class ApiConstant {
   static const String getServices = '/services/getfilter';
   static const String getAllCountries = '/countries/getAll';
   static const String getAllCategory = '/categories/getAll';
+  static const String logoutEndPoint = '/logout';
  static final String googleMapApiKey ='AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
 }
 

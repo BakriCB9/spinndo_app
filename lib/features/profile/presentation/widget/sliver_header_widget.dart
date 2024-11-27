@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/resources/color_manager.dart';
+import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:snipp/features/profile/presentation/widget/container_widget.dart';
 import 'package:snipp/features/profile/presentation/widget/icon_button.dart';
 
@@ -33,10 +36,11 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     final double topSpace = size.height * 0.04;
     final double topSPaceForImage = size.height * 0.05;
     final double bottomSpaceForImage = size.height * 0.007;
+    final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final double rightSpace = size.width * 0.03;
 
     return Container(
-      color:        Theme.of(context).primaryColor,
+      color:       _drawerCubit.themeMode==ThemeMode.dark?Theme.of(context).primaryColorDark:ColorManager.primary,
       // color: Theme.of(context)
       //     .appBarTheme
       //     .
