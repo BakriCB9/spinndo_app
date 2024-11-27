@@ -38,28 +38,32 @@ class _ServiceScreenState extends State<ServiceScreen> {
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     double _distance = _serviceCubit.selectedDistance ?? 10.0;
     return Container(
-      decoration: _drawerCubit.themeMode==ThemeMode.dark?  BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                  "asset/images/bg.png"),
-              fit: BoxFit.fill)):null,
+      decoration: _drawerCubit.themeMode == ThemeMode.dark
+          ? BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          : null,
       child: Scaffold(
-        drawer: CustomDrawer(),
+          drawer: CustomDrawer(),
           appBar: AppBar(
-            actions: [IconButton(
-              icon: Icon(Icons.arrow_back,size: 1.sp,),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  size: 1.sp,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               Expanded(
-                child: Transform.scale(scale: 0.8,
+                child: Transform.scale(
+                  scale: 0.8,
                   child: Switch(
                     activeColor: ColorManager.primary,
                     inactiveTrackColor: ColorManager.white,
                     inactiveThumbColor: Theme.of(context).primaryColor,
-                    activeTrackColor:  Theme.of(context).primaryColor,
+                    activeTrackColor: Theme.of(context).primaryColor,
                     value: _drawerCubit.themeMode == ThemeMode.dark,
                     onChanged: (value) {
                       if (value) {
@@ -71,9 +75,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ),
                 ),
               ),
-
             ],
-            title: Text('Search Settings',style: Theme.of(context).textTheme.titleLarge,),
+            title: Text(
+              'Search Settings',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           body: BlocConsumer<ServiceCubit, ServiceStates>(
             buildWhen: (previous, current) {
@@ -110,11 +116,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 );
               } else if (state is CountryCategoryError) {
                 return Center(
-                  child: Text(state.message,style: Theme.of(context).textTheme.bodySmall),
+                  child: Text(state.message,
+                      style: Theme.of(context).textTheme.bodySmall),
                 );
-              } else if (state is CountryCategorySuccess ||state is GetCurrentLocationFilterSuccess||state is SelectedCountryCityServiceState||
+              } else if (state is CountryCategorySuccess ||
+                  state is GetCurrentLocationFilterSuccess ||
+                  state is SelectedCountryCityServiceState ||
                   state is ServiceSuccess ||
-                  state is ServiceLoading ||state is ServiceInitial||
+                  state is ServiceLoading ||
+                  state is ServiceInitial ||
                   state is ServiceError) {
                 return Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -124,7 +134,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         BlocBuilder<ServiceCubit, ServiceStates>(
                           bloc: _serviceCubit,
                           buildWhen: (previous, current) {
-                            if (current is GetCurrentLocationFilterSuccess || current is SelectedCountryCityServiceState)
+                            if (current is GetCurrentLocationFilterSuccess ||
+                                current is SelectedCountryCityServiceState)
                               return true;
                             return false;
                           },
@@ -144,93 +155,130 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   children: [
                                     Expanded(
                                       child: DropdownButtonFormField<Countries>(
-                                        dropdownColor: Theme.of(context).primaryColorDark,
-                                        hint: Text(
-                                          "Select Country",
-                                            style: Theme.of(context).textTheme.displayMedium),
+                                        dropdownColor:
+                                            Theme.of(context).primaryColorDark,
+                                        hint: Text("Select Country",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
                                         menuMaxHeight: 200,
-                                        decoration:
-                                        const InputDecoration(errorBorder: InputBorder.none),
+                                        decoration: const InputDecoration(
+                                            errorBorder: InputBorder.none),
                                         items: _serviceCubit.countriesList!
-                                            .map((e) => DropdownMenuItem<Countries>(
+                                            .map((e) =>
+                                                DropdownMenuItem<Countries>(
                                                   value: e,
                                                   child: Text(
                                                     e.name,
-                                                    style:
-                                                    Theme.of(context).textTheme.displayMedium,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium,
                                                   ),
                                                 ))
                                             .toList(),
                                         onChanged: (value) {
-                                          _serviceCubit.getCurrentLocation = null;
-                                          _serviceCubit.selectedCountryService(value!);
+                                          _serviceCubit.getCurrentLocation =
+                                              null;
+                                          _serviceCubit
+                                              .selectedCountryService(value!);
                                         },
                                       ),
                                     ),
-                                    SizedBox(width: 10.w,),
-                                   _serviceCubit.selectedCountryId!=null? Icon(Icons.check,color: Colors.green,size: 50.sp,):SizedBox()
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    _serviceCubit.selectedCountryId != null
+                                        ? Icon(
+                                            Icons.check,
+                                            color: Colors.green,
+                                            size: 50.sp,
+                                          )
+                                        : SizedBox()
                                   ],
                                 ),
-                                _serviceCubit.selectedCountryId !=
-                                    null
+                                _serviceCubit.selectedCountryId != null
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 30.h),
+                                          Text(
+                                            'Choose City',
+                                            textAlign: TextAlign.start,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(fontSize: 36.sp),
+                                          ),
+                                          SizedBox(height: 8.h),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: DropdownButtonFormField<
+                                                    Cities>(
+                                                  dropdownColor:
+                                                      Theme.of(context)
+                                                          .primaryColorDark,
+                                                  hint: Text("Select City",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .displayMedium),
+                                                  menuMaxHeight: 200,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          errorBorder:
+                                                              InputBorder.none),
+                                                  items: _serviceCubit
+                                                      .citiesList
+                                                      ?.map((e) =>
+                                                          DropdownMenuItem<
+                                                              Cities>(
+                                                            value: e,
+                                                            child: Text(
+                                                              e.name,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .displayMedium,
+                                                            ),
+                                                          ))
+                                                      .toList(),
+                                                  onChanged: (value) {
+                                                    _serviceCubit
+                                                            .getCurrentLocation =
+                                                        null;
 
-                                    ?     Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
-                                 SizedBox(height: 30.h),
-                                 Text(
-                                   'Choose City',textAlign: TextAlign.start,
-                                   style: Theme.of(context)
-                                       .textTheme
-                                       .titleMedium!
-                                       .copyWith(fontSize: 36.sp),
-                                 ),
-                                 SizedBox(height: 8.h),
-                                 Row(
-                                   children: [
-                                     Expanded(
-                                       child: DropdownButtonFormField<Cities>(
-                                         dropdownColor: Theme.of(context).primaryColorDark,
-                                         hint: Text(
-                                           "Select City",
-                                             style: Theme.of(context).textTheme.displayMedium),
-                                         menuMaxHeight: 200,
-                                         decoration:
-                                         const InputDecoration(errorBorder: InputBorder.none),
-                                         items: _serviceCubit.citiesList
-                                             ?.map((e) => DropdownMenuItem<Cities>(
-                                       
-                                           value: e,
-                                           child: Text(
-                                             e.name,
-                                             style:
-                                             Theme.of(context).textTheme.displayMedium,
-                                           ),
-                                         ))
-                                             .toList(),
-                                         onChanged: (value) {
-                                           _serviceCubit.getCurrentLocation = null;
-                                       
-                                           _serviceCubit.selectedCityService(value!);
-                                         },
-                                       ),
-                                     ),
-
-                                     SizedBox(width: 10.w,),
-                                     _serviceCubit.selectedCityId!=null? Icon(Icons.check,color: Colors.green,size: 50.sp,):SizedBox()
-                                   ],
-                                 ),
-
-                               ],):SizedBox()
+                                                    _serviceCubit
+                                                        .selectedCityService(
+                                                            value!);
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              _serviceCubit.selectedCityId !=
+                                                      null
+                                                  ? Icon(
+                                                      Icons.check,
+                                                      color: Colors.green,
+                                                      size: 50.sp,
+                                                    )
+                                                  : SizedBox()
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox()
                               ],
                             );
                           },
                         ),
                         SizedBox(height: 30.h),
-
                         Row(
                           children: [
                             ElevatedButton(
                               onPressed: () {
-
                                 _serviceCubit.getCurrentLocationFilter();
                                 _serviceCubit.selectedCountryName = null;
                                 _serviceCubit.selectedCountryId = null;
@@ -241,75 +289,112 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 bloc: _serviceCubit,
                                 buildWhen: (previous, current) {
                                   if (current is GetCurrentLocationFilterLoading ||
-                                      current is GetCurrentLocationFilterErrorr ||
-                                      current is GetCurrentLocationFilterSuccess || current is SelectedCountryCityServiceState)
+                                      current
+                                          is GetCurrentLocationFilterErrorr ||
+                                      current
+                                          is GetCurrentLocationFilterSuccess ||
+                                      current
+                                          is SelectedCountryCityServiceState)
                                     return true;
                                   return false;
                                 },
                                 builder: (context, state) {
-                                  if (state is GetCurrentLocationFilterLoading) {
+                                  if (state
+                                      is GetCurrentLocationFilterLoading) {
                                     return SizedBox(
                                         width: 300.w,
                                         child: LoadingIndicator(Colors.white));
                                   } else if (state
                                       is GetCurrentLocationFilterErrorr) {
-                                    return Text(state.message,style:  Theme.of(context).textTheme.bodySmall,);
+                                    return Text(
+                                      state.message,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    );
                                   } else if (state
                                       is GetCurrentLocationFilterSuccess) {
                                     return Padding(
-                                      padding:
-                                           EdgeInsets.symmetric(horizontal: 20.0.w),
-                                      child: Text("get current Location",style:  Theme.of(context).textTheme.bodyLarge,),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.0.w),
+                                      child: Text(
+                                        "get current Location",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                      ),
                                     );
                                   } else {
                                     return Padding(
-                                      padding:
-                                           EdgeInsets.symmetric(horizontal: 20.0.w),
-                                      child: Text("get current Location",style:  Theme.of(context).textTheme.bodyLarge),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.0.w),
+                                      child: Text("get current Location",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge),
                                     );
                                   }
                                 },
                               ),
                             ),
-                            SizedBox(width: 10.w,),
-                          
-                          BlocBuilder<ServiceCubit,ServiceStates>(bloc: _serviceCubit,
-  builder: (context, state) {
-    return   _serviceCubit.isUpdat==true? Icon(Icons.check,color: Colors.green,size: 50.sp,):SizedBox();
-  },
-)
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            BlocBuilder<ServiceCubit, ServiceStates>(
+                              bloc: _serviceCubit,
+                              builder: (context, state) {
+                                return _serviceCubit.isUpdat == true
+                                    ? Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                        size: 50.sp,
+                                      )
+                                    : SizedBox();
+                              },
+                            )
                           ],
                         ),
                         SizedBox(height: 30.h),
-
                         AnimatedSize(
-
                           alignment: Alignment.topCenter,
                           duration: Duration(milliseconds: 500),
                           child: BlocBuilder<ServiceCubit, ServiceStates>(
                             bloc: _serviceCubit,
                             buildWhen: (previous, current) {
                               if (current is DistanceSelectUpdate ||
-                                  current is GetCurrentLocationFilterSuccess || current is SelectedCountryCityServiceState)
+                                  current is GetCurrentLocationFilterSuccess ||
+                                  current is SelectedCountryCityServiceState)
                                 return true;
                               return false;
                             },
                             builder: (context, state) {
-                              return (_serviceCubit.getCurrentLocation != null&&_serviceCubit.selectedCountryId==null)
+                              return (_serviceCubit.getCurrentLocation !=
+                                          null &&
+                                      _serviceCubit.selectedCountryId == null)
                                   ? Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text("Distance",
-                                            style: Theme.of(context).textTheme.displayMedium),
-                                        SizedBox(height: 10.h,),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
                                         Slider(
                                           activeColor:
                                               Theme.of(context).primaryColor,
-                                                                        inactiveColor: _drawerCubit.themeMode==ThemeMode.dark?Theme.of(context).primaryColorLight:Colors.grey.shade300
-
-                         ,     value:
-                                              _serviceCubit.selectedDistance ?? 10,
+                                          inactiveColor:
+                                              _drawerCubit.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Theme.of(context)
+                                                      .primaryColorLight
+                                                  : Colors.grey.shade300,
+                                          value:
+                                              _serviceCubit.selectedDistance ??
+                                                  10,
                                           min: 0,
                                           max: 25,
                                           divisions: 5,
@@ -320,8 +405,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           },
                                         ),
                                         Text(
-                                            "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",                                            style: Theme.of(context).textTheme.displayMedium),
-
+                                            "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
                                         SizedBox(height: 16),
                                       ],
                                     )
@@ -348,21 +435,20 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           builder: (context, state) {
                             return DropdownButtonFormField<Categories>(
                               dropdownColor: Theme.of(context).primaryColorDark,
-                              hint: Text(
-                                "Select Cateory",
-                                  style: Theme.of(context).textTheme.displayMedium
-
-                            ),
+                              hint: Text("Select Cateory",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium),
                               menuMaxHeight: 200,
-                              decoration:
-                              const InputDecoration(errorBorder: InputBorder.none),
+                              decoration: const InputDecoration(
+                                  errorBorder: InputBorder.none),
                               items: _serviceCubit.categoriesList!
                                   .map((e) => DropdownMenuItem<Categories>(
                                         value: e,
-                                        child: Text(
-                                          e.name,
-                                            style: Theme.of(context).textTheme.displayMedium
-                                        ),
+                                        child: Text(e.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -374,10 +460,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         SizedBox(height: 70.h),
                         ElevatedButton(
                           onPressed: () {
-                            if (_serviceCubit.selectedCountryName==null && _serviceCubit.getCurrentLocation==null) {
+                            if (_serviceCubit.selectedCountryName == null &&
+                                _serviceCubit.getCurrentLocation == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                 SnackBar(
-                                    content: Text('choose country or your current location',style: TextStyle(fontSize: 28.sp,color: Colors.white),)),
+                                SnackBar(
+                                    content: Text(
+                                  'choose country or your current location',
+                                  style: TextStyle(
+                                      fontSize: 28.sp, color: Colors.white),
+                                )),
                               );
                               return;
                             }
@@ -395,15 +486,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             minimumSize: Size(double.infinity, 48),
                           ),
                           child: Text("Start Search",
-                              style: Theme.of(context).textTheme.bodyLarge
-                          ),
+                              style: Theme.of(context).textTheme.bodyLarge),
                         ),
                       ],
                     ));
               } else {
                 print("dddddddddddddddddddddddddddddd");
                 print(state);
-                return  Padding(
+                return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -411,7 +501,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         BlocBuilder<ServiceCubit, ServiceStates>(
                           bloc: _serviceCubit,
                           buildWhen: (previous, current) {
-                            if (current is GetCurrentLocationFilterSuccess || current is SelectedCountryCityServiceState)
+                            if (current is GetCurrentLocationFilterSuccess ||
+                                current is SelectedCountryCityServiceState)
                               return true;
                             return false;
                           },
@@ -431,91 +522,125 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   children: [
                                     Expanded(
                                       child: DropdownButtonFormField<Countries>(
-                                        hint: Text(
-                                            "Select Country",
-                                            style: Theme.of(context).textTheme.displayMedium),
+                                        hint: Text("Select Country",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
                                         menuMaxHeight: 200,
-                                        decoration:
-                                        const InputDecoration(errorBorder: InputBorder.none),
+                                        decoration: const InputDecoration(
+                                            errorBorder: InputBorder.none),
                                         items: _serviceCubit.countriesList!
-                                            .map((e) => DropdownMenuItem<Countries>(
-                                          value: e,
-                                          child: Text(
-                                            e.name,
-                                            style:
-                                            Theme.of(context).textTheme.displayMedium,
-                                          ),
-                                        ))
+                                            .map((e) =>
+                                                DropdownMenuItem<Countries>(
+                                                  value: e,
+                                                  child: Text(
+                                                    e.name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium,
+                                                  ),
+                                                ))
                                             .toList(),
                                         onChanged: (value) {
-                                          _serviceCubit.getCurrentLocation = null;
-                                          _serviceCubit.selectedCountryService(value!);
+                                          _serviceCubit.getCurrentLocation =
+                                              null;
+                                          _serviceCubit
+                                              .selectedCountryService(value!);
                                         },
                                       ),
                                     ),
-                                    SizedBox(width: 10.w,),
-                                    _serviceCubit.selectedCountryId!=null? Icon(Icons.check,color: Colors.green,size: 50.sp,):SizedBox()
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    _serviceCubit.selectedCountryId != null
+                                        ? Icon(
+                                            Icons.check,
+                                            color: Colors.green,
+                                            size: 50.sp,
+                                          )
+                                        : SizedBox()
                                   ],
                                 ),
-                                _serviceCubit.selectedCountryId !=
-                                    null
+                                _serviceCubit.selectedCountryId != null
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 30.h),
+                                          Text(
+                                            'Choose City',
+                                            textAlign: TextAlign.start,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(fontSize: 36.sp),
+                                          ),
+                                          SizedBox(height: 8.h),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: DropdownButtonFormField<
+                                                    Cities>(
+                                                  hint: Text("Select City",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .displayMedium),
+                                                  menuMaxHeight: 200,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          errorBorder:
+                                                              InputBorder.none),
+                                                  items: _serviceCubit
+                                                      .citiesList
+                                                      ?.map((e) =>
+                                                          DropdownMenuItem<
+                                                              Cities>(
+                                                            value: e,
+                                                            child: Text(
+                                                              e.name,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .displayMedium,
+                                                            ),
+                                                          ))
+                                                      .toList(),
+                                                  onChanged: (value) {
+                                                    _serviceCubit
+                                                            .getCurrentLocation =
+                                                        null;
 
-                                    ?     Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
-                                  SizedBox(height: 30.h),
-                                  Text(
-                                    'Choose City',textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium!
-                                        .copyWith(fontSize: 36.sp),
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: DropdownButtonFormField<Cities>(
-                                          hint: Text(
-                                              "Select City",
-                                              style: Theme.of(context).textTheme.displayMedium),
-                                          menuMaxHeight: 200,
-                                          decoration:
-                                          const InputDecoration(errorBorder: InputBorder.none),
-                                          items: _serviceCubit.citiesList
-                                              ?.map((e) => DropdownMenuItem<Cities>(
-
-                                            value: e,
-                                            child: Text(
-                                              e.name,
-                                              style:
-                                              Theme.of(context).textTheme.displayMedium,
-                                            ),
-                                          ))
-                                              .toList(),
-                                          onChanged: (value) {
-                                            _serviceCubit.getCurrentLocation = null;
-
-                                            _serviceCubit.selectedCityService(value!);
-                                          },
-                                        ),
-                                      ),
-
-                                      SizedBox(width: 10.w,),
-                                      _serviceCubit.selectedCityId!=null? Icon(Icons.check,color: Colors.green,size: 50.sp,):SizedBox()
-                                    ],
-                                  ),
-
-                                ],):SizedBox()
+                                                    _serviceCubit
+                                                        .selectedCityService(
+                                                            value!);
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              _serviceCubit.selectedCityId !=
+                                                      null
+                                                  ? Icon(
+                                                      Icons.check,
+                                                      color: Colors.green,
+                                                      size: 50.sp,
+                                                    )
+                                                  : SizedBox()
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox()
                               ],
                             );
                           },
                         ),
                         SizedBox(height: 30.h),
-
                         Row(
                           children: [
                             ElevatedButton(
                               onPressed: () {
-
                                 _serviceCubit.getCurrentLocationFilter();
                                 _serviceCubit.selectedCountryName = null;
                                 _serviceCubit.selectedCountryId = null;
@@ -526,89 +651,124 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 bloc: _serviceCubit,
                                 buildWhen: (previous, current) {
                                   if (current is GetCurrentLocationFilterLoading ||
-                                      current is GetCurrentLocationFilterErrorr ||
-                                      current is GetCurrentLocationFilterSuccess || current is SelectedCountryCityServiceState)
+                                      current
+                                          is GetCurrentLocationFilterErrorr ||
+                                      current
+                                          is GetCurrentLocationFilterSuccess ||
+                                      current
+                                          is SelectedCountryCityServiceState)
                                     return true;
                                   return false;
                                 },
                                 builder: (context, state) {
-                                  if (state is GetCurrentLocationFilterLoading) {
+                                  if (state
+                                      is GetCurrentLocationFilterLoading) {
                                     return SizedBox(
                                         width: 300.w,
                                         child: LoadingIndicator(Colors.white));
                                   } else if (state
-                                  is GetCurrentLocationFilterErrorr) {
-                                    return Text(state.message,style:  Theme.of(context).textTheme.bodySmall,);
+                                      is GetCurrentLocationFilterErrorr) {
+                                    return Text(
+                                      state.message,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    );
                                   } else if (state
-                                  is GetCurrentLocationFilterSuccess) {
+                                      is GetCurrentLocationFilterSuccess) {
                                     return Padding(
-                                      padding:
-                                      EdgeInsets.symmetric(horizontal: 20.0.w),
-                                      child: Text("get current Location",style:  Theme.of(context).textTheme.bodyLarge,),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.0.w),
+                                      child: Text(
+                                        "get current Location",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                      ),
                                     );
                                   } else {
                                     return Padding(
-                                      padding:
-                                      EdgeInsets.symmetric(horizontal: 20.0.w),
-                                      child: Text("get current Location",style:  Theme.of(context).textTheme.bodyLarge),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.0.w),
+                                      child: Text("get current Location",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge),
                                     );
                                   }
                                 },
                               ),
                             ),
-                            SizedBox(width: 10.w,),
-
-                            BlocBuilder<ServiceCubit,ServiceStates>(bloc: _serviceCubit,
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            BlocBuilder<ServiceCubit, ServiceStates>(
+                              bloc: _serviceCubit,
                               builder: (context, state) {
-                                return   _serviceCubit.isUpdat==true? Icon(Icons.check,color: Colors.green,size: 50.sp,):SizedBox();
+                                return _serviceCubit.isUpdat == true
+                                    ? Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                        size: 50.sp,
+                                      )
+                                    : SizedBox();
                               },
                             )
                           ],
                         ),
                         SizedBox(height: 30.h),
-
                         AnimatedSize(
-
                           alignment: Alignment.topCenter,
                           duration: Duration(milliseconds: 500),
                           child: BlocBuilder<ServiceCubit, ServiceStates>(
                             bloc: _serviceCubit,
                             buildWhen: (previous, current) {
                               if (current is DistanceSelectUpdate ||
-                                  current is GetCurrentLocationFilterSuccess || current is SelectedCountryCityServiceState)
+                                  current is GetCurrentLocationFilterSuccess ||
+                                  current is SelectedCountryCityServiceState)
                                 return true;
                               return false;
                             },
                             builder: (context, state) {
-                              return (_serviceCubit.getCurrentLocation != null&&_serviceCubit.selectedCountryId==null)
+                              return (_serviceCubit.getCurrentLocation !=
+                                          null &&
+                                      _serviceCubit.selectedCountryId == null)
                                   ? Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Distance",
-                                      style: Theme.of(context).textTheme.displayMedium),
-                                  SizedBox(height: 10.h,),
-                                  Slider(
-                                    activeColor:
-                                    Theme.of(context).primaryColor,
-                                    inactiveColor: Colors.black,
-                                    value:
-                                    _serviceCubit.selectedDistance ?? 10,
-                                    min: 0,
-                                    max: 25,
-                                    divisions: 5,
-                                    label:
-                                    "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
-                                    onChanged: (value) {
-                                      _serviceCubit.distanceSelect(value);
-                                    },
-                                  ),
-                                  Text(
-                                      "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",                                            style: Theme.of(context).textTheme.displayMedium),
-
-                                  SizedBox(height: 16),
-                                ],
-                              )
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Distance",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Slider(
+                                          activeColor:
+                                              Theme.of(context).primaryColor,
+                                          inactiveColor: Colors.black,
+                                          value:
+                                              _serviceCubit.selectedDistance ??
+                                                  10,
+                                          min: 0,
+                                          max: 25,
+                                          divisions: 5,
+                                          label:
+                                              "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
+                                          onChanged: (value) {
+                                            _serviceCubit.distanceSelect(value);
+                                          },
+                                        ),
+                                        Text(
+                                            "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
+                                        SizedBox(height: 16),
+                                      ],
+                                    )
                                   : SizedBox();
                             },
                           ),
@@ -631,22 +791,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           },
                           builder: (context, state) {
                             return DropdownButtonFormField<Categories>(
-                              hint: Text(
-                                  "Select Cateory",
-                                  style: Theme.of(context).textTheme.displayMedium
-
-                              ),
+                              hint: Text("Select Cateory",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium),
                               menuMaxHeight: 200,
-                              decoration:
-                              const InputDecoration(errorBorder: InputBorder.none),
+                              decoration: const InputDecoration(
+                                  errorBorder: InputBorder.none),
                               items: _serviceCubit.categoriesList!
                                   .map((e) => DropdownMenuItem<Categories>(
-                                value: e,
-                                child: Text(
-                                    e.name,
-                                    style: Theme.of(context).textTheme.displayMedium
-                                ),
-                              ))
+                                        value: e,
+                                        child: Text(e.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
+                                      ))
                                   .toList(),
                               onChanged: (value) {
                                 _serviceCubit.selectedCategoryService(value!);
@@ -657,10 +816,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         SizedBox(height: 30.h),
                         ElevatedButton(
                           onPressed: () {
-                            if (_serviceCubit.selectedCountryName==null && _serviceCubit.getCurrentLocation==null) {
+                            if (_serviceCubit.selectedCountryName == null &&
+                                _serviceCubit.getCurrentLocation == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                    content: Text('choose country or your current location',style: TextStyle(fontSize: 28.sp,color: Colors.white),)),
+                                    content: Text(
+                                  'choose country or your current location',
+                                  style: TextStyle(
+                                      fontSize: 28.sp, color: Colors.white),
+                                )),
                               );
                               return;
                             }
@@ -669,17 +833,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 cityId: _serviceCubit.selectedCityId,
                                 countryId: _serviceCubit.selectedCountryId,
                                 latitude:
-                                _serviceCubit.getCurrentLocation?.latitude,
+                                    _serviceCubit.getCurrentLocation?.latitude,
                                 longitude:
-                                _serviceCubit.getCurrentLocation?.longitude,
+                                    _serviceCubit.getCurrentLocation?.longitude,
                                 radius: 25));
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity, 48),
                           ),
                           child: Text("Start Search",
-                              style: Theme.of(context).textTheme.bodyLarge
-                          ),
+                              style: Theme.of(context).textTheme.bodyLarge),
                         ),
                       ],
                     ));
