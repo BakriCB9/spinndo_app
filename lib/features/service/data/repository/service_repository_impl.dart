@@ -17,13 +17,11 @@ import '../../domain/repository/service_repository.dart';
 class ServiceRepositoryImpl implements ServiceRepository {
   final ServiceDataSource _serviceDataSource;
 
-
   ServiceRepositoryImpl(this._serviceDataSource);
 
   @override
-  Future<Either<Failure, List<Categories>>> getCategories()async {
+  Future<Either<Failure, List<Categories>>> getCategories() async {
     try {
-
       final getCategoriesResponse = await _serviceDataSource.getAllCategory();
       return Right(getCategoriesResponse.data!);
     } on AppException catch (exception) {
@@ -32,9 +30,8 @@ class ServiceRepositoryImpl implements ServiceRepository {
   }
 
   @override
-  Future<Either<Failure, List<Countries>>> getCountries() async{
+  Future<Either<Failure, List<Countries>>> getCountries() async {
     try {
-
       final getCountriesResponse = await _serviceDataSource.getAllCountries();
       return Right(getCountriesResponse.data!);
     } on AppException catch (exception) {
@@ -43,10 +40,11 @@ class ServiceRepositoryImpl implements ServiceRepository {
   }
 
   @override
-  Future<Either<Failure, List<Services>>> getServices(GetServicesRequest requestData) async{
+  Future<Either<Failure, List<Services>>> getServices(
+      GetServicesRequest requestData) async {
     try {
-
-      final getServicesResponse = await _serviceDataSource.getServices(requestData);
+      final getServicesResponse =
+          await _serviceDataSource.getServices(requestData);
       return Right(getServicesResponse.data!);
     } on AppException catch (exception) {
       return left(Failure(exception.message));
@@ -54,18 +52,12 @@ class ServiceRepositoryImpl implements ServiceRepository {
   }
 
   @override
-  Future<Either<Failure, Data>> showDetails(int id) async{
+  Future<Either<Failure, Data>> showDetails(int id) async {
     try {
-
       final poviderService = await _serviceDataSource.getProviderService(id);
       return Right(poviderService.data!);
     } on AppException catch (exception) {
       return left(Failure(exception.message));
     }
-
   }
-
-
-
-
 }

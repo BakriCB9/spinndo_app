@@ -33,6 +33,7 @@ Future<void> main() async {
   await configureDependencies();
   sharedPref = await SharedPreferences.getInstance();
   await ScreenUtil.ensureScreenSize();
+
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: false,
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
             create: (context) => serviceLocator.get<DrawerCubit>(),
           )
         ],
-        child: ScreenUtilInit(splitScreenMode: true,
+        child: ScreenUtilInit(
+            splitScreenMode: true,
             designSize: const Size(720, 1640),
             builder: (context, _) {
               return Builder(builder: (context) {
@@ -66,22 +68,22 @@ class MyApp extends StatelessWidget {
                       darkTheme: ThemeManager.darkTheme,
                       themeMode:
                           BlocProvider.of<DrawerCubit>(context).themeMode,
-                      localizationsDelegates:AppLocalizations.localizationsDelegates,
+                      localizationsDelegates:
+                          AppLocalizations.localizationsDelegates,
                       supportedLocales: AppLocalizations.supportedLocales,
                       locale: Locale(
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       //home: HomeScreen(),
                       initialRoute:
                           sharedPref.getString(CacheConstant.tokenKey) == null
-                              ? (sharedPref
-                                          .getString(CacheConstant.emailKey) ==
+                              ? (sharedPref.getString(CacheConstant.emailKey) ==
                                       null
                                   ? SignUpScreen.routeName
-                                  : VerficationCodeScreen.routeName)
-                              :  ServiceScreen.routeName,
+                                  : SignInScreen.routeName)
+                              : ServiceScreen.routeName,
                       routes: {
                         EmployeeDetails.routeName: (context) =>
-                             EmployeeDetails(),
+                            EmployeeDetails(),
                         MapWithDioBounds.routeName: (context) =>
                             MapWithDioBounds(),
                         ServiceScreen.routeName: (context) => ServiceScreen(),
@@ -97,7 +99,7 @@ class MyApp extends StatelessWidget {
                         MapScreen.routeName: (context) => MapScreen(),
                         SignInScreen.routeName: (context) => SignInScreen(),
                         VerficationCodeScreen.routeName: (context) =>
-                             VerficationCodeScreen(),
+                            VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
                         HomeScreen.routeName: (context) => const HomeScreen(),

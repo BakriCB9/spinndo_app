@@ -34,8 +34,8 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       print(requestBody.toJson());
       final response = await _dio.post(ApiConstant.loginEndPoint,
           data: requestBody.toJson());
-print(response);
-print("asdasd");
+      print(response);
+      print("asdasd");
       return LoginResponse.fromJson(response.data);
     } catch (exception) {
       var message = 'Failed to login';
@@ -70,7 +70,8 @@ print("asdasd");
     try {
       final response = await _dio.post(ApiConstant.verifyCodeEndPoint,
           data: requestBody.toJson());
-          print('the data response  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  is ${response.data}');
+      print(
+          'the data response  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  is ${response.data}');
       return VerifyCodeResponse.fromJson(response.data);
     } catch (exception) {
       var message = 'Failed to verify Code';
@@ -106,7 +107,7 @@ print("asdasd");
   }
 
   @override
-  Future<ResendCodeResponse> resendCode(ResendCodeRequest requestBody)  async {
+  Future<ResendCodeResponse> resendCode(ResendCodeRequest requestBody) async {
     try {
       final response = await _dio.post(ApiConstant.resendCodeEndPoint,
           data: requestBody.toJson());
@@ -123,7 +124,8 @@ print("asdasd");
   }
 
   @override
-  Future<ResetPasswordResponse> resetPassword(ResetPasswordRequest requestBody)  async {
+  Future<ResetPasswordResponse> resetPassword(
+      ResetPasswordRequest requestBody) async {
     try {
       final response = await _dio.post(ApiConstant.resetPasswordEndPoint,
           data: requestBody.toJson());
@@ -141,40 +143,44 @@ print("asdasd");
 
   @override
   Future<GetAllCategoryResponse> getAllCategory() async {
-    try{ final response = await _dio.get(
-      ApiConstant.getAllCategory,
-    );
+    try {
+      final response = await _dio.get(
+        ApiConstant.getAllCategory,
+      );
 
-    return GetAllCategoryResponse.fromJson(response.data);}catch (exciption) {
+      return GetAllCategoryResponse.fromJson(response.data);
+    } catch (exciption) {
       throw RemoteAppException("Failed to get categories");
     }
   }
+
   @override
-   Future<List<String>> getAddressFromCoordinates(
-      double lat,double long) async{
+  Future<List<String>> getAddressFromCoordinates(
+      double lat, double long) async {
     final String url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=${ApiConstant.googleMapApiKey}';
 
     try {
-    final response = await _dio.get(url);
+      final response = await _dio.get(url);
 
-    if (response.statusCode == 200) {
-    final data = response.data;
+      if (response.statusCode == 200) {
+        final data = response.data;
 
-    if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-      var cityName = data['results'][0]['address_components'][1]['long_name'];
-      var countryName = data['results'][0]['address_components'][4]['long_name'];
+        if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+          var cityName =
+              data['results'][0]['address_components'][1]['long_name'];
+          var countryName =
+              data['results'][0]['address_components'][4]['long_name'];
 
-    return [countryName,cityName];
-    } else {
-    throw Exception('No results found');
-    }
-    } else {
-    throw Exception('Failed to load geocoding data');
-    }
+          return [countryName, cityName];
+        } else {
+          throw Exception('No results found');
+        }
+      } else {
+        throw Exception('Failed to load geocoding data');
+      }
     } catch (e) {
-    throw Exception('Error fetching address: $e');
+      throw Exception('Error fetching address: $e');
     }
   }
-
 }

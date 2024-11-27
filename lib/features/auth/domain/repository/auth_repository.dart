@@ -33,6 +33,6 @@ abstract class AuthRepository {
 
   Future<Either<Failure, List<Categories>>> getCategories();
 
-  Future<Either<Failure, Country>> getAddressFromCoordinates(double lat,
-      double long);
+  Future<Either<Failure, Country>> getAddressFromCoordinates(
+      double lat, double long);
 }

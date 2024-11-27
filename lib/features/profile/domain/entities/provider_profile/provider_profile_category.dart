@@ -3,4 +3,5 @@ class ProviderProfileCategory {
   String? name;
   dynamic hasChildren;
 
-  ProviderProfileCategory({this.id, this.name, this.hasChildren});}
+  ProviderProfileCategory({this.id, this.name, this.hasChildren});
+}

@@ -9,13 +9,10 @@ class DiplomaAndProtofile extends StatelessWidget {
   final int type;
 
   const DiplomaAndProtofile(
-      {
-
-        required this.active,
-        required this.type,
-        required this.text,
-
-        super.key});
+      {required this.active,
+      required this.type,
+      required this.text,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +21,12 @@ class DiplomaAndProtofile extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(
               bottom: active
-                  ? BorderSide(color:        Theme.of(context).primaryColor, width: 2.w)
+                  ? BorderSide(
+                      color: Theme.of(context).primaryColor, width: 2.w)
                   : BorderSide.none)),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelMedium
-
-      ),
+      child: Text(text,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.labelMedium),
     );
   }
 }

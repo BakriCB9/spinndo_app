@@ -10,6 +10,6 @@ class Getcountryname {
   final AuthRepository _authRepository;
 
   Getcountryname(this._authRepository);
-  Future<Either<Failure, Country>> call(double lat,double long) =>
-      _authRepository.getAddressFromCoordinates(lat,long);
+  Future<Either<Failure, Country>> call(double lat, double long) =>
+      _authRepository.getAddressFromCoordinates(lat, long);
 }

@@ -27,19 +27,15 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
   Widget build(BuildContext context) {
     return InkWell(
       //onTap: widget.dateSelect.daySelect
-          
-      child: Container(
-        padding:  EdgeInsets.all(8),
-        decoration: BoxDecoration(
 
-            borderRadius: BorderRadius.circular(10.r)),
+      child: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(
-              widget.time,
-                style: Theme.of(context).textTheme.labelMedium
-            ),
+            child: Text(widget.time,
+                style: Theme.of(context).textTheme.labelMedium),
           ),
         ),
       ),

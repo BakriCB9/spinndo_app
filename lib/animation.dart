@@ -59,13 +59,11 @@
 //   }
 // }
 
+class A {}
 
-class A{
-
-}
-class Bakri{
+class Bakri {
   final A _val;
-  Bakri( {required A value }):_val=value;
+  Bakri({required A value}) : _val = value;
 }
 
-final ans=Bakri(value: A());
+final ans = Bakri(value: A());

@@ -5,12 +5,13 @@ import 'package:snipp/core/error/app_exception.dart';
 
 import 'package:snipp/features/profile/data/data_source/local/profile_local_data_source.dart';
 
-
 @Singleton(as: ProfileLocalDataSource)
 class ProfileSharedPrefLocalDataSource implements ProfileLocalDataSource {
   final SharedPreferences _sharedPreferences;
 
-  ProfileSharedPrefLocalDataSource({required SharedPreferences sharedPreferences}) : _sharedPreferences = sharedPreferences;
+  ProfileSharedPrefLocalDataSource(
+      {required SharedPreferences sharedPreferences})
+      : _sharedPreferences = sharedPreferences;
 
   @override
   String getToken() {
@@ -38,5 +39,4 @@ class ProfileSharedPrefLocalDataSource implements ProfileLocalDataSource {
       throw LocalAppException('Failed to get role');
     }
   }
-
 }

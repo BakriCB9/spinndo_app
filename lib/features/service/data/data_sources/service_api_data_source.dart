@@ -16,7 +16,7 @@ class ServiceApiDataSource implements ServiceDataSource {
   final Dio _dio;
   final SharedPreferences _sharedPreferences;
 
-  ServiceApiDataSource(this._dio,this._sharedPreferences );
+  ServiceApiDataSource(this._dio, this._sharedPreferences);
 
   Future<GetServicesResponse> getServices(
       GetServicesRequest requestBody) async {
@@ -31,12 +31,13 @@ class ServiceApiDataSource implements ServiceDataSource {
         options: Options(
           method: 'GET', // Specify GET explicitly
           headers: {
-            'Content-Type': 'application/json', // Optional: Set headers if needed
+            'Content-Type':
+                'application/json', // Optional: Set headers if needed
           },
         ),
       );
       print("aaaaaaaaaaaaaaaaaaaaaa");
-print(response.data);
+      print(response.data);
       print("aaaaaaaaaaaaaaaaaaaaaa");
       return GetServicesResponse.fromJson(response.data);
     } catch (exciption) {
@@ -49,13 +50,15 @@ print(response.data);
 
   @override
   Future<GetAllCategoryResponse> getAllCategory() async {
-   try{ final response = await _dio.get(
-      ApiConstant.getAllCategory,
-    );
+    try {
+      final response = await _dio.get(
+        ApiConstant.getAllCategory,
+      );
 
-    return GetAllCategoryResponse.fromJson(response.data);}catch (exciption) {
-     throw RemoteAppException("Failed to get categories");
-   }
+      return GetAllCategoryResponse.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get categories");
+    }
   }
 
   @override
@@ -70,22 +73,19 @@ print(response.data);
       throw RemoteAppException("Failed to get countries");
     }
   }
-  Future<ProviderProfileResponse> getProviderService(int id)async{
-    try
-    {
-      String user_token=_sharedPreferences.getString(CacheConstant.tokenKey)!;
+
+  Future<ProviderProfileResponse> getProviderService(int id) async {
+    try {
+      String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
       final response = await _dio.get(
-      '${ApiConstant.profileServiceProviderEndPoint}/$id',
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $user_token"
-        })
-    );
-    return ProviderProfileResponse.fromJson(response.data);
-    }
-    catch (exciption) {
+          '${ApiConstant.profileServiceProviderEndPoint}/$id',
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $user_token"
+          }));
+      return ProviderProfileResponse.fromJson(response.data);
+    } catch (exciption) {
       throw RemoteAppException("Failed to get Details");
     }
-
   }
 }

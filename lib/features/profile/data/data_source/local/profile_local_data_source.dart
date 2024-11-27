@@ -1,6 +1,5 @@
-
 abstract class ProfileLocalDataSource {
- String getToken();
- int  getUserId();
- String  getUserRole();
+  String getToken();
+  int getUserId();
+  String getUserRole();
 }

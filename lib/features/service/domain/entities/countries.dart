@@ -2,9 +2,8 @@ import 'package:snipp/features/service/data/models/get_all_countries_response/ci
 import 'package:snipp/features/service/domain/entities/cities.dart';
 
 class Countries {
- final int id;
- final String name;
- final List<Cities> cities;
-  Countries({ required this.id,required this.name,required this.cities});
-
+  final int id;
+  final String name;
+  final List<Cities> cities;
+  Countries({required this.id, required this.name, required this.cities});
 }

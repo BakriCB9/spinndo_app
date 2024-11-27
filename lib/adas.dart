@@ -36,7 +36,8 @@ class SpeechBubblePainter extends CustomPainter {
       ..lineTo(size.width, size.height / 2)
       ..lineTo(size.width - 10, size.height / 2 + 10)
       ..lineTo(size.width - 10, size.height)
-      ..quadraticBezierTo(size.width - 10, size.height, size.width - 20, size.height)
+      ..quadraticBezierTo(
+          size.width - 10, size.height, size.width - 20, size.height)
       ..lineTo(10, size.height)
       ..quadraticBezierTo(0, size.height, 0, size.height - 10)
       ..close();
@@ -55,13 +56,25 @@ void main() {
     home: Scaffold(
       body: Center(
         // child: SpeechBubble(text: 'Brands'),
-        child: SizedBox(width: 250,
-          child: Stack(children: [
-            Container(width: 200,child: Text("dssda"),decoration: BoxDecoration(
-              color: Colors.blue,borderRadius: BorderRadius.all(Radius.circular(30))
-            ),),
-                 Positioned(left: 190,child: Icon(Icons.play_arrow,color: Colors.red,))
-          ],),
+        child: SizedBox(
+          width: 250,
+          child: Stack(
+            children: [
+              Container(
+                width: 200,
+                child: Text("dssda"),
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+              ),
+              Positioned(
+                  left: 190,
+                  child: Icon(
+                    Icons.play_arrow,
+                    color: Colors.red,
+                  ))
+            ],
+          ),
         ),
       ),
     ),

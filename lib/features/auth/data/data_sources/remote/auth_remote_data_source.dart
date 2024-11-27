@@ -22,6 +22,5 @@ abstract class AuthRemoteDataSource {
   Future<ResendCodeResponse> resendCode(ResendCodeRequest requestBody);
   Future<ResetPasswordResponse> resetPassword(ResetPasswordRequest requestBody);
   Future<GetAllCategoryResponse> getAllCategory();
-  Future<List<String>> getAddressFromCoordinates(
-      double lat,double long);
+  Future<List<String>> getAddressFromCoordinates(double lat, double long);
 }

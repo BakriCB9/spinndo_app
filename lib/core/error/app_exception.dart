@@ -11,6 +11,7 @@ class RemoteAppException extends AppException {
 class LocalAppException extends AppException {
   LocalAppException([super.message]);
 }
+
 class GoogleMapAppException extends AppException {
   GoogleMapAppException([super.message]);
 }

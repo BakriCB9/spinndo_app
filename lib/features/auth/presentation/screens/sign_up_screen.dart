@@ -127,12 +127,12 @@ class SignUpScreen extends StatelessWidget {
       BlocBuilder<AuthCubit, AuthState>(
         bloc: _authCubit,
         buildWhen: (previous, current) {
-          if(current is  ChooseAccountState){return true;}
+          if (current is ChooseAccountState) {
+            return true;
+          }
           return false;
         },
         builder: (context, state) {
-
-
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0.w),
             child: Row(
@@ -157,7 +157,6 @@ class SignUpScreen extends StatelessWidget {
                 Row(
                   children: [
                     Radio<bool>(
-
                       activeColor: ColorManager.primary,
                       hoverColor: ColorManager.primary,
                       value: false,
@@ -188,23 +187,20 @@ class SignUpScreen extends StatelessWidget {
             } else if (state is RegisterError) {
               UIUtils.hideLoading(context);
               UIUtils.showMessage(state.message);
-
             }
             if (state is GetCategoryLoading) {
               UIUtils.showLoading(context, 'asset/animation/loading.json');
             } else if (state is GetCategorySuccess) {
               UIUtils.hideLoading(context);
               Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-
             } else if (state is GetCategoryError) {
               UIUtils.hideLoading(context);
               UIUtils.showMessage(state.message);
-
             }
           },
           buildWhen: (previous, current) {
             if (
-            //(previous is AuthInitial || previous is ChooseAccountState) &&
+                //(previous is AuthInitial || previous is ChooseAccountState) &&
                 current is ChooseAccountState) {
               return true;
             }
@@ -214,7 +210,7 @@ class SignUpScreen extends StatelessWidget {
             return SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   _register(context);
                 },
                 child: Text(
@@ -260,7 +256,6 @@ class SignUpScreen extends StatelessWidget {
       if (formKey.currentState!.validate()) {
         _authCubit.getCategories();
       } else {
-
         return;
       }
     }

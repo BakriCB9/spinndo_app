@@ -125,7 +125,10 @@ class EmployeeDetails extends StatelessWidget {
                 return InkWell(
                   onTap: () {
                     _authCubit.getCurrentLocation();
-                    _authCubit.loadMapStyle(_drawerCubit.themeMode==ThemeMode.dark?true:false);
+                    _authCubit.loadMapStyle(
+                        _drawerCubit.themeMode == ThemeMode.dark
+                            ? true
+                            : false);
                     Navigator.of(context).pushNamed(MapScreen.routeName);
                   },
                   child: Container(
@@ -278,12 +281,16 @@ class EmployeeDetails extends StatelessWidget {
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: DropdownButton<String>(dropdownColor: Theme.of(context).primaryColorDark,menuMaxHeight: 200,
+                                      child: DropdownButton<String>(
+                                        dropdownColor:
+                                            Theme.of(context).primaryColorDark,
+                                        menuMaxHeight: 200,
                                         isExpanded: true,
                                         value:
-                                            _authCubit.dateSelect[index].start,style: Theme.of(context)
-                                          .textTheme
-                                          .displayMedium,
+                                            _authCubit.dateSelect[index].start,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium,
                                         iconEnabledColor: ColorManager.primary,
                                         onChanged: (value) {
                                           _authCubit.onStartTimeUpdate(value!,
@@ -292,20 +299,27 @@ class EmployeeDetails extends StatelessWidget {
                                         items: _buildTimeOptions(),
                                       ),
                                     ),
-                                     Padding(
+                                    Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 8.w),
-                                      child: Text(" to ",style: Theme.of(context)
-                                          .textTheme
-                                          .displayMedium,),
+                                      child: Text(
+                                        " to ",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium,
+                                      ),
                                     ),
                                     Expanded(
-                                      child: DropdownButton<String>(dropdownColor: Theme.of(context).primaryColorDark,
-                                        isExpanded: true,menuMaxHeight: 200,
+                                      child: DropdownButton<String>(
+                                        dropdownColor:
+                                            Theme.of(context).primaryColorDark,
+                                        isExpanded: true,
+                                        menuMaxHeight: 200,
                                         iconEnabledColor: ColorManager.primary,
-                                        value: _authCubit.dateSelect[index].end,style: Theme.of(context)
-                                          .textTheme
-                                          .displayMedium,
+                                        value: _authCubit.dateSelect[index].end,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium,
                                         onChanged: (value) {
                                           _authCubit.onEndTimeUpdate(value!,
                                               _authCubit.dateSelect[index]);
@@ -353,8 +367,8 @@ class EmployeeDetails extends StatelessWidget {
                     }
                   }
                 },
-                child: Text("Next",style: Theme.of(context).textTheme.bodyLarge
-                    ),
+                child:
+                    Text("Next", style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
           ],
@@ -376,7 +390,6 @@ class EmployeeDetails extends StatelessWidget {
             value: time,
             child: Text(
               time,
-
             )))
         .toList();
   }

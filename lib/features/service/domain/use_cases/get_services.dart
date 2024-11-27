@@ -13,6 +13,7 @@ class GetServices {
 
   GetServices(this._serviceRepository);
 
-  Future<Either<Failure, List<Services>>> call(GetServicesRequest requestBody) =>
+  Future<Either<Failure, List<Services>>> call(
+          GetServicesRequest requestBody) =>
       _serviceRepository.getServices(requestBody);
 }

@@ -10,46 +10,49 @@ import 'package:snipp/features/profile/presentation/widget/profile_info/job_item
 import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
 import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
 import 'package:snipp/features/profile/presentation/widget/sliver_header_widget.dart';
+
 class ProviderProfileScreen extends StatefulWidget {
-  final  ProviderProfile providerProfile;
-  const ProviderProfileScreen({required this.providerProfile  ,  super.key});
+  final ProviderProfile providerProfile;
+  const ProviderProfileScreen({required this.providerProfile, super.key});
 
   @override
   State<ProviderProfileScreen> createState() => _ProviderProfileScreenState();
 }
+
 final ScrollController _control = ScrollController();
+
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final size = MediaQuery.of(context).size;
     return Container(
-     decoration: _drawerCubit.themeMode==ThemeMode.dark?  BoxDecoration(
-        image: DecorationImage(
-        image: AssetImage(
-        "asset/images/bg.png"),
-    fit: BoxFit.fill)):BoxDecoration(color: Colors.white.withOpacity(0.1),),
+      decoration: _drawerCubit.themeMode == ThemeMode.dark
+          ? BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          : BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+            ),
       child: CustomScrollView(
         controller: _control,
         slivers: [
           SliverPersistentHeader(
-            delegate: SliverPersistentDelegate(size),
+            delegate: SliverPersistentDelegate(size,widget.providerProfile.imagePath),
             pinned: true,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               child: Column(
-
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Switch(
                     activeColor: ColorManager.primary,
                     inactiveTrackColor: ColorManager.white,
                     inactiveThumbColor: Theme.of(context).primaryColor,
-                    activeTrackColor:  Theme.of(context).primaryColor,
+                    activeTrackColor: Theme.of(context).primaryColor,
                     value: _drawerCubit.themeMode == ThemeMode.dark,
                     onChanged: (value) {
                       if (value) {
@@ -62,16 +65,17 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 15.h),
                   UserAccount(
                     firstName: widget.providerProfile.firstName!,
-                    lastName:widget.providerProfile.lastName!,
+                    lastName: widget.providerProfile.lastName!,
                     email: widget.providerProfile.email!,
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
-                    category:
-                    widget.providerProfile.details?.category?.name ?? "No category",
-                    description:
-                    widget.providerProfile.details?.description ?? "No description",
-                    serviceName: widget.providerProfile.details?.name ?? "No emial yet",
+                    category: widget.providerProfile.details?.category?.name ??
+                        "No category",
+                    description: widget.providerProfile.details?.description ??
+                        "No description",
+                    serviceName:
+                        widget.providerProfile.details?.name ?? "No emial yet",
                   ),
                   SizedBox(height: 10.h),
                   CustomDayActive(
@@ -80,8 +84,9 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 30.h),
                   CustomDiplomaAndProtofile(
                     imageCertificate:
-                    widget.providerProfile.details?.certificatePath ?? listImage[0],
-                    images: widget.providerProfile.details?.images??[],
+                        widget.providerProfile.details?.certificatePath ??
+                            listImage[0],
+                    images: widget.providerProfile.details?.images ?? [],
                   ),
                   SizedBox(height: 100.h)
                 ],

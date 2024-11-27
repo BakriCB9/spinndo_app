@@ -7,5 +7,3 @@ class GoogleMapModel {
 
   GoogleMapModel({required this.id, required this.name, required this.latLng});
 }
-
-

@@ -1,10 +1,9 @@
-
 import 'package:snipp/features/profile/domain/entities/client_profile.dart';
 
-class ClientModel extends ClientProfile{
-final int id;
+class ClientModel extends ClientProfile {
+  final int id;
   const ClientModel({
-   required this.id,
+    required this.id,
     required super.firstName,
     required super.lastName,
     required super.email,

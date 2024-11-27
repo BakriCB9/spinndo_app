@@ -12,8 +12,8 @@ import 'package:snipp/features/profile/presentation/screens/edit_date_time.dart'
 import 'box_of_from_to.dart';
 
 class CustomDayActive extends StatelessWidget {
-  final List<ProviderPriofileWorkingday>listOfworkday;
-  const CustomDayActive({required this.listOfworkday,super.key});
+  final List<ProviderPriofileWorkingday> listOfworkday;
+  const CustomDayActive({required this.listOfworkday, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,7 @@ class CustomDayActive extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Active Days',
-                style: Theme.of(context).textTheme.labelLarge
-            ),
+            Text('Active Days', style: Theme.of(context).textTheme.labelLarge),
             // IconButton(
             //     onPressed: () {
             //       Navigator.of(context).push(MaterialPageRoute(
@@ -36,50 +33,43 @@ class CustomDayActive extends StatelessWidget {
           ],
         ),
         Column(
-          children:listOfworkday
+          children: listOfworkday
               .map((e) => Padding(
-                    padding: EdgeInsets.only(top: 10.h),
-                    
-                       child:   Row(
+                  padding: EdgeInsets.only(top: 10.h),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(e.day!,
+                                style: Theme.of(context).textTheme.labelMedium),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                          flex: 4,
+                          child: Row(
                             children: [
                               Expanded(
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.day!,
-                                        style: Theme.of(context).textTheme.labelMedium
-                                    ),
-                                  ),
-                                ),
+                                  child: BoxFromDateToDate(
+                                time: 'From 9:00 Am',
+                                type: 1,
+                              )),
+                              SizedBox(
+                                width: 10.w,
                               ),
-                              SizedBox(width: 10.w),
                               Expanded(
-                                  flex: 4,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: BoxFromDateToDate(
-                                        time: 'From 9:00 Am',
-                                        
-                                        type: 1,
-                                      )),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      Expanded(
-                                          child: BoxFromDateToDate(
-                                        time: 'To 6:00 Pm',
-                                        
-                                        type: 2,
-                                      ))
-                                    ],
-                                  ))
+                                  child: BoxFromDateToDate(
+                                time: 'To 6:00 Pm',
+                                type: 2,
+                              ))
                             ],
-                          )
-                        
-                  ))
+                          ))
+                    ],
+                  )))
               .toList(),
         ),
         //    days

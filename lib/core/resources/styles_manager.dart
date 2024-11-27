@@ -30,31 +30,31 @@ TextStyle getThinStyle({
     color: color,
   );
 }
+
 TextStyle getRegularStyle({
   double fontSize = FontSize.s24,
   String fontFamily = FontConstants.fontFamily,
-   FontWeight fontWeight= FontWeightManager.regular,
-
+  FontWeight fontWeight = FontWeightManager.regular,
   required Color color,
 }) {
   return getTextStyle(
     fontSize: fontSize,
     fontFamily: fontFamily,
-    fontWeight:fontWeight,
+    fontWeight: fontWeight,
     color: color,
   );
 }
+
 TextStyle getMediumStyle({
   double fontSize = FontSize.s24,
   String fontFamily = FontConstants.fontFamily,
-  FontWeight fontWeight= FontWeightManager.regular,
-
+  FontWeight fontWeight = FontWeightManager.regular,
   required Color color,
 }) {
   return getTextStyle(
     fontSize: fontSize,
     fontFamily: fontFamily,
-    fontWeight:fontWeight,
+    fontWeight: fontWeight,
     color: color,
   );
 }
@@ -65,20 +65,21 @@ TextStyle getSemiBoldStyle({
   required Color color,
 }) {
   return getTextStyle(
-    fontSize: fontSize,fontFamily: fontFamily,
+    fontSize: fontSize,
+    fontFamily: fontFamily,
     fontWeight: FontWeightManager.semiBold,
     color: color,
   );
 }
 
 TextStyle getBoldStyle({
-
   String fontFamily = FontConstants.fontFamily,
   double fontSize = FontSize.s24,
   required Color color,
 }) {
   return getTextStyle(
-    fontSize: fontSize,fontFamily: fontFamily,
+    fontSize: fontSize,
+    fontFamily: fontFamily,
     fontWeight: FontWeightManager.bold,
     color: color,
   );

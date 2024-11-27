@@ -8,9 +8,24 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   RangeValues _priceRange = RangeValues(1299, 3999);
   double _discount = 50.0;
-  List<String> brands = ["Philips", "Sony", "JBL", "Headphones", "Sennheiser", "Motorola", "zebronics", "ball"];
+  List<String> brands = [
+    "Philips",
+    "Sony",
+    "JBL",
+    "Headphones",
+    "Sennheiser",
+    "Motorola",
+    "zebronics",
+    "ball"
+  ];
   String? selectedBrand;
-  List<String> features = ["Wireless", "Sports", "Noise canceling", "With microphone", "Tangle free cord"];
+  List<String> features = [
+    "Wireless",
+    "Sports",
+    "Noise canceling",
+    "With microphone",
+    "Tangle free cord"
+  ];
   List<String> selectedFeatures = [];
 
   @override
@@ -33,7 +48,8 @@ class _FilterScreenState extends State<FilterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Price Range", style: Theme.of(context).textTheme.displayMedium),
+            Text("Price Range",
+                style: Theme.of(context).textTheme.displayMedium),
             SizedBox(height: 8),
             RangeSlider(
               values: _priceRange,
@@ -50,7 +66,8 @@ class _FilterScreenState extends State<FilterScreen> {
                 });
               },
             ),
-            Text("\$${_priceRange.start.toInt()} - \$${_priceRange.end.toInt()}"),
+            Text(
+                "\$${_priceRange.start.toInt()} - \$${_priceRange.end.toInt()}"),
             SizedBox(height: 16),
             Text("Discount", style: Theme.of(context).textTheme.displayMedium),
             SizedBox(height: 8),

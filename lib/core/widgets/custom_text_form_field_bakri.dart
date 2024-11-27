@@ -26,12 +26,10 @@ class _CustomTextFromFieldBakriState extends State<CustomTextFromFieldBakri> {
       maxLines: widget.maxlines,
       style: Theme.of(context).textTheme.bodyMedium,
       initialValue: widget.initialvalue,
-
       decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           label: Text(
             widget.label,
-
           ),
           prefixIcon: Icon(
             widget.icon,

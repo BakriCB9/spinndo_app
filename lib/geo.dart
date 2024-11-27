@@ -40,18 +40,20 @@ class _MapWithDioBoundsState extends State<MapWithDioBounds> {
 
           setState(() {
             _cameraBounds = LatLngBounds(
-              southwest: LatLng(bounds['southwest']['lat'], bounds['southwest']['lng']),
-              northeast: LatLng(bounds['northeast']['lat'], bounds['northeast']['lng']),
+              southwest: LatLng(
+                  bounds['southwest']['lat'], bounds['southwest']['lng']),
+              northeast: LatLng(
+                  bounds['northeast']['lat'], bounds['northeast']['lng']),
             );
           });
         } else {
           throw Exception('No results found for the place: $place');
         }
       } else {
-        throw Exception('Failed to fetch bounds with status code: ${response.statusCode}');
-      }setState(() {
-
-      });
+        throw Exception(
+            'Failed to fetch bounds with status code: ${response.statusCode}');
+      }
+      setState(() {});
     } catch (e) {
       print('Error fetching bounds: $e');
     }
@@ -88,9 +90,7 @@ class _MapWithDioBoundsState extends State<MapWithDioBounds> {
               ),
               onSubmitted: (value) {
                 _fetchBoundsForPlace(value);
-                setState(() {
-
-                });
+                setState(() {});
               },
             ),
           ),

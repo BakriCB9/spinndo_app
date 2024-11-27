@@ -13,7 +13,7 @@ class UIUtils {
             child: AlertDialog(
               backgroundColor: Colors.transparent,
               content: Container(
-                width:double.infinity,
+                width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
                     color: Theme.of(context).primaryColor),
@@ -22,7 +22,9 @@ class UIUtils {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const LoadingIndicator(Colors.white),
-                    SizedBox(height: 20.h,),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Text(
                       'Please Loading...',
                       style: TextStyle(
@@ -33,8 +35,7 @@ class UIUtils {
                   ],
                 ),
               ),
-            )
-        ),
+            )),
       );
 
   static void hideLoading(BuildContext context) => Navigator.of(context).pop();

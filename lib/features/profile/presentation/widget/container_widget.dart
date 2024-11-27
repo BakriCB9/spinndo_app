@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomContainer extends StatelessWidget {
-  final String image;
+  final String? image;
   final double? width;
   final BoxShape shape;
   const CustomContainer(
@@ -12,7 +12,7 @@ class CustomContainer extends StatelessWidget {
     return Container(
         width: width,
         decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+            image: DecorationImage(image:image==null? AssetImage('asset/images/aaaa.png'):NetworkImage(image!), fit: BoxFit.cover),
             shape: shape),
         child: null);
   }

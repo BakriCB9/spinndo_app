@@ -1,8 +1,6 @@
-
-
 import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_details_job.dart';
 
-class ProviderProfile  {
+class ProviderProfile {
   int? id;
   String? firstName;
   String? lastName;
@@ -16,4 +14,5 @@ class ProviderProfile  {
     this.email,
     this.imagePath,
     this.details,
-  });}
+  });
+}

@@ -1,5 +1,5 @@
-class  Country {
-   String cityName;
+class Country {
+  String cityName;
   String countryName;
-  Country({required this.cityName,required this.countryName});
+  Country({required this.cityName, required this.countryName});
 }

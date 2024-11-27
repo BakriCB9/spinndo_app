@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/resources/color_manager.dart';
 import 'package:snipp/core/utils/ui_utils.dart';
@@ -14,6 +15,7 @@ import 'package:snipp/features/service/domain/entities/countries.dart';
 import 'package:snipp/features/service/presentation/cubit/service_cubit.dart';
 import 'package:snipp/features/service/presentation/cubit/service_states.dart';
 import 'package:snipp/features/service/presentation/screens/filter_result_screen.dart';
+import 'package:snipp/main.dart';
 
 class ServiceScreen extends StatefulWidget {
   static const String routeName = '/service';
@@ -46,33 +48,51 @@ class _ServiceScreenState extends State<ServiceScreen> {
       child: Scaffold(
           drawer: CustomDrawer(),
           appBar: AppBar(
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    // Replace this with your shared preference or token-check logic
+                    final String? token =
+                        sharedPref.getString(CacheConstant.tokenKey);
+
+                    if (token == null) {
+                      UIUtils.showMessage("You have to Sign in first");
+                    } else {
+                      // Open the drawer
+                      Scaffold.of(context).openDrawer();
+                    }
+                  },
+                );
+              },
+            ),
             actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  size: 1.sp,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Expanded(
-                child: Transform.scale(
-                  scale: 0.8,
-                  child: Switch(
-                    activeColor: ColorManager.primary,
-                    inactiveTrackColor: ColorManager.white,
-                    inactiveThumbColor: Theme.of(context).primaryColor,
-                    activeTrackColor: Theme.of(context).primaryColor,
-                    value: _drawerCubit.themeMode == ThemeMode.dark,
-                    onChanged: (value) {
-                      if (value) {
-                        _drawerCubit.changeTheme(ThemeMode.dark);
-                      } else {
-                        _drawerCubit.changeTheme(ThemeMode.light);
-                      }
-                    },
-                  ),
+              // IconButton(
+              //   icon: Icon(
+              //     Icons.arrow_back,
+              //     size: 1.sp,
+              //   ),
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              // ),
+
+              Transform.scale(
+                scale: 0.8,
+                child: Switch(
+                  activeColor: ColorManager.primary,
+                  inactiveTrackColor: ColorManager.white,
+                  inactiveThumbColor: Theme.of(context).primaryColor,
+                  activeTrackColor: Theme.of(context).primaryColor,
+                  value: _drawerCubit.themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    if (value) {
+                      _drawerCubit.changeTheme(ThemeMode.dark);
+                    } else {
+                      _drawerCubit.changeTheme(ThemeMode.light);
+                    }
+                  },
                 ),
               ),
             ],
@@ -157,7 +177,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       child: DropdownButtonFormField<Countries>(
                                         dropdownColor:
                                             Theme.of(context).primaryColorDark,
-                                        hint: Text("Select Country",
+                                        hint: Text("Country",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displayMedium),
@@ -219,7 +239,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                   dropdownColor:
                                                       Theme.of(context)
                                                           .primaryColorDark,
-                                                  hint: Text("Select City",
+                                                  hint: Text("City",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .displayMedium),
@@ -317,7 +337,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 20.0.w),
                                       child: Text(
-                                        "get current Location",
+                                        "current Location",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge,
@@ -327,7 +347,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 20.0.w),
-                                      child: Text("get current Location",
+                                      child: Text("current Location",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyLarge),
@@ -435,7 +455,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           builder: (context, state) {
                             return DropdownButtonFormField<Categories>(
                               dropdownColor: Theme.of(context).primaryColorDark,
-                              hint: Text("Select Cateory",
+                              hint: Text("Cateory",
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayMedium),
@@ -522,7 +542,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   children: [
                                     Expanded(
                                       child: DropdownButtonFormField<Countries>(
-                                        hint: Text("Select Country",
+                                        hint: Text("Country",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displayMedium),
@@ -581,7 +601,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               Expanded(
                                                 child: DropdownButtonFormField<
                                                     Cities>(
-                                                  hint: Text("Select City",
+                                                  hint: Text("City",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .displayMedium),
@@ -679,7 +699,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 20.0.w),
                                       child: Text(
-                                        "get current Location",
+                                        "current Location",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge,
@@ -689,7 +709,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 20.0.w),
-                                      child: Text("get current Location",
+                                      child: Text("current Location",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyLarge),
@@ -791,7 +811,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           },
                           builder: (context, state) {
                             return DropdownButtonFormField<Categories>(
-                              hint: Text("Select Cateory",
+                              hint: Text("Cateory",
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayMedium),

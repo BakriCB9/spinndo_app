@@ -28,11 +28,17 @@ import 'package:snipp/features/service/domain/use_cases/get_categories.dart';
 import '../../../../core/models/google_map_model.dart';
 import '../../domain/use_cases/getCountryName.dart';
 
-
 @singleton
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
-      this._login, this._register, this._verifyCode, this._registerService, this._resendCode, this._resetPassword, this._getCategories, this._getCountryCityName)
+      this._login,
+      this._register,
+      this._verifyCode,
+      this._registerService,
+      this._resendCode,
+      this._resetPassword,
+      this._getCategories,
+      this._getCountryCityName)
       : super(AuthInitial());
   final Login _login;
   final Register _register;
@@ -42,23 +48,21 @@ class AuthCubit extends Cubit<AuthState> {
   final RegisterService _registerService;
   final Getcountryname _getCountryCityName;
 
-
-
   List<DateSelect> dateSelect = [
-    DateSelect(day: "sunday",start: "08:00",end: "15:00"),
-    DateSelect(day: "monday",start: "08:00",end: "15:00"),
-    DateSelect(day: "tuseday",start: "08:00",end: "15:00"),
-    DateSelect(day: "wednesday",start: "08:00",end: "15:00"),
-    DateSelect(day: "thursday",start: "08:00",end: "15:00"),
-    DateSelect(day: "friday",start: "08:00",end: "15:00"),
-    DateSelect(day: "saturday",start: "08:00",end: "15:00"),
+    DateSelect(day: "sunday", start: "08:00", end: "15:00"),
+    DateSelect(day: "monday", start: "08:00", end: "15:00"),
+    DateSelect(day: "tuseday", start: "08:00", end: "15:00"),
+    DateSelect(day: "wednesday", start: "08:00", end: "15:00"),
+    DateSelect(day: "thursday", start: "08:00", end: "15:00"),
+    DateSelect(day: "friday", start: "08:00", end: "15:00"),
+    DateSelect(day: "saturday", start: "08:00", end: "15:00"),
   ];
   String website = '';
   final emailController = TextEditingController();
 
-   String locationName="enter your location";
-   LatLng? currentLocation;
-   LatLng? selectedLocation;
+  String locationName = "enter your location";
+  LatLng? currentLocation;
+  LatLng? selectedLocation;
   Set<Marker> markers = {};
   GoogleMapController? googleMapController;
 
@@ -74,21 +78,20 @@ class AuthCubit extends Cubit<AuthState> {
   final addressController = TextEditingController();
   final serviceDescriptionController = TextEditingController();
   bool isClient = true;
-  int resendCodeTime=60;
+  int resendCodeTime = 60;
   Timer? timer;
-  bool canResend=false;
+  bool canResend = false;
   File? certificateImage;
   File? firstImage;
-  File? secondImage ;
-  List<Categories>? categoriesList ;
+  File? secondImage;
+  List<Categories>? categoriesList;
   final GetCategories _getCategories;
-  String ?selectedCategoryId;
+  String? selectedCategoryId;
   late CameraPosition initialCameraPosition;
-  bool isCurrent=true;
-  bool isCountySuccess=false;
+  bool isCurrent = true;
+  bool isCountySuccess = false;
   String? cityName;
-  List<GoogleMapModel> markerLocationData = [
-  ];
+  List<GoogleMapModel> markerLocationData = [];
   Future<void> register(RegisterRequest requestData) async {
     emit(RegisterLoading());
     final result = await _register(requestData);
@@ -101,7 +104,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(LoginRequest requestData) async {
     emit(LoginLoading());
-print("zzzzzzzzzzzzzzzzz");
+    print("zzzzzzzzzzzzzzzzz");
     print(requestData.email);
     print(requestData);
     final result = await _login(requestData);
@@ -132,25 +135,27 @@ print("zzzzzzzzzzzzzzzzz");
       (response) => emit(RegisterServiceSuccess()),
     );
   }
+
   Future<void> resendCode(ResendCodeRequest requestData) async {
     emit(ResendCodeLoading());
 
     final result = await _resendCode(requestData);
     result.fold(
-          (failure) => emit(ResendCodeError(failure.message)),
-          (response) {
-            // verifyCodeTime();
-            emit(ResendCodeSuccess());
-          } ,
+      (failure) => emit(ResendCodeError(failure.message)),
+      (response) {
+        // verifyCodeTime();
+        emit(ResendCodeSuccess());
+      },
     );
   }
+
   Future<void> resetPassword(ResetPasswordRequest requestData) async {
     emit(ResetPasswordLoading());
 
     final result = await _resetPassword(requestData);
     result.fold(
-          (failure) => emit(ResetPasswordError(failure.message)),
-          (response) => emit(ResetPasswordSuccess()),
+      (failure) => emit(ResetPasswordError(failure.message)),
+      (response) => emit(ResetPasswordSuccess()),
     );
   }
 
@@ -163,138 +168,132 @@ print("zzzzzzzzzzzzzzzzz");
     date.daySelect = daySelect;
     emit(CardState());
   }
+
   onArrowUpdate(bool arrowSelect, DateSelect date) {
     date.arrowSelect = arrowSelect;
     emit(CardState());
   }
+
   onStartTimeUpdate(String start, DateSelect date) {
     date.start = start;
     emit(CardState());
   }
+
   onEndTimeUpdate(String end, DateSelect date) {
     date.end = end;
     emit(CardState());
   }
+
   bool isAnotherDaySelected() {
     for (int i = 0; i < dateSelect.length; i++) {
-      if(dateSelect[i].daySelect){
+      if (dateSelect[i].daySelect) {
         return true;
       }
     }
     return false;
   }
-  verifyCodeTime(){
-    canResend=false;
+
+  verifyCodeTime() {
+    canResend = false;
     emit(CanResendState());
 
-    timer=Timer.periodic( Duration(seconds: 1), (timer){
-      if(resendCodeTime>0){
-        resendCodeTime-=1;
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (resendCodeTime > 0) {
+        resendCodeTime -= 1;
         emit(CanResendState());
-      }
-      else{
-        canResend=true;
+      } else {
+        canResend = true;
         emit(CanResendState());
-        resendCodeTime=60;
+        resendCodeTime = 60;
         timer.cancel();
       }
     });
   }
+
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
 
     final result = await _getCategories();
-    result.fold(
-            (failure) {
-          // failureMessegae=failure.message;
-          emit(GetCategoryError(failure.message));
-        },
-            (categories)  {
-          categoriesList=categories;
-          emit(GetCategorySuccess());
-        });
+    result.fold((failure) {
+      // failureMessegae=failure.message;
+      emit(GetCategoryError(failure.message));
+    }, (categories) {
+      categoriesList = categories;
+      emit(GetCategorySuccess());
+    });
   }
-void selectedCategoryEvent(Categories category){
-  selectedCategoryId = category.id.toString();
-  emit(SelectedCategoryState());
-}
 
-void initMarkerAddress(){
-markers.clear();
-  var myMarker = markerLocationData
-      .map(
-        (e) => Marker(
-      position: e.latLng,
-      infoWindow: InfoWindow(title: e.name),
-      markerId: MarkerId(
-        e.id.toString(),
-      ),
-    ),
-  )
-      .toSet();
-markers.addAll(myMarker);
-  markerLocationData.clear();
-}
-void initCurrentLocation()  {
-
-
-      CameraPosition newLocation = CameraPosition(
-          target:currentLocation!,
-          zoom: 15);
-      googleMapController!
-          .animateCamera(CameraUpdate.newCameraPosition(newLocation));
-
-      markerLocationData.add(GoogleMapModel(
-          id: 1,
-          name: "your current location",
-          latLng: currentLocation!));
-emit(SelectedLocationState());
-    }
-
-  Future<void>getCurrentLocation()async{
-    try{
-emit(
-    GetCurrentLocationLoading()
-
-);
-      LocationData getCurrentLocation = await LocationService.getLocationData();
-currentLocation=LatLng(getCurrentLocation.latitude!,getCurrentLocation.longitude!);
-emit(
-    GetCurrentLocationSuccess()
-
-);
-    } catch (e) {
-      emit(
-          GetCurrentLocationErrorr("Couldn't get your location")
-
-      );
-
-    }
+  void selectedCategoryEvent(Categories category) {
+    selectedCategoryId = category.id.toString();
+    emit(SelectedCategoryState());
   }
-  void selectLocation(LatLng onSelectedLocation)  {
 
-      markerLocationData.add(GoogleMapModel(
-        id: 1,
-        name: "your Location",
-        latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
-      ));
+  void initMarkerAddress() {
+    markers.clear();
+    var myMarker = markerLocationData
+        .map(
+          (e) => Marker(
+            position: e.latLng,
+            infoWindow: InfoWindow(title: e.name),
+            markerId: MarkerId(
+              e.id.toString(),
+            ),
+          ),
+        )
+        .toSet();
+    markers.addAll(myMarker);
+    markerLocationData.clear();
+  }
 
-      selectedLocation= LatLng( onSelectedLocation.latitude,  onSelectedLocation.longitude);
+  void initCurrentLocation() {
+    CameraPosition newLocation =
+        CameraPosition(target: currentLocation!, zoom: 15);
+    googleMapController!
+        .animateCamera(CameraUpdate.newCameraPosition(newLocation));
+
+    markerLocationData.add(GoogleMapModel(
+        id: 1, name: "your current location", latLng: currentLocation!));
     emit(SelectedLocationState());
   }
-void getCountryAndCityNameFromCrocd(double lat,double long)async{
-  emit(GetLocationCountryLoading());          isCountySuccess=false;
-  cityName=null;
-  final result = await _getCountryCityName(lat,long);
 
-  result.fold(
-        (failure) => emit(GetLocationCountryErrorr(failure.message)),
+  Future<void> getCurrentLocation() async {
+    try {
+      emit(GetCurrentLocationLoading());
+      LocationData getCurrentLocation = await LocationService.getLocationData();
+      currentLocation =
+          LatLng(getCurrentLocation.latitude!, getCurrentLocation.longitude!);
+      emit(GetCurrentLocationSuccess());
+    } catch (e) {
+      emit(GetCurrentLocationErrorr("Couldn't get your location"));
+    }
+  }
+
+  void selectLocation(LatLng onSelectedLocation) {
+    markerLocationData.add(GoogleMapModel(
+      id: 1,
+      name: "your Location",
+      latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
+    ));
+
+    selectedLocation =
+        LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude);
+    emit(SelectedLocationState());
+  }
+
+  void getCountryAndCityNameFromCrocd(double lat, double long) async {
+    emit(GetLocationCountryLoading());
+    isCountySuccess = false;
+    cityName = null;
+    final result = await _getCountryCityName(lat, long);
+
+    result.fold((failure) => emit(GetLocationCountryErrorr(failure.message)),
         (response) {
-          cityName=response.cityName;
-          isCountySuccess=true;
-        emit(GetLocationCountrySuccess(response));
-});
-}
+      cityName = response.cityName;
+      isCountySuccess = true;
+      emit(GetLocationCountrySuccess(response));
+    });
+  }
+
   void updateCertificateImage(File? image) {
     certificateImage = image;
     emit(CertificateImageUpdated(image));
@@ -308,21 +307,17 @@ void getCountryAndCityNameFromCrocd(double lat,double long)async{
   void updateSecondImage(File? image) {
     secondImage = image;
     emit(SecondImageUpdated(image));
-
   }
 
   String? mapStyle;
 
   Future<void> loadMapStyle(bool isDark) async {
     try {
-      mapStyle = await rootBundle.loadString("asset/map_styles/${isDark?"night_map_style.json":"light_map_style.json"}");
+      mapStyle = await rootBundle.loadString(
+          "asset/map_styles/${isDark ? "night_map_style.json" : "light_map_style.json"}");
       // emit(MapStyleLoading());
     } catch (e) {
       // emit(MapStyleError("Failed to load map style."));
-
     }
   }
-
 }
-
-

@@ -13,6 +13,6 @@ class ResetPassword {
   ResetPassword(this._authRepository);
 
   Future<Either<Failure, ResetPasswordResponse>> call(
-      ResetPasswordRequest requestData) =>
+          ResetPasswordRequest requestData) =>
       _authRepository.resetPassword(requestData);
 }

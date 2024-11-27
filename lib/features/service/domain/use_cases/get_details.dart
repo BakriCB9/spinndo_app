@@ -11,6 +11,6 @@ class GetServiceProfile {
 
   GetServiceProfile(this._serviceRepository);
 
-  Future<Either<Failure, ProviderProfile>> call(int id ) =>
+  Future<Either<Failure, ProviderProfile>> call(int id) =>
       _serviceRepository.showDetails(id);
 }

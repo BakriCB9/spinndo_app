@@ -7,7 +7,7 @@ import '../../../drawer/presentation/screens/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-  static String routeName ='/home';
+  static String routeName = '/home';
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,7 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.menu),
               onPressed: () {
                 // Replace this with your shared preference or token-check logic
-                final String? token = sharedPref.getString(CacheConstant.tokenKey);
+                final String? token =
+                    sharedPref.getString(CacheConstant.tokenKey);
 
                 if (token == null) {
                   UIUtils.showMessage("You have to Sign in first");

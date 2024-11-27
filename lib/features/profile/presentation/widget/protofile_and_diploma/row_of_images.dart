@@ -19,42 +19,51 @@ class RowOfImages extends StatelessWidget {
   Widget build(BuildContext context) {
     return typeSelect == 2
         ?
+    moreImage!.length==0?  SizedBox(
+        height: 350.w,
+        width: 350.w,
+        child: Center(child: Text('No Photo Uploaded Yet ',style: Theme.of(context).textTheme.bodySmall,),)):
+    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+                child: moreImage![0].path == null
+                    ? const SizedBox()
+                    : CashImage(path: moreImage![0].path!)),
+            SizedBox(
+              width: 20.w,
+            ),
+            Expanded(
+                child: moreImage![1].path == null
+                    ? const SizedBox()
+                    : CashImage(path: moreImage![1].path!))
+          ]
+            // [Text('No thing yet')]
 
+            // moreImage!.asMap().entries.map((e) {
+            //  return
+            // Expanded(
+            //     child: Padding(
+            //       padding: EdgeInsets.symmetric(horizontal: 5.w),
+            //       child: InkWell(
+            //         onTap: () {
+            //           // Navigator.of(context).push(MaterialPageRoute(
+            //           //     builder: (context) =>
+            //           //         ShowImage(tag: aux.key, image: e.value.path)));
+            //         },
+            //         child:
+            //         Hero(tag: e.key, child: CashImage(path: e.value.path!)),
+            //       ),
+            //     ));
+            // Expanded(child: CashImage(path: e.value.path!));
 
-    Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children:  [
-        Expanded(child:moreImage![0]==null?const SizedBox():CashImage(path: moreImage![0].path!) ),
-        SizedBox(width: 20.w,),
-        Expanded(child:moreImage![1]==null?const  SizedBox():CashImage(path: moreImage![1].path!) )
-      ]
-      // [Text('No thing yet')]
-
-     // moreImage!.asMap().entries.map((e) {
-      //  return
-        // Expanded(
-        //     child: Padding(
-        //       padding: EdgeInsets.symmetric(horizontal: 5.w),
-        //       child: InkWell(
-        //         onTap: () {
-        //           // Navigator.of(context).push(MaterialPageRoute(
-        //           //     builder: (context) =>
-        //           //         ShowImage(tag: aux.key, image: e.value.path)));
-        //         },
-        //         child:
-        //         Hero(tag: e.key, child: CashImage(path: e.value.path!)),
-        //       ),
-        //     ));
-        // Expanded(child: CashImage(path: e.value.path!));
-
-      //     Align(
-      //
-      //         alignment: Alignment.topLeft,child: Padding(
-      //
-      //         padding: e.key==0?EdgeInsets.only():EdgeInsets.only(),
-      //         child: CashImage(path: e.value.path!)));
-      // }).toList(),
-    )
-        :Align(alignment: Alignment.topLeft,child: CashImage(path: imagePic!));
+            //     Align(
+            //
+            //         alignment: Alignment.topLeft,child: Padding(
+            //
+            //         padding: e.key==0?EdgeInsets.only():EdgeInsets.only(),
+            //         child: CashImage(path: e.value.path!)));
+            // }).toList(),
+            )
+        : Align(
+            alignment: Alignment.topLeft, child: CashImage(path: imagePic!));
   }
 }

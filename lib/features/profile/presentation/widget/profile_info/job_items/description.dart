@@ -10,8 +10,11 @@ class CustomDescription extends StatelessWidget {
   final String category;
   final String serviceName;
   final String description;
-  const CustomDescription({required this.category, required this.serviceName,
-  required this.description,super.key});
+  const CustomDescription(
+      {required this.category,
+      required this.serviceName,
+      required this.description,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +25,7 @@ class CustomDescription extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Job Details',
-                style: Theme.of(context).textTheme.labelLarge
-            ),
+            Text('Job Details', style: Theme.of(context).textTheme.labelLarge),
             // IconButton(
             //     onPressed: () {
             //       Navigator.of(context).push(MaterialPageRoute(
@@ -37,7 +37,7 @@ class CustomDescription extends StatelessWidget {
         InfoDetails(
             icon: Icons.work_outline_outlined,
             title: 'Work',
-            content:category ),
+            content: category),
         InfoDetails(
             icon: Icons.maps_home_work, title: 'Title', content: serviceName),
         InfoDetails(
@@ -47,15 +47,10 @@ class CustomDescription extends StatelessWidget {
         SizedBox(
           height: 10.h,
         ),
-        Text(
-          'Description',
-            style: Theme.of(context).textTheme.labelLarge
-        ),
+        Text('Description', style: Theme.of(context).textTheme.labelLarge),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-            child: ShowMoreAndShowLess(
-                txt:
-                description )),
+            child: ShowMoreAndShowLess(txt: description)),
         SizedBox(
           height: 10.h,
         ),
@@ -63,7 +58,6 @@ class CustomDescription extends StatelessWidget {
     );
   }
 }
-
 
 // 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don'
 //                     't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn'

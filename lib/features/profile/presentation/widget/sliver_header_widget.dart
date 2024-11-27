@@ -12,8 +12,9 @@ import 'position_widget.dart';
 
 class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final Size size;
+  final String? image;
 
-  SliverPersistentDelegate(this.size);
+  SliverPersistentDelegate(this.size,this.image);
 
   @override
   Widget build(
@@ -25,10 +26,10 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
 
     final percent = shrinkOffset / (maxHeaderHeight);
     final currentImageSize =
-    (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
+        (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
     final currentImagePosition =
-    ((size.width / 2 - minImageSize) * (1 - percent))
-        .clamp(minImageSize, maxImageSize);
+        ((size.width / 2 - minImageSize) * (1 - percent))
+            .clamp(minImageSize, maxImageSize);
     final double currentPositionforText = (maxHeaderHeight / 2) * (1 - percent);
     final double initPositionForText = size.height * 0.24;
 
@@ -40,7 +41,9 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     final double rightSpace = size.width * 0.03;
 
     return Container(
-      color:       _drawerCubit.themeMode==ThemeMode.dark?Theme.of(context).primaryColorDark:ColorManager.primary,
+      color: _drawerCubit.themeMode == ThemeMode.dark
+          ? Theme.of(context).primaryColorDark
+          : ColorManager.primary,
       // color: Theme.of(context)
       //     .appBarTheme
       //     .
@@ -54,27 +57,29 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
             child: CustomContainer(
                 shape: isImageBig ? BoxShape.circle : BoxShape.rectangle,
                 width: isImageBig ? currentImageSize : null,
-                image: 'asset/images/aaaa.png'),
+                image: image),
           ),
           CustomPosition(
               left: 0,
               top: topSpace,
-              child: CustomIconButton(ontap: () {
-                Navigator.pop(context);
-              }, icon: Icons.arrow_back)),
+              child: CustomIconButton(
+                  ontap: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icons.arrow_back)),
           // CustomPosition(
           //     right: rightSpace,
           //     top: topSpace,
           //     child: CustomIconButton(ontap: () {}, icon: Icons.edit)),
           CustomPosition(
-              top: isImageBig
-                  ? max(currentPositionforText, topSPaceForImage)
-                  : initPositionForText * (1 - percent),
-              left: isImageBig
-                  ? max(
-                  ((size.width / 1.1)) * (1 - percent), minImageSize * 2.2)
-                  : rightSpace,
-              isAnimated: true, child: SizedBox(),
+            top: isImageBig
+                ? max(currentPositionforText, topSPaceForImage)
+                : initPositionForText * (1 - percent),
+            left: isImageBig
+                ? max(((size.width / 1.1)) * (1 - percent), minImageSize * 2.2)
+                : rightSpace,
+            isAnimated: true,
+            child: SizedBox(),
           )
         ],
       ),

@@ -29,11 +29,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Images',
-                style: Theme.of(context).textTheme.labelLarge
-
-            ),
+            Text('Images', style: Theme.of(context).textTheme.labelLarge),
             // IconButton(
             //     onPressed: () {
             //       Navigator.of(context).push(MaterialPageRoute(
@@ -49,25 +45,25 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
           children: [
             Expanded(
               child: InkWell(
-                splashColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onTap: () {
                     setState(() {
                       typeSelect = 1;
                     });
                   },
                   child: DiplomaAndProtofile(
-                      active: typeSelect == 1, type: 1, text: 'Diploma')),
+                      active: typeSelect == 1, type: 1, text: 'Certificate')),
             ),
             Expanded(
               child: InkWell(
-                splashColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onTap: () {
                     setState(() {
                       typeSelect = 2;
                     });
                   },
                   child: DiplomaAndProtofile(
-                      active: typeSelect == 2, type: 2, text: 'Protofile')),
+                      active: typeSelect == 2, type: 2, text: 'Photos')),
             ),
           ],
         ),
@@ -75,10 +71,12 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
 
         // ///here i have to pass the list of diploma or protofile
         // ///depend on the typeSelect (using if to choose which list)
-        SizedBox(height: 30.h,),
+        SizedBox(
+          height: 30.h,
+        ),
         RowOfImages(
           typeSelect: typeSelect,
-           moreImage: widget.images,
+          moreImage: widget.images,
           imagePic: widget.imageCertificate,
         ),
       ],

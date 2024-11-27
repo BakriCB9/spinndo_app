@@ -17,15 +17,15 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   const CustomTextFormField(
       {Key? key,
-        this.labelText,
-        this.validator,
-        this.isPassword = false,
-        this.hintText,
-        this.maxLines = 1,
-        this.minLines = 1,
-        required this.controller,
-        this.icon,
-        this.keyboardType})
+      this.labelText,
+      this.validator,
+      this.isPassword = false,
+      this.hintText,
+      this.maxLines = 1,
+      this.minLines = 1,
+      required this.controller,
+      this.icon,
+      this.keyboardType})
       : super(key: key);
 
   @override
@@ -50,7 +50,6 @@ class _CustomTextFormField extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       focusNode: _focus,
       onTapOutside: (_) {
         _focus.unfocus();
@@ -58,45 +57,48 @@ class _CustomTextFormField extends State<CustomTextFormField> {
       onFieldSubmitted: (_) {
         _focus.unfocus();
       },
-style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
-
         hintText: widget.hintText,
 
         label: widget.labelText != null
             ? Text(
-          widget.labelText!,
-
-        )
+                widget.labelText!,
+              )
             : null,
 
         suffixIcon: widget.controller.text.isNotEmpty
             ? widget.isPassword
-            ? IconButton(
-
-            onPressed: () {
-              isObsecure = !isObsecure;
-              setState(() {});
-            },
-            icon: isObsecure
-                ?  Icon(Icons.visibility_off_outlined,size: 40.sp,)
-                :  Icon(Icons.visibility_outlined,size: 40.sp,))
-            : null
+                ? IconButton(
+                    onPressed: () {
+                      isObsecure = !isObsecure;
+                      setState(() {});
+                    },
+                    icon: isObsecure
+                        ? Icon(
+                            Icons.visibility_off_outlined,
+                            size: 40.sp,
+                          )
+                        : Icon(
+                            Icons.visibility_outlined,
+                            size: 40.sp,
+                          ))
+                : null
             : null,
-        prefixIcon: Icon(widget.icon,size: 45.sp, ),
+        prefixIcon: Icon(
+          widget.icon,
+          size: 45.sp,
+        ),
         enabled: true,
-
-
-
 
         // counter: SizedBox()
       ),
       onChanged: widget.isPassword
           ? (value) {
-        setState(() {});
-      }
+              setState(() {});
+            }
           : null,
-      obscureText: isObsecure,controller: widget.controller,
+      obscureText: isObsecure, controller: widget.controller,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
       validator: widget.validator,

@@ -1,5 +1,3 @@
-
-
 import 'client_model.dart';
 
 class ClientProfileRespoonse {

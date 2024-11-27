@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 import 'package:snipp/core/utils/map_helper/location_service.dart';
 
-
 import 'package:snipp/features/service/data/models/get_services_request.dart';
 import 'package:snipp/features/service/domain/entities/categories.dart';
 import 'package:snipp/features/service/domain/entities/cities.dart';
@@ -18,24 +17,25 @@ import 'package:snipp/features/service/presentation/cubit/service_states.dart';
 
 @singleton
 class ServiceCubit extends Cubit<ServiceStates> {
-  ServiceCubit(this._getServices, this._getCountries, this._getCategories,this._getServiceProfile)
+  ServiceCubit(this._getServices, this._getCountries, this._getCategories,
+      this._getServiceProfile)
       : super(ServiceInitial());
   final GetCountries _getCountries;
   final GetCategories _getCategories;
   final GetServices _getServices;
   final GetServiceProfile _getServiceProfile;
-  List<Countries> ?countriesList;
-  List<Cities> ?citiesList;
-  List<Categories>? categoriesList ;
-  int ?selectedCountryId;
-  String ?selectedCountryName;
-  int ?selectedCityId;
-  String ?selectedCityName;
-  int ?selectedCategoryId;
-  double ?selectedDistance;
+  List<Countries>? countriesList;
+  List<Cities>? citiesList;
+  List<Categories>? categoriesList;
+  int? selectedCountryId;
+  String? selectedCountryName;
+  int? selectedCityId;
+  String? selectedCityName;
+  int? selectedCategoryId;
+  double? selectedDistance;
   LocationData? getCurrentLocation;
   LatLng? filterLocation;
-String failureMessegae="";
+  String failureMessegae = "";
   Future<void> getServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
 
@@ -50,15 +50,13 @@ String failureMessegae="";
     // emit(CountryCategoryLoading());
 
     final result = await _getCategories();
-    result.fold(
-      (failure) {
-        failureMessegae=failure.message;
-        // emit(CountryCategoryError(failure.message)),
-      },
-      (categories)  {
-        categoriesList=categories;
-        // emit(CountryCategorySuccess());
-      });
+    result.fold((failure) {
+      failureMessegae = failure.message;
+      // emit(CountryCategoryError(failure.message)),
+    }, (categories) {
+      categoriesList = categories;
+      // emit(CountryCategorySuccess());
+    });
   }
 
   Future<void> getCountries() async {
@@ -66,12 +64,11 @@ String failureMessegae="";
 
     final result = await _getCountries();
     result.fold((failure) {
-      failureMessegae=failure.message;
+      failureMessegae = failure.message;
 
       // emit(CountryCategoryError(failure.message)),
-    } ,
-        (countries) {
-    countriesList=countries;
+    }, (countries) {
+      countriesList = countries;
       // emit(CountryCategorySuccess());
     });
   }
@@ -80,63 +77,58 @@ String failureMessegae="";
     emit(CountryCategoryLoading());
     await getCountries();
     await getCategories();
-    if(categoriesList!=null &&countriesList!=null){
+    if (categoriesList != null && countriesList != null) {
       emit(CountryCategorySuccess());
-
-    }else{
+    } else {
       emit(CountryCategoryError(failureMessegae));
-
     }
   }
-  Future<void>showDetailsUser(int id)async{
+
+  Future<void> showDetailsUser(int id) async {
     emit(ShowDetailsLoading());
 
     final result = await _getServiceProfile(id);
     result.fold(
-          (failure) => emit(ShowDetailsError(failure.message)),
-          (providerProfile) => emit(ShowDetailsSuccess(providerProfile)),
+      (failure) => emit(ShowDetailsError(failure.message)),
+      (providerProfile) => emit(ShowDetailsSuccess(providerProfile)),
     );
   }
-  void selectedCategoryService(Categories category){
+
+  void selectedCategoryService(Categories category) {
     selectedCategoryId = category.id;
     emit(SelectedCategoryServiceState());
   }
-  void selectedCountryService(Countries country){
- selectedCountryId = country.id;
-selectedCountryName = country.name;
-citiesList = country.cities;
- isUpdat=false;
+
+  void selectedCountryService(Countries country) {
+    selectedCountryId = country.id;
+    selectedCountryName = country.name;
+    citiesList = country.cities;
+    isUpdat = false;
     emit(SelectedCountryCityServiceState());
   }
-  void selectedCityService(Cities city){
+
+  void selectedCityService(Cities city) {
     selectedCityId = city.id;
     selectedCityName = city.name;
 
     emit(SelectedCountryCityServiceState());
   }
-  bool isUpdat=false;
-  Future<void>getCurrentLocationFilter()async{
-    try{
-      emit(
-          GetCurrentLocationFilterLoading()
 
-      );
-      LocationData getCurrentLocationData = await LocationService.getLocationData();
-      getCurrentLocation=getCurrentLocationData;
-      isUpdat=true;
-      emit(
-          GetCurrentLocationFilterSuccess()
-
-      );
+  bool isUpdat = false;
+  Future<void> getCurrentLocationFilter() async {
+    try {
+      emit(GetCurrentLocationFilterLoading());
+      LocationData getCurrentLocationData =
+          await LocationService.getLocationData();
+      getCurrentLocation = getCurrentLocationData;
+      isUpdat = true;
+      emit(GetCurrentLocationFilterSuccess());
     } catch (e) {
-      emit(
-          GetCurrentLocationFilterErrorr("Couldn't get your location")
-
-      );
-
+      emit(GetCurrentLocationFilterErrorr("Couldn't get your location"));
     }
   }
-  void distanceSelect(double value){
+
+  void distanceSelect(double value) {
     selectedDistance = value;
     emit(DistanceSelectUpdate());
   }

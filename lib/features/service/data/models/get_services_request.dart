@@ -7,12 +7,12 @@ class GetServicesRequest {
   final int? cityId;
 
   GetServicesRequest(
-      { this.latitude,
-       this.longitude,
-       this.radius,
-       this.categoryId,
-       this.countryId,
-       this.cityId});
+      {this.latitude,
+      this.longitude,
+      this.radius,
+      this.categoryId,
+      this.countryId,
+      this.cityId});
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     if (latitude != null) data['latitude'] = latitude;
@@ -23,6 +23,4 @@ class GetServicesRequest {
     if (cityId != null) data['city_id'] = cityId;
     return data;
   }
-
-
 }

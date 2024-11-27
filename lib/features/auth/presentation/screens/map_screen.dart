@@ -15,29 +15,34 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      floatingActionButton: FloatingActionButton( onPressed: () {
-        _authCubit.getCountryAndCityNameFromCrocd(
-            _authCubit.isCurrent
-                ? _authCubit.currentLocation!.latitude
-                : _authCubit.selectedLocation!.latitude,
-            _authCubit.isCurrent
-                ? _authCubit.currentLocation!.longitude
-                : _authCubit
-                .selectedLocation!.longitude);
-        Navigator.pop(context);
-
-      },child: Icon(Icons.save,),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _authCubit.getCountryAndCityNameFromCrocd(
+              _authCubit.isCurrent
+                  ? _authCubit.currentLocation!.latitude
+                  : _authCubit.selectedLocation!.latitude,
+              _authCubit.isCurrent
+                  ? _authCubit.currentLocation!.longitude
+                  : _authCubit.selectedLocation!.longitude);
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.save,
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        actions: [IconButton(onPressed: () {
-
-          _authCubit.initCurrentLocation();
-          _authCubit.initMarkerAddress();
-          _authCubit.isCurrent = true;
-        }, icon: Icon(Icons.location_on))],
-        title: const Text("Google Map"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _authCubit.initCurrentLocation();
+                _authCubit.initMarkerAddress();
+                _authCubit.isCurrent = true;
+              },
+              icon: Icon(Icons.location_on))
+        ],
+        title:  Text("Google Map",style: Theme.of(context).textTheme.titleLarge,),
       ),
       body: BlocBuilder<AuthCubit, AuthState>(
         bloc: _authCubit,
@@ -67,7 +72,7 @@ class MapScreen extends StatelessWidget {
                       zoomControlsEnabled: false,
                       // minMaxZoomPreference: MinMaxZoomPreference(8, 50),
                       markers: _authCubit.markers,
-                    style: _authCubit.mapStyle,
+                      style: _authCubit.mapStyle,
                       onTap: (argument) {
                         _authCubit.selectLocation(argument);
 
@@ -78,7 +83,6 @@ class MapScreen extends StatelessWidget {
                         _authCubit.googleMapController = controller;
                         _authCubit.initCurrentLocation();
                         _authCubit.initMarkerAddress();
-
                       },
                       initialCameraPosition: CameraPosition(
                           target:

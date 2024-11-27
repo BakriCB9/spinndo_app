@@ -62,25 +62,27 @@ class RegisterServiceProviderRequest {
         );
       }),
     );
-    final imageOne=await MultipartFile.fromFile(
-          images[0].path,
-          filename: images[0].path.split('/').last,
-        );
-        final imageTwo=await MultipartFile.fromFile(
-          images[1].path,
-          filename: images[1].path.split('/').last,
-        );
-  print('the certitifacate is yyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${certificateFile.filename}');
-  for(int i=0;i<imageFiles.length;i++){
-    print('the value of first is   ${imageFiles[i].filename}');
-  }
-   print('the file of images is rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr  ${imageFiles}');
+    final imageOne = await MultipartFile.fromFile(
+      images[0].path,
+      filename: images[0].path.split('/').last,
+    );
+    final imageTwo = await MultipartFile.fromFile(
+      images[1].path,
+      filename: images[1].path.split('/').last,
+    );
+    print(
+        'the certitifacate is yyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${certificateFile.filename}');
+    for (int i = 0; i < imageFiles.length; i++) {
+      print('the value of first is   ${imageFiles[i].filename}');
+    }
+    print(
+        'the file of images is rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr  ${imageFiles}');
     return FormData.fromMap({
       "first_name": firstName,
       "last_name": lastName,
       "email": email,
       "password": password,
-      "service[images][1]":imageOne,
+      "service[images][1]": imageOne,
       "service[images][0]": imageTwo,
       "service": {
         "name": nameService,
@@ -92,7 +94,6 @@ class RegisterServiceProviderRequest {
         "latitude": latitudeService,
         "working_days": days,
         "certificate": certificateFile,
-        
       },
     });
   }

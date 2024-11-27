@@ -29,11 +29,12 @@ class SignInScreen extends StatelessWidget {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
-
   @override
-  Widget build(BuildContext context) {    final localization = AppLocalizations.of(context)!;
-final style=Theme.of(context).elevatedButtonTheme.style!;
-  return CustomAuthForm(child:  Column(
+  Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+    final style = Theme.of(context).elevatedButtonTheme.style!;
+    return CustomAuthForm(
+      child: Column(
         children: [
           Form(
               key: formKey,
@@ -67,7 +68,9 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                   ),
                 ],
               )),
-          SizedBox(height: 20.h,),
+          SizedBox(
+            height: 20.h,
+          ),
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Padding(
@@ -80,15 +83,16 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                     _authCubit.confirmPasswordController.clear();
                     _authCubit.emailController.clear();
                   },
-                  child: Text(
-                    localization.forgetPassword,
-                    style:Theme.of(context).textTheme.titleMedium!.copyWith(color:
-                         ColorManager.primary)
-                  )),
+                  child: Text(localization.forgetPassword,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: ColorManager.primary))),
             ),
           ),
-          SizedBox(height: 10.h,),
-
+          SizedBox(
+            height: 10.h,
+          ),
           BlocListener(
             bloc: _authCubit,
             listener: (_, state) {
@@ -100,10 +104,10 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
               } else if (state is LoginError) {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.message);
-                if(state.message=="This accouct is Inactive.You must insert verification code from your email."){
-
-
-                  Navigator.of(context).pushNamed(VerficationCodeScreen.routeName);
+                if (state.message ==
+                    "This accouct is Inactive.You must insert verification code from your email.") {
+                  Navigator.of(context)
+                      .pushNamed(VerficationCodeScreen.routeName);
                 }
               }
             },
@@ -111,12 +115,8 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _login,
-
-
-                child: Text(
-                 localization.login,
-                  style: Theme.of(context).textTheme.bodyLarge
-                ),
+                child: Text(localization.login,
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
           ),
@@ -130,12 +130,8 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
                 _authCubit.passwordController.clear();
                 Navigator.of(context).pushNamed(SignUpScreen.routeName);
               },
-
-              child: Text(
-               localization.createNewAccount,
-                  style: Theme.of(context).textTheme.titleMedium
-
-              ),
+              child: Text(localization.createNewAccount,
+                  style: Theme.of(context).textTheme.titleMedium),
             ),
           ),
         ],
@@ -144,8 +140,8 @@ final style=Theme.of(context).elevatedButtonTheme.style!;
   }
 
   _login() {
-
     _authCubit.login(LoginRequest(
-        email: _authCubit.emailController.text, password: _authCubit.passwordController.text));
+        email: _authCubit.emailController.text,
+        password: _authCubit.passwordController.text));
   }
 }

@@ -19,14 +19,13 @@ import '../../../drawer/presentation/cubit/drawer_cubit.dart';
 class VerficationCodeScreen extends StatelessWidget {
   static const String routeName = '/verfication';
 
-   VerficationCodeScreen({super.key});
+  VerficationCodeScreen({super.key});
 
   final formKey = GlobalKey<FormState>();
 
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
-  final _authCubit = serviceLocator.get<AuthCubit>()..verifyCodeTime();
-
+  final _authCubit = serviceLocator.get<AuthCubit>()..timer?.cancel()..verifyCodeTime();
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
@@ -46,11 +45,13 @@ class VerficationCodeScreen extends StatelessWidget {
           SizedBox(
             height: 20.h,
           ),
-          Icon(Icons.email,
-              size: 200.h,),
+          Icon(
+            Icons.email,
+            size: 200.h,
+          ),
           SizedBox(height: 40.h),
           Text(
-            '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey)?? _authCubit.emailController.text}',
+            '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey) ?? _authCubit.emailController.text}',
             style: Theme.of(context)
                 .textTheme
                 .bodySmall!
@@ -84,24 +85,23 @@ class VerficationCodeScreen extends StatelessWidget {
           BlocConsumer<AuthCubit, AuthState>(
             bloc: _authCubit,
             buildWhen: (previous, current) {
-              if(current is CanResendState)return true;
+              if (current is CanResendState) return true;
               return false;
             },
             builder: (context, state) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FittedBox(fit: BoxFit.scaleDown,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
                         _authCubit.canResend
                             ? localization.didntReciveCode
                             : '${localization.resendCodeIn} ${_authCubit.resendCodeTime} ${localization.seconds}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                         ),
+                        style: Theme.of(context).textTheme.titleMedium!),
                   ),
-                  FittedBox(fit: BoxFit.scaleDown,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: TextButton(
                       onPressed: _authCubit.canResend
                           ? () {
@@ -110,15 +110,13 @@ class VerficationCodeScreen extends StatelessWidget {
                             }
                           : null,
                       child: Text(localization.resendCode,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(
-                            fontSize: 25.sp,
-                                color: _authCubit.canResend
-                                    ? ColorManager.primary
-                                    : ColorManager.grey,
-                              )),
+                          style:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    fontSize: 25.sp,
+                                    color: _authCubit.canResend
+                                        ? ColorManager.primary
+                                        : ColorManager.grey,
+                                  )),
                     ),
                   ),
                 ],
@@ -163,7 +161,6 @@ class VerficationCodeScreen extends StatelessWidget {
               },
               child: ElevatedButton(
                 onPressed: _verifyCode,
-
                 child: Text(localization.verify,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),

@@ -11,8 +11,6 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
   AuthSharedPrefLocalDataSource({required SharedPreferences sharedPreferences})
       : _sharedPreferences = sharedPreferences;
 
-
-
   @override
   Future<void> saveToken(String token) async {
     try {
@@ -21,8 +19,6 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
       throw LocalAppException('Failed to store token');
     }
   }
-
-
 
   @override
   Future<void> saveUserId(int id) async {
@@ -33,9 +29,8 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
     }
   }
 
-
   @override
-  Future<void> saveUserRole(String role)  async {
+  Future<void> saveUserRole(String role) async {
     try {
       await _sharedPreferences.setString(CacheConstant.userRole, role);
     } catch (_) {
@@ -53,20 +48,21 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
   }
 
   @override
-  Future<void> saveUserUnCompliteAccount(String email)async {
+  Future<void> saveUserUnCompliteAccount(String email) async {
     try {
       await _sharedPreferences.setString(CacheConstant.emailKey, email);
     } catch (_) {
       throw LocalAppException('Failed to store email');
-  }}
-
-  @override
-  Future<void> deleteEmail() async{
-await _sharedPreferences.remove(CacheConstant.emailKey);
+    }
   }
 
   @override
-  Future<void> saveUserEmail(String email) async{
+  Future<void> deleteEmail() async {
+    await _sharedPreferences.remove(CacheConstant.emailKey);
+  }
+
+  @override
+  Future<void> saveUserEmail(String email) async {
     try {
       await _sharedPreferences.setString(CacheConstant.semailKey, email);
     } catch (_) {
@@ -75,7 +71,7 @@ await _sharedPreferences.remove(CacheConstant.emailKey);
   }
 
   @override
-  Future<void> saveUserName(String name)async {
+  Future<void> saveUserName(String name) async {
     try {
       await _sharedPreferences.setString(CacheConstant.nameKey, name);
     } catch (_) {

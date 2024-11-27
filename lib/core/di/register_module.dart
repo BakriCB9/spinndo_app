@@ -7,11 +7,10 @@ import 'package:snipp/core/constant.dart';
 abstract class RegisterModule {
   @lazySingleton
   Dio get dio => Dio(BaseOptions(
-      baseUrl: ApiConstant.baseUrl,
-      receiveDataWhenStatusError: true,
-      // connectTimeout:const  Duration(seconds: 120),
-      // receiveTimeout:const  Duration(seconds: 120)
-      
+        baseUrl: ApiConstant.baseUrl,
+        receiveDataWhenStatusError: true,
+        // connectTimeout:const  Duration(seconds: 120),
+        // receiveTimeout:const  Duration(seconds: 120)
       ));
 
   @preResolve

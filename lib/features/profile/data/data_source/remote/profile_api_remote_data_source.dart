@@ -14,8 +14,8 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   ProfileApiRemoteDataSource(this._dio);
 
   @override
-  Future<ClientProfileRespoonse> getClientProfile(int user_id,
-      String user_token) async {
+  Future<ClientProfileRespoonse> getClientProfile(
+      int user_id, String user_token) async {
     try {
       // final String userToken = _authLocalDataSource.getToken();
       // final int user_id = _authLocalDataSource.getUserId();
@@ -34,8 +34,8 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   }
 
   @override
-  Future<ProviderProfileResponse> getServiceProviderProfile(int user_id,
-      String user_token) async {
+  Future<ProviderProfileResponse> getServiceProviderProfile(
+      int user_id, String user_token) async {
     try {
       // final String userToken = _authLocalDataSource.getToken();
       // final int user_id = _authLocalDataSource.getUserId();
@@ -48,8 +48,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
           options: Options(headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $user_token"
-          })
-      );
+          }));
       // print(
       //     'th eresponse is WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWwQQQQQQQQQQQQQQ ${response.data}');
       //

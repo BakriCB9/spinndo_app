@@ -18,18 +18,18 @@ class ServiceError extends ServiceStates {
 
   ServiceError(this.message);
 }
-class ShowDetailsLoading extends ServiceStates{
 
-}
-class ShowDetailsError extends ServiceStates{
-String message;
-ShowDetailsError(this.message);
-}
-class ShowDetailsSuccess extends ServiceStates{
-ProviderProfile providerProfile;
-ShowDetailsSuccess(this.providerProfile);
+class ShowDetailsLoading extends ServiceStates {}
+
+class ShowDetailsError extends ServiceStates {
+  String message;
+  ShowDetailsError(this.message);
 }
 
+class ShowDetailsSuccess extends ServiceStates {
+  ProviderProfile providerProfile;
+  ShowDetailsSuccess(this.providerProfile);
+}
 
 class CountryCategoryLoading extends ServiceStates {}
 
@@ -40,9 +40,13 @@ class CountryCategoryError extends ServiceStates {
 
   CountryCategoryError(this.message);
 }
-class SelectedCategoryServiceState extends ServiceStates{}
-class SelectedCountryCityServiceState extends ServiceStates{}
-class SelectedCityServiceState extends ServiceStates{}
+
+class SelectedCategoryServiceState extends ServiceStates {}
+
+class SelectedCountryCityServiceState extends ServiceStates {}
+
+class SelectedCityServiceState extends ServiceStates {}
+
 class GetCurrentLocationFilterLoading extends ServiceStates {}
 
 class GetCurrentLocationFilterSuccess extends ServiceStates {}
@@ -52,4 +56,5 @@ class GetCurrentLocationFilterErrorr extends ServiceStates {
 
   GetCurrentLocationFilterErrorr(this.message);
 }
+
 class DistanceSelectUpdate extends ServiceStates {}

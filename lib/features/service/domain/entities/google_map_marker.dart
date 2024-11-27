@@ -8,6 +8,4 @@ class GoogleMapMarker {
   GoogleMapMarker({required this.id, required this.name, required this.latLng});
 }
 
-List<GoogleMapMarker> markerLocationData = [
-
-];
+List<GoogleMapMarker> markerLocationData = [];

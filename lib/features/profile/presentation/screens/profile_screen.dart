@@ -32,12 +32,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
         if (state is GetProfileLoading) {
-          return  LoadingIndicator(Theme.of(context).primaryColor);
+          return LoadingIndicator(Theme.of(context).primaryColor);
         } else if (state is GetProfileErrorr) {
           return Center(
             child: Column(
@@ -58,8 +57,9 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 ),
                 ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(                             Theme.of(context).primaryColor,
-                        )),
+                        backgroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).primaryColor,
+                    )),
                     onPressed: () {
                       _profileCubit.getUserRole();
                     },
@@ -71,61 +71,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
             ),
           );
         } else if (state is GetProviderSuccess) {
-         return  ProviderProfileScreen(providerProfile: state.provider);
-          // final ans = state.provider.details!.workingDays;
-          // // return Text('successs data');
-          // final respon = state.provider;
-          // return CustomScrollView(
-          //   controller: _control,
-          //   slivers: [
-          //     SliverPersistentHeader(
-          //       delegate: SliverPersistentDelegate(size),
-          //       pinned: true,
-          //     ),
-          //     SliverFillRemaining(
-          //       hasScrollBody: false,
-          //       child: Padding(
-          //         padding:
-          //             EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             SizedBox(height: 15.h),
-          //             UserAccount(
-          //               firstName: state.provider.firstName!,
-          //               lastName: state.provider.lastName!,
-          //               email: state.provider.email!,
-          //             ),
-          //             SizedBox(height: 15.h),
-          //             CustomDescription(
-          //               category:
-          //                   respon.details?.category?.name ?? "No category",
-          //               description:
-          //                   respon.details?.description ?? "No description",
-          //               serviceName: respon.details?.name ?? "No emial yet",
-          //             ),
-          //             SizedBox(height: 10.h),
-          //             CustomDayActive(
-          //               listOfworkday: state.provider.details!.workingDays!,
-          //             ),
-          //             SizedBox(height: 30.h),
-          //             CustomDiplomaAndProtofile(
-          //               imageCertificate:
-          //                   respon.details?.certificatePath ?? listImage[0],
-          //                      images: respon.details?.images??[],
-          //             ),
-          //             SizedBox(height: 100.h)
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // );
-        }else if(state is GetClientSuccess){
-          return ClientProfileScreen(clientProfile: state.client);
-        }
+          return ProviderProfileScreen(providerProfile: state.provider);
 
-        else {
+        } else if (state is GetClientSuccess) {
+          return ClientProfileScreen(clientProfile: state.client);
+        } else {
           return const SizedBox(
             child: Text("No data yet"),
           );

@@ -95,10 +95,11 @@ class GetCurrentLocationErrorr extends AuthState {
 
   GetCurrentLocationErrorr(this.message);
 }
+
 class GetLocationCountryLoading extends AuthState {}
 
 class GetLocationCountrySuccess extends AuthState {
-final  Country country;
+  final Country country;
   GetLocationCountrySuccess(this.country);
 }
 
@@ -106,31 +107,29 @@ class GetLocationCountryErrorr extends AuthState {
   final String message;
 
   GetLocationCountryErrorr(this.message);
-
 }
-class ChooseCertificateImageState extends AuthState{
 
-}
+class ChooseCertificateImageState extends AuthState {}
+
 class CertificateImageUpdated extends AuthState {
   final File? certificateImage;
   CertificateImageUpdated(this.certificateImage);
 }
 
 class FirstImageUpdated extends AuthState {
-  final File ?firstImage;
+  final File? firstImage;
   FirstImageUpdated(this.firstImage);
 }
 
 class SecondImageUpdated extends AuthState {
-  final File ?secondImage;
+  final File? secondImage;
   SecondImageUpdated(this.secondImage);
 }
+
 class MapStyleError extends AuthState {
   final String message;
 
   MapStyleError(this.message);
-
-}class MapStyleLoading extends AuthState {
-
-
 }
+
+class MapStyleLoading extends AuthState {}

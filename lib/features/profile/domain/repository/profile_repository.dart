@@ -6,7 +6,7 @@ import 'package:snipp/features/profile/domain/entities/client_profile.dart';
 import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile.dart';
 
 abstract class ProfileRepository {
-Future<Either<Failure,ClientProfile>>  getClient();
-Future<Either<Failure,ProviderProfile>>    getServiceProvider();
-Either<Failure,String>    getUserRole();
+  Future<Either<Failure, ClientProfile>> getClient();
+  Future<Either<Failure, ProviderProfile>> getServiceProvider();
+  Either<Failure, String> getUserRole();
 }

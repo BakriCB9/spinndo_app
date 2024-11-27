@@ -33,40 +33,31 @@ class _DeplomaProtofileImageScreenState
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: _drawerCubit.themeMode==ThemeMode.dark?  BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                  "asset/images/bg.png"),
-              fit: BoxFit.fill)):null,
+      decoration: _drawerCubit.themeMode == ThemeMode.dark
+          ? BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          : null,
       child: Scaffold(
         appBar: AppBar(
-       actions: [IconButton(
-            icon: Icon(Icons.arrow_back,size: 1.sp,),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-
-            Expanded(
-              child: Transform.scale(scale: 0.8,
-                child: Switch(
-                  activeColor: ColorManager.primary,
-                  inactiveTrackColor: ColorManager.white,
-                  inactiveThumbColor: Theme.of(context).primaryColor,
-                  activeTrackColor:  Theme.of(context).primaryColor,
-                  value: _drawerCubit.themeMode == ThemeMode.dark,
-                  onChanged: (value) {
-                    if (value) {
-                      _drawerCubit.changeTheme(ThemeMode.dark);
-                    } else {
-                      _drawerCubit.changeTheme(ThemeMode.light);
-                    }
-                  },
-                ),
+          actions: [
+            Transform.scale(
+              scale: 0.8,
+              child: Switch(
+                activeColor: ColorManager.primary,
+                inactiveTrackColor: ColorManager.white,
+                inactiveThumbColor: Theme.of(context).primaryColor,
+                activeTrackColor: Theme.of(context).primaryColor,
+                value: _drawerCubit.themeMode == ThemeMode.dark,
+                onChanged: (value) {
+                  if (value) {
+                    _drawerCubit.changeTheme(ThemeMode.dark);
+                  } else {
+                    _drawerCubit.changeTheme(ThemeMode.light);
+                  }
+                },
               ),
             ),
-         
-            
           ],
         ),
         body: Padding(
@@ -74,17 +65,19 @@ class _DeplomaProtofileImageScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Upload Certificate Image",
-                style:Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 48.sp)
-              ),
+              Text("Upload Certificate Image",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontSize: 48.sp)),
               SizedBox(height: 30.h),
               GestureDetector(
-                onTap: () => singleDialog(1, _authCubit.certificateImage != null),
+                onTap: () =>
+                    singleDialog(1, _authCubit.certificateImage != null),
                 child: BlocBuilder<AuthCubit, AuthState>(
                   bloc: _authCubit,
                   buildWhen: (previous, current) =>
-                  current is CertificateImageUpdated,
+                      current is CertificateImageUpdated,
                   builder: (context, state) {
                     final certificateImage = _authCubit.certificateImage;
                     return Container(
@@ -96,38 +89,36 @@ class _DeplomaProtofileImageScreenState
                       ),
                       child: certificateImage == null
                           ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Upload your Certificate',
-                                style:Theme.of(context).textTheme.bodySmall
-
-                      ),
-                             Icon(
-                              Icons.upload_file_rounded,
-
-                            ),
-                          ],
-                        ),
-                      )
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Upload your Certificate',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  Icon(
+                                    Icons.upload_file_rounded,
+                                  ),
+                                ],
+                              ),
+                            )
                           : ClipRRect(
-                        borderRadius: BorderRadius.circular(30.r),
-                        child: Image.file(
-                          certificateImage,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                              borderRadius: BorderRadius.circular(30.r),
+                              child: Image.file(
+                                certificateImage,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     );
                   },
                 ),
               ),
               SizedBox(height: 50.h),
-              Text(
-                "Upload Two Protofile Images",
-                  style:Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 48.sp)
-
-              ),
+              Text("Upload Two Photo",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontSize: 48.sp)),
               SizedBox(height: 30.h),
               SizedBox(
                 height: 350.h,
@@ -140,7 +131,7 @@ class _DeplomaProtofileImageScreenState
                         child: BlocBuilder<AuthCubit, AuthState>(
                           bloc: _authCubit,
                           buildWhen: (previous, current) =>
-                          current is FirstImageUpdated,
+                              current is FirstImageUpdated,
                           builder: (context, state) {
                             final firstImage = _authCubit.firstImage;
                             return Container(
@@ -150,19 +141,18 @@ class _DeplomaProtofileImageScreenState
                               ),
                               child: firstImage == null
                                   ? Center(
-                                child: Text(
-                                  "Click to Upload",
-                                  style:Theme.of(context).textTheme.bodySmall
-
-                              ),
-                              )
+                                      child: Text("Click to Upload",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall),
+                                    )
                                   : ClipRRect(
-                                borderRadius: BorderRadius.circular(25.r),
-                                child: Image.file(
-                                  firstImage,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                      borderRadius: BorderRadius.circular(25.r),
+                                      child: Image.file(
+                                        firstImage,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                             );
                           },
                         ),
@@ -176,7 +166,7 @@ class _DeplomaProtofileImageScreenState
                         child: BlocBuilder<AuthCubit, AuthState>(
                           bloc: _authCubit,
                           buildWhen: (previous, current) =>
-                          current is SecondImageUpdated,
+                              current is SecondImageUpdated,
                           builder: (context, state) {
                             final secondImage = _authCubit.secondImage;
                             return Container(
@@ -186,19 +176,18 @@ class _DeplomaProtofileImageScreenState
                               ),
                               child: secondImage == null
                                   ? Center(
-                                child: Text(
-                                  "Click to Upload",
-                                    style:Theme.of(context).textTheme.bodySmall
-
-                                ),
-                              )
+                                      child: Text("Click to Upload",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall),
+                                    )
                                   : ClipRRect(
-                                borderRadius: BorderRadius.circular(25.r),
-                                child: Image.file(
-                                  secondImage,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                      borderRadius: BorderRadius.circular(25.r),
+                                      child: Image.file(
+                                        secondImage,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                             );
                           },
                         ),
@@ -212,7 +201,8 @@ class _DeplomaProtofileImageScreenState
                 bloc: _authCubit,
                 listener: (context, state) {
                   if (state is RegisterServiceLoading) {
-                    UIUtils.showLoading(context, 'asset/animation/loading.json');
+                    UIUtils.showLoading(
+                        context, 'asset/animation/loading.json');
                   } else if (state is RegisterServiceError) {
                     UIUtils.hideLoading(context);
                     UIUtils.showMessage(state.message);
@@ -227,11 +217,15 @@ class _DeplomaProtofileImageScreenState
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      if(_authCubit.certificateImage==null || _authCubit.firstImage==null||_authCubit.secondImage==null){
+                      if (_authCubit.certificateImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
-                              content: Text('You have to fill all images',style: TextStyle(fontSize: 28.sp,color: Colors.white)),),
-                        );return;
+                          SnackBar(
+                            content: Text('You have to upload Certificate image',
+                                style: TextStyle(
+                                    fontSize: 28.sp, color: Colors.white)),
+                          ),
+                        );
+                        return;
                       }
                       _authCubit.registerService(RegisterServiceProviderRequest(
                           firstName: _authCubit.firstNameContoller.text,
@@ -241,28 +235,26 @@ class _DeplomaProtofileImageScreenState
                           password: _authCubit.passwordController.text,
                           nameService: _authCubit.serviceNameController.text,
                           descriptionService:
-                          _authCubit.serviceDescriptionController.text,
+                              _authCubit.serviceDescriptionController.text,
                           categoryIdService: _authCubit.selectedCategoryId!,
                           cityNameService: _authCubit.cityName!,
                           websiteService: _authCubit.website,
                           certificate: _authCubit.certificateImage!,
                           longitudeService: _authCubit.isCurrent
                               ? _authCubit.currentLocation!.latitude.toString()
-                              : _authCubit.selectedLocation!.latitude.toString(),
+                              : _authCubit.selectedLocation!.latitude
+                                  .toString(),
                           latitudeService: _authCubit.isCurrent
                               ? _authCubit.currentLocation!.longitude.toString()
-                              : _authCubit.selectedLocation!.longitude.toString(),
+                              : _authCubit.selectedLocation!.longitude
+                                  .toString(),
                           images: [
                             _authCubit.firstImage!,
                             _authCubit.secondImage!
                           ]));
                     },
-
-                    child: Text(
-                      "Sign Up",
-                        style:Theme.of(context).textTheme.bodyLarge
-
-                    ),
+                    child: Text("Sign Up",
+                        style: Theme.of(context).textTheme.bodyLarge),
                   ),
                 ),
               ),
@@ -327,7 +319,10 @@ class _DeplomaProtofileImageScreenState
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: Icon(icon, size: 40,                               color: Theme.of(context).primaryColor,
+            icon: Icon(
+              icon,
+              size: 40,
+              color: Theme.of(context).primaryColor,
             ),
             onPressed: onTap,
           ),

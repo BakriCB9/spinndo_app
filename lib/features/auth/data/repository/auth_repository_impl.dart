@@ -34,7 +34,8 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveToken(response.data!.token);
       await _authLocalDataSource.saveUserId(response.data!.id);
       await _authLocalDataSource.saveUserRole(response.data!.role);
-      _authLocalDataSource.saveUserEmail(requestData.email);
+      await _authLocalDataSource.saveUserEmail(requestData.email);
+      await _authLocalDataSource.saveUserName("${response.data!.firstName} ${response.data!.lastName}");
 
       await _authLocalDataSource.saveUserUnCompliteAccount(
         requestData.email,
@@ -48,7 +49,6 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, RegisterResponse>> register(
       RegisterRequest requestData) async {
-
     try {
       final response = await _authRemoteDataSource.register(requestData);
       // await _authLocalDataSource.saveToken(response.data!);
@@ -118,11 +118,12 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(exception.message));
     }
   }
-  @override
-  Future<Either<Failure, List<Categories>>> getCategories()async {
-    try {
 
-      final getCategoriesResponse = await _authRemoteDataSource.getAllCategory();
+  @override
+  Future<Either<Failure, List<Categories>>> getCategories() async {
+    try {
+      final getCategoriesResponse =
+          await _authRemoteDataSource.getAllCategory();
       return Right(getCategoriesResponse.data!);
     } on AppException catch (exception) {
       return left(Failure(exception.message));
@@ -130,15 +131,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Country>> getAddressFromCoordinates(double lat, double long)async {
-
+  Future<Either<Failure, Country>> getAddressFromCoordinates(
+      double lat, double long) async {
     try {
-      final response = await _authRemoteDataSource.getAddressFromCoordinates(lat,long);
-final country=Country( countryName:response[0],cityName: response[1],);
+      final response =
+          await _authRemoteDataSource.getAddressFromCoordinates(lat, long);
+      final country = Country(
+        countryName: response[0],
+        cityName: response[1],
+      );
       return Right(country);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));
     }
   }
-
 }

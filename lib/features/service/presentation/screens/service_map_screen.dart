@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
@@ -18,7 +17,6 @@ class ServiceMapScreen extends StatefulWidget {
   State<ServiceMapScreen> createState() => _ServiceMapScreenState();
 }
 
-
 class _ServiceMapScreenState extends State<ServiceMapScreen> {
   late CameraPosition initialCameraPosition;
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
@@ -26,7 +24,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
 
   @override
   void initState() {
-    initialCameraPosition =  CameraPosition(
+    initialCameraPosition = CameraPosition(
       target: _serviceCubit.filterLocation!,
       zoom: 10,
     );
@@ -44,8 +42,8 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Google Map"),        backgroundColor: Theme.of(context).primaryColorDark,
-
+        title:  Text("Google Map",style: Theme.of(context).textTheme.titleLarge,),
+        backgroundColor: Theme.of(context).primaryColorDark,
       ),
       body: GoogleMap(
         zoomControlsEnabled: false,
@@ -53,35 +51,28 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
         markers: markers,
         initialCameraPosition: initialCameraPosition,
         style: _authCubit.mapStyle,
-
       ),
     );
   }
 
-   void initMarkers() {
-
-   var myMarker = markerLocationData
+  void initMarkers() {
+    var myMarker = markerLocationData
         .map(
           (e) => Marker(
-        position: e.latLng,
-        infoWindow: InfoWindow(title: e.name),
-        markerId: MarkerId(
-          e.id.toString(),
-        ),
-      ),
-    )
+            position: e.latLng,
+            infoWindow: InfoWindow(title: e.name),
+            markerId: MarkerId(
+              e.id.toString(),
+            ),
+          ),
+        )
         .toSet();
     markers.addAll(myMarker);
-
-   }
-
-
+  }
 
 //world view 0 ->3
 //country view 4->6
 //city view 10->12
 //street view 13->17
 //building view 18->20
-
-
 }

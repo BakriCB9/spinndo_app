@@ -1,4 +1,3 @@
-
 import 'package:snipp/features/profile/data/models/provider_model/provider_profile_model.dart';
 import 'package:snipp/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 import 'package:snipp/features/service/data/models/get_all_countries_response/get_all_countries_response.dart';

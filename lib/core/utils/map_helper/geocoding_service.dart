@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GeocodingService {
-  static final  Dio _dio = Dio();
- static final String _apiKey ='AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
+  static final Dio _dio = Dio();
+  static final String _apiKey = 'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
   // static Future<Map<String, dynamic>> getAddressFromCoordinates(
   //     double latitude, double longitude) async {
   //   final String url =
@@ -32,8 +32,7 @@ class GeocodingService {
   static Future<LatLng> getCountryLatLng(String countryName) async {
     try {
       // Build the Geocoding API URL
-      final String url =
-          'https://maps.googleapis.com/maps/api/geocode/json';
+      final String url = 'https://maps.googleapis.com/maps/api/geocode/json';
 
       // Send the request
       final response = await _dio.get(
@@ -53,8 +52,7 @@ class GeocodingService {
           final lat = geometry['location']['lat'];
           final lng = geometry['location']['lng'];
 
-    return  LatLng(lat, lng);
-
+          return LatLng(lat, lng);
 
           print('Latitude: $lat, Longitude: $lng');
         } else {
