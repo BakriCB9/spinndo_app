@@ -67,10 +67,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                     Navigator.pop(context);
                   },
                   icon: Icons.arrow_back)),
-          // CustomPosition(
-          //     right: rightSpace,
-          //     top: topSpace,
-          //     child: CustomIconButton(ontap: () {}, icon: Icons.edit)),
+
           CustomPosition(
             top: isImageBig
                 ? max(currentPositionforText, topSPaceForImage)

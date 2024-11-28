@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_job_details.dart';
 import 'package:snipp/features/profile/presentation/widget/profile_info/job_items/show_more_and_show_less_text.dart';
 import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
+import 'package:snipp/main.dart';
 
 class CustomDescription extends StatelessWidget {
-  final String category;
+  final String categoryName;
   final String serviceName;
   final String description;
+  final int userId;
+  final int?isApprovid;
+  final String cityName;
   const CustomDescription(
-      {required this.category,
-      required this.serviceName,
+
+      {required this.categoryName,
+       required this.userId,
+        this.isApprovid,
+       required this.cityName,
+        required this.serviceName,
       required this.description,
       super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _authCubit = serviceLocator.get<AuthCubit>();
+    print('the value of isAprrovid is $isApprovid');
+    //final _authCubit = serviceLocator.get<AuthCubit>();
+   final myId =sharedPref.getInt(CacheConstant.userId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -26,24 +38,26 @@ class CustomDescription extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Job Details', style: Theme.of(context).textTheme.labelLarge),
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.of(context).push(MaterialPageRoute(
-            //           builder: (context) =>const  EditJobDetails()));
-            //     },
-            //     icon: const Icon(Icons.edit))
+          userId==myId? IconButton(
+                onPressed:isApprovid==0? () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>  EditJobDetails(locationName:cityName,categoryName: categoryName,description: description,serviceName: serviceName,)));
+                }:(){
+                  UIUtils.showMessage('You Have to wait to Accept Your Information');
+                },
+                icon:  Icon( Icons.edit,color: isApprovid==1?Colors.yellow:Colors.grey,)):const SizedBox()
           ],
         ),
         InfoDetails(
             icon: Icons.work_outline_outlined,
             title: 'Work',
-            content: category),
+            content: categoryName),
         InfoDetails(
             icon: Icons.maps_home_work, title: 'Title', content: serviceName),
         InfoDetails(
             icon: Icons.location_on_outlined,
             title: 'Location',
-            content: 'Aleppo'),
+            content: cityName),
         SizedBox(
           height: 10.h,
         ),

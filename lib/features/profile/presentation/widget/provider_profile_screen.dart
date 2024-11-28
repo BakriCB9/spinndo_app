@@ -19,7 +19,7 @@ class ProviderProfileScreen extends StatefulWidget {
   State<ProviderProfileScreen> createState() => _ProviderProfileScreenState();
 }
 
-final ScrollController _control = ScrollController();
+//final ScrollController _control = ScrollController();
 
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   @override
@@ -35,7 +35,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
               color: Colors.white.withOpacity(0.1),
             ),
       child: CustomScrollView(
-        controller: _control,
+       // controller: _control,
         slivers: [
           SliverPersistentHeader(
             delegate: SliverPersistentDelegate(size,widget.providerProfile.imagePath),
@@ -64,13 +64,20 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 15.h),
                   UserAccount(
+                    userId: widget.providerProfile.id,
+                    typeAccount: 'Provider',
+                    isApprovid: widget.providerProfile.details!.isApproved,
                     firstName: widget.providerProfile.firstName!,
                     lastName: widget.providerProfile.lastName!,
                     email: widget.providerProfile.email!,
+
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
-                    category: widget.providerProfile.details?.category?.name ??
+                    cityName: widget.providerProfile.details!.city??'Alep',
+                    isApprovid: widget.providerProfile.details!.isApproved,
+                    userId: widget.providerProfile.id!,
+                    categoryName: widget.providerProfile.details?.category?.name ??
                         "No category",
                     description: widget.providerProfile.details?.description ??
                         "No description",
@@ -79,10 +86,14 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 10.h),
                   CustomDayActive(
+                    userId: widget.providerProfile.id!,
+                    issAprrovid:widget.providerProfile.details!.isApproved ,
                     listOfworkday: widget.providerProfile.details!.workingDays!,
                   ),
                   SizedBox(height: 30.h),
                   CustomDiplomaAndProtofile(
+                    isApprovid: widget.providerProfile.details!.isApproved,
+                    userId: widget.providerProfile.id!,
                     imageCertificate:
                         widget.providerProfile.details?.certificatePath ??
                             listImage[0],

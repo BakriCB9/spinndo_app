@@ -10,6 +10,7 @@ class CustomTextFormField extends StatefulWidget {
   final int? maxLines;
   final int? minLines;
   final String? labelText;
+  final String? initValue;
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final bool isPassword;
@@ -23,6 +24,7 @@ class CustomTextFormField extends StatefulWidget {
       this.hintText,
       this.maxLines = 1,
       this.minLines = 1,
+        this.initValue,
       required this.controller,
       this.icon,
       this.keyboardType})
@@ -50,6 +52,8 @@ class _CustomTextFormField extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      //initialValue:null ,
+
       focusNode: _focus,
       onTapOutside: (_) {
         _focus.unfocus();

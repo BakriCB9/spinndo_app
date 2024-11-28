@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/resources/color_manager.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
 import 'package:snipp/features/profile/data/models/provider_model/image.dart';
 import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_image_screen.dart';
 import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/diploma_and_protofile.dart';
 import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/row_of_images.dart';
+import 'package:snipp/main.dart';
 
 class CustomDiplomaAndProtofile extends StatefulWidget {
   final String imageCertificate;
+  final int userId;
+  final int isApprovid;
   final List<ProviderProfileImage> images;
   const CustomDiplomaAndProtofile(
-      {required this.images, required this.imageCertificate, super.key});
+      {required this.images, required this.imageCertificate,required this.userId,required this.isApprovid  ,super.key});
 
   @override
   State<CustomDiplomaAndProtofile> createState() =>
@@ -24,18 +29,21 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   int typeSelect = 1;
   @override
   Widget build(BuildContext context) {
+    final myId=sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Images', style: Theme.of(context).textTheme.labelLarge),
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.of(context).push(MaterialPageRoute(
-            //           builder: (context) => EditImageScreen()));
-            //     },
-            //     icon: Icon(Icons.edit,color: ColorManager.grey2,))
+         myId==widget.userId?IconButton(
+                onPressed:widget.isApprovid==1? () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => EditImageScreen()));
+                }:(){
+                  UIUtils.showMessage('You Have to wait to Accept your Informations');
+                },
+                icon: Icon(Icons.edit,color:widget.isApprovid==1? Colors.yellow:Colors.grey,)):const SizedBox()
           ],
         ),
         SizedBox(

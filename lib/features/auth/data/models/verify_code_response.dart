@@ -14,7 +14,7 @@ class VerifyCodeResponse {
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
-          : Data.fromJson(json['data'] as Map<String, dynamic>),
+          : Data.fromVerfictionJson(json['data'] as Map<String, dynamic>),
     );
   }
 

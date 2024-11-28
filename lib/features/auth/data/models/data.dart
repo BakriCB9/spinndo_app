@@ -14,7 +14,13 @@ class Data {
     firstName: json['first_name'] as String??"",
     lastName: json['last_name'] as String??"",
       );
+  factory Data.fromVerfictionJson(Map<String, dynamic> json) => Data(
+    id: json['id'] as dynamic,
+    role: json['role'] as String,
+    isApproved: json['isApproved'] as dynamic,
+    token: json['token'] as String,
 
+  );
   Data(
 
       { this.firstName, this.lastName,required this.id,

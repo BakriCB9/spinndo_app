@@ -1,35 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/constant.dart';
 import 'package:snipp/core/di/service_locator.dart';
 import 'package:snipp/core/resources/color_manager.dart';
+import 'package:snipp/core/utils/ui_utils.dart';
 //import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
 import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snipp/features/profile/data/models/provider_model/working_day.dart';
 import 'package:snipp/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
 import 'package:snipp/features/profile/presentation/screens/edit_date_time.dart';
+import 'package:snipp/main.dart';
 // import 'package:snipp/core/const_variable.dart';
 
 import 'box_of_from_to.dart';
 
 class CustomDayActive extends StatelessWidget {
+  final int userId;
+  final int issAprrovid;
   final List<ProviderPriofileWorkingday> listOfworkday;
-  const CustomDayActive({required this.listOfworkday, super.key});
+  const CustomDayActive({required this.listOfworkday,required this.userId, required this.issAprrovid,super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _authCubit = serviceLocator.get<AuthCubit>();
+    //final _authCubit = serviceLocator.get<AuthCubit>();
+    final myId=sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Active Days', style: Theme.of(context).textTheme.labelLarge),
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.of(context).push(MaterialPageRoute(
-            //           builder: (context) => WorkingSchedulePage()));
-            //     },
-            //     icon: Icon(Icons.edit_calendar_outlined,color: Theme.of(context).primaryColorLight,))
+          myId==userId ? IconButton(
+                onPressed:issAprrovid==1? () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => WorkingSchedulePage()));
+                }:(){
+                  UIUtils.showMessage("You Have to wait to Accept your Informations");
+                },
+                icon: Icon(Icons.edit_calendar_outlined,color: Theme.of(context).primaryColorLight,)):const  SizedBox()
           ],
         ),
         Column(

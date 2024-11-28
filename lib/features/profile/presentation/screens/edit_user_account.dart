@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snipp/core/di/service_locator.dart';
+import 'package:snipp/core/widgets/custom_text_form_field.dart';
 import 'package:snipp/core/widgets/custom_text_form_field_bakri.dart';
+import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:snipp/features/profile/presentation/cubit/profile_states.dart';
 
-class EditUserAccountScreen extends StatefulWidget {
-  const EditUserAccountScreen({super.key});
+class EditUserAccountScreen extends StatelessWidget {
+ final  String firstName;
+ final String lastName;
+ final String email;
+  const EditUserAccountScreen({required this.firstName,required this.lastName,required this.email ,super.key});
 
-  @override
-  State<EditUserAccountScreen> createState() => _EditUserAccountScreenState();
-}
-
-class _EditUserAccountScreenState extends State<EditUserAccountScreen> {
   @override
   Widget build(BuildContext context) {
+    final _profileCubit=serviceLocator.get<ProfileCubit>();
+    _profileCubit.emailEditController.text=email;
+    _profileCubit.firstNameEditController.text=firstName;
+    _profileCubit.lastNameEditController.text=lastName;
     final size = MediaQuery.of(context).size;
     double avatarRadius = MediaQuery.of(context).size.width * 0.3;
     return Scaffold(
@@ -62,30 +69,120 @@ class _EditUserAccountScreenState extends State<EditUserAccountScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
-              CustomTextFromFieldBakri(
-                icon: Icons.person_2_outlined,
-                label: 'First Name',
-                initialvalue: 'Bakri',
+
+
+              // CustomTextFromFieldBakri(
+              //   icon: Icons.person_2_outlined,
+              //   label: 'First Name',
+              //   initialvalue: 'Bakri',
+              // ),
+            //  CustomTextFormField( labelText: 'FirstName',controller: _profileCubit.firstNameEditController,initValue: 'bakri',icon: Icons.person,),
+             // SizedBox(height: 40.h),
+             // CustomTextFormField( labelText: 'Last Name',controller: _profileCubit.lastNameEditController,initValue: 'aweja',icon: Icons.person,),
+             // SizedBox(height: 40.h),
+
+              // CustomTextFromFieldBakri(
+              //   icon: Icons.person_2_outlined,
+              //   label: 'Last Name',
+              //   initialvalue: 'aweja',
+              // ),
+             // CustomTextFormField(labelText: 'Email', controller: _profileCubit.emailEditController,initValue: 'bakkaraweja@gmail.com',icon: Icons.email,),
+             // SizedBox(height: 40.h),
+              // CustomTextFromFieldBakri(
+              //   icon: Icons.email_outlined,
+              //   label: 'Email',
+              //   initialvalue: 'bakriaweja@gmail.com',
+              // ),
+              // SizedBox(height: 40.h),
+              // CustomTextFromFieldBakri(
+              //   icon: Icons.phone,
+              //   label: 'Phone',
+              //   initialvalue: '0959280119',
+              // ),
+
+              SizedBox(height: 30.h,),
+              TextFormField(
+                controller: _profileCubit.firstNameEditController,
+                style: TextStyle(color: Colors.black,fontSize: 25.sp),
+                onChanged: (value){
+                  _profileCubit.updateInfo(
+                    curEmail: email,
+                    newEmail: _profileCubit.emailEditController.text,
+                    curFirst: firstName,
+                    newFirst: _profileCubit.firstNameEditController.text,
+                    curLast: lastName,
+                    newLast: _profileCubit.lastNameEditController.text
+                  );
+                },
+                decoration: InputDecoration(
+                    prefixIcon:const Icon(Icons.person),
+                    labelText: 'FirstName',
+                    labelStyle: TextStyle(color: Colors.black,fontSize:20.sp )
+                ),
+
               ),
-              SizedBox(height: 40.h),
-              CustomTextFromFieldBakri(
-                icon: Icons.person_2_outlined,
-                label: 'Last Name',
-                initialvalue: 'aweja',
+              SizedBox(height: 30.h,),
+              TextFormField(
+                controller: _profileCubit.lastNameEditController,
+                style: TextStyle(color: Colors.black,fontSize: 25.sp),
+                onChanged: (value){
+
+                  _profileCubit.updateInfo(
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                      curFirst: firstName,
+                      newFirst: _profileCubit.firstNameEditController.text,
+                      curLast: lastName,
+                      newLast: _profileCubit.lastNameEditController.text
+                  );
+                },
+                decoration: InputDecoration(
+                    prefixIcon:const Icon(Icons.person),
+                    labelText: "LastName",
+                    labelStyle: TextStyle(color: Colors.black,fontSize:20.sp )
+                ),
+
               ),
-              SizedBox(height: 40.h),
-              CustomTextFromFieldBakri(
-                icon: Icons.email_outlined,
-                label: 'Email',
-                initialvalue: 'bakriaweja@gmail.com',
+              SizedBox(height: 30.h),
+              TextFormField(
+
+                controller: _profileCubit.emailEditController,
+                style: TextStyle(color: Colors.black,fontSize: 25.sp),
+                onChanged: (value){
+
+                  _profileCubit.updateInfo(
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                      curFirst: firstName,
+                      newFirst: _profileCubit.firstNameEditController.text,
+                      curLast: lastName,
+                      newLast: _profileCubit.lastNameEditController.text
+                  );
+                },
+                decoration: InputDecoration(
+                    prefixIcon:const Icon(Icons.email),
+                    labelText: "Email" ,
+                    labelStyle: TextStyle(color: Colors.black,fontSize:20.sp )
+                ),
+
               ),
-              SizedBox(height: 40.h),
-              CustomTextFromFieldBakri(
-                icon: Icons.phone,
-                label: 'Phone',
-                initialvalue: '0959280119',
-              ),
+
+              SizedBox(height: 50.h,),
+              BlocBuilder<ProfileCubit,ProfileStates>(
+                  buildWhen: (pre,cur){
+                    if(cur is IsUpdated || cur is IsNotUpdated)return true; return false;
+                  },
+                  builder:(context,state){
+                    print('the State is ${state}');
+
+                  if(state is IsUpdated)
+                 return  ElevatedButton(onPressed: (){}, child:Text('Save') );
+              else {
+                 return const  SizedBox();
+                  }
+                  }
+
+              )
             ],
           ),
         ),

@@ -47,9 +47,12 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                 children: [
                   SizedBox(height: 15.h),
                   UserAccount(
-                    firstName: widget.clientProfile.firstName!,
-                    lastName: widget.clientProfile.lastName!,
-                    email: widget.clientProfile.email!,
+
+                    typeAccount: 'Client',
+
+                    firstName: widget.clientProfile.firstName,
+                    lastName: widget.clientProfile.lastName,
+                    email: widget.clientProfile.email,
                   ),
 
                 ],

@@ -32,3 +32,6 @@ class GetUserRoleErrorr extends ProfileStates {
 
   GetUserRoleErrorr(this.message);
 }
+
+class IsUpdated extends ProfileStates {}
+class IsNotUpdated extends ProfileStates {}

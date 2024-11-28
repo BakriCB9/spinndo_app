@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:snipp/features/profile/domain/use_cases/get_client_profile.dart';
@@ -13,6 +14,16 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final GetClientProfile _getClientProfile;
   final GetProviderProfile _getProviderProfile;
   final GetUserRole _getUserRole;
+
+  //variable
+   TextEditingController emailEditController=TextEditingController();
+  TextEditingController firstNameEditController=TextEditingController();
+  TextEditingController lastNameEditController=TextEditingController();
+  TextEditingController serviceNameController =TextEditingController();
+  TextEditingController descriptionController=TextEditingController();
+  //TextEditingController phoneEdit=TextEditingController();
+
+
   Future<void> getClientProfile() async {
     emit(GetProfileLoading());
     final result = await _getClientProfile();
@@ -55,5 +66,14 @@ class ProfileCubit extends Cubit<ProfileStates> {
         emit(GetProfileErrorr(role));
       }
     });
+  }
+
+  updateInfo({required String curEmail ,required String newEmail,required String curFirst,required String newFirst,required String curLast,required String newLast}){
+    if(curEmail==newEmail && curFirst==newFirst && curLast==newLast){
+      emit(IsNotUpdated());
+    }
+    else{
+      emit(IsUpdated());
+    }
   }
 }
