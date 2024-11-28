@@ -43,7 +43,7 @@ class _DeplomaProtofileImageScreenState
           actions: [
             Transform.scale(
               scale: 0.8,
-              //
+              //g
               child: Switch(
                 activeColor: ColorManager.primary,
                 inactiveTrackColor: ColorManager.white,
