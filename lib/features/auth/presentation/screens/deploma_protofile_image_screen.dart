@@ -220,7 +220,8 @@ class _DeplomaProtofileImageScreenState
                       if (_authCubit.certificateImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('You have to upload Certificate image',
+                            content: Text(
+                                'You have to upload Certificate image',
                                 style: TextStyle(
                                     fontSize: 28.sp, color: Colors.white)),
                           ),
