@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/const_variable.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/resources/color_manager.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/active_day/custom_day_of_active.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/job_items/description.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
-import 'package:snipp/features/profile/presentation/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
-import 'package:snipp/features/profile/presentation/widget/sliver_header_widget.dart';
+import 'package:app/core/const_variable.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/profile/presentation/widget/profile_info/active_day/custom_day_of_active.dart';
+import 'package:app/features/profile/presentation/widget/profile_info/job_items/description.dart';
+import 'package:app/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
+import 'package:app/features/profile/presentation/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
+import 'package:app/features/profile/presentation/widget/sliver_header_widget.dart';
 
 class ProviderProfileScreen extends StatefulWidget {
   final ProviderProfile providerProfile;

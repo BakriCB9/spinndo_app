@@ -1,5 +1,5 @@
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile.dart';
-import 'package:snipp/features/service/domain/entities/services.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/service/domain/entities/services.dart';
 
 abstract class ServiceStates {}
 

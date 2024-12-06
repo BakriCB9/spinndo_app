@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:snipp/core/constant.dart';
-import 'package:snipp/core/error/app_exception.dart';
+import 'package:app/core/constant.dart';
+import 'package:app/core/error/app_exception.dart';
 
-import 'package:snipp/features/profile/data/data_source/local/profile_local_data_source.dart';
+import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart';
 
 @Singleton(as: ProfileLocalDataSource)
 class ProfileSharedPrefLocalDataSource implements ProfileLocalDataSource {

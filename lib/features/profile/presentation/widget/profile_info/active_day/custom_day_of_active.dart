@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/constant.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/resources/color_manager.dart';
-import 'package:snipp/core/utils/ui_utils.dart';
-//import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snipp/features/profile/data/models/provider_model/working_day.dart';
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
-import 'package:snipp/features/profile/presentation/screens/edit_date_time.dart';
-import 'package:snipp/main.dart';
-// import 'package:snipp/core/const_variable.dart';
+import 'package:app/core/constant.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/utils/ui_utils.dart';
+//import 'package:app/features/auth/data/models/register_service_provider_request.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/profile/data/models/provider_model/working_day.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
+import 'package:app/features/profile/presentation/screens/edit_date_time.dart';
+import 'package:app/main.dart';
+// import 'package:app/core/const_variable.dart';
 
 import 'box_of_from_to.dart';
 

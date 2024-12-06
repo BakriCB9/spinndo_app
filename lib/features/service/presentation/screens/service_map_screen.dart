@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/utils/map_helper/geocoding_service.dart';

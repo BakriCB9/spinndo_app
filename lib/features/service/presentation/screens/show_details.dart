@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/widgets/loading_indicator.dart';
-import 'package:snipp/features/profile/presentation/widget/provider_profile_screen.dart';
-import 'package:snipp/features/service/presentation/cubit/service_cubit.dart';
-import 'package:snipp/features/service/presentation/cubit/service_states.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/widgets/loading_indicator.dart';
+import 'package:app/features/profile/presentation/widget/provider_profile_screen.dart';
+import 'package:app/features/service/presentation/cubit/service_cubit.dart';
+import 'package:app/features/service/presentation/cubit/service_states.dart';
 
 class ShowDetails extends StatefulWidget {
   final int id;

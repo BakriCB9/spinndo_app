@@ -1,6 +1,6 @@
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_category.dart';
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_category.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 
 class ProviderProfileDetailsJob {
   int? id;

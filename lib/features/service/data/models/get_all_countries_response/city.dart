@@ -1,4 +1,4 @@
-import 'package:snipp/features/service/domain/entities/cities.dart';
+import 'package:app/features/service/domain/entities/cities.dart';
 
 class City extends Cities {
   City({required super.name, required super.id});

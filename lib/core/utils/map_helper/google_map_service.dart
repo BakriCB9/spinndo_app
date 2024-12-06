@@ -1,8 +1,8 @@
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:location/location.dart';
-// import 'package:snipp/core/error/app_exception.dart';
-// import 'package:snipp/core/utils/map_helper/geocoding_service.dart';
-// import 'package:snipp/core/utils/map_helper/location_service.dart';
+// import 'package:app/core/error/app_exception.dart';
+// import 'package:app/core/utils/map_helper/geocoding_service.dart';
+// import 'package:app/core/utils/map_helper/location_service.dart';
 //
 // import '../../models/google_map_model.dart';
 //

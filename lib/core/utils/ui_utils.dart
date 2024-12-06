@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:snipp/core/widgets/loading_indicator.dart';
+import 'package:app/core/widgets/loading_indicator.dart';
 
 class UIUtils {
   static void showLoading(BuildContext context, [String? pathAnimation]) =>

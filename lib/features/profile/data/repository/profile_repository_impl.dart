@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:snipp/core/error/app_exception.dart';
-import 'package:snipp/core/error/failure.dart';
-import 'package:snipp/features/profile/data/data_source/local/profile_local_data_source.dart';
-import 'package:snipp/features/profile/data/data_source/remote/profile_remote_data_source.dart';
-import 'package:snipp/features/profile/data/models/provider_model/data.dart';
+import 'package:app/core/error/app_exception.dart';
+import 'package:app/core/error/failure.dart';
+import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart';
+import 'package:app/features/profile/data/data_source/remote/profile_remote_data_source.dart';
+import 'package:app/features/profile/data/models/provider_model/data.dart';
 
-import 'package:snipp/features/profile/domain/entities/client_profile.dart';
-import 'package:snipp/features/profile/domain/repository/profile_repository.dart';
+import 'package:app/features/profile/domain/entities/client_profile.dart';
+import 'package:app/features/profile/domain/repository/profile_repository.dart';
 
 @LazySingleton(as: ProfileRepository)
 class ProfileRepositoryImpl extends ProfileRepository {

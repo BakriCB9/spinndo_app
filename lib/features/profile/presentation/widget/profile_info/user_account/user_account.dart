@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/constant.dart';
-import 'package:snipp/core/utils/ui_utils.dart';
+import 'package:app/core/constant.dart';
+import 'package:app/core/utils/ui_utils.dart';
 
-import 'package:snipp/features/profile/presentation/screens/edit_user_account.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
-import 'package:snipp/main.dart';
+import 'package:app/features/profile/presentation/screens/edit_user_account.dart';
+import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
+import 'package:app/main.dart';
 
 class UserAccount extends StatelessWidget {
   final String firstName;

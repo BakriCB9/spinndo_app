@@ -3,20 +3,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/resources/color_manager.dart';
-import 'package:snipp/core/resources/values_manager.dart';
-import 'package:snipp/core/utils/validator.dart';
-import 'package:snipp/core/widgets/custom_text_form_field.dart';
-import 'package:snipp/core/widgets/loading_indicator.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/values_manager.dart';
+import 'package:app/core/utils/validator.dart';
+import 'package:app/core/widgets/custom_text_form_field.dart';
+import 'package:app/core/widgets/loading_indicator.dart';
 
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
-import 'package:snipp/features/auth/presentation/screens/map_screen.dart';
-import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:app/features/auth/presentation/screens/map_screen.dart';
+import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/service/domain/entities/categories.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/features/service/domain/entities/categories.dart';
 
 import 'deploma_protofile_image_screen.dart';
 

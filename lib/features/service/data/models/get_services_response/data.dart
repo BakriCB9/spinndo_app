@@ -1,4 +1,4 @@
-import 'package:snipp/features/service/domain/entities/services.dart';
+import 'package:app/features/service/domain/entities/services.dart';
 
 class Data extends Services {
   Data(

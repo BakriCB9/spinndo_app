@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:snipp/features/profile/domain/use_cases/get_client_profile.dart';
-import 'package:snipp/features/profile/domain/use_cases/get_provider_profile.dart';
-import 'package:snipp/features/profile/domain/use_cases/get_user_role.dart';
-import 'package:snipp/features/profile/presentation/cubit/profile_states.dart';
+import 'package:app/features/profile/domain/use_cases/get_client_profile.dart';
+import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart';
+import 'package:app/features/profile/domain/use_cases/get_user_role.dart';
+import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 
 @lazySingleton
 class ProfileCubit extends Cubit<ProfileStates> {

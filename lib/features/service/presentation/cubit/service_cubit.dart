@@ -2,18 +2,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
-import 'package:snipp/core/utils/map_helper/location_service.dart';
+import 'package:app/core/utils/map_helper/location_service.dart';
 
-import 'package:snipp/features/service/data/models/get_services_request.dart';
-import 'package:snipp/features/service/domain/entities/categories.dart';
-import 'package:snipp/features/service/domain/entities/cities.dart';
-import 'package:snipp/features/service/domain/entities/countries.dart';
-import 'package:snipp/features/service/domain/use_cases/get_categories.dart';
-import 'package:snipp/features/service/domain/use_cases/get_countries.dart';
-import 'package:snipp/features/service/domain/use_cases/get_details.dart';
-import 'package:snipp/features/service/domain/use_cases/get_services.dart';
+import 'package:app/features/service/data/models/get_services_request.dart';
+import 'package:app/features/service/domain/entities/categories.dart';
+import 'package:app/features/service/domain/entities/cities.dart';
+import 'package:app/features/service/domain/entities/countries.dart';
+import 'package:app/features/service/domain/use_cases/get_categories.dart';
+import 'package:app/features/service/domain/use_cases/get_countries.dart';
+import 'package:app/features/service/domain/use_cases/get_details.dart';
+import 'package:app/features/service/domain/use_cases/get_services.dart';
 
-import 'package:snipp/features/service/presentation/cubit/service_states.dart';
+import 'package:app/features/service/presentation/cubit/service_states.dart';
 
 @singleton
 class ServiceCubit extends Cubit<ServiceStates> {

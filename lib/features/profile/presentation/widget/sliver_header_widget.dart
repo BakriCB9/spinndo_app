@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/resources/color_manager.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/profile/presentation/widget/container_widget.dart';
-import 'package:snipp/features/profile/presentation/widget/icon_button.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/features/profile/presentation/widget/container_widget.dart';
+import 'package:app/features/profile/presentation/widget/icon_button.dart';
 
 import 'position_widget.dart';
 

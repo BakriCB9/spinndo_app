@@ -1,5 +1,5 @@
-import 'package:snipp/features/profile/domain/entities/client_profile.dart';
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/profile/domain/entities/client_profile.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 
 abstract class ProfileStates {}
 

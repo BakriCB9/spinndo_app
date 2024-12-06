@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/constant.dart';
-import 'package:snipp/core/utils/ui_utils.dart';
-import 'package:snipp/features/auth/data/models/resend_code_request.dart';
-import 'package:snipp/features/auth/data/models/verify_code_request.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
-import 'package:snipp/features/auth/presentation/widget/custom_auth_form.dart';
+import 'package:app/core/constant.dart';
+import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/features/auth/data/models/resend_code_request.dart';
+import 'package:app/features/auth/data/models/verify_code_request.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 
-import 'package:snipp/features/service/presentation/screens/service_screen.dart';
-import 'package:snipp/main.dart';
+import 'package:app/features/service/presentation/screens/service_screen.dart';
+import 'package:app/main.dart';
 import '../../../../core/di/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/resources/color_manager.dart';

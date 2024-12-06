@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snipp/features/auth/presentation/screens/sign_up_screen.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/service/presentation/screens/service_screen.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/features/service/presentation/screens/service_screen.dart';
 
 import '../../../../core/resources/color_manager.dart';
 import '../../../drawer/data/model/languages.dart';

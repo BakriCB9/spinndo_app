@@ -1,4 +1,4 @@
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_category.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_category.dart';
 
 class Category extends ProviderProfileCategory {
   Category({super.id, super.name, super.hasChildren});

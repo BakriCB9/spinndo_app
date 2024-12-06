@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/widgets/custom_text_form_field.dart';
-import 'package:snipp/core/widgets/custom_text_form_field_bakri.dart';
-import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:snipp/features/profile/presentation/cubit/profile_states.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/widgets/custom_text_form_field.dart';
+import 'package:app/core/widgets/custom_text_form_field_bakri.dart';
+import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 
 class EditUserAccountScreen extends StatelessWidget {
  final  String firstName;

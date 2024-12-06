@@ -1,5 +1,5 @@
 import 'package:location/location.dart';
-import 'package:snipp/core/error/app_exception.dart';
+import 'package:app/core/error/app_exception.dart';
 
 class LocationService {
   static Location location = Location();

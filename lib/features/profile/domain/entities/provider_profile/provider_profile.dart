@@ -1,4 +1,4 @@
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_details_job.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_details_job.dart';
 
 class ProviderProfile {
   int? id;

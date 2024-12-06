@@ -1,4 +1,4 @@
-import 'package:snipp/features/service/domain/entities/categories.dart';
+import 'package:app/features/service/domain/entities/categories.dart';
 
 class Data extends Categories {
   final List<dynamic>? children;

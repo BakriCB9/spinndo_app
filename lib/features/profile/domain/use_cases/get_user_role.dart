@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:snipp/core/error/failure.dart';
-import 'package:snipp/features/profile/domain/entities/client_profile.dart';
-import 'package:snipp/features/profile/domain/repository/profile_repository.dart';
+import 'package:app/core/error/failure.dart';
+import 'package:app/features/profile/domain/entities/client_profile.dart';
+import 'package:app/features/profile/domain/repository/profile_repository.dart';
 
 @lazySingleton
 class GetUserRole {

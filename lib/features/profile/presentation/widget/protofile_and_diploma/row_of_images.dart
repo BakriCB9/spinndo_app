@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/features/profile/data/models/provider_model/image.dart';
-import 'package:snipp/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
+import 'package:app/features/profile/data/models/provider_model/image.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 
 import '../../../../../core/widgets/cash_network.dart';
 

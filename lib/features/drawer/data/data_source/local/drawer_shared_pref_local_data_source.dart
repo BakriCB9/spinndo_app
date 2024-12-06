@@ -1,9 +1,9 @@
 // import 'package:injectable/injectable.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:snipp/core/constant.dart';
-// import 'package:snipp/core/error/app_exception.dart';
-// import 'package:snipp/features/auth/data/data_sources/local/auth_local_data_source.dart';
-// import 'package:snipp/features/drawer/data/data_source/local/drawer_local_data_source.dart';
+// import 'package:app/core/constant.dart';
+// import 'package:app/core/error/app_exception.dart';
+// import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart';
+// import 'package:app/features/drawer/data/data_source/local/drawer_local_data_source.dart';
 //
 // @Singleton(as: DrawerLocalDataSource)
 // class DrawerSharedPrefLocalDataSource implements DrawerLocalDataSource {

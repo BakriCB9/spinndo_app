@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:snipp/features/auth/domain/entities/country.dart';
+import 'package:app/features/auth/domain/entities/country.dart';
 
 abstract class AuthState {}
 

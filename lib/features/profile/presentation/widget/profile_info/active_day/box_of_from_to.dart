@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
+import 'package:app/features/auth/data/models/register_service_provider_request.dart';
 
 class BoxFromDateToDate extends StatefulWidget {
   final String time;

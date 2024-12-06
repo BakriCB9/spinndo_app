@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/resources/font_manager.dart';
-import 'package:snipp/core/resources/styles_manager.dart';
-import 'package:snipp/core/resources/theme_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
+import 'package:app/core/resources/styles_manager.dart';
+import 'package:app/core/resources/theme_manager.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String? hintText;

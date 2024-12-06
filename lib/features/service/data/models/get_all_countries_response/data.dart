@@ -1,4 +1,4 @@
-import 'package:snipp/features/service/domain/entities/countries.dart';
+import 'package:app/features/service/domain/entities/countries.dart';
 import 'city.dart';
 
 class Data extends Countries {

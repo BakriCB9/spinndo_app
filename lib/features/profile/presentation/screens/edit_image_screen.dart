@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/const_variable.dart';
+import 'package:app/core/const_variable.dart';
 
 class EditImageScreen extends StatefulWidget {
   const EditImageScreen({super.key});

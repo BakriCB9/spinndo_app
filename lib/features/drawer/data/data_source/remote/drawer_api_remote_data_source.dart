@@ -1,7 +1,7 @@
 // import 'package:dio/dio.dart';
 // import 'package:injectable/injectable.dart';
-// import 'package:snipp/core/constant.dart';
-// import 'package:snipp/features/drawer/data/model/log_out_response.dart';
+// import 'package:app/core/constant.dart';
+// import 'package:app/features/drawer/data/model/log_out_response.dart';
 //
 // import 'drawer_remote_data_source.dart';
 //

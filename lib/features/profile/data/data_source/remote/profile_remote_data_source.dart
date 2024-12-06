@@ -1,5 +1,5 @@
-import 'package:snipp/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
-import 'package:snipp/features/profile/data/models/provider_model/provider_profile_model.dart';
+import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
+import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
 
 abstract class ProfileRemoteDataSource {
   Future<ClientProfileRespoonse> getClientProfile(

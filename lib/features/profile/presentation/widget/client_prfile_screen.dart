@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/profile/domain/entities/client_profile.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
-import 'package:snipp/features/profile/presentation/widget/sliver_header_widget.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/features/profile/domain/entities/client_profile.dart';
+import 'package:app/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
+import 'package:app/features/profile/presentation/widget/sliver_header_widget.dart';
 
 class ClientProfileScreen extends StatefulWidget {
   final ClientProfile clientProfile;

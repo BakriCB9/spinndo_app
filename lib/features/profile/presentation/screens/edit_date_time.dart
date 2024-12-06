@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
-import 'package:snipp/features/profile/presentation/widget/profile_info/active_day/box_of_from_to.dart';
+import 'package:app/features/auth/data/models/register_service_provider_request.dart';
+import 'package:app/features/profile/presentation/widget/profile_info/active_day/box_of_from_to.dart';
 
 // class EditDateTimeScreen extends StatefulWidget {
 //   final List<String> dayAtcive;

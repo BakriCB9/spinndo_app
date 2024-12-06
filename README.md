@@ -1,4 +1,4 @@
-# snipp
+# app
 
 A new Flutter project.
 

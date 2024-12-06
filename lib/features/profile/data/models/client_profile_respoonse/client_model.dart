@@ -1,4 +1,4 @@
-import 'package:snipp/features/profile/domain/entities/client_profile.dart';
+import 'package:app/features/profile/domain/entities/client_profile.dart';
 
 class ClientModel extends ClientProfile {
   final int id;

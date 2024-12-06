@@ -1,36 +1,43 @@
+import 'package:app/core/utils/fcm.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:snipp/core/app_bloc_observer.dart';
-import 'package:snipp/core/constant.dart';
-import 'package:snipp/core/di/service_locator.dart';
+import 'package:app/core/app_bloc_observer.dart';
+import 'package:app/core/constant.dart';
+import 'package:app/core/di/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:snipp/core/resources/theme_manager.dart';
-import 'package:snipp/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
-import 'package:snipp/features/auth/presentation/screens/employee_details.dart';
-import 'package:snipp/features/auth/presentation/screens/forget_password_screen.dart';
-import 'package:snipp/features/auth/presentation/screens/map_screen.dart';
-import 'package:snipp/features/auth/presentation/screens/sign_in_screen.dart';
-import 'package:snipp/features/auth/presentation/screens/sign_up_screen.dart';
-import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_states.dart';
-import 'package:snipp/features/home/presentation/screens/home_screen.dart';
-import 'package:snipp/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:snipp/features/profile/presentation/screens/profile_screen.dart';
-import 'package:snipp/features/service/presentation/screens/cat_select.dart';
-import 'package:snipp/features/service/presentation/screens/service_map_screen.dart';
-import 'package:snipp/features/service/presentation/screens/service_screen.dart';
-import 'package:snipp/geo.dart';
+import 'package:app/core/resources/theme_manager.dart';
+import 'package:app/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
+import 'package:app/features/auth/presentation/screens/employee_details.dart';
+import 'package:app/features/auth/presentation/screens/forget_password_screen.dart';
+import 'package:app/features/auth/presentation/screens/map_screen.dart';
+import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
+import 'package:app/features/home/presentation/screens/home_screen.dart';
+import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:app/features/service/presentation/screens/cat_select.dart';
+import 'package:app/features/service/presentation/screens/service_map_screen.dart';
+import 'package:app/features/service/presentation/screens/service_screen.dart';
+import 'package:app/geo.dart';
 
 late final SharedPreferences sharedPref;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
+  await Firebase.initializeApp(
+    // options: DefaultFirebaseOptions.web,
+ // options:  FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
+  );
+Fcm.init();
   sharedPref = await SharedPreferences.getInstance();
   await ScreenUtil.ensureScreenSize();
 

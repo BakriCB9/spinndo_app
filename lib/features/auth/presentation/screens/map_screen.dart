@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/widgets/loading_indicator.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/widgets/loading_indicator.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 
 class MapScreen extends StatelessWidget {
   static const String routeName = '/map';

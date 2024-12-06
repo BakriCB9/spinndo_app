@@ -1,7 +1,8 @@
+import 'package:app/core/resources/styles_manager.dart';
+import 'package:app/core/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:snipp/core/resources/styles_manager.dart';
-import 'package:snipp/core/resources/values_manager.dart';
+
 
 import 'color_manager.dart';
 import 'font_manager.dart';

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:snipp/core/di/service_locator.dart';
-import 'package:snipp/core/resources/color_manager.dart';
-import 'package:snipp/core/utils/ui_utils.dart';
-import 'package:snipp/features/auth/data/models/register_service_provider_request.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snipp/features/auth/presentation/cubit/auth_states.dart';
-import 'package:snipp/features/auth/presentation/screens/verfication_code_screen.dart';
-import 'package:snipp/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/features/auth/data/models/register_service_provider_request.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 
 import '../../../../core/utils/image_functions.dart';
 
