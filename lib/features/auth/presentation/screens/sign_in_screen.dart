@@ -128,7 +128,7 @@ class SignInScreen extends StatelessWidget {
               onTap: () {
                 _authCubit.emailController.clear();
                 _authCubit.passwordController.clear();
-                Navigator.of(context).pushNamed(SignUpScreen.routeName);
+                Navigator.of(context).pushReplacementNamed(SignUpScreen.routeName);
               },
               child: Text(localization.createNewAccount,
                   style: Theme.of(context).textTheme.titleMedium),

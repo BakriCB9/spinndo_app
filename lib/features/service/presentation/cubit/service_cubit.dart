@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -32,10 +33,12 @@ class ServiceCubit extends Cubit<ServiceStates> {
   int? selectedCityId;
   String? selectedCityName;
   int? selectedCategoryId;
-  double? selectedDistance;
+  double? selectedDistance=10;
   LocationData? getCurrentLocation;
   LatLng? filterLocation;
   String failureMessegae = "";
+  bool isCurrent=false;
+  TextEditingController searchController=TextEditingController();
   Future<void> getServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
 
@@ -78,6 +81,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
     await getCountries();
     await getCategories();
     if (categoriesList != null && countriesList != null) {
+     await getCurrentLocationFilter();
       emit(CountryCategorySuccess());
     } else {
       emit(CountryCategoryError(failureMessegae));
@@ -130,6 +134,11 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
   void distanceSelect(double value) {
     selectedDistance = value;
+   
     emit(DistanceSelectUpdate());
+  }
+  void chooseCurrentLocation(bool value){
+     isCurrent=value;
+     emit(IsCurrentLocation());     
   }
 }

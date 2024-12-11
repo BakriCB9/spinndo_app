@@ -36,14 +36,12 @@ class ServiceApiDataSource implements ServiceDataSource {
           },
         ),
       );
-      print("aaaaaaaaaaaaaaaaaaaaaa");
-      print(response.data);
-      print("aaaaaaaaaaaaaaaaaaaaaa");
+      
       return GetServicesResponse.fromJson(response.data);
     } catch (exciption) {
-      print("ddddddddddddddddddddddddddddd");
-      print(exciption);
-      print("ddddddddddddddddddddddddddddd");
+      
+      
+      
       throw RemoteAppException("Failed to get services");
     }
   }
@@ -83,6 +81,7 @@ class ServiceApiDataSource implements ServiceDataSource {
             "Content-Type": "application/json",
             "Authorization": "Bearer $user_token"
           }));
+
       return ProviderProfileResponse.fromJson(response.data);
     } catch (exciption) {
       throw RemoteAppException("Failed to get Details");

@@ -44,7 +44,7 @@ class Details extends ProviderProfileDetailsJob {
         category: json['category'] == null
             ? null
             : Category.fromJson(json['category'] as Map<String, dynamic>),
-        city: json['city'] as dynamic,
+        city: json['city']['name'] as dynamic,
         workingDays: (json['working_days'] as List<dynamic>?)
             ?.map((e) => WorkingDay.fromJson(e as Map<String, dynamic>))
             .toList(),

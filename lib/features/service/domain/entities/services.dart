@@ -1,5 +1,3 @@
-import 'package:app/features/service/domain/entities/categories.dart';
-
 class Services {
   final int? providerId;
   final int? id;
@@ -11,6 +9,7 @@ class Services {
   final String? categoryName;
   final String? providerName;
   final dynamic providerImage;
+  final double? distance;
 
   Services(
       {required this.id,
@@ -22,5 +21,7 @@ class Services {
       required this.latitude,
       required this.categoryName,
       required this.providerName,
-      required this.providerImage});
+      required this.providerImage,
+      required this.distance,
+      });
 }

@@ -21,14 +21,18 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   late CameraPosition initialCameraPosition;
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
-
+Set<Marker> markers = {};
   @override
   void initState() {
     initialCameraPosition = CameraPosition(
       target: _serviceCubit.filterLocation!,
       zoom: 10,
     );
-    initMarkers();
+    markers.addAll([Marker(markerId: MarkerId('1'),position: LatLng(37.0989075, 36.1721064) ),Marker(markerId: MarkerId('2'),position: LatLng(37.0989105, 36.1721026)),Marker(markerId: MarkerId('3'),position: LatLng(36.297607719898224, 33.50574174037673))]);
+   // initMarkers();
+    for(int i=0;i<markerLocationData.length;i++){
+      print('the value of marker is ###########################################  $i   ${markerLocationData[i].latLng}');
+    }
     super.initState();
   }
 
@@ -37,7 +41,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
     super.dispose();
   }
 
-  Set<Marker> markers = {};
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +51,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
       ),
       body: GoogleMap(
         zoomControlsEnabled: false,
-        minMaxZoomPreference: MinMaxZoomPreference(8, 50),
+        minMaxZoomPreference: MinMaxZoomPreference(0, 50),
         markers: markers,
         initialCameraPosition: initialCameraPosition,
         style: _authCubit.mapStyle,
@@ -56,7 +60,8 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   }
 
   void initMarkers() {
-    var myMarker = markerLocationData
+    //markers.clear();
+  Set<Marker> myMarker = markerLocationData
         .map(
           (e) => Marker(
             position: e.latLng,
@@ -67,7 +72,14 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
           ),
         )
         .toSet();
+        print('the aux Marker is  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${myMarker.length}');
     markers.addAll(myMarker);
+    // setState(() {
+      
+    // });
+
+      print('the marker main is ########################################    ${markers.length}');
+    
   }
 
 //world view 0 ->3

@@ -90,8 +90,9 @@ class ThemeManager {
         fontSize: FontSize.s32.sp,
       ),
     ),
-
+     
     inputDecorationTheme: InputDecorationTheme(
+      
       fillColor: ColorManager.white,
       prefixIconColor: ColorManager.primary,
 

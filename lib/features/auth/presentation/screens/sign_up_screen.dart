@@ -222,6 +222,8 @@ class SignUpScreen extends StatelessWidget {
             );
           }),
       SizedBox(height: 30.h),
+
+     
       Center(
           child: InkWell(
               onTap: () {
@@ -230,7 +232,7 @@ class SignUpScreen extends StatelessWidget {
                 _authCubit.confirmPasswordController.clear();
                 _authCubit.firstNameContoller.clear();
                 _authCubit.lastNameContoller.clear();
-                Navigator.of(context).pushNamed(SignInScreen.routeName);
+                Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
               },
               child: Text(localization.alreadyHaveAccount,
                   style: Theme.of(context).textTheme.titleMedium)))

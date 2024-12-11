@@ -5,22 +5,27 @@ class GetServicesRequest {
   final int? categoryId;
   final int? countryId;
   final int? cityId;
+  final String? search;
 
-  GetServicesRequest(
-      {this.latitude,
-      this.longitude,
-      this.radius,
-      this.categoryId,
-      this.countryId,
-      this.cityId});
+  GetServicesRequest({
+    this.latitude,
+    this.longitude,
+    this.radius,
+    this.categoryId,
+    this.countryId,
+    this.cityId,
+    this.search,
+  });
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     if (latitude != null) data['latitude'] = latitude;
     if (longitude != null) data['longitude'] = longitude;
-    if (radius != null) data['radius'] = radius;
+    if (radius != null) data['radius'] = radius ;
     if (categoryId != null) data['category_id'] = categoryId;
     if (countryId != null) data['country_id'] = countryId;
     if (cityId != null) data['city_id'] = cityId;
+    if (search != null) data['search'] = search;
+     print('the value of data is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% $data');
     return data;
   }
 }

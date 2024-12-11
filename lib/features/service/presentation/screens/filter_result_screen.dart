@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -35,6 +37,10 @@ final _authCubit = serviceLocator.get<AuthCubit>();
 class _FilterResultScreenState extends State<FilterResultScreen> {
   @override
   Widget build(BuildContext context) {
+    markerLocationData.clear();
+    for(int i=0;i<widget.services.length;i++){
+      print('the value of location is $i    ${widget.services[i].latitude} and ${widget.services[i].longitude}');
+    }
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
@@ -48,20 +54,8 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           actions: [
-            Switch(
-              activeColor: ColorManager.primary,
-              inactiveTrackColor: ColorManager.white,
-              inactiveThumbColor: Theme.of(context).primaryColor,
-              activeTrackColor: Theme.of(context).primaryColor,
-              value: _drawerCubit.themeMode == ThemeMode.dark,
-              onChanged: (value) {
-                if (value) {
-                  _drawerCubit.changeTheme(ThemeMode.dark);
-                } else {
-                  _drawerCubit.changeTheme(ThemeMode.light);
-                }
-              },
-            ),
+           
+
             IconButton(
               onPressed: () async {
                 _serviceCubit.filterLocation =
@@ -80,6 +74,47 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               },
               icon: Icon(Icons.map, color: Theme.of(context).primaryColorLight),
             ),
+            PopupMenuButton(
+                color: Theme.of(context).primaryColorDark,
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        height: 60.h,
+                        child: Text(
+                          "Sort by name",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorLight,
+                                  fontSize: 22.sp),
+                        ),
+                        onTap: () {
+                        widget.services.sort((a, b) => a.name!.compareTo(b.name!),);
+                        
+                        setState(() {
+                          
+                        });
+                        },
+                      ),
+                      PopupMenuItem(
+                        height: 60.h,
+                        child: Text(
+                          'Sort by distance',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorLight,
+                                  fontSize: 22.sp),
+                        ),
+                        onTap: () {
+                         widget.services.sort((a, b) => a.distance!.compareTo(b.distance!),);
+                         setState(() {
+                           
+                         });
+                        },
+                      )
+                    ]),
           ],
           elevation: 0,
         ),
@@ -94,6 +129,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                 padding: EdgeInsets.all(16.w),
                 itemCount: widget.services.length,
                 itemBuilder: (context, index) {
+                  
                   markerLocationData.add(GoogleMapMarker(
                     id: widget.services[index].id!,
                     name: widget.services[index].name!,
@@ -102,9 +138,10 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       double.parse(widget.services[index].longitude!),
                     ),
                   ));
+                   
 
                   final service = widget.services[index];
-
+                  
                   return GestureDetector(
                     onTap: () {
                       if (sharedPref.getString(CacheConstant.tokenKey) ==
@@ -142,16 +179,35 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    service.name ?? "Service Name",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColorLight),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        service.name ?? "Service Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Expanded(
+                                          child: Text(
+                                        service.distance != null
+                                            ? '${service.distance!.toStringAsFixed(2)} km'
+                                            : '',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight),
+                                        textAlign: TextAlign.end,
+                                      ))
+                                    ],
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(

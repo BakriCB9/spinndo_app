@@ -10,12 +10,13 @@ class Data extends Services {
       required super.categoryName,
       required super.providerName,
       required super.providerImage,
+      required super.distance,
       required super.id,
       required super.providerId});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json['id'] as int?,
-        name: json['name'] as String?,
+        name: (json['name'] as String).toLowerCase(),
         description: json['description'] as String?,
         website: json['website'] as dynamic,
         longitude: json['longitude'] as String?,
@@ -24,5 +25,6 @@ class Data extends Services {
         providerId: json['provider_id'] as int?,
         providerName: json['provider_name'] as String?,
         providerImage: json['image'] as dynamic,
+        distance: json['distance'] as double?,
       );
 }

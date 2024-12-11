@@ -58,3 +58,4 @@ class GetCurrentLocationFilterErrorr extends ServiceStates {
 }
 
 class DistanceSelectUpdate extends ServiceStates {}
+class IsCurrentLocation extends ServiceStates{}

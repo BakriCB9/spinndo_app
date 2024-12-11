@@ -1,3 +1,4 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ class CustomTextFormField extends StatefulWidget {
   final int? maxLines;
   final int? minLines;
   final String? labelText;
+  final double?padding;
   final String? initValue;
   final String? Function(String?)? validator;
   final TextEditingController controller;
@@ -24,7 +26,8 @@ class CustomTextFormField extends StatefulWidget {
       this.hintText,
       this.maxLines = 1,
       this.minLines = 1,
-        this.initValue,
+      this.padding=0,
+      this.initValue,
       required this.controller,
       this.icon,
       this.keyboardType})
@@ -64,6 +67,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
       style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
         hintText: widget.hintText,
+        hintStyle: TextStyle(fontSize: 25.sp, color: Colors.grey),
 
         label: widget.labelText != null
             ? Text(
@@ -89,12 +93,14 @@ class _CustomTextFormField extends State<CustomTextFormField> {
                           ))
                 : null
             : null,
-        prefixIcon: Icon(
-          widget.icon,
-          size: 45.sp,
-        ),
+        prefixIcon: widget.icon == null
+            ?null: Icon(
+                widget.icon,
+                size: 45.sp,
+              )
+            ,
         enabled: true,
-
+         contentPadding:EdgeInsets.only(left: widget.padding??0) 
         // counter: SizedBox()
       ),
       onChanged: widget.isPassword
@@ -102,6 +108,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
               setState(() {});
             }
           : null,
+         cursorColor: ColorManager.primary, 
       obscureText: isObsecure, controller: widget.controller,
       maxLines: widget.maxLines,
       minLines: widget.minLines,

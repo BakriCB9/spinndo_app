@@ -74,7 +74,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
-                    cityName: widget.providerProfile.details!.city??'Alep',
+                    cityName: widget.providerProfile.details?.city.toString()??'Alep',
                     isApprovid: widget.providerProfile.details!.isApproved,
                     userId: widget.providerProfile.id!,
                     categoryName: widget.providerProfile.details?.category?.name ??
