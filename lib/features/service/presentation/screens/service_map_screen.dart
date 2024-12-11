@@ -28,8 +28,8 @@ Set<Marker> markers = {};
       target: _serviceCubit.filterLocation!,
       zoom: 10,
     );
-    markers.addAll([Marker(markerId: MarkerId('1'),position: LatLng(37.0989075, 36.1721064) ),Marker(markerId: MarkerId('2'),position: LatLng(37.0989105, 36.1721026)),Marker(markerId: MarkerId('3'),position: LatLng(36.297607719898224, 33.50574174037673))]);
-   // initMarkers();
+    // markers.addAll([Marker(markerId: MarkerId('1'),position: LatLng(37.0989075, 36.1721064) ),Marker(markerId: MarkerId('2'),position: LatLng(37.0989105, 36.1721026)),Marker(markerId: MarkerId('3'),position: LatLng(36.297607719898224, 33.50574174037673))]);
+   initMarkers();
     for(int i=0;i<markerLocationData.length;i++){
       print('the value of marker is ###########################################  $i   ${markerLocationData[i].latLng}');
     }
@@ -64,6 +64,8 @@ Set<Marker> markers = {};
   Set<Marker> myMarker = markerLocationData
         .map(
           (e) => Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
+
             position: e.latLng,
             infoWindow: InfoWindow(title: e.name),
             markerId: MarkerId(

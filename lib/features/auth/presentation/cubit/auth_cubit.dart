@@ -51,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
   List<DateSelect> dateSelect = [
     DateSelect(day: "sunday", start: "08:00", end: "15:00"),
     DateSelect(day: "monday", start: "08:00", end: "15:00"),
-    DateSelect(day: "tuseday", start: "08:00", end: "15:00"),
+    DateSelect(day: "tuesday", start: "08:00", end: "15:00"),
     DateSelect(day: "wednesday", start: "08:00", end: "15:00"),
     DateSelect(day: "thursday", start: "08:00", end: "15:00"),
     DateSelect(day: "friday", start: "08:00", end: "15:00"),

@@ -38,8 +38,15 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
   @override
   Widget build(BuildContext context) {
     markerLocationData.clear();
-    for(int i=0;i<widget.services.length;i++){
-      print('the value of location is $i    ${widget.services[i].latitude} and ${widget.services[i].longitude}');
+    markerLocationData.add(GoogleMapMarker(
+BitmapDescriptor.hueGreen,
+        id: 5,
+        name: "Current Location",
+        latLng: LatLng(_serviceCubit.getCurrentLocation!.latitude!,
+            _serviceCubit.getCurrentLocation!.longitude!)));
+    for (int i = 0; i < widget.services.length; i++) {
+      print(
+          'the value of location is $i    ${widget.services[i].latitude} and ${widget.services[i].longitude}');
     }
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
@@ -54,8 +61,6 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           actions: [
-           
-
             IconButton(
               onPressed: () async {
                 _serviceCubit.filterLocation =
@@ -89,11 +94,11 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                   fontSize: 22.sp),
                         ),
                         onTap: () {
-                        widget.services.sort((a, b) => a.name!.compareTo(b.name!),);
-                        
-                        setState(() {
-                          
-                        });
+                          widget.services.sort(
+                            (a, b) => a.name!.compareTo(b.name!),
+                          );
+
+                          setState(() {});
                         },
                       ),
                       PopupMenuItem(
@@ -108,10 +113,10 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                   fontSize: 22.sp),
                         ),
                         onTap: () {
-                         widget.services.sort((a, b) => a.distance!.compareTo(b.distance!),);
-                         setState(() {
-                           
-                         });
+                          widget.services.sort(
+                            (a, b) => a.distance!.compareTo(b.distance!),
+                          );
+                          setState(() {});
                         },
                       )
                     ]),
@@ -129,8 +134,8 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                 padding: EdgeInsets.all(16.w),
                 itemCount: widget.services.length,
                 itemBuilder: (context, index) {
-                  
                   markerLocationData.add(GoogleMapMarker(
+                    BitmapDescriptor.hueRed,
                     id: widget.services[index].id!,
                     name: widget.services[index].name!,
                     latLng: LatLng(
@@ -138,10 +143,9 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       double.parse(widget.services[index].longitude!),
                     ),
                   ));
-                   
 
                   final service = widget.services[index];
-                  
+
                   return GestureDetector(
                     onTap: () {
                       if (sharedPref.getString(CacheConstant.tokenKey) ==

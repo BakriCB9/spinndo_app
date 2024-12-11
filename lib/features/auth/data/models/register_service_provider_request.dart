@@ -43,6 +43,7 @@ class RegisterServiceProviderRequest {
         days.add(listOfDay[i].toJson());
       }
     }
+    print('the day %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ${days}');
     // Convert certificate and images to MultipartFile
     final certificateFile = await MultipartFile.fromFile(
       certificate.path,

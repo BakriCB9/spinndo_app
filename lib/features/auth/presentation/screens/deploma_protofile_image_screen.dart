@@ -229,6 +229,7 @@ class _DeplomaProtofileImageScreenState
                         );
                         return;
                       }
+                      print('the day %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ${_authCubit.dateSelect}');
                       _authCubit.registerService(RegisterServiceProviderRequest(
                           firstName: _authCubit.firstNameContoller.text,
                           lastName: _authCubit.lastNameContoller.text,
