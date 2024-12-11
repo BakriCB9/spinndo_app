@@ -18,6 +18,7 @@ class _FilterScreenState extends State<FilterScreen> {
     "zebronics",
     "ball"
   ];
+
   String? selectedBrand;
   List<String> features = [
     "Wireless",
