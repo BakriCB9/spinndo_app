@@ -34,4 +34,5 @@ class GetUserRoleErrorr extends ProfileStates {
 }
 
 class IsUpdated extends ProfileStates {}
+
 class IsNotUpdated extends ProfileStates {}

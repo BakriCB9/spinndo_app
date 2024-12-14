@@ -35,14 +35,15 @@ class CustomDrawer extends StatelessWidget {
           : Colors.white,
       child: Column(
         children: [
-          Expanded(flex: 2,
+          Expanded(
+            flex: 2,
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: ColorManager.primary,
               ),
               child: Padding(
-                padding:  EdgeInsets.only(left: 20.w),
+                padding: EdgeInsets.only(left: 20.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -70,10 +71,21 @@ class CustomDrawer extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(name ?? 'User',
-                          style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryColorLight)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorLight)),
                       subtitle: Text(email ?? 'User@gmail.com',
-                          style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryColorLight)),
-                    ),SizedBox(height: 10.h,)
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorLight)),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    )
                   ],
                 ),
               ),
@@ -126,30 +138,34 @@ class CustomDrawer extends StatelessWidget {
                                 child: DropdownButtonHideUnderline(
                                     child: DropdownButton<Languages>(
                                         value: languages.firstWhere(
-                                              (lang) =>
-                                          lang.code == _drawerCubit.languageCode,
+                                          (lang) =>
+                                              lang.code ==
+                                              _drawerCubit.languageCode,
                                         ),
-                                        style: Theme.of(context).textTheme.displayMedium,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium,
                                         items: languages
                                             .map(
-                                              (language) => DropdownMenuItem<Languages>(
-                                            value: language,
-                                            child: Text(language.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displayMedium),
-                                          ),
-                                        )
+                                              (language) =>
+                                                  DropdownMenuItem<Languages>(
+                                                value: language,
+                                                child: Text(language.name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium),
+                                              ),
+                                            )
                                             .toList(),
                                         onChanged: (selectedLanguage) {
                                           if (selectedLanguage != null) {
-                                            _drawerCubit
-                                                .changeLanguage(selectedLanguage.code);
+                                            _drawerCubit.changeLanguage(
+                                                selectedLanguage.code);
                                           }
                                         },
                                         borderRadius: BorderRadius.circular(25),
-                                        dropdownColor:
-                                        _drawerCubit.themeMode == ThemeMode.dark
+                                        dropdownColor: _drawerCubit.themeMode ==
+                                                ThemeMode.dark
                                             ? ColorManager.darkBlue
                                             : ColorManager.white)),
                               ),
@@ -159,7 +175,6 @@ class CustomDrawer extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   InkWell(
                     onTap: () {
                       Navigator.of(context).pushNamed(Profile_Screen.routeName);
@@ -187,35 +202,36 @@ class CustomDrawer extends StatelessWidget {
                             .titleLarge!
                             .copyWith(fontSize: 32.sp)),
                   ),
-                  BlocListener<DrawerCubit,DrawerStates>(
-  listener: (context, state) {
-  if(state is LogOutLoading){
-    UIUtils.showLoading(context);
-  }else if(state is LogOutErrorr){
-    UIUtils.hideLoading(context);
-    UIUtils.showMessage(state.message);
-  }else if(state is LogOutSuccess){
-    UIUtils.hideLoading(context);
-    Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
-  }
-  },
-  child: InkWell(
-                    onTap: () {
-                      _drawerCubit.logout();
+                  BlocListener<DrawerCubit, DrawerStates>(
+                    listener: (context, state) {
+                      if (state is LogOutLoading) {
+                        UIUtils.showLoading(context);
+                      } else if (state is LogOutErrorr) {
+                        UIUtils.hideLoading(context);
+                        UIUtils.showMessage(state.message);
+                      } else if (state is LogOutSuccess) {
+                        UIUtils.hideLoading(context);
+                        Navigator.of(context)
+                            .pushReplacementNamed(SignInScreen.routeName);
+                      }
                     },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.login_outlined,
-                        color: ColorManager.primary,
+                    child: InkWell(
+                      onTap: () {
+                        _drawerCubit.logout();
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.login_outlined,
+                          color: ColorManager.primary,
+                        ),
+                        title: Text('Log out',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(fontSize: 32.sp)),
                       ),
-                      title: Text('Log out',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(fontSize: 32.sp)),
                     ),
-                  ),
-)
+                  )
                 ],
               )),
         ],

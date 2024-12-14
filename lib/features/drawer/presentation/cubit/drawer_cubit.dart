@@ -63,8 +63,9 @@ class DrawerCubit extends Cubit<DrawerStates> {
 // emit(state)
     }
   }
-  Future<void>logout()async {
-    Dio _dio= Dio(BaseOptions(
+
+  Future<void> logout() async {
+    Dio _dio = Dio(BaseOptions(
       baseUrl: ApiConstant.baseUrl,
       receiveDataWhenStatusError: true,
       // connectTimeout:const  Duration(seconds: 120),
@@ -73,7 +74,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
 
     try {
       final token = sharedPref.getString(CacheConstant.tokenKey);
-emit(LogOutLoading());
+      emit(LogOutLoading());
       // Ensure token is not null or empty
       if (token == null || token.isEmpty) {
         UIUtils.showMessage("You are not logged in.");
@@ -93,17 +94,15 @@ emit(LogOutLoading());
 
       // Check the response status
       if (response.statusCode == 200) {
-        emit(LogOutSuccess());
         // Clear user session
         await sharedPref.remove(CacheConstant.tokenKey);
         await sharedPref.remove(CacheConstant.emailKey);
-
+        emit(LogOutSuccess());
       }
     } catch (error) {
       // Log and show the error
       debugPrint("Logout Error: $error");
       emit(LogOutErrorr("An error occurred. Please try again."));
     }
-
   }
 }

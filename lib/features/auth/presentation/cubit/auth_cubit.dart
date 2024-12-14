@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
-import 'package:app/core/constant.dart';
-import 'package:app/core/error/app_exception.dart';
+
 import 'package:app/core/utils/map_helper/location_service.dart';
 import 'package:app/features/auth/data/models/login_request.dart';
 import 'package:app/features/auth/data/models/register_request.dart';
@@ -49,13 +48,13 @@ class AuthCubit extends Cubit<AuthState> {
   final Getcountryname _getCountryCityName;
 
   List<DateSelect> dateSelect = [
-    DateSelect(day: "sunday", start: "08:00", end: "15:00"),
-    DateSelect(day: "monday", start: "08:00", end: "15:00"),
-    DateSelect(day: "tuesday", start: "08:00", end: "15:00"),
-    DateSelect(day: "wednesday", start: "08:00", end: "15:00"),
-    DateSelect(day: "thursday", start: "08:00", end: "15:00"),
-    DateSelect(day: "friday", start: "08:00", end: "15:00"),
-    DateSelect(day: "saturday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Monday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Tuesday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Wednesday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Thursday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Friday", start: "08:00", end: "15:00"),
+    DateSelect(day: "Saturday", start: "08:00", end: "15:00"),
   ];
   String website = '';
   final emailController = TextEditingController();
@@ -104,9 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(LoginRequest requestData) async {
     emit(LoginLoading());
-    print("zzzzzzzzzzzzzzzzz");
-    print(requestData.email);
-    print(requestData);
+
     final result = await _login(requestData);
     result.fold(
       (failure) => emit(LoginError(failure.message)),
@@ -197,7 +194,7 @@ class AuthCubit extends Cubit<AuthState> {
     canResend = false;
     emit(CanResendState());
 
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (resendCodeTime > 0) {
         resendCodeTime -= 1;
         emit(CanResendState());
@@ -223,8 +220,8 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void selectedCategoryEvent(Categories category) {
-    selectedCategoryId = category.id.toString();
+  void selectedCategoryEvent(int category) {
+    selectedCategoryId = category.toString();
     emit(SelectedCategoryState());
   }
 

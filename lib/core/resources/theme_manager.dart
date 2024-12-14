@@ -3,7 +3,6 @@ import 'package:app/core/resources/values_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 import 'color_manager.dart';
 import 'font_manager.dart';
 
@@ -19,9 +18,10 @@ class ThemeManager {
     primaryColorDark: Colors.white,
     scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
     appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
-        foregroundColor: ColorManager.black,
-        elevation: 0),
+      backgroundColor: Colors.transparent,
+      foregroundColor: ColorManager.black,
+      elevation: 0,
+    ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -90,9 +90,8 @@ class ThemeManager {
         fontSize: FontSize.s32.sp,
       ),
     ),
-     
+
     inputDecorationTheme: InputDecorationTheme(
-      
       fillColor: ColorManager.white,
       prefixIconColor: ColorManager.primary,
 

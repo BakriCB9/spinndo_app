@@ -26,6 +26,8 @@ class MapScreen extends StatelessWidget {
                   ? _authCubit.currentLocation!.longitude
                   : _authCubit.selectedLocation!.longitude);
           Navigator.pop(context);
+          print(
+              'the location of country is ############################  countrylocation  long ${_authCubit.selectedLocation!.longitude} and latitued is ${_authCubit.selectedLocation!.latitude}');
         },
         child: Icon(
           Icons.save,
@@ -42,7 +44,10 @@ class MapScreen extends StatelessWidget {
               },
               icon: Icon(Icons.location_on))
         ],
-        title:  Text("Google Map",style: Theme.of(context).textTheme.titleLarge,),
+        title: Text(
+          "Google Map",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
       body: BlocBuilder<AuthCubit, AuthState>(
         bloc: _authCubit,

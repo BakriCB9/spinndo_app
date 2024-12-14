@@ -16,13 +16,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final GetUserRole _getUserRole;
 
   //variable
-   TextEditingController emailEditController=TextEditingController();
-  TextEditingController firstNameEditController=TextEditingController();
-  TextEditingController lastNameEditController=TextEditingController();
-  TextEditingController serviceNameController =TextEditingController();
-  TextEditingController descriptionController=TextEditingController();
+  TextEditingController emailEditController = TextEditingController();
+  TextEditingController firstNameEditController = TextEditingController();
+  TextEditingController lastNameEditController = TextEditingController();
+  TextEditingController serviceNameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   //TextEditingController phoneEdit=TextEditingController();
-
 
   Future<void> getClientProfile() async {
     emit(GetProfileLoading());
@@ -68,11 +67,16 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-  updateInfo({required String curEmail ,required String newEmail,required String curFirst,required String newFirst,required String curLast,required String newLast}){
-    if(curEmail==newEmail && curFirst==newFirst && curLast==newLast){
+  updateInfo(
+      {required String curEmail,
+      required String newEmail,
+      required String curFirst,
+      required String newFirst,
+      required String curLast,
+      required String newLast}) {
+    if (curEmail == newEmail && curFirst == newFirst && curLast == newLast) {
       emit(IsNotUpdated());
-    }
-    else{
+    } else {
       emit(IsUpdated());
     }
   }

@@ -1,3 +1,4 @@
+import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,17 +29,19 @@ class ServiceCubit extends Cubit<ServiceStates> {
   List<Countries>? countriesList;
   List<Cities>? citiesList;
   List<Categories>? categoriesList;
+  List<List<ChildCategory>>?childCategoryList;
   int? selectedCountryId;
   String? selectedCountryName;
   int? selectedCityId;
   String? selectedCityName;
   int? selectedCategoryId;
-  double? selectedDistance=10;
+  double? selectedDistance = 10;
   LocationData? getCurrentLocation;
   LatLng? filterLocation;
   String failureMessegae = "";
-  bool isCurrent=false;
-  TextEditingController searchController=TextEditingController();
+  bool isCurrent = false;
+  int index=0;
+  TextEditingController searchController = TextEditingController();
   Future<void> getServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
 
@@ -58,6 +61,14 @@ class ServiceCubit extends Cubit<ServiceStates> {
       // emit(CountryCategoryError(failure.message)),
     }, (categories) {
       categoriesList = categories;
+      // for(int i=0;i<categoriesList!.length;i++){
+      //   var chid=categoriesList?[i].children;
+      //   for(int j=0;j<chid!.length;i++){
+      //     childCategoryList?[i].add(chid[j]);
+      //   }
+      // }
+      // }
+      // print('the final list is now of child ############################  ${childCategoryList}');
       // emit(CountryCategorySuccess());
     });
   }
@@ -81,7 +92,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
     await getCountries();
     await getCategories();
     if (categoriesList != null && countriesList != null) {
-     await getCurrentLocationFilter();
+      await getCurrentLocationFilter();
       emit(CountryCategorySuccess());
     } else {
       emit(CountryCategoryError(failureMessegae));
@@ -98,8 +109,9 @@ class ServiceCubit extends Cubit<ServiceStates> {
     );
   }
 
-  void selectedCategoryService(Categories category) {
-    selectedCategoryId = category.id;
+  void selectedCategoryService(int?  categoryId) {
+    selectedCategoryId = categoryId;
+    
     emit(SelectedCategoryServiceState());
   }
 
@@ -134,11 +146,12 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
   void distanceSelect(double value) {
     selectedDistance = value;
-   
+
     emit(DistanceSelectUpdate());
   }
-  void chooseCurrentLocation(bool value){
-     isCurrent=value;
-     emit(IsCurrentLocation());     
+
+  void chooseCurrentLocation(bool value) {
+    isCurrent = value;
+    emit(IsCurrentLocation());
   }
 }

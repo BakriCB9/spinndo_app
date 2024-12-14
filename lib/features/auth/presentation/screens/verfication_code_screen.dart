@@ -25,7 +25,9 @@ class VerficationCodeScreen extends StatelessWidget {
 
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
-  final _authCubit = serviceLocator.get<AuthCubit>()..timer?.cancel()..verifyCodeTime();
+  final _authCubit = serviceLocator.get<AuthCubit>()
+    ..timer?.cancel()
+    ..verifyCodeTime();
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;

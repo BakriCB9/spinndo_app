@@ -72,7 +72,6 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           );
         } else if (state is GetProviderSuccess) {
           return ProviderProfileScreen(providerProfile: state.provider);
-
         } else if (state is GetClientSuccess) {
           return ClientProfileScreen(clientProfile: state.client);
         } else {

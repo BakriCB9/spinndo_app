@@ -18,26 +18,38 @@ class CustomDayActive extends StatelessWidget {
   final int userId;
   final int issAprrovid;
   final List<ProviderPriofileWorkingday> listOfworkday;
-  const CustomDayActive({required this.listOfworkday,required this.userId, required this.issAprrovid,super.key});
+  const CustomDayActive(
+      {required this.listOfworkday,
+      required this.userId,
+      required this.issAprrovid,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
     //final _authCubit = serviceLocator.get<AuthCubit>();
-    final myId=sharedPref.getInt(CacheConstant.userId);
+    final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Active Days', style: Theme.of(context).textTheme.labelLarge),
-          myId==userId ? IconButton(
-                onPressed:issAprrovid==1? () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WorkingSchedulePage()));
-                }:(){
-                  UIUtils.showMessage("You Have to wait to Accept your Informations");
-                },
-                icon: Icon(Icons.edit_calendar_outlined,color: Theme.of(context).primaryColorLight,)):const  SizedBox()
+            myId == userId
+                ? IconButton(
+                    onPressed: issAprrovid == 1
+                        ? () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => WorkingSchedulePage()));
+                          }
+                        : () {
+                            UIUtils.showMessage(
+                                "You Have to wait to Accept your Informations");
+                          },
+                    icon: Icon(
+                      Icons.edit_calendar_outlined,
+                      color: Theme.of(context).primaryColorLight,
+                    ))
+                : const SizedBox()
           ],
         ),
         Column(
@@ -63,7 +75,7 @@ class CustomDayActive extends StatelessWidget {
                             children: [
                               Expanded(
                                   child: BoxFromDateToDate(
-                                time: 'From 9:00 Am',
+                                time: 'From ${e.start} Am',
                                 type: 1,
                               )),
                               SizedBox(
@@ -71,7 +83,7 @@ class CustomDayActive extends StatelessWidget {
                               ),
                               Expanded(
                                   child: BoxFromDateToDate(
-                                time: 'To 6:00 Pm',
+                                time: 'To ${e.end} Pm',
                                 type: 2,
                               ))
                             ],

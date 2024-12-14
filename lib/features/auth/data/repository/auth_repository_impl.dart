@@ -35,8 +35,9 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveUserId(response.data!.id);
       await _authLocalDataSource.saveUserRole(response.data!.role);
       await _authLocalDataSource.saveUserEmail(requestData.email);
-      await _authLocalDataSource.saveUserName("${response.data!.firstName} ${response.data!.lastName}");
-
+      await _authLocalDataSource.saveUserName(
+          "${response.data!.firstName} ${response.data!.lastName}");
+      
       await _authLocalDataSource.saveUserUnCompliteAccount(
         requestData.email,
       );

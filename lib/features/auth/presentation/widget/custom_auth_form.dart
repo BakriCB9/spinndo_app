@@ -44,11 +44,17 @@ class CustomAuthForm extends StatelessWidget {
           : null,
       child: Scaffold(
         appBar: AppBar(
-
           actions: [
-            Navigator.of(context).canPop()? IconButton(onPressed: () {
-              Navigator.of(context).pop();
-            }, icon: Icon(Icons.arrow_back,size: 0,)):SizedBox(),
+            Navigator.of(context).canPop()
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      size: 0,
+                    ))
+                : SizedBox(),
             Transform.scale(
               scale: 0.8,
               child: Switch(
@@ -107,17 +113,19 @@ class CustomAuthForm extends StatelessWidget {
             ),
             isGuest
                 ? Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        ServiceScreen.routeName,
-                      );
-                    },
-                    child: Text(localization.guest,
-                        style: Theme.of(context).textTheme.titleSmall),
-                  ),
-                )
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: InkWell(
+                      onTap: () {
+                        _authCubit.emailController.clear();
+                        _authCubit.passwordController.clear();
+                        Navigator.of(context).pushNamed(
+                          ServiceScreen.routeName,
+                        );
+                      },
+                      child: Text(localization.guest,
+                          style: Theme.of(context).textTheme.titleSmall),
+                    ),
+                  )
                 : const SizedBox(),
           ],
         ),

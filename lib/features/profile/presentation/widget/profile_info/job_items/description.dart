@@ -14,15 +14,14 @@ class CustomDescription extends StatelessWidget {
   final String serviceName;
   final String description;
   final int userId;
-  final int?isApprovid;
+  final int? isApprovid;
   final String cityName;
   const CustomDescription(
-
       {required this.categoryName,
-       required this.userId,
-        this.isApprovid,
-       required this.cityName,
-        required this.serviceName,
+      required this.userId,
+      this.isApprovid,
+      required this.cityName,
+      required this.serviceName,
       required this.description,
       super.key});
 
@@ -30,7 +29,7 @@ class CustomDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     print('the value of isAprrovid is $isApprovid');
     //final _authCubit = serviceLocator.get<AuthCubit>();
-   final myId =sharedPref.getInt(CacheConstant.userId);
+    final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,14 +37,27 @@ class CustomDescription extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Job Details', style: Theme.of(context).textTheme.labelLarge),
-          userId==myId? IconButton(
-                onPressed:isApprovid==0? () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>  EditJobDetails(locationName:cityName,categoryName: categoryName,description: description,serviceName: serviceName,)));
-                }:(){
-                  UIUtils.showMessage('You Have to wait to Accept Your Information');
-                },
-                icon:  Icon( Icons.edit,color: isApprovid==1?Colors.yellow:Colors.grey,)):const SizedBox()
+            userId == myId
+                ? IconButton(
+                    onPressed: isApprovid == 0
+                        ? () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditJobDetails(
+                                      locationName: cityName,
+                                      categoryName: categoryName,
+                                      description: description,
+                                      serviceName: serviceName,
+                                    )));
+                          }
+                        : () {
+                            UIUtils.showMessage(
+                                'You Have to wait to Accept Your Information');
+                          },
+                    icon: Icon(
+                      Icons.edit,
+                      color: isApprovid == 1 ? Colors.yellow : Colors.grey,
+                    ))
+                : const SizedBox()
           ],
         ),
         InfoDetails(

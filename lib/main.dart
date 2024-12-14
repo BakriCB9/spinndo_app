@@ -33,10 +33,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.web,
- // options:  FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
-  );
-Fcm.init();
+      // options: DefaultFirebaseOptions.web,
+      // options:  FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
+      );
+  Fcm.init();
   sharedPref = await SharedPreferences.getInstance();
   await ScreenUtil.ensureScreenSize();
 

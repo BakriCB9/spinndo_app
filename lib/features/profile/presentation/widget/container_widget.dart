@@ -12,7 +12,11 @@ class CustomContainer extends StatelessWidget {
     return Container(
         width: width,
         decoration: BoxDecoration(
-            image: DecorationImage(image:image==null? AssetImage('asset/images/aaaa.png'):NetworkImage(image!), fit: BoxFit.cover),
+            image: DecorationImage(
+                image: image == null
+                    ? AssetImage('asset/images/aaaa.png')
+                    : NetworkImage(image!),
+                fit: BoxFit.cover),
             shape: shape),
         child: null);
   }

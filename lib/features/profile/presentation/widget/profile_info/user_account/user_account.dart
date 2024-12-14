@@ -11,13 +11,13 @@ class UserAccount extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String email;
-  final  int? isApprovid;
- final  String typeAccount;
- final int? userId;
+  final int? isApprovid;
+  final String typeAccount;
+  final int? userId;
   const UserAccount({
-     this.userId,
+    this.userId,
     required this.typeAccount,
-     this.isApprovid,
+    this.isApprovid,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -26,26 +26,46 @@ class UserAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final  myId= sharedPref.getInt(CacheConstant.userId);
+    final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Account', style: Theme.of(context).textTheme.labelLarge),
-            typeAccount=='Client'?IconButton(onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => EditUserAccountScreen(email:email ,firstName:firstName ,lastName:lastName ,)));
-            }, icon:const Icon(Icons.edit,color: Colors.yellow,)):
-            userId==myId?   IconButton(
-
-                onPressed: isApprovid==1? () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditUserAccountScreen(email:email ,firstName:firstName ,lastName:lastName)));
-                }:(){
-                  UIUtils.showMessage("You have to wait to Accept Your Informations");
-    },
-                icon:  Icon(Icons.edit,color:isApprovid==1?Colors.yellow:Colors.grey,)):const  SizedBox()
+            typeAccount == 'Client'
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditUserAccountScreen(
+                                email: email,
+                                firstName: firstName,
+                                lastName: lastName,
+                              )));
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.yellow,
+                    ))
+                : userId == myId
+                    ? IconButton(
+                        onPressed: isApprovid == 1
+                            ? () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => EditUserAccountScreen(
+                                        email: email,
+                                        firstName: firstName,
+                                        lastName: lastName)));
+                              }
+                            : () {
+                                UIUtils.showMessage(
+                                    "You have to wait to Accept Your Informations");
+                              },
+                        icon: Icon(
+                          Icons.edit,
+                          color: isApprovid == 1 ? Colors.yellow : Colors.grey,
+                        ))
+                    : const SizedBox()
           ],
         ),
         InfoDetails(

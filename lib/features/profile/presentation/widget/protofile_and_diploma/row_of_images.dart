@@ -17,27 +17,41 @@ class RowOfImages extends StatelessWidget {
   ///here i have to take list of images for protofile or diploma
   @override
   Widget build(BuildContext context) {
+    print(
+        'the image is of provider is ${moreImage![0].path} and seeeeeco is ${moreImage![1].path}');
     return typeSelect == 2
-        ?
-    moreImage!.isEmpty?  SizedBox(
-        height: 350.w,
-        width: 350.w,
-        child: Center(child: Text('No Photo Uploaded Yet ',style: Theme.of(context).textTheme.bodySmall,),)):
-    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Expanded(
-                child: moreImage![0].path == null
-                    ? const SizedBox()
-                    : CashImage(path: moreImage![0].path!)),
-            SizedBox(
-              width: 20.w,
-            ),
-            Expanded(
-                child: moreImage![1].path == null
-                    ? const SizedBox()
-                    : CashImage(path: moreImage![1].path!))
-          ]
-            )
-        : imagePic==null?SizedBox(child: Center(child:  Text('No Photo Uploaded Yet ',style: Theme.of(context).textTheme.bodySmall,))) :Align(
-            alignment: Alignment.topLeft, child: CashImage(path: imagePic!));
+        ? moreImage!.isEmpty
+            ? SizedBox(
+                height: 350.w,
+                width: 350.w,
+                child: Center(
+                  child: Text(
+                    'No Photo Uploaded Yet ',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ))
+            : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Expanded(
+                    child: moreImage![0].path == null
+                        ? const SizedBox()
+                        : CashImage(path: moreImage![0].path!)),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Expanded(
+                    child: moreImage![1].path == null
+                        ? const SizedBox()
+                        : CashImage(path: moreImage![1].path!))
+              ])
+        : imagePic == null
+            ? SizedBox(
+                child: Center(
+                    child: Text(
+                'No Photo Uploaded Yet ',
+                style: Theme.of(context).textTheme.bodySmall,
+              )))
+            : Align(
+                alignment: Alignment.topLeft,
+                child: CashImage(path: imagePic!));
   }
 }

@@ -100,7 +100,8 @@ class SignInScreen extends StatelessWidget {
                 UIUtils.showLoading(context);
               } else if (state is LoginSuccess) {
                 UIUtils.hideLoading(context);
-                Navigator.of(context).pushNamed(ServiceScreen.routeName);
+                Navigator.of(context)
+                    .pushReplacementNamed(ServiceScreen.routeName);
               } else if (state is LoginError) {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.message);
@@ -128,7 +129,8 @@ class SignInScreen extends StatelessWidget {
               onTap: () {
                 _authCubit.emailController.clear();
                 _authCubit.passwordController.clear();
-                Navigator.of(context).pushReplacementNamed(SignUpScreen.routeName);
+                Navigator.of(context)
+                    .pushReplacementNamed(SignUpScreen.routeName);
               },
               child: Text(localization.createNewAccount,
                   style: Theme.of(context).textTheme.titleMedium),

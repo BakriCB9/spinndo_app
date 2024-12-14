@@ -11,17 +11,17 @@ class Services {
   final dynamic providerImage;
   final double? distance;
 
-  Services(
-      {required this.id,
-      required this.providerId,
-      required this.name,
-      required this.description,
-      required this.website,
-      required this.longitude,
-      required this.latitude,
-      required this.categoryName,
-      required this.providerName,
-      required this.providerImage,
-      required this.distance,
-      });
+  Services({
+    required this.id,
+    required this.providerId,
+    required this.name,
+    required this.description,
+    required this.website,
+    required this.longitude,
+    required this.latitude,
+    required this.categoryName,
+    required this.providerName,
+    required this.providerImage,
+    required this.distance,
+  });
 }

@@ -35,10 +35,11 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
               color: Colors.white.withOpacity(0.1),
             ),
       child: CustomScrollView(
-       // controller: _control,
+        // controller: _control,
         slivers: [
           SliverPersistentHeader(
-            delegate: SliverPersistentDelegate(size,widget.providerProfile.imagePath),
+            delegate: SliverPersistentDelegate(
+                size, widget.providerProfile.imagePath),
             pinned: true,
           ),
           SliverFillRemaining(
@@ -70,15 +71,16 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     firstName: widget.providerProfile.firstName!,
                     lastName: widget.providerProfile.lastName!,
                     email: widget.providerProfile.email!,
-
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
-                    cityName: widget.providerProfile.details?.city.toString()??'Alep',
+                    cityName: widget.providerProfile.details?.city.toString() ??
+                        'Alep',
                     isApprovid: widget.providerProfile.details!.isApproved,
                     userId: widget.providerProfile.id!,
-                    categoryName: widget.providerProfile.details?.category?.name ??
-                        "No category",
+                    categoryName:
+                        widget.providerProfile.details?.category?.name ??
+                            "No category",
                     description: widget.providerProfile.details?.description ??
                         "No description",
                     serviceName:
@@ -87,7 +89,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 10.h),
                   CustomDayActive(
                     userId: widget.providerProfile.id!,
-                    issAprrovid:widget.providerProfile.details!.isApproved ,
+                    issAprrovid: widget.providerProfile.details!.isApproved,
                     listOfworkday: widget.providerProfile.details!.workingDays!,
                   ),
                   SizedBox(height: 30.h),

@@ -14,7 +14,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final Size size;
   final String? image;
 
-  SliverPersistentDelegate(this.size,this.image);
+  SliverPersistentDelegate(this.size, this.image);
 
   @override
   Widget build(
@@ -67,7 +67,6 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                     Navigator.pop(context);
                   },
                   icon: Icons.arrow_back)),
-
           CustomPosition(
             top: isImageBig
                 ? max(currentPositionforText, topSPaceForImage)

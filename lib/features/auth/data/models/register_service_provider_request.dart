@@ -43,17 +43,15 @@ class RegisterServiceProviderRequest {
         days.add(listOfDay[i].toJson());
       }
     }
-    print('the day %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ${days}');
+     String firsNametLetter = firstName[0].toUpperCase();
+          String remainingNameText = firstName.substring(1);
+          String firsServiceNametLetter = nameService[0].toUpperCase();
+          String remainingServiceNameText = nameService.substring(1);
     // Convert certificate and images to MultipartFile
     final certificateFile = await MultipartFile.fromFile(
       certificate.path,
       filename: certificate.path.split('/').last,
     );
-
-    // List<MultipartFile> multiOfImages = images.map((e) async {
-    //   return await MultipartFile.fromFile(e.path,
-    //       filename: e.path.split('/').last);
-    // }).toList();
 
     List<MultipartFile> imageFiles = await Future.wait(
       images.map((image) async {
@@ -71,22 +69,20 @@ class RegisterServiceProviderRequest {
       images[1].path,
       filename: images[1].path.split('/').last,
     );
-    print(
-        'the certitifacate is yyyyyyyyyyyyyyyyyyyyyyyyyyyy   ${certificateFile.filename}');
+
     for (int i = 0; i < imageFiles.length; i++) {
       print('the value of first is   ${imageFiles[i].filename}');
     }
-    print(
-        'the file of images is rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr  ${imageFiles}');
+   
     return FormData.fromMap({
-      "first_name": firstName,
+      "first_name": firsNametLetter+remainingNameText,
       "last_name": lastName,
       "email": email,
       "password": password,
       "service[images][1]": imageOne,
       "service[images][0]": imageTwo,
       "service": {
-        "name": nameService,
+        "name": firsServiceNametLetter+remainingServiceNameText,
         "description": descriptionService,
         "category_id": categoryIdService,
         "city_name": cityNameService,

@@ -9,23 +9,30 @@ import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 
 class EditJobDetails extends StatelessWidget {
-final String categoryName;
-final String serviceName;
-final String locationName;
-final String description;
-  const EditJobDetails({required this.categoryName,required this.description, required this.locationName ,required this.serviceName ,super.key});
+  final String categoryName;
+  final String serviceName;
+  final String locationName;
+  final String description;
+  const EditJobDetails(
+      {required this.categoryName,
+      required this.description,
+      required this.locationName,
+      required this.serviceName,
+      super.key});
 
 //final _profileCubit=serviceLocator.get<ProfileCubit>();
   @override
   Widget build(BuildContext context) {
-    final _profileCubit=serviceLocator.get<ProfileCubit>();
-    final _serviceCubit=serviceLocator.get<ServiceCubit>();
-    _profileCubit.descriptionController.text=description;
-    _profileCubit.serviceNameController.text=serviceName;
+    final _profileCubit = serviceLocator.get<ProfileCubit>();
+    final _serviceCubit = serviceLocator.get<ServiceCubit>();
+    _profileCubit.descriptionController.text = description;
+    _profileCubit.serviceNameController.text = serviceName;
 
-    final indexOfMyCurrentCategory=_serviceCubit.categoriesList?.indexWhere((element) {
-     return element.name==categoryName;
-    },);
+    final indexOfMyCurrentCategory = _serviceCubit.categoriesList?.indexWhere(
+      (element) {
+        return element.name == categoryName;
+      },
+    );
     print('ther index is ${indexOfMyCurrentCategory}');
     return Scaffold(
       appBar: AppBar(
@@ -76,22 +83,29 @@ final String description;
             // ),
             // SizedBox(height: 30.h)
 
-            SizedBox(height: 30.h,),
+            SizedBox(
+              height: 30.h,
+            ),
             DropdownButtonFormField(
                 menuMaxHeight: 200,
-                hint: Text(categoryName,style: TextStyle(fontSize: 25.sp),),
+                hint: Text(
+                  categoryName,
+                  style: TextStyle(fontSize: 25.sp),
+                ),
                 //style: TextStyle(fontSize: 30.sp,color: Colors.red),
-                items:_serviceCubit.categoriesList?.map((e){
-              return DropdownMenuItem(value: e.id,child: Text(e.name),);
-            }).toList() , onChanged: (value){
-
-            }),
+                items: _serviceCubit.categoriesList?.map((e) {
+                  return DropdownMenuItem(
+                    value: e.id,
+                    child: Text(e.name),
+                  );
+                }).toList(),
+                onChanged: (value) {}),
             SizedBox(height: 30.h),
 
             TextFormField(
               controller: _profileCubit.serviceNameController,
-              style: TextStyle(color: Colors.black,fontSize: 25.sp),
-              onChanged: (value){
+              style: TextStyle(color: Colors.black, fontSize: 25.sp),
+              onChanged: (value) {
                 // _profileCubit.updateInfo(
                 //     curEmail: email,
                 //     newEmail: _profileCubit.emailEditController.text,
@@ -102,19 +116,17 @@ final String description;
                 // );
               },
               decoration: InputDecoration(
-                  prefixIcon:const Icon(Icons.person),
+                  prefixIcon: const Icon(Icons.person),
                   labelText: 'Title Service',
-                  labelStyle: TextStyle(color: Colors.black,fontSize:20.sp )
-              ),
-
+                  labelStyle: TextStyle(color: Colors.black, fontSize: 20.sp)),
             ),
-            SizedBox(height: 30.h,),
+            SizedBox(
+              height: 30.h,
+            ),
             TextFormField(
-
               controller: _profileCubit.descriptionController,
-              style: TextStyle(color: Colors.black,fontSize: 25.sp),
-              onChanged: (value){
-
+              style: TextStyle(color: Colors.black, fontSize: 25.sp),
+              onChanged: (value) {
                 // _profileCubit.updateInfo(
                 //     curEmail: email,
                 //     newEmail: _profileCubit.emailEditController.text,
@@ -125,19 +137,15 @@ final String description;
                 // );
               },
               decoration: InputDecoration(
-                  prefixIcon:const Icon(Icons.person),
+                  prefixIcon: const Icon(Icons.person),
                   labelText: "Description",
-                  labelStyle: TextStyle(color: Colors.black,fontSize:20.sp )
-              ),
-
+                  labelStyle: TextStyle(color: Colors.black, fontSize: 20.sp)),
             ),
             SizedBox(height: 30.h),
             TextFormField(
-
               controller: _profileCubit.emailEditController,
-              style: TextStyle(color: Colors.black,fontSize: 25.sp),
-              onChanged: (value){
-
+              style: TextStyle(color: Colors.black, fontSize: 25.sp),
+              onChanged: (value) {
                 // _profileCubit.updateInfo(
                 //     curEmail: email,
                 //     newEmail: _profileCubit.emailEditController.text,
@@ -148,29 +156,26 @@ final String description;
                 // );
               },
               decoration: InputDecoration(
-                  prefixIcon:const Icon(Icons.email),
-                  labelText: "Email" ,
-                  labelStyle: TextStyle(color: Colors.black,fontSize:20.sp )
-              ),
-
+                  prefixIcon: const Icon(Icons.email),
+                  labelText: "Email",
+                  labelStyle: TextStyle(color: Colors.black, fontSize: 20.sp)),
             ),
 
-            SizedBox(height: 50.h,),
-            BlocBuilder <ProfileCubit,ProfileStates>(
-                buildWhen: (pre,cur){
-                  if(cur is IsUpdated || cur is IsNotUpdated)return true; return false;
-                },
-                builder:(context,state){
-                  print('the State is ${state}');
+            SizedBox(
+              height: 50.h,
+            ),
+            BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
+              if (cur is IsUpdated || cur is IsNotUpdated) return true;
+              return false;
+            }, builder: (context, state) {
+              print('the State is ${state}');
 
-                  if(state is IsUpdated)
-                    return  ElevatedButton(onPressed: (){}, child:Text('Save') );
-                  else {
-                    return const  SizedBox();
-                  }
-                }
-
-            )
+              if (state is IsUpdated)
+                return ElevatedButton(onPressed: () {}, child: Text('Save'));
+              else {
+                return const SizedBox();
+              }
+            })
           ],
         ),
       )),

@@ -21,17 +21,18 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   late CameraPosition initialCameraPosition;
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
-Set<Marker> markers = {};
+  Set<Marker> markers = {};
   @override
   void initState() {
     initialCameraPosition = CameraPosition(
       target: _serviceCubit.filterLocation!,
-      zoom: 10,
+      zoom: 8,
     );
     // markers.addAll([Marker(markerId: MarkerId('1'),position: LatLng(37.0989075, 36.1721064) ),Marker(markerId: MarkerId('2'),position: LatLng(37.0989105, 36.1721026)),Marker(markerId: MarkerId('3'),position: LatLng(36.297607719898224, 33.50574174037673))]);
-   initMarkers();
-    for(int i=0;i<markerLocationData.length;i++){
-      print('the value of marker is ###########################################  $i   ${markerLocationData[i].latLng}');
+    initMarkers();
+    for (int i = 0; i < markerLocationData.length; i++) {
+      print(
+          'the value of marker is ###########################################  $i   ${markerLocationData[i].latLng}');
     }
     super.initState();
   }
@@ -41,12 +42,14 @@ Set<Marker> markers = {};
     super.dispose();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Google Map",style: Theme.of(context).textTheme.titleLarge,),
+        title: Text(
+          "Google Map",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         backgroundColor: Theme.of(context).primaryColorDark,
       ),
       body: GoogleMap(
@@ -61,11 +64,10 @@ Set<Marker> markers = {};
 
   void initMarkers() {
     //markers.clear();
-  Set<Marker> myMarker = markerLocationData
+    Set<Marker> myMarker = markerLocationData
         .map(
           (e) => Marker(
             icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-
             position: e.latLng,
             infoWindow: InfoWindow(title: e.name),
             markerId: MarkerId(
@@ -74,14 +76,15 @@ Set<Marker> markers = {};
           ),
         )
         .toSet();
-        print('the aux Marker is  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${myMarker.length}');
+    print(
+        'the aux Marker is  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${myMarker.length}');
     markers.addAll(myMarker);
     // setState(() {
-      
+
     // });
 
-      print('the marker main is ########################################    ${markers.length}');
-    
+    print(
+        'the marker main is ########################################    ${markers.length}');
   }
 
 //world view 0 ->3

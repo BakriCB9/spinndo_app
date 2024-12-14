@@ -36,12 +36,9 @@ class ServiceApiDataSource implements ServiceDataSource {
           },
         ),
       );
-      
+
       return GetServicesResponse.fromJson(response.data);
     } catch (exciption) {
-      
-      
-      
       throw RemoteAppException("Failed to get services");
     }
   }

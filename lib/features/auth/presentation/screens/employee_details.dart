@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +30,7 @@ class EmployeeDetails extends StatelessWidget {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   List<File>? pickedImages = [];
-
+  int? indexChildCategory;
   final List<String> daysOfWeek = [
     'Monday',
     'Tuesday',
@@ -55,49 +56,114 @@ class EmployeeDetails extends StatelessWidget {
             BlocBuilder<AuthCubit, AuthState>(
               bloc: _authCubit,
               builder: (context, state) {
-                return DropdownButtonFormField<Categories>(
-                  dropdownColor: Theme.of(context).primaryColorDark,
-                  menuMaxHeight: 200,
-                  isExpanded: false,
-                  validator: (value) {
-                    if (value == null) {
-                      return "please select category";
-                    }
-                    return null;
-                  },
-                  hint: Padding(
-                    padding: EdgeInsets.only(left: 12.w),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.category,
-                        ),
-                        SizedBox(
-                          width: 24.w,
-                        ),
-                        Text("select category",
-                            style: Theme.of(context).textTheme.displayMedium),
-                      ],
-                    ),
-                  ),
-                  decoration:
-                      const InputDecoration(errorBorder: InputBorder.none),
-                  items: _authCubit.categoriesList!
-                      .map((e) => DropdownMenuItem<Categories>(
-                            value: e,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                              child: Text(
-                                e.name,
-                                style:
-                                    Theme.of(context).textTheme.displayMedium,
-                              ),
+                return Column(
+                  children: [
+                    DropdownButtonFormField<Categories>(
+                      dropdownColor: Theme.of(context).primaryColorDark,
+                      menuMaxHeight: 200,
+                      isExpanded: false,
+                      validator: (value) {
+                        if (value == null) {
+                          return "please select category";
+                        }
+                        return null;
+                      },
+                      hint: Padding(
+                        padding: EdgeInsets.only(left: 12.w),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.category,
                             ),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    _authCubit.selectedCategoryEvent(value!);
-                  },
+                            SizedBox(
+                              width: 24.w,
+                            ),
+                            Text("select category",
+                                style:
+                                    Theme.of(context).textTheme.displayMedium),
+                          ],
+                        ),
+                      ),
+                      decoration:
+                          const InputDecoration(errorBorder: InputBorder.none),
+                      items: _authCubit.categoriesList!
+                          .map((e) => DropdownMenuItem<Categories>(
+                                value: e,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.0.w),
+                                  child: Text(
+                                    e.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        _authCubit.selectedCategoryEvent(value!.id);
+                        int val = int.parse(_authCubit.selectedCategoryId!);
+                        indexChildCategory =
+                            _authCubit.categoriesList!.indexWhere(
+                          (element) => element.id == val,
+                        );
+                        _authCubit.selectedCategoryId=_authCubit.categoriesList![indexChildCategory!].children[0].id.toString();
+                      },
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    DropdownButtonFormField<ChildCategory>(
+                      dropdownColor: Theme.of(context).primaryColorDark,
+                      menuMaxHeight: 200,
+                      isExpanded: false,
+                      validator: (value) {
+                        if (value == null) {
+                          return "please select category";
+                        }
+                        return null;
+                      },
+                      // hint: Padding(
+                      //   padding: EdgeInsets.only(left: 12.w),
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(
+                      //         Icons.category,
+                      //       ),
+                      //       SizedBox(
+                      //         width: 24.w,
+                      //       ),
+                      //       Text("select category",
+                      //           style: Theme.of(context).textTheme.displayMedium),
+                      //     ],
+                      //   ),
+                      // ),
+                      decoration:
+                          const InputDecoration(errorBorder: InputBorder.none),
+                      items: indexChildCategory != null
+                          ? _authCubit
+                              .categoriesList![indexChildCategory!].children
+                              .map((e) => DropdownMenuItem<ChildCategory>(
+                                    value: e,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.0.w),
+                                      child: Text(
+                                        e.name!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium,
+                                      ),
+                                    ),
+                                  ))
+                              .toList()
+                          : null,
+                      onChanged: (value) {
+                        _authCubit.selectedCategoryEvent(value!.id!);
+                      },
+                    ),
+                  ],
                 );
               },
             ),

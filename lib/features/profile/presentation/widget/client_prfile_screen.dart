@@ -20,22 +20,22 @@ final ScrollController _control = ScrollController();
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   @override
-
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-      ),
+              color: Colors.white.withOpacity(0.1),
+            ),
       child: CustomScrollView(
         controller: _control,
         slivers: [
           SliverPersistentHeader(
-            delegate: SliverPersistentDelegate(size,widget.clientProfile.imagePath),
+            delegate:
+                SliverPersistentDelegate(size, widget.clientProfile.imagePath),
             pinned: true,
           ),
           SliverFillRemaining(
@@ -47,14 +47,11 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                 children: [
                   SizedBox(height: 15.h),
                   UserAccount(
-
                     typeAccount: 'Client',
-
                     firstName: widget.clientProfile.firstName,
                     lastName: widget.clientProfile.lastName,
                     email: widget.clientProfile.email,
                   ),
-
                 ],
               ),
             ),

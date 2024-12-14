@@ -1,4 +1,6 @@
 import 'package:app/core/widgets/custom_text_form_field.dart';
+import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +19,7 @@ import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:app/features/service/presentation/screens/filter_result_screen.dart';
 import 'package:app/main.dart';
+import 'package:get_it/get_it.dart';
 
 class ServiceScreen extends StatefulWidget {
   static const String routeName = '/service';
@@ -29,7 +32,9 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
-
+  int indexCategory = 0;
+  List<ChildCategory>lisChild=[];
+  bool val=false;
   @override
   void initState() {
     _serviceCubit.getCountriesAndCategories();
@@ -59,7 +64,51 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         sharedPref.getString(CacheConstant.tokenKey);
 
                     if (token == null) {
-                      UIUtils.showMessage("You have to Sign in first");
+                      // UIUtils.showMessage("You have to Sign in first");
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorDark,
+                              title: Text(
+                                "Note",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                        fontSize: 36.sp, color: Colors.red),
+                              ),
+                              content: Text(
+                                'You don\'t have account you have to sign in',
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                          fontSize: 25.sp, color: Colors.red),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      //Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
+                                    },
+                                    child: Text(
+                                      'Ok',
+                                      style: TextStyle(
+                                          fontSize: 25.sp, color: Colors.green),
+                                    )),
+                              ],
+                            );
+                          });
+                      // showdialog();
                     } else {
                       // Open the drawer
                       Scaffold.of(context).openDrawer();
@@ -161,6 +210,25 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text(
+                                'Search by useing service or provider name',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(fontSize: 36.sp),
+                                textAlign: TextAlign.left,
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              CustomTextFormField(
+                                controller: _serviceCubit.searchController,
+                                hintText: 'service or provider name',
+                                padding: 20.w,
+                              ),
+                              SizedBox(
+                                height: 30.h,
+                              ),
                               BlocBuilder<ServiceCubit, ServiceStates>(
                                 bloc: _serviceCubit,
                                 buildWhen: (previous, current) {
@@ -525,50 +593,95 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return false;
                                 },
                                 builder: (context, state) {
-                                  return DropdownButtonFormField<Categories>(
-                                    dropdownColor:
-                                        Theme.of(context).primaryColorDark,
-                                    hint: Text("Cateory",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium),
-                                    menuMaxHeight: 200,
-                                    decoration: const InputDecoration(
-                                        errorBorder: InputBorder.none),
-                                    items: _serviceCubit.categoriesList!
-                                        .map(
-                                            (e) => DropdownMenuItem<Categories>(
+                                  return Column(
+                                    children: [
+                                      DropdownButtonFormField<Categories>(
+                                        dropdownColor:
+                                            Theme.of(context).primaryColorDark,
+                                        hint: Text("Cateory",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
+                                        menuMaxHeight: 200,
+                                        decoration: const InputDecoration(
+                                            errorBorder: InputBorder.none),
+                                        items: _serviceCubit.categoriesList!
+                                            .map((e) =>
+                                                DropdownMenuItem<Categories>(
                                                   value: e,
                                                   child: Text(e.name,
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .displayMedium),
                                                 ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      _serviceCubit
-                                          .selectedCategoryService(value!);
-                                    },
+                                            .toList(),
+                                        onChanged: (value) {
+                                         val=false;
+                                          _serviceCubit.selectedCategoryService(
+                                              value!.id,);
+                                              
+                                          indexCategory = _serviceCubit
+                                              .categoriesList!
+                                              .indexWhere(
+                                            (element) =>
+                                                element.id ==
+                                                _serviceCubit
+                                                    .selectedCategoryId!,
+                                          );
+                                         
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      GestureDetector(
+                                        onTap: (){
+                                          val=true;
+                                          _serviceCubit
+                                                .selectedCategoryService(_serviceCubit
+                                              .categoriesList![indexCategory]
+                                              .children[0].id);
+                                        },
+                                        child: DropdownButtonFormField<ChildCategory>(
+                                         
+                                         value:_serviceCubit.selectedCategoryId!=null? _serviceCubit
+                                              .categoriesList![indexCategory]
+                                              .children[0]:null,
+                                              style:TextStyle(color: Colors.grey,fontSize: 25.sp) ,
+                                          dropdownColor:
+                                              Theme.of(context).primaryColorDark,
+                                          // hint: Text('kk',
+                                          //     style: Theme.of(context)
+                                          //         .textTheme
+                                          //         .displayMedium),
+                                          menuMaxHeight: 200,
+                                          decoration: const InputDecoration(
+                                              errorBorder: InputBorder.none),
+                                          items:val==true&&_serviceCubit.selectedCategoryId!=null? _serviceCubit
+                                              .categoriesList![indexCategory]
+                                              .children
+                                              .map((e) =>
+                                                  DropdownMenuItem<ChildCategory>(
+                                                    value: e,
+                                                    child: Text(e.name!,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .displayMedium),
+                                                  ))
+                                              .toList():null,
+                                          onChanged: (value) {
+                                           // val=value;
+                                            _serviceCubit
+                                                .selectedCategoryService(value!.id);
+                                            
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
                               ),
-                              SizedBox(height: 30.h),
-                              Text(
-                                'Search by useing service or provider name',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(fontSize: 36.sp),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              CustomTextFormField(
-                                controller: _serviceCubit.searchController,
-                                hintText: 'service or provider name',
-                                padding: 20.w,
-                              ),
+                              
                               SizedBox(height: 80.h),
                               ElevatedButton(
                                 onPressed: () {
@@ -599,13 +712,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           .getCurrentLocation?.longitude,
                                       radius: _serviceCubit.selectedDistance
                                           ?.toInt(),
-                                      search: _serviceCubit
+                                      search: _serviceCubit   
                                               .searchController.text.isEmpty
                                           ? null
                                           : _serviceCubit
                                               .searchController.text));
                                   print(
-                                      'the value of distance is ${_serviceCubit.selectedDistance}');
+                                      'the value of distance is ${_serviceCubit.searchController.text}');
                                 },
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size(double.infinity, 48),
@@ -957,8 +1070,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 ))
                                         .toList(),
                                     onChanged: (value) {
-                                      _serviceCubit
-                                          .selectedCategoryService(value!);
+                                      _serviceCubit.selectedCategoryService(
+                                          value!.id);
                                     },
                                   );
                                 },

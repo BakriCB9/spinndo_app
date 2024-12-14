@@ -20,12 +20,14 @@ class GetServicesRequest {
     final Map<String, dynamic> data = {};
     if (latitude != null) data['latitude'] = latitude;
     if (longitude != null) data['longitude'] = longitude;
-    if (radius != null) data['radius'] = radius ;
+    if (radius != null) data['radius'] = radius;
     if (categoryId != null) data['category_id'] = categoryId;
     if (countryId != null) data['country_id'] = countryId;
     if (cityId != null) data['city_id'] = cityId;
     if (search != null) data['search'] = search;
-     print('the value of data is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% $data');
+    print('the value of data is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% $data');
+    
+    
     return data;
   }
 }

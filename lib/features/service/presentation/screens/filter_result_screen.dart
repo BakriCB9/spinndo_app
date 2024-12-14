@@ -38,16 +38,12 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
   @override
   Widget build(BuildContext context) {
     markerLocationData.clear();
-    markerLocationData.add(GoogleMapMarker(
-BitmapDescriptor.hueGreen,
+    markerLocationData.add(GoogleMapMarker(BitmapDescriptor.hueGreen,
         id: 5,
         name: "Current Location",
         latLng: LatLng(_serviceCubit.getCurrentLocation!.latitude!,
             _serviceCubit.getCurrentLocation!.longitude!)));
-    for (int i = 0; i < widget.services.length; i++) {
-      print(
-          'the value of location is $i    ${widget.services[i].latitude} and ${widget.services[i].longitude}');
-    }
+
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
@@ -116,7 +112,9 @@ BitmapDescriptor.hueGreen,
                           widget.services.sort(
                             (a, b) => a.distance!.compareTo(b.distance!),
                           );
-                          setState(() {});
+                          setState(() {
+                            
+                          });
                         },
                       )
                     ]),
@@ -169,8 +167,14 @@ BitmapDescriptor.hueGreen,
                             service.providerImage != null
                                 ? CircleAvatar(
                                     radius: 60.r,
-                                    backgroundImage:
-                                        NetworkImage(service.providerImage!),
+                                    // backgroundImage:
+                                    //     NetworkImage(service.providerImage!),
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(60.r),
+                                        child: CashImage(
+                                          path: service.providerImage,
+                                        )),
                                   )
                                 : CircleAvatar(
                                     radius: 60.r,
@@ -199,17 +203,31 @@ BitmapDescriptor.hueGreen,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Expanded(
-                                          child: Text(
-                                        service.distance != null
-                                            ? '${service.distance!.toStringAsFixed(2)} km'
-                                            : '',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                        textAlign: TextAlign.end,
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 12.r,
+                                            backgroundColor:
+                                                ColorManager.primary,
+                                          ),
+                                          SizedBox(
+                                            width: 10.w,
+                                          ),
+                                          Text(
+                                            service.distance != null
+                                                ? '${service.distance!.toStringAsFixed(2)} km'
+                                                : '',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall!
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight),
+                                            textAlign: TextAlign.end,
+                                          ),
+                                        ],
                                       ))
                                     ],
                                   ),
@@ -229,7 +247,7 @@ BitmapDescriptor.hueGreen,
                                         .textTheme
                                         .labelMedium!
                                         .copyWith(fontSize: 24.sp),
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   SizedBox(height: 8.h),

@@ -17,7 +17,11 @@ class CustomDiplomaAndProtofile extends StatefulWidget {
   final int isApprovid;
   final List<ProviderProfileImage> images;
   const CustomDiplomaAndProtofile(
-      {required this.images, required this.imageCertificate,required this.userId,required this.isApprovid  ,super.key});
+      {required this.images,
+      required this.imageCertificate,
+      required this.userId,
+      required this.isApprovid,
+      super.key});
 
   @override
   State<CustomDiplomaAndProtofile> createState() =>
@@ -29,21 +33,32 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   int typeSelect = 1;
   @override
   Widget build(BuildContext context) {
-    final myId=sharedPref.getInt(CacheConstant.userId);
+    print(
+        'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
+    final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Images', style: Theme.of(context).textTheme.labelLarge),
-         myId==widget.userId?IconButton(
-                onPressed:widget.isApprovid==1? () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditImageScreen()));
-                }:(){
-                  UIUtils.showMessage('You Have to wait to Accept your Informations');
-                },
-                icon: Icon(Icons.edit,color:widget.isApprovid==1? Colors.yellow:Colors.grey,)):const SizedBox()
+            myId == widget.userId
+                ? IconButton(
+                    onPressed: widget.isApprovid == 1
+                        ? () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditImageScreen()));
+                          }
+                        : () {
+                            UIUtils.showMessage(
+                                'You Have to wait to Accept your Informations');
+                          },
+                    icon: Icon(
+                      Icons.edit,
+                      color:
+                          widget.isApprovid == 1 ? Colors.yellow : Colors.grey,
+                    ))
+                : const SizedBox()
           ],
         ),
         SizedBox(

@@ -229,7 +229,7 @@ class _DeplomaProtofileImageScreenState
                         );
                         return;
                       }
-                      print('the day %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ${_authCubit.dateSelect}');
+
                       _authCubit.registerService(RegisterServiceProviderRequest(
                           firstName: _authCubit.firstNameContoller.text,
                           lastName: _authCubit.lastNameContoller.text,
@@ -243,11 +243,11 @@ class _DeplomaProtofileImageScreenState
                           cityNameService: _authCubit.cityName!,
                           websiteService: _authCubit.website,
                           certificate: _authCubit.certificateImage!,
-                          longitudeService: _authCubit.isCurrent
+                          latitudeService: _authCubit.isCurrent
                               ? _authCubit.currentLocation!.latitude.toString()
                               : _authCubit.selectedLocation!.latitude
                                   .toString(),
-                          latitudeService: _authCubit.isCurrent
+                          longitudeService: _authCubit.isCurrent
                               ? _authCubit.currentLocation!.longitude.toString()
                               : _authCubit.selectedLocation!.longitude
                                   .toString(),
