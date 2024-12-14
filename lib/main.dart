@@ -37,10 +37,10 @@ Future<void> main() async {
   await configureDependencies();
 
   await Firebase.initializeApp(
-   options:    DefaultFirebaseOptions.currentPlatform,
-      // options: DefaultFirebaseOptions.web,
-      // options:  FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
-      );
+    options: DefaultFirebaseOptions.currentPlatform,
+    // options: DefaultFirebaseOptions.web,
+    // options:  FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
+  );
   Fcm.init();
   sharedPref = await SharedPreferences.getInstance();
   await ScreenUtil.ensureScreenSize();
