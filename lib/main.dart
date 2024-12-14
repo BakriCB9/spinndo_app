@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:app/core/utils/fcm.dart';
+import 'package:app/default_firebase_options.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +35,9 @@ late final SharedPreferences sharedPref;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
+
   await Firebase.initializeApp(
+   options:    DefaultFirebaseOptions.currentPlatform,
       // options: DefaultFirebaseOptions.web,
       // options:  FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)
       );

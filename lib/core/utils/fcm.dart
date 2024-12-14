@@ -1,3 +1,4 @@
+import 'package:app/core/const_variable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -13,7 +14,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class Fcm {
   static Future<void> init() async {
     await requestPermission();
-    await getToken();
+   fcmToken= await getToken();
     await backGroundFcm();
     await forGroundFcm();
   }
@@ -35,7 +36,7 @@ class Fcm {
 
   static Future<String?> getToken() async {
 // use the returned token to send messages to users from your custom server
-    String? token = await messaging.getToken();
+    String? token = await messaging.getToken( );
     print("dsasdasdsadsdsaasd");
     print(token);
     return token;
@@ -76,7 +77,7 @@ class Fcm {
                 channel.id,
                 channel.name,
                 channelDescription: channel.description,
-                icon: "ic_launcher.png",
+                icon: 'ic_launcher',
                 // other properties...
               ),
             ));

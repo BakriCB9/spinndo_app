@@ -7,7 +7,7 @@ List<String> days = [
   'Thursday',
   'Friday'
 ];
-
+ String?fcmToken;
 List<String> listImage = [
   'asset/images/info.png',
   'asset/images/info.png',

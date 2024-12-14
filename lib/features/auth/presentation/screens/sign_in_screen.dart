@@ -1,3 +1,4 @@
+import 'package:app/core/const_variable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -142,7 +143,9 @@ class SignInScreen extends StatelessWidget {
   }
 
   _login() {
+  print('the value of fcm token is &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${fcmToken}');
     _authCubit.login(LoginRequest(
+        fcmToken: fcmToken!,
         email: _authCubit.emailController.text,
         password: _authCubit.passwordController.text));
   }

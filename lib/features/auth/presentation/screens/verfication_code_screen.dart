@@ -1,3 +1,4 @@
+import 'package:app/core/const_variable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -176,6 +177,7 @@ class VerficationCodeScreen extends StatelessWidget {
   _verifyCode() {
     if (formKey.currentState?.validate() == true) {
       _authCubit.verifyCode(VerifyCodeRequest(
+        fcmToken: fcmToken!,
           email: _authCubit.emailController.text,
           code: _authCubit.codeController.text));
     }
