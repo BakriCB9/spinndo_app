@@ -1,3 +1,5 @@
+import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,17 +12,16 @@ import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 class EditUserAccountScreen extends StatelessWidget {
   final String firstName;
   final String lastName;
-  final String email;
+  final String typeAccount;
   const EditUserAccountScreen(
       {required this.firstName,
       required this.lastName,
-      required this.email,
+      required this.typeAccount,
       super.key});
 
   @override
   Widget build(BuildContext context) {
     final _profileCubit = serviceLocator.get<ProfileCubit>();
-    _profileCubit.emailEditController.text = email;
     _profileCubit.firstNameEditController.text = firstName;
     _profileCubit.lastNameEditController.text = lastName;
     final size = MediaQuery.of(context).size;
@@ -110,9 +111,9 @@ class EditUserAccountScreen extends StatelessWidget {
                 controller: _profileCubit.firstNameEditController,
                 style: TextStyle(color: Colors.black, fontSize: 25.sp),
                 onChanged: (value) {
+                 print('');
                   _profileCubit.updateInfo(
-                      curEmail: email,
-                      newEmail: _profileCubit.emailEditController.text,
+
                       curFirst: firstName,
                       newFirst: _profileCubit.firstNameEditController.text,
                       curLast: lastName,
@@ -128,12 +129,12 @@ class EditUserAccountScreen extends StatelessWidget {
                 height: 30.h,
               ),
               TextFormField(
+
                 controller: _profileCubit.lastNameEditController,
                 style: TextStyle(color: Colors.black, fontSize: 25.sp),
                 onChanged: (value) {
                   _profileCubit.updateInfo(
-                      curEmail: email,
-                      newEmail: _profileCubit.emailEditController.text,
+
                       curFirst: firstName,
                       newFirst: _profileCubit.firstNameEditController.text,
                       curLast: lastName,
@@ -146,28 +147,7 @@ class EditUserAccountScreen extends StatelessWidget {
                         TextStyle(color: Colors.black, fontSize: 20.sp)),
               ),
               SizedBox(height: 30.h),
-              TextFormField(
-                controller: _profileCubit.emailEditController,
-                style: TextStyle(color: Colors.black, fontSize: 25.sp),
-                onChanged: (value) {
-                  _profileCubit.updateInfo(
-                      curEmail: email,
-                      newEmail: _profileCubit.emailEditController.text,
-                      curFirst: firstName,
-                      newFirst: _profileCubit.firstNameEditController.text,
-                      curLast: lastName,
-                      newLast: _profileCubit.lastNameEditController.text);
-                },
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.email),
-                    labelText: "Email",
-                    labelStyle:
-                        TextStyle(color: Colors.black, fontSize: 20.sp)),
-              ),
 
-              SizedBox(
-                height: 50.h,
-              ),
               BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
                 if (cur is IsUpdated || cur is IsNotUpdated) return true;
                 return false;
@@ -175,7 +155,35 @@ class EditUserAccountScreen extends StatelessWidget {
                 print('the State is ${state}');
 
                 if (state is IsUpdated)
-                  return ElevatedButton(onPressed: () {}, child: Text('Save'));
+                  return BlocListener<ProfileCubit, ProfileStates>(
+                    listenWhen: (pre,cur){
+                      if(cur is UpdateLoading || cur is UpdateError || cur is UpdateSuccess){
+                        return true;
+                      }
+                      return false;
+                    },
+  listener: (context, state) {
+    if(state is UpdateLoading){
+    UIUtils.showLoading(context);
+    }
+    else if(state is UpdateError){
+    UIUtils.hideLoading(context);
+    UIUtils.showMessage(state.message);
+
+    }
+    else if(state is UpdateSuccess)
+      {
+        UIUtils.hideLoading(context);
+        Navigator.of(context).pop();
+      }
+      },
+  child: ElevatedButton(onPressed: () {
+                    _profileCubit.updateClientProfile(UpdateClientRequest(
+                        firstName:
+                            _profileCubit.firstNameEditController.text,
+                        lastName:_profileCubit.lastNameEditController.text ));
+                  }, child: Text('Save')),
+);
                 else {
                   return const SizedBox();
                 }

@@ -78,13 +78,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
         });
   }
   updateInfo(
-      {required String curEmail,
-      required String newEmail,
+      {
       required String curFirst,
       required String newFirst,
       required String curLast,
       required String newLast}) {
-    if (curEmail == newEmail && curFirst == newFirst && curLast == newLast) {
+    if (curFirst == newFirst && curLast == newLast) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());

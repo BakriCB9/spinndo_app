@@ -38,7 +38,7 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => EditUserAccountScreen(
-                                email: email,
+                                typeAccount: 'Client',
                                 firstName: firstName,
                                 lastName: lastName,
                               )));
@@ -53,7 +53,7 @@ class UserAccount extends StatelessWidget {
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
-                                        email: email,
+                                        typeAccount: 'Provider',
                                         firstName: firstName,
                                         lastName: lastName)));
                               }
