@@ -15,6 +15,7 @@ class ApiConstant {
   static const String logoutEndPoint = '/logout';
   static final String googleMapApiKey =
       'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
+  static const String updateClientProfile='/profile/client/update';
 }
 
 class CacheConstant {

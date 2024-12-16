@@ -1,3 +1,5 @@
+import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
+import 'package:app/features/profile/domain/use_cases/update_client_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -9,11 +11,12 @@ import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 @lazySingleton
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit(
-      this._getClientProfile, this._getProviderProfile, this._getUserRole)
+      this._getClientProfile, this._getProviderProfile, this._getUserRole, this._updateClientProfile)
       : super(ProfileInitial());
   final GetClientProfile _getClientProfile;
   final GetProviderProfile _getProviderProfile;
   final GetUserRole _getUserRole;
+  final UpdateClientProfile _updateClientProfile;
 
   //variable
   TextEditingController emailEditController = TextEditingController();
@@ -66,7 +69,14 @@ class ProfileCubit extends Cubit<ProfileStates> {
       }
     });
   }
-
+  void updateClientProfile(UpdateClientRequest updateRequest) async {
+    emit(UpdateLoading());
+    final result = await _updateClientProfile(updateRequest);
+    result.fold((failure) => emit(UpdateError(failure.message)),
+            (updateRequest) {
+          emit(UpdateSuccess());
+        });
+  }
   updateInfo(
       {required String curEmail,
       required String newEmail,

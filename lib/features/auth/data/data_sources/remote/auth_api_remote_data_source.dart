@@ -167,12 +167,20 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
         final data = response.data;
 
         if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-          var cityName =
-              data['results'][0]['address_components'][1]['long_name'];
-          var countryName =
-              data['results'][0]['address_components'][4]['long_name'];
-
-          return [countryName, cityName];
+          // print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+          // print(data['results']);
+          // print(lat);print(long);
+          // print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+          // var cityName =
+          //     data['results'][4]['address_components'][2]['long_name'];
+          // var countryName =
+          //     data['results'][4]['address_components'][5]['long_name'];
+          // var regionName =
+          // data['results'][4]['address_components'][1]['long_name'];
+          var address =
+          data['results'][4]['formatted_address'];
+          var cityName=data['results'][0]['address_components'][1]['long_name'];
+          return [cityName,address];
         } else {
           throw Exception('No results found');
         }

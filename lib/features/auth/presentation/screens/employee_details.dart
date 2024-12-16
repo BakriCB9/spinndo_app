@@ -230,11 +230,13 @@ class EmployeeDetails extends StatelessWidget {
                             } else if (state is GetLocationCountryErrorr) {
                               return Text(state.message);
                             } else if (state is GetLocationCountrySuccess) {
-                              return Text(
-                                  "${state.country.countryName} ${state.country.cityName}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium);
+                              return Expanded(
+                                child: Text(maxLines: 4,
+                                    "${state.country.address}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium),
+                              );
                             } else {
                               return Text("select location",
                                   style: Theme.of(context)

@@ -38,6 +38,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
   @override
   Widget build(BuildContext context) {
     markerLocationData.clear();
+
     markerLocationData.add(GoogleMapMarker(BitmapDescriptor.hueGreen,
         id: 5,
         name: "Current Location",
@@ -60,12 +61,24 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
             IconButton(
               onPressed: () async {
                 _serviceCubit.filterLocation =
-                    await (_serviceCubit.getCurrentLocation == null
+                    await (_serviceCubit.selectedCountryName != null
                         ? GeocodingService.getCountryLatLng(
                             _serviceCubit.selectedCityName ??
                                 _serviceCubit.selectedCountryName!)
                         : LatLng(_serviceCubit.getCurrentLocation!.latitude!,
                             _serviceCubit.getCurrentLocation!.longitude!));
+
+                _serviceCubit.filterBounds =
+                    await (_serviceCubit.selectedCountryName != null
+                        ? GeocodingService.getCountryBounds(
+                            _serviceCubit.selectedCityName ??
+                                _serviceCubit.selectedCountryName!)
+                        : GeocodingService.getCountryBounds(
+                       await   GeocodingService.getAddressFromCoordinates(
+                            _serviceCubit.getCurrentLocation!.latitude!,
+                            _serviceCubit.getCurrentLocation!.longitude!)
+                    ));
+
                 _authCubit.loadMapStyle(
                     _drawerCubit.themeMode == ThemeMode.dark ? true : false);
 
@@ -112,9 +125,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                           widget.services.sort(
                             (a, b) => a.distance!.compareTo(b.distance!),
                           );
-                          setState(() {
-                            
-                          });
+                          setState(() {});
                         },
                       )
                     ]),

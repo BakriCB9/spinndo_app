@@ -1,3 +1,5 @@
+import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
+import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/app_exception.dart';
@@ -56,4 +58,17 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return left(Failure(exception.message));
     }
   }
+  @override
+  Future<Either<Failure, UpdateClientResponse>> updateClientProfile(
+      UpdateClientRequest  updateRequest) async {
+    try {
+      final response =
+      await _profileRemoteDataSource.updateClientProfile(updateRequest);
+      return Right(response);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+  }
+
+
 }

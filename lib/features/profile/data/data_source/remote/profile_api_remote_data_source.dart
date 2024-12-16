@@ -1,3 +1,6 @@
+import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
+import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
+import 'package:app/main.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/constant.dart';
@@ -56,6 +59,24 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
       return ProviderProfileResponse.fromJson(response.data);
     } catch (exciption) {
       throw RemoteAppException("Failed to get client");
+    }
+  }
+
+  @override
+  Future<UpdateClientResponse> updateClientProfile(
+      UpdateClientRequest updateRequest) async {
+    try {
+      final userToken = sharedPref.getString(CacheConstant.tokenKey);
+      final response = await _dio.post(ApiConstant.updateClientProfile,
+          data: updateRequest.toJson(),
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $userToken"
+          }));
+      print('ther token is for update profile client  $userToken');
+      return UpdateClientResponse.fromJson(response.data);
+    } catch (e) {
+      throw RemoteAppException('Failed to update info');
     }
   }
 }

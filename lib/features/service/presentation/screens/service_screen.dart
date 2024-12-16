@@ -1,3 +1,4 @@
+import 'package:app/core/utils/map_helper/geocoding_service.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
@@ -283,6 +284,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               onChanged: (value) {
                                                 _serviceCubit.selectedDistance =
                                                     null;
+                                                _serviceCubit.isCity=false;
                                                 _serviceCubit.isCurrent = false;
 
                                                 _serviceCubit
@@ -356,6 +358,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                                 ))
                                                             .toList(),
                                                         onChanged: (value) {
+                                                          _serviceCubit.isCity=true;
+
                                                           _serviceCubit
                                                               .selectedCityService(
                                                                   value!);
@@ -402,11 +406,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 Theme.of(context).primaryColor,
                                             value: _serviceCubit.isCurrent,
                                             onChanged: (value) {
+
                                               _serviceCubit
                                                   .chooseCurrentLocation(
                                                       value!);
                                               _serviceCubit.selectedDistance =
                                                   10;
+                                              _serviceCubit.isCity=true;
+
                                               _serviceCubit
                                                   .selectedCountryName = null;
                                               _serviceCubit.selectedCountryId =

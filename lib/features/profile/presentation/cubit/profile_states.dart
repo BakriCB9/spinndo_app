@@ -36,3 +36,11 @@ class GetUserRoleErrorr extends ProfileStates {
 class IsUpdated extends ProfileStates {}
 
 class IsNotUpdated extends ProfileStates {}
+class UpdateLoading extends ProfileStates {}
+
+class UpdateError extends ProfileStates {
+  final  String message;
+  UpdateError(this.message);
+}
+
+class UpdateSuccess extends ProfileStates {}

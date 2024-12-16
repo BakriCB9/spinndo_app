@@ -22,12 +22,12 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
   Set<Marker> markers = {};
+
   @override
   void initState() {
     initialCameraPosition = CameraPosition(
-      target: _serviceCubit.filterLocation!,
-      zoom: 8,
-    );
+        target: _serviceCubit.filterLocation!,
+        zoom: _serviceCubit.isCity ? 12 : 8);
     // markers.addAll([Marker(markerId: MarkerId('1'),position: LatLng(37.0989075, 36.1721064) ),Marker(markerId: MarkerId('2'),position: LatLng(37.0989105, 36.1721026)),Marker(markerId: MarkerId('3'),position: LatLng(36.297607719898224, 33.50574174037673))]);
     initMarkers();
     for (int i = 0; i < markerLocationData.length; i++) {
@@ -56,6 +56,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
         zoomControlsEnabled: false,
         minMaxZoomPreference: MinMaxZoomPreference(0, 50),
         markers: markers,
+        cameraTargetBounds: CameraTargetBounds(_serviceCubit.filterBounds),
         initialCameraPosition: initialCameraPosition,
         style: _authCubit.mapStyle,
       ),

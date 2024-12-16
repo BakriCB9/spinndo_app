@@ -74,6 +74,7 @@ class MapScreen extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     GoogleMap(
+                      // cameraTargetBounds: CameraTargetBounds(LatLngBounds(southwest: southwest, northeast: northeast)),
                       zoomControlsEnabled: false,
                       // minMaxZoomPreference: MinMaxZoomPreference(8, 50),
                       markers: _authCubit.markers,
@@ -85,6 +86,8 @@ class MapScreen extends StatelessWidget {
                         _authCubit.isCurrent = false;
                       },
                       onMapCreated: (controller) async {
+                        _authCubit.isCurrent = true;
+
                         _authCubit.googleMapController = controller;
                         _authCubit.initCurrentLocation();
                         _authCubit.initMarkerAddress();

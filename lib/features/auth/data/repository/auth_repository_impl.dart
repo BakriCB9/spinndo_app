@@ -138,8 +138,8 @@ class AuthRepositoryImpl implements AuthRepository {
       final response =
           await _authRemoteDataSource.getAddressFromCoordinates(lat, long);
       final country = Country(
-        countryName: response[0],
-        cityName: response[1],
+        cityName: response[0],
+        address:response[1]
       );
       return Right(country);
     } on AppException catch (exception) {
