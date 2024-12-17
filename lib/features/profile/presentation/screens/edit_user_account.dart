@@ -1,5 +1,6 @@
 import 'package:app/core/utils/ui_utils.dart';
-import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
+import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ class EditUserAccountScreen extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String typeAccount;
+
   const EditUserAccountScreen(
       {required this.firstName,
       required this.lastName,
@@ -24,8 +26,7 @@ class EditUserAccountScreen extends StatelessWidget {
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     _profileCubit.firstNameEditController.text = firstName;
     _profileCubit.lastNameEditController.text = lastName;
-    final size = MediaQuery.of(context).size;
-    double avatarRadius = MediaQuery.of(context).size.width * 0.3;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -45,21 +46,21 @@ class EditUserAccountScreen extends StatelessWidget {
                   children: [
                     Positioned(
                       child: CircleAvatar(
-                        radius: avatarRadius * 0.7,
+                        radius: 150.r,
                         backgroundColor: Colors.grey,
                         child: Icon(
                           Icons.person,
-                          size: avatarRadius,
+                          size: 150.r,
                           color: Colors.white,
                         ),
                       ),
                     ),
                     Positioned(
                       bottom: 10,
-                      right: size.width / 80,
+                      right: 10.w,
                       child: Container(
-                        width: avatarRadius * 0.4,
-                        height: avatarRadius * 0.4,
+                        width: 80.r,
+                        height: 80.r,
                         decoration: const BoxDecoration(
                           color: Colors.blue,
                           shape: BoxShape.circle,
@@ -67,7 +68,7 @@ class EditUserAccountScreen extends StatelessWidget {
                         child: Icon(
                           Icons.camera_alt,
                           color: Colors.black,
-                          size: avatarRadius * 0.15,
+                          size: 50.r,
                         ),
                       ),
                     ),
@@ -105,15 +106,14 @@ class EditUserAccountScreen extends StatelessWidget {
               // ),
 
               SizedBox(
-                height: 30.h,
+                height: 70.h,
               ),
               TextFormField(
                 controller: _profileCubit.firstNameEditController,
                 style: TextStyle(color: Colors.black, fontSize: 25.sp),
                 onChanged: (value) {
-                 print('');
+                  print('');
                   _profileCubit.updateInfo(
-
                       curFirst: firstName,
                       newFirst: _profileCubit.firstNameEditController.text,
                       curLast: lastName,
@@ -126,15 +126,18 @@ class EditUserAccountScreen extends StatelessWidget {
                         TextStyle(color: Colors.black, fontSize: 20.sp)),
               ),
               SizedBox(
-                height: 30.h,
+                height: 50.h,
               ),
               TextFormField(
-
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Error';
+                  }
+                },
                 controller: _profileCubit.lastNameEditController,
                 style: TextStyle(color: Colors.black, fontSize: 25.sp),
                 onChanged: (value) {
                   _profileCubit.updateInfo(
-
                       curFirst: firstName,
                       newFirst: _profileCubit.firstNameEditController.text,
                       curLast: lastName,
@@ -154,37 +157,57 @@ class EditUserAccountScreen extends StatelessWidget {
               }, builder: (context, state) {
                 print('the State is ${state}');
 
-                if (state is IsUpdated)
+
+                if (state is IsUpdated) {
                   return BlocListener<ProfileCubit, ProfileStates>(
-                    listenWhen: (pre,cur){
-                      if(cur is UpdateLoading || cur is UpdateError || cur is UpdateSuccess){
+                    listenWhen: (pre, cur) {
+                      if (cur is UpdateLoading||
+                      cur is UpdateError||
+                      cur is UpdateSuccess) {
                         return true;
                       }
                       return false;
                     },
-  listener: (context, state) {
-    if(state is UpdateLoading){
-    UIUtils.showLoading(context);
-    }
-    else if(state is UpdateError){
-    UIUtils.hideLoading(context);
-    UIUtils.showMessage(state.message);
-
-    }
-    else if(state is UpdateSuccess)
-      {
-        UIUtils.hideLoading(context);
-        Navigator.of(context).pop();
-      }
-      },
-  child: ElevatedButton(onPressed: () {
-                    _profileCubit.updateClientProfile(UpdateClientRequest(
-                        firstName:
-                            _profileCubit.firstNameEditController.text,
-                        lastName:_profileCubit.lastNameEditController.text ));
-                  }, child: Text('Save')),
-);
-                else {
+                    listener: (context, state) {
+                      if (state is UpdateLoading) {
+                        UIUtils.showLoading(context);
+                      } else if (state is UpdateError) {
+                        UIUtils.hideLoading(context);
+                        UIUtils.showMessage(state.message);
+                      } else if (state is UpdateSuccess) {
+                        UIUtils.hideLoading(context);
+                        Navigator.of(context).pop();
+                        _profileCubit.getUserRole();
+                      }
+                    },
+                    child: ElevatedButton(
+                        onPressed: () {
+                          if (_profileCubit
+                              .firstNameEditController.text.isEmpty ||
+                              _profileCubit
+                                  .lastNameEditController.text.isEmpty) {
+                            return UIUtils.showMessage(
+                                'Enter the name the field is Empty');
+                          }
+                          if (typeAccount == 'Client') {
+                            _profileCubit.updateClientProfile(
+                                UpdateAccountProfile(
+                                    firstName: _profileCubit
+                                        .firstNameEditController.text,
+                                    lastName: _profileCubit
+                                        .lastNameEditController.text));
+                          } else {
+                            _profileCubit
+                                .updateProviderProfile(UpdateProviderRequest(
+                                firstName:
+                                _profileCubit.firstNameEditController.text,
+                                lastName: _profileCubit.lastNameEditController.text
+                            ));
+                          }
+                        },
+                        child: Text('Save')),
+                  );
+                } else {
                   return const SizedBox();
                 }
               })

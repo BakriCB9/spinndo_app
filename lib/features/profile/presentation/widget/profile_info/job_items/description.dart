@@ -55,7 +55,7 @@ class CustomDescription extends StatelessWidget {
                           },
                     icon: Icon(
                       Icons.edit,
-                      color: isApprovid == 1 ? Colors.yellow : Colors.grey,
+                      color: isApprovid == 0 ? Colors.yellow : Colors.grey,
                     ))
                 : const SizedBox()
           ],

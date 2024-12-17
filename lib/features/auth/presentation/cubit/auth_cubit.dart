@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:app/features/auth/domain/entities/country.dart';
+import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,8 +86,13 @@ class AuthCubit extends Cubit<AuthState> {
   File? firstImage;
   File? secondImage;
   List<Categories>? categoriesList;
+  List<ChildCategory>? catChildren;
+   Country? country;
+  Categories? selectedCategory;
+  ChildCategory? selectedSubCategory;
   final GetCategories _getCategories;
-  String? selectedCategoryId;
+  // String? selectedCategoryId;
+  String? selectedSubCategoryId;
   late CameraPosition initialCameraPosition;
   bool isCurrent = true;
   bool isCountySuccess = false;
@@ -220,11 +227,19 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void selectedCategoryEvent(int category) {
-    selectedCategoryId = category.toString();
+  void selectedCategoryEvent(Categories? category) {
+    // selectedCategoryId = category!.id.toString();
+    selectedCategory=category;
+    selectedSubCategory=null;
+
+    catChildren=category?.children;
     emit(SelectedCategoryState());
   }
-
+  void selectedSubCategoryEvent(ChildCategory category) {
+    selectedSubCategory=category;
+    selectedSubCategoryId = category.id.toString();
+    emit(SelectedCategoryState());
+  }
   void initMarkerAddress() {
     markers.clear();
     var myMarker = markerLocationData
@@ -287,7 +302,8 @@ class AuthCubit extends Cubit<AuthState> {
         (response) {
       cityName = response.cityName;
       isCountySuccess = true;
-      emit(GetLocationCountrySuccess(response));
+      country=response;
+      emit(GetLocationCountrySuccess());
     });
   }
 

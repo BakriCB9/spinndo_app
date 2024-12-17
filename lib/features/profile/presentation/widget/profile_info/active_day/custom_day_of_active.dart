@@ -36,10 +36,10 @@ class CustomDayActive extends StatelessWidget {
             Text('Active Days', style: Theme.of(context).textTheme.labelLarge),
             myId == userId
                 ? IconButton(
-                    onPressed: issAprrovid == 1
+                    onPressed: issAprrovid == 0
                         ? () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => WorkingSchedulePage()));
+                                builder: (context) => WorkingSchedulePage(listOfworkday: listOfworkday,)));
                           }
                         : () {
                             UIUtils.showMessage(

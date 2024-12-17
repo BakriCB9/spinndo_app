@@ -239,7 +239,7 @@ class _DeplomaProtofileImageScreenState
                           nameService: _authCubit.serviceNameController.text,
                           descriptionService:
                               _authCubit.serviceDescriptionController.text,
-                          categoryIdService: _authCubit.selectedCategoryId!,
+                          categoryIdService: _authCubit.selectedCategory!.id.toString(),
                           cityNameService: _authCubit.cityName!,
                           websiteService: _authCubit.website,
                           certificate: _authCubit.certificateImage!,

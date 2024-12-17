@@ -19,7 +19,6 @@ class ProviderProfileScreen extends StatefulWidget {
   State<ProviderProfileScreen> createState() => _ProviderProfileScreenState();
 }
 
-//final ScrollController _control = ScrollController();
 
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   @override

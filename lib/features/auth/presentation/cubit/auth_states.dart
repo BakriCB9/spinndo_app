@@ -83,6 +83,7 @@ class GetCategoryError extends AuthState {
 }
 
 class SelectedCategoryState extends AuthState {}
+class SelectedSubCategoryState extends AuthState {}
 
 class SelectedLocationState extends AuthState {}
 
@@ -99,8 +100,8 @@ class GetCurrentLocationErrorr extends AuthState {
 class GetLocationCountryLoading extends AuthState {}
 
 class GetLocationCountrySuccess extends AuthState {
-  final Country country;
-  GetLocationCountrySuccess(this.country);
+  // final Country country;
+  // GetLocationCountrySuccess(this.country);
 }
 
 class GetLocationCountryErrorr extends AuthState {

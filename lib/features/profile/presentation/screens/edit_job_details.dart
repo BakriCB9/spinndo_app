@@ -1,3 +1,4 @@
+import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +39,7 @@ class EditJobDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Edit job details',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -100,20 +101,18 @@ class EditJobDetails extends StatelessWidget {
                   );
                 }).toList(),
                 onChanged: (value) {}),
-            SizedBox(height: 30.h),
+            SizedBox(height: 50.h),
 
             TextFormField(
               controller: _profileCubit.serviceNameController,
               style: TextStyle(color: Colors.black, fontSize: 25.sp),
               onChanged: (value) {
-                // _profileCubit.updateInfo(
-                //     curEmail: email,
-                //     newEmail: _profileCubit.emailEditController.text,
-                //     curFirst: firstName,
-                //     newFirst: _profileCubit.firstNameEditController.text,
-                //     curLast: lastName,
-                //     newLast: _profileCubit.lastNameEditController.text
-                // );
+                _profileCubit.updateJobDetails(
+
+                    curServiceName: serviceName,
+                    newServiceName: _profileCubit.serviceNameController.text,
+                    curDescription: description,
+                    newDescription: _profileCubit.descriptionController.text);
               },
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.person),
@@ -121,45 +120,25 @@ class EditJobDetails extends StatelessWidget {
                   labelStyle: TextStyle(color: Colors.black, fontSize: 20.sp)),
             ),
             SizedBox(
-              height: 30.h,
+              height: 50.h,
             ),
             TextFormField(
               controller: _profileCubit.descriptionController,
               style: TextStyle(color: Colors.black, fontSize: 25.sp),
               onChanged: (value) {
-                // _profileCubit.updateInfo(
-                //     curEmail: email,
-                //     newEmail: _profileCubit.emailEditController.text,
-                //     curFirst: firstName,
-                //     newFirst: _profileCubit.firstNameEditController.text,
-                //     curLast: lastName,
-                //     newLast: _profileCubit.lastNameEditController.text
-                // );
+                _profileCubit.updateJobDetails(
+
+                    curServiceName: serviceName,
+                    newServiceName: _profileCubit.serviceNameController.text,
+                    curDescription: description,
+                    newDescription: _profileCubit.descriptionController.text);
               },
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.person),
                   labelText: "Description",
                   labelStyle: TextStyle(color: Colors.black, fontSize: 20.sp)),
             ),
-            SizedBox(height: 30.h),
-            TextFormField(
-              controller: _profileCubit.emailEditController,
-              style: TextStyle(color: Colors.black, fontSize: 25.sp),
-              onChanged: (value) {
-                // _profileCubit.updateInfo(
-                //     curEmail: email,
-                //     newEmail: _profileCubit.emailEditController.text,
-                //     curFirst: firstName,
-                //     newFirst: _profileCubit.firstNameEditController.text,
-                //     curLast: lastName,
-                //     newLast: _profileCubit.lastNameEditController.text
-                // );
-              },
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email),
-                  labelText: "Email",
-                  labelStyle: TextStyle(color: Colors.black, fontSize: 20.sp)),
-            ),
+            SizedBox(height: 50.h),
 
             SizedBox(
               height: 50.h,
@@ -171,7 +150,11 @@ class EditJobDetails extends StatelessWidget {
               print('the State is ${state}');
 
               if (state is IsUpdated)
-                return ElevatedButton(onPressed: () {}, child: Text('Save'));
+                return ElevatedButton(onPressed: () {
+                  _profileCubit.updateProviderProfile(UpdateProviderRequest(cityNameService: _profileCubit.serviceNameController.text,descriptionService: _profileCubit.descriptionController.text,
+                    ////////////////////////////////////////////// resssssssssst
+                  ));
+                }, child: Text('Save'));
               else {
                 return const SizedBox();
               }

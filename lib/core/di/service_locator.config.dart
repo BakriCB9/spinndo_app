@@ -54,6 +54,8 @@ import 'package:app/features/profile/domain/use_cases/get_user_role.dart'
     as _i849;
 import 'package:app/features/profile/domain/use_cases/update_client_profile.dart'
     as _i837;
+import 'package:app/features/profile/domain/use_cases/update_provider_profile.dart'
+    as _i284;
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart'
     as _i87;
 import 'package:app/features/service/data/data_sources/service_api_data_source.dart'
@@ -144,6 +146,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i849.GetUserRole(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i837.UpdateClientProfile>(
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
+    gh.lazySingleton<_i284.UpdateProviderProfile>(
+        () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
     gh.singleton<_i728.Getcountryname>(
         () => _i728.Getcountryname(gh<_i651.AuthRepository>()));
     gh.singleton<_i293.Login>(() => _i293.Login(gh<_i651.AuthRepository>()));
@@ -172,6 +176,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i140.GetProviderProfile>(),
           gh<_i849.GetUserRole>(),
           gh<_i837.UpdateClientProfile>(),
+          gh<_i284.UpdateProviderProfile>(),
         ));
     return this;
   }

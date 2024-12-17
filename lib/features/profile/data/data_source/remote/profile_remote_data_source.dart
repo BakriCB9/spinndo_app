@@ -1,7 +1,9 @@
 import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
 import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 
-import '../../models/client_update/update_client_request.dart';
+import '../../models/client_update/update_account_profile.dart';
 import '../../models/client_update/update_client_response.dart';
 
 abstract class ProfileRemoteDataSource {
@@ -9,5 +11,7 @@ abstract class ProfileRemoteDataSource {
       int user_id, String user_token);
   Future<ProviderProfileResponse> getServiceProviderProfile(
       int user_id, String user_token);
-  Future<UpdateClientResponse> updateClientProfile(UpdateClientRequest updateRequest);
+
+  Future<UpdateClientResponse> updateClientProfile(UpdateAccountProfile updateRequest);
+  Future<UpdateProviderResponse>updateProviderProfile(UpdateProviderRequest updateRequest);
 }

@@ -1,5 +1,7 @@
-import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
+import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 import 'package:app/main.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -64,7 +66,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
 
   @override
   Future<UpdateClientResponse> updateClientProfile(
-      UpdateClientRequest updateRequest) async {
+      UpdateAccountProfile updateRequest) async {
     try {
       final userToken = sharedPref.getString(CacheConstant.tokenKey);
       final response = await _dio.post(ApiConstant.updateClientProfile,
@@ -78,5 +80,23 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
     } catch (e) {
       throw RemoteAppException('Failed to update info');
     }
+  }
+  @override
+  Future<UpdateProviderResponse> updateProviderProfile(UpdateProviderRequest updateRequest) async{
+    try{
+      final userToken = sharedPref.getString(CacheConstant.tokenKey);
+      final response = await _dio.post(ApiConstant.updateProviderProfile,
+          data: updateRequest.toJsonAccount(),
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $userToken"
+          }));
+      print('ther token is for update profile client  $userToken');
+      return UpdateProviderResponse.fromJson(response.data);
+    }catch(e){
+      throw RemoteAppException('Failed to Update info');
+    }
+
+
   }
 }

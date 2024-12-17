@@ -34,7 +34,18 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
+      body: BlocBuilder<ProfileCubit, ProfileStates>(
+          buildWhen: (pre, cur) {
+            if (cur is GetProfileLoading||
+            cur is GetProfileErrorr||
+            cur is GetProviderSuccess ||
+            cur is GetClientSuccess) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+          builder: (context, state) {
         if (state is GetProfileLoading) {
           return LoadingIndicator(Theme.of(context).primaryColor);
         } else if (state is GetProfileErrorr) {

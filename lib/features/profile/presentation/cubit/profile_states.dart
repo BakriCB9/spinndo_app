@@ -43,4 +43,7 @@ class UpdateError extends ProfileStates {
   UpdateError(this.message);
 }
 
+
 class UpdateSuccess extends ProfileStates {}
+
+class CardState extends ProfileStates{}

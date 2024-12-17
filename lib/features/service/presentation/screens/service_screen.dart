@@ -847,6 +847,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                                 errorBorder:
                                                                     InputBorder
                                                                         .none),
+
                                                         items: _serviceCubit
                                                             .citiesList
                                                             ?.map((e) =>

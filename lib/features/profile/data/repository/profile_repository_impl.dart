@@ -1,5 +1,7 @@
-import 'package:app/features/profile/data/models/client_update/update_client_request.dart';
+import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/app_exception.dart';
@@ -60,7 +62,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
   }
   @override
   Future<Either<Failure, UpdateClientResponse>> updateClientProfile(
-      UpdateClientRequest  updateRequest) async {
+      UpdateAccountProfile  updateRequest) async {
     try {
       final response =
       await _profileRemoteDataSource.updateClientProfile(updateRequest);
@@ -69,6 +71,14 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return left(Failure(exception.message));
     }
   }
+  Future<Either<Failure, UpdateProviderResponse>> updateProviderProfile(UpdateProviderRequest updateRequest) async{
+    try{
+      final response=await _profileRemoteDataSource.updateProviderProfile(updateRequest);
+      return Right(response);
+    }on AppException catch(exception){
+      return left(Failure(exception.message));
+    }
 
+  }
 
 }
