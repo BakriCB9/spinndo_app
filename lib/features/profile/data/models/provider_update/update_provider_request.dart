@@ -11,7 +11,7 @@ class UpdateProviderRequest {
   final String? longitudeService;
   final String? latitudeService;
 
-  // final List<DateSelect> listOfDay;
+  List<DateSelect>? listOfDay;
   // final File certificate;
   // final List<File> images;
 
@@ -20,8 +20,8 @@ class UpdateProviderRequest {
         this.lastName,
         //  this.certificate,
         // this.images,
+        this.listOfDay,
         this.email,
-        //  this.listOfDay,
         this.password,
         this.nameService,
         this.descriptionService,
@@ -34,16 +34,46 @@ class UpdateProviderRequest {
     return {'first_name': firstName, 'last_name': lastName, '_method': 'PUT'};
   }
 
-  Map<String ,dynamic>toJsonJobDetails(){
+  Map<String, dynamic> toJsonJobDetails() {
     return {
-      'service[category_id]':categoryIdService,
-      'service[name]':nameService,
-      'service[description]':descriptionService,
-      'service[city_name]':cityNameService,
-      'service[latitude]':latitudeService,
-      'service[longitude]':longitudeService,
-      '_method':'PUT'
+      'service[category_id]': categoryIdService,
+      'service[name]': nameService,
+      'service[description]': descriptionService,
+      'service[city_name]': cityNameService,
+      'service[latitude]': latitudeService,
+      'service[longitude]': longitudeService,
+      '_method': 'PUT'
     };
   }
 
+  Map<String, dynamic> toJsonDateTime() {
+    List<Map<String, dynamic>> days = [];
+    for (int i = 0; i < listOfDay!.length; i++) {
+      if (listOfDay![i].daySelect) {
+        days.add(listOfDay![i].toJson());
+      }
+    }
+
+    return {
+      "service": {
+        "working_days": days,
+      },
+      '_method': 'PUT'
+    };
+  }
+}
+
+class DateSelect {
+  String day;
+  bool daySelect;
+  String? start;
+  String? end;
+  bool arrowSelect;
+  DateSelect(
+      {required this.day,
+        this.start,
+        this.end,
+        this.daySelect = false,
+        this.arrowSelect = true});
+  Map<String, String?> toJson() => {"day": day, "start": start, "end": end};
 }

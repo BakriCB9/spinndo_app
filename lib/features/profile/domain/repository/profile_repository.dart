@@ -15,5 +15,5 @@ abstract class ProfileRepository {
   Either<Failure, String> getUserRole();
 
   Future<Either<Failure,UpdateClientResponse>> updateClientProfile(UpdateAccountProfile updateRequest);
-  Future<Either<Failure,UpdateProviderResponse>> updateProviderProfile(UpdateProviderRequest updateRequest);
+  Future<Either<Failure,UpdateProviderResponse>> updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit);
 }

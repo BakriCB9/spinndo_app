@@ -7,6 +7,8 @@ class ErrorIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final localization = AppLocalizations.of(context)!;
+
     return Center(
       child: Text(message),
     );

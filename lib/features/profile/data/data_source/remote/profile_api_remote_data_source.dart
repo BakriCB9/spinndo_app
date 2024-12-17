@@ -82,16 +82,17 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
     }
   }
   @override
-  Future<UpdateProviderResponse> updateProviderProfile(UpdateProviderRequest updateRequest) async{
+  Future<UpdateProviderResponse> updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit) async{
     try{
       final userToken = sharedPref.getString(CacheConstant.tokenKey);
       final response = await _dio.post(ApiConstant.updateProviderProfile,
-          data: updateRequest.toJsonAccount(),
+          data:typeEdit==1?updateRequest.toJsonAccount():(typeEdit==2?updateRequest.toJsonJobDetails():(updateRequest.toJsonDateTime())),
           options: Options(headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $userToken"
           }));
-      print('ther token is for update profile client  $userToken');
+
+
       return UpdateProviderResponse.fromJson(response.data);
     }catch(e){
       throw RemoteAppException('Failed to Update info');

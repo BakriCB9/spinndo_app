@@ -1,3 +1,5 @@
+import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,14 +7,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MapScreen extends StatelessWidget {
-  static const String routeName = '/map';
+class UpdateMapScreen extends StatelessWidget {
+  static const String routeName = '/Umap';
 
-  const MapScreen({super.key});
+  const UpdateMapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,14 @@ class MapScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _authCubit.getCountryAndCityNameFromCrocd(
-              _authCubit.isCurrent
-                  ? _authCubit.currentLocation!.latitude
-                  : _authCubit.selectedLocation!.latitude,
-              _authCubit.isCurrent
-                  ? _authCubit.currentLocation!.longitude
-                  : _authCubit.selectedLocation!.longitude);
+          _profileCubit.getCountryAndCityNameFromCrocd(
+              _profileCubit.isCurrent
+                  ? _profileCubit.currentLocation!.latitude
+                  : _profileCubit.selectedLocation!.latitude,
+              _profileCubit.isCurrent
+                  ? _profileCubit.currentLocation!.longitude
+                  : _profileCubit.selectedLocation!.longitude);
           Navigator.pop(context);
-          print(
-              'the location of country is ############################  countrylocation  long ${_authCubit.selectedLocation!.longitude} and latitued is ${_authCubit.selectedLocation!.latitude}');
         },
         child: Icon(
           Icons.save,
@@ -40,9 +38,9 @@ class MapScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                _authCubit.initCurrentLocation();
-                _authCubit.initMarkerAddress();
-                _authCubit.isCurrent = true;
+                _profileCubit.initCurrentLocation();
+                _profileCubit.initMarkerAddress();
+                _profileCubit.isCurrent = true;
               },
               icon: Icon(Icons.location_on))
         ],
@@ -51,24 +49,24 @@ class MapScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: BlocBuilder<AuthCubit, AuthState>(
-        bloc: _authCubit,
+      body: BlocBuilder<ProfileCubit,ProfileStates>(
+        bloc: _profileCubit,
         buildWhen: (previous, current) {
-          if (current is GetCurrentLocationSuccess ||
-              current is GetCurrentLocationLoading ||
-              current is GetCurrentLocationErrorr) return true;
+          if (current is GetUpdatedLocationSuccess ||
+              current is GetUpdatedLocationLoading ||
+              current is GetUpdatedLocationErrorr) return true;
           return false;
         },
         builder: (context, state) {
-          if (state is GetCurrentLocationLoading) {
+          if (state is GetUpdatedLocationLoading) {
             return Center(
               child: LoadingIndicator(Theme.of(context).primaryColor),
             );
-          } else if (state is GetCurrentLocationSuccess) {
-            return BlocBuilder<AuthCubit, AuthState>(
-              bloc: _authCubit,
+          } else if (state is GetUpdatedLocationSuccess) {
+            return BlocBuilder<ProfileCubit,ProfileStates>(
+              bloc: _profileCubit,
               buildWhen: (previous, current) {
-                if (current is SelectedLocationState) return true;
+                if (current is SelectedLocationUpdatedState) return true;
                 return false;
               },
               builder: (context, state) {
@@ -79,31 +77,31 @@ class MapScreen extends StatelessWidget {
                       // cameraTargetBounds: CameraTargetBounds(LatLngBounds(southwest: southwest, northeast: northeast)),
                       zoomControlsEnabled: false,
                       // minMaxZoomPreference: MinMaxZoomPreference(8, 50),
-                      markers: _authCubit.markers,
-                      style: _authCubit.mapStyle,
+                      markers: _profileCubit.markers,
+                      style: _profileCubit.mapStyle,
                       onTap: (argument) {
-                        _authCubit.selectLocation(argument);
+                        _profileCubit.selectLocation(argument);
 
-                        _authCubit.initMarkerAddress();
-                        _authCubit.isCurrent = false;
+                        _profileCubit.initMarkerAddress();
+                        _profileCubit.isCurrent = false;
                       },
                       onMapCreated: (controller) async {
-                        _authCubit.isCurrent = true;
+                        _profileCubit.isCurrent = true;
 
-                        _authCubit.googleMapController = controller;
-                        _authCubit.initCurrentLocation();
-                        _authCubit.initMarkerAddress();
+                        _profileCubit.googleMapController = controller;
+                        _profileCubit.initCurrentLocation();
+                        _profileCubit.initMarkerAddress();
                       },
                       initialCameraPosition: CameraPosition(
                           target:
-                              _authCubit.currentLocation ?? const LatLng(0, 0),
+                          _profileCubit.currentLocation ?? const LatLng(0, 0),
                           zoom: 14),
                     ),
                   ],
                 );
               },
             );
-          } else if (state is GetCurrentLocationErrorr) {
+          } else if (state is GetUpdatedLocationErrorr) {
             return Center(
               child: Text(state.message),
             );
@@ -116,4 +114,4 @@ class MapScreen extends StatelessWidget {
   }
 }
 
-final _authCubit = serviceLocator.get<AuthCubit>();
+final _profileCubit = serviceLocator.get<ProfileCubit>();

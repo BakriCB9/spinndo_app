@@ -29,6 +29,8 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final email = sharedPref.getString(CacheConstant.semailKey);
     final name = sharedPref.getString(CacheConstant.nameKey);
+    final localization = AppLocalizations.of(context)!;
+
     return Drawer(
       backgroundColor: _drawerCubit.themeMode == ThemeMode.dark
           ? ColorManager.darkBlue
@@ -70,7 +72,7 @@ class CustomDrawer extends StatelessWidget {
                     // )
                     ListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: Text(name ?? 'User',
+                      title: Text(name ?? localization.user,
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -102,7 +104,7 @@ class CustomDrawer extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: Text("Theme Mood",
+                              child: Text(localization.themeMood,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge!
@@ -127,7 +129,7 @@ class CustomDrawer extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                                child: Text("language",
+                                child: Text(localization.language,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleLarge!
@@ -184,7 +186,7 @@ class CustomDrawer extends StatelessWidget {
                         Icons.person,
                         color: ColorManager.primary,
                       ),
-                      title: Text('Profile',
+                      title: Text(localization.profile,
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge!
@@ -196,7 +198,7 @@ class CustomDrawer extends StatelessWidget {
                       Icons.settings,
                       color: ColorManager.primary,
                     ),
-                    title: Text('Setting',
+                    title: Text(localization.setting,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
@@ -224,7 +226,7 @@ class CustomDrawer extends StatelessWidget {
                           Icons.login_outlined,
                           color: ColorManager.primary,
                         ),
-                        title: Text('Log out',
+                        title: Text(localization.logout,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge!

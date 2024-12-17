@@ -1,3 +1,4 @@
+import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
@@ -13,6 +14,8 @@ class CustomDescription extends StatelessWidget {
   final String categoryName;
   final String serviceName;
   final String description;
+  final String lat;
+  final String lng;
   final int userId;
   final int? isApprovid;
   final String cityName;
@@ -23,12 +26,12 @@ class CustomDescription extends StatelessWidget {
       required this.cityName,
       required this.serviceName,
       required this.description,
-      super.key});
+      super.key, required this.lat, required this.lng});
 
   @override
   Widget build(BuildContext context) {
     print('the value of isAprrovid is $isApprovid');
-    //final _authCubit = serviceLocator.get<AuthCubit>();
+    final _profileCubit = serviceLocator.get<ProfileCubit>();
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,8 +44,10 @@ class CustomDescription extends StatelessWidget {
                 ? IconButton(
                     onPressed: isApprovid == 0
                         ? () {
+                 _profileCubit.getCategories()     ;
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => EditJobDetails(
+                                  lat: lat,lng: lng,
                                       locationName: cityName,
                                       categoryName: categoryName,
                                       description: description,

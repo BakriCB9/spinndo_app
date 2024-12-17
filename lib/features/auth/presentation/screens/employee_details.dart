@@ -52,7 +52,7 @@ class EmployeeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  // print(_authCubit.selectedCategoryId);
+    // print(_authCubit.selectedCategoryId);
     final localization = AppLocalizations.of(context)!;
     return CustomAuthForm(
       child: Form(
@@ -71,7 +71,7 @@ class EmployeeDetails extends StatelessWidget {
                       isExpanded: false,
                       validator: (value) {
                         if (value == null) {
-                          return "please select category";
+                          return localization.pleaseChooseCategory;
                         }
                         return null;
                       },
@@ -85,7 +85,7 @@ class EmployeeDetails extends StatelessWidget {
                             SizedBox(
                               width: 24.w,
                             ),
-                            Text("select category",
+                            Text(localization.chooseCategory,
                                 style:
                                     Theme.of(context).textTheme.displayMedium),
                           ],
@@ -110,78 +110,76 @@ class EmployeeDetails extends StatelessWidget {
                           .toList(),
                       value: _authCubit.selectedCategory,
                       onChanged: (value) {
-
                         // _authCubit.catChildren=value?.children ?? [];
-              _authCubit.selectedCategoryEvent(value);
+                        _authCubit.selectedCategoryEvent(value);
                         // int val = int.parse(_authCubit.selectedCategoryId!);
                         // indexChildCategory =
                         //     _authCubit.categoriesList!.indexWhere(
                         //   (element) => element.id == val,
                         // );
-                     //   _authCubit.selectedCategoryId=_authCubit.categoriesList![indexChildCategory!].children[0].id.toString();
+                        //   _authCubit.selectedCategoryId=_authCubit.categoriesList![indexChildCategory!].children[0].id.toString();
                       },
                     ),
-                    _authCubit.selectedCategory!=null?  Column(
-                    children: [
-                      SizedBox(
-                        height: 30.h,
-                      ),
-
-                      DropdownButtonFormField<ChildCategory>(
-                        dropdownColor: Theme.of(context).primaryColorDark,
-                        menuMaxHeight: 200,
-                        isExpanded: false,
-                        validator: (value) {
-                          if (value == null) {
-                            return "please select category";
-                          }
-                          return null;
-                        },
-                        // value:  _authCubit.selectedCategoryId!=null?_authCubit.categoriesList![indexChildCategory!].children[0]:null,
-                        hint: Padding(
-                          padding: EdgeInsets.only(left: 12.w),
-                          child: Row(
+                    _authCubit.selectedCategory != null
+                        ? Column(
                             children: [
-                              Icon(
-                                Icons.category,
-                              ),
                               SizedBox(
-                                width: 24.w,
+                                height: 30.h,
                               ),
-                              Text("choose category",
-                                  style: Theme.of(context).textTheme.displayMedium),
+                              DropdownButtonFormField<ChildCategory>(
+                                dropdownColor:
+                                    Theme.of(context).primaryColorDark,
+                                menuMaxHeight: 200,
+                                isExpanded: false,
+
+                                // value:  _authCubit.selectedCategoryId!=null?_authCubit.categoriesList![indexChildCategory!].children[0]:null,
+                                hint: Padding(
+                                  padding: EdgeInsets.only(left: 12.w),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.category,
+                                      ),
+                                      SizedBox(
+                                        width: 24.w,
+                                      ),
+                                      Text(localization.chooseCategory,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayMedium),
+                                    ],
+                                  ),
+                                ),
+                                decoration: const InputDecoration(
+                                    errorBorder: InputBorder.none),
+                                items:
+                                    //indexChildCategory != null
+                                    //? _authCubit
+                                    //.categoriesList![indexChildCategory!].children
+                                    _authCubit.catChildren
+                                        ?.map((e) =>
+                                            DropdownMenuItem<ChildCategory>(
+                                              value: e,
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 16.0.w),
+                                                child: Text(
+                                                  e.name!,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displayMedium,
+                                                ),
+                                              ),
+                                            ))
+                                        .toList(),
+                                value: _authCubit.selectedSubCategory,
+                                onChanged: (value) {
+                                  _authCubit.selectedSubCategoryEvent(value!);
+                                },
+                              )
                             ],
-                          ),
-                        ),
-                        decoration:
-                        const InputDecoration(errorBorder: InputBorder.none),
-                        items:
-                        //indexChildCategory != null
-                            //? _authCubit
-                            //.categoriesList![indexChildCategory!].children
-                        _authCubit
-                            .catChildren
-                            ?.map((e) => DropdownMenuItem<ChildCategory>(
-                          value: e,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16.0.w),
-                            child: Text(
-                              e.name!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium,
-                            ),
-                          ),
-                        ))
-                            .toList(),
-value: _authCubit.selectedSubCategory,
-                        onChanged: (value) {
-                          _authCubit.selectedSubCategoryEvent(value!);
-                        },
-                      )
-                    ],
-                  ):SizedBox(),
+                          )
+                        : SizedBox(),
                   ],
                 );
               },
@@ -250,14 +248,15 @@ value: _authCubit.selectedSubCategory,
                               return Text(state.message);
                             } else if (state is GetLocationCountrySuccess) {
                               return Expanded(
-                                child: Text(maxLines: 4,
-                                    "${_authCubit.country?.address??"please try again"}",
+                                child: Text(
+                                    maxLines: 4,
+                                    "${_authCubit.country?.address ?? "please try again"}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displayMedium),
                               );
                             } else {
-                              return Text("select location",
+                              return Text(localization.chooseLocation,
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayMedium);
@@ -390,7 +389,7 @@ value: _authCubit.selectedSubCategory,
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 8.w),
                                       child: Text(
-                                        " to ",
+                                        localization.to,
                                         style: Theme.of(context)
                                             .textTheme
                                             .displayMedium,
@@ -440,22 +439,22 @@ value: _authCubit.selectedSubCategory,
                       if (_authCubit.isCountySuccess == false) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              content: Text('location required',
+                              content: Text(localization.locationRequired,
                                   style: TextStyle(
                                       fontSize: 28.sp, color: Colors.white))),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content:
-                                  Text('At least one day must be selected')),
+                          SnackBar(
+                              content: Text(
+                                  localization.atleastonedaymustbeselected)),
                         );
                       }
                     }
                   }
                 },
-                child:
-                    Text("Next", style: Theme.of(context).textTheme.bodyLarge),
+                child: Text(localization.next,
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
           ],

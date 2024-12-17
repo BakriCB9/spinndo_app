@@ -201,8 +201,8 @@ class EditUserAccountScreen extends StatelessWidget {
                                 .updateProviderProfile(UpdateProviderRequest(
                                 firstName:
                                 _profileCubit.firstNameEditController.text,
-                                lastName: _profileCubit.lastNameEditController.text
-                            ));
+                                lastName: _profileCubit.lastNameEditController.text,
+                            ),1);
                           }
                         },
                         child: Text('Save')),

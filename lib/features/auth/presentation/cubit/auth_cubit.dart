@@ -92,7 +92,6 @@ class AuthCubit extends Cubit<AuthState> {
   ChildCategory? selectedSubCategory;
   final GetCategories _getCategories;
   // String? selectedCategoryId;
-  String? selectedSubCategoryId;
   late CameraPosition initialCameraPosition;
   bool isCurrent = true;
   bool isCountySuccess = false;
@@ -237,7 +236,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
   void selectedSubCategoryEvent(ChildCategory category) {
     selectedSubCategory=category;
-    selectedSubCategoryId = category.id.toString();
     emit(SelectedCategoryState());
   }
   void initMarkerAddress() {

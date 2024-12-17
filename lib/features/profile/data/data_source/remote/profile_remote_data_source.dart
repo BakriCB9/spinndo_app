@@ -13,5 +13,5 @@ abstract class ProfileRemoteDataSource {
       int user_id, String user_token);
 
   Future<UpdateClientResponse> updateClientProfile(UpdateAccountProfile updateRequest);
-  Future<UpdateProviderResponse>updateProviderProfile(UpdateProviderRequest updateRequest);
+  Future<UpdateProviderResponse>updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit);
 }

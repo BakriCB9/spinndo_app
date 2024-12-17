@@ -12,6 +12,7 @@ import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/utils/image_functions.dart';
 
@@ -32,6 +33,8 @@ class _DeplomaProtofileImageScreenState
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
@@ -66,7 +69,7 @@ class _DeplomaProtofileImageScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Upload Certificate Image",
+              Text(localization.uploadCertificateImage,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -93,7 +96,7 @@ class _DeplomaProtofileImageScreenState
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('Upload your Certificate',
+                                  Text(localization.uploadYourCertificate,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall),
@@ -115,7 +118,7 @@ class _DeplomaProtofileImageScreenState
                 ),
               ),
               SizedBox(height: 50.h),
-              Text("Upload Two Photo",
+              Text(localization.uploadProtofileImage,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -142,7 +145,7 @@ class _DeplomaProtofileImageScreenState
                               ),
                               child: firstImage == null
                                   ? Center(
-                                      child: Text("Click to Upload",
+                                      child: Text(localization.clickToUpload,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall),
@@ -177,7 +180,7 @@ class _DeplomaProtofileImageScreenState
                               ),
                               child: secondImage == null
                                   ? Center(
-                                      child: Text("Click to Upload",
+                                      child: Text(localization.clickToUpload,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall),
@@ -222,7 +225,7 @@ class _DeplomaProtofileImageScreenState
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'You have to upload Certificate image',
+                                localization.youhavetouploadCertificateimage,
                                 style: TextStyle(
                                     fontSize: 28.sp, color: Colors.white)),
                           ),
@@ -239,7 +242,11 @@ class _DeplomaProtofileImageScreenState
                           nameService: _authCubit.serviceNameController.text,
                           descriptionService:
                               _authCubit.serviceDescriptionController.text,
-                          categoryIdService: _authCubit.selectedCategory!.id.toString(),
+                          categoryIdService: _authCubit.selectedSubCategory?.id
+                                      .toString() ==
+                                  null
+                              ? _authCubit.selectedCategory!.id.toString()
+                              : _authCubit.selectedSubCategory!.id.toString(),
                           cityNameService: _authCubit.cityName!,
                           websiteService: _authCubit.website,
                           certificate: _authCubit.certificateImage!,
@@ -256,7 +263,7 @@ class _DeplomaProtofileImageScreenState
                             _authCubit.secondImage!
                           ]));
                     },
-                    child: Text("Sign Up",
+                    child: Text(localization.signUp,
                         style: Theme.of(context).textTheme.bodyLarge),
                   ),
                 ),

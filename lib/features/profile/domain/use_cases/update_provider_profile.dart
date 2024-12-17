@@ -12,6 +12,6 @@ class UpdateProviderProfile {
 
   UpdateProviderProfile(this._profileRepository);
   Future<Either<Failure, UpdateProviderResponse>> call(
-      UpdateProviderRequest updateRequest) =>
-      _profileRepository.updateProviderProfile(updateRequest);
+      UpdateProviderRequest updateRequest,int typeEdit) =>
+      _profileRepository.updateProviderProfile(updateRequest, typeEdit);
 }

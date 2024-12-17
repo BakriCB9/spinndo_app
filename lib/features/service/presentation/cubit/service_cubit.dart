@@ -25,6 +25,9 @@ class ServiceCubit extends Cubit<ServiceStates> {
   final GetServices _getServices;
   final GetServiceProfile _getServiceProfile;
   List<Countries>? countriesList;
+  List<ChildCategory>? catChildren;
+  Categories? selectedCategory;
+  ChildCategory? selectedSubCategory;
   List<Cities>? citiesList;
   List<Categories>? categoriesList;
   List<List<ChildCategory>>?childCategoryList;
@@ -110,9 +113,15 @@ class ServiceCubit extends Cubit<ServiceStates> {
     );
   }
 
-  void selectedCategoryService(int?  categoryId) {
-    selectedCategoryId = categoryId;
-    
+  void selectedCategoryService(Categories? category) {
+    selectedCategory=category;
+    selectedSubCategory=null;
+
+    catChildren=category?.children;
+
+    emit(SelectedCategoryServiceState());
+  }  void selectedSubCategoryService(ChildCategory category) {
+    selectedSubCategory=category;
     emit(SelectedCategoryServiceState());
   }
 

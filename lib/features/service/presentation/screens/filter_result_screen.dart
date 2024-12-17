@@ -18,6 +18,7 @@ import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:app/features/service/presentation/screens/service_map_screen.dart';
 import 'package:app/features/service/presentation/screens/show_details.dart';
 import 'package:app/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterResultScreen extends StatefulWidget {
   final List<Services> services;
@@ -33,11 +34,14 @@ class FilterResultScreen extends StatefulWidget {
 final _serviceCubit = serviceLocator.get<ServiceCubit>();
 final _drawerCubit = serviceLocator.get<DrawerCubit>();
 final _authCubit = serviceLocator.get<AuthCubit>();
+bool sortByName = false;
+bool sortByDistance = false;
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
   @override
   Widget build(BuildContext context) {
     markerLocationData.clear();
+    final localization = AppLocalizations.of(context)!;
 
     markerLocationData.add(GoogleMapMarker(BitmapDescriptor.hueGreen,
         id: 5,
@@ -54,7 +58,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Filter Results',
+            localization.filterResults,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           actions: [
@@ -74,10 +78,9 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                             _serviceCubit.selectedCityName ??
                                 _serviceCubit.selectedCountryName!)
                         : GeocodingService.getCountryBounds(
-                       await   GeocodingService.getAddressFromCoordinates(
-                            _serviceCubit.getCurrentLocation!.latitude!,
-                            _serviceCubit.getCurrentLocation!.longitude!)
-                    ));
+                            await GeocodingService.getAddressFromCoordinates(
+                                _serviceCubit.getCurrentLocation!.latitude!,
+                                _serviceCubit.getCurrentLocation!.longitude!)));
 
                 _authCubit.loadMapStyle(
                     _drawerCubit.themeMode == ThemeMode.dark ? true : false);
@@ -89,12 +92,17 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               icon: Icon(Icons.map, color: Theme.of(context).primaryColorLight),
             ),
             PopupMenuButton(
+                icon: Icon(sortByName
+                    ? Icons.sort_by_alpha_sharp
+                    : sortByDistance
+                        ? Icons.social_distance_sharp
+                        : Icons.sort_sharp),
                 color: Theme.of(context).primaryColorDark,
                 itemBuilder: (context) => [
                       PopupMenuItem(
                         height: 60.h,
                         child: Text(
-                          "Sort by name",
+                          localization.sortByName,
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -106,6 +114,8 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                           widget.services.sort(
                             (a, b) => a.name!.compareTo(b.name!),
                           );
+                          sortByName = true;
+                          sortByDistance = false;
 
                           setState(() {});
                         },
@@ -113,7 +123,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       PopupMenuItem(
                         height: 60.h,
                         child: Text(
-                          'Sort by distance',
+                          localization.sortByDistance,
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -125,6 +135,8 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                           widget.services.sort(
                             (a, b) => a.distance!.compareTo(b.distance!),
                           );
+                          sortByName = false;
+                          sortByDistance = true;
                           setState(() {});
                         },
                       )
@@ -135,7 +147,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
         body: widget.services.length == 0
             ? Center(
                 child: Text(
-                  'No Services Founded in location',
+                  localization.noServicesFoundedinlocation,
                   style: TextStyle(fontSize: 30.sp),
                 ),
               )
@@ -228,7 +240,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                           ),
                                           Text(
                                             service.distance != null
-                                                ? '${service.distance!.toStringAsFixed(2)} km'
+                                                ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
                                                 : '',
                                             style: Theme.of(context)
                                                 .textTheme
@@ -244,7 +256,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    "Provider: ${service.providerName ?? "Unknown"}",
+                                    "${localization.provider}: ${service.providerName ?? "Unknown"}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelMedium!
@@ -252,7 +264,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    "description : ${service.description}" ??
+                                    "${localization.description} : ${service.description}" ??
                                         "No description available",
                                     style: Theme.of(context)
                                         .textTheme

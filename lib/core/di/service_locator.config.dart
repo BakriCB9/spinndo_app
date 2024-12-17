@@ -177,6 +177,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i849.GetUserRole>(),
           gh<_i837.UpdateClientProfile>(),
           gh<_i284.UpdateProviderProfile>(),
+          gh<_i779.GetCategories>(),
+          gh<_i728.Getcountryname>(),
         ));
     return this;
   }

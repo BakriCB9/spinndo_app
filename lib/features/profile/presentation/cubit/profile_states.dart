@@ -42,8 +42,35 @@ class UpdateError extends ProfileStates {
   final  String message;
   UpdateError(this.message);
 }
-
-
 class UpdateSuccess extends ProfileStates {}
 
 class CardState extends ProfileStates{}
+class GetCategoryLoading extends ProfileStates{}
+
+class GetCategoryError extends ProfileStates{
+  String message;
+  GetCategoryError(this.message);
+}
+class GetCategorySuccess extends ProfileStates{}
+class SelectedCategoryState extends ProfileStates{}class GetUpdatedLocationLoading extends ProfileStates {}
+
+class GetUpdatedLocationSuccess extends ProfileStates{}
+
+class GetUpdatedLocationErrorr extends ProfileStates {
+  final String message;
+
+  GetUpdatedLocationErrorr(this.message);
+}
+class GetLocationCountryLoading extends ProfileStates {}
+
+class GetLocationCountrySuccess extends ProfileStates {
+  // final Country country;
+  // GetLocationCountrySuccess(this.country);
+}
+
+class GetLocationCountryErrorr extends ProfileStates {
+  final String message;
+
+  GetLocationCountryErrorr(this.message);
+}
+class SelectedLocationUpdatedState extends ProfileStates {}

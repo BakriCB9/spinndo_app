@@ -21,6 +21,7 @@ import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:app/features/service/presentation/screens/filter_result_screen.dart';
 import 'package:app/main.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceScreen extends StatefulWidget {
   static const String routeName = '/service';
@@ -34,8 +35,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   int indexCategory = 0;
-  List<ChildCategory>lisChild=[];
-  bool val=false;
+  List<ChildCategory> lisChild = [];
+  // bool val=false;
   @override
   void initState() {
     _serviceCubit.getCountriesAndCategories();
@@ -44,6 +45,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     double _distance = _serviceCubit.selectedDistance ?? 10.0;
     return Container(
@@ -73,7 +75,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               backgroundColor:
                                   Theme.of(context).primaryColorDark,
                               title: Text(
-                                "Note",
+                                localization.note,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium!
@@ -81,7 +83,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                         fontSize: 36.sp, color: Colors.red),
                               ),
                               content: Text(
-                                'You don\'t have account you have to sign in',
+                                localization.youdonthaveaccountyouhavetosignin,
                                 style:
                                     Theme.of(context).textTheme.displayMedium,
                               ),
@@ -91,7 +93,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       Navigator.of(context).pop();
                                     },
                                     child: Text(
-                                      'Cancel',
+                                      localization.cancel,
                                       style: TextStyle(
                                           fontSize: 25.sp, color: Colors.red),
                                     )),
@@ -102,7 +104,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       //Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
                                     },
                                     child: Text(
-                                      'Ok',
+                                      localization.ok,
                                       style: TextStyle(
                                           fontSize: 25.sp, color: Colors.green),
                                     )),
@@ -148,7 +150,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               // ),
             ],
             title: Text(
-              'Search Settings',
+              localization.searchSetting,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
@@ -212,7 +214,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Search by useing service or provider name',
+                                localization
+                                    .searchByUseingServiceOrProviderName,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium!
@@ -245,7 +248,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Choose Country',
+                                        localization.chooseCategory,
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium!
@@ -259,7 +262,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 Countries>(
                                               dropdownColor: Theme.of(context)
                                                   .primaryColorDark,
-                                              hint: Text("Country",
+                                              hint: Text(localization.country,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .displayMedium),
@@ -284,7 +287,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               onChanged: (value) {
                                                 _serviceCubit.selectedDistance =
                                                     null;
-                                                _serviceCubit.isCity=false;
+                                                _serviceCubit.isCity = false;
                                                 _serviceCubit.isCurrent = false;
 
                                                 _serviceCubit
@@ -313,7 +316,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               children: [
                                                 SizedBox(height: 30.h),
                                                 Text(
-                                                  'Choose City',
+                                                  localization.chooseCity,
                                                   textAlign: TextAlign.start,
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -331,7 +334,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                         dropdownColor: Theme.of(
                                                                 context)
                                                             .primaryColorDark,
-                                                        hint: Text("City",
+                                                        hint: Text(
+                                                            localization.city,
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
@@ -358,7 +362,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                                 ))
                                                             .toList(),
                                                         onChanged: (value) {
-                                                          _serviceCubit.isCity=true;
+                                                          _serviceCubit.isCity =
+                                                              true;
 
                                                           _serviceCubit
                                                               .selectedCityService(
@@ -406,13 +411,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 Theme.of(context).primaryColor,
                                             value: _serviceCubit.isCurrent,
                                             onChanged: (value) {
-
                                               _serviceCubit
                                                   .chooseCurrentLocation(
                                                       value!);
                                               _serviceCubit.selectedDistance =
                                                   10;
-                                              _serviceCubit.isCity=true;
+                                              _serviceCubit.isCity = true;
 
                                               _serviceCubit
                                                   .selectedCountryName = null;
@@ -428,7 +432,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     width: 20.w,
                                   ),
                                   Text(
-                                    'Current Location',
+                                    localization.currentLocation,
                                     style: Theme.of(context)
                                         .textTheme
                                         .displayMedium,
@@ -543,7 +547,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text("Distance",
+                                              Text(localization.distance,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .displayMedium),
@@ -565,14 +569,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 max: 25,
                                                 divisions: 5,
                                                 label:
-                                                    "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
+                                                    "${_serviceCubit.selectedDistance?.toInt() ?? 10} ${localization.km}",
                                                 onChanged: (value) {
                                                   _serviceCubit
                                                       .distanceSelect(value);
                                                 },
                                               ),
                                               Text(
-                                                  "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
+                                                  "${_serviceCubit.selectedDistance?.toInt() ?? 10} ${localization.km}",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .displayMedium),
@@ -584,7 +588,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 ),
                               ),
                               Text(
-                                'Choose Category',
+                                localization.chooseCategory,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium!
@@ -605,13 +609,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       DropdownButtonFormField<Categories>(
                                         dropdownColor:
                                             Theme.of(context).primaryColorDark,
-                                        hint: Text("Cateory",
+                                        hint: Text(localization.category,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displayMedium),
                                         menuMaxHeight: 200,
                                         decoration: const InputDecoration(
                                             errorBorder: InputBorder.none),
+                                        value: _serviceCubit.selectedCategory,
                                         items: _serviceCubit.categoriesList!
                                             .map((e) =>
                                                 DropdownMenuItem<Categories>(
@@ -623,72 +628,84 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 ))
                                             .toList(),
                                         onChanged: (value) {
-                                         val=false;
+                                          // val=false;
                                           _serviceCubit.selectedCategoryService(
-                                              value!.id,);
-                                              
-                                          indexCategory = _serviceCubit
-                                              .categoriesList!
-                                              .indexWhere(
-                                            (element) =>
-                                                element.id ==
-                                                _serviceCubit
-                                                    .selectedCategoryId!,
+                                            value,
                                           );
-                                         
                                         },
                                       ),
                                       SizedBox(
                                         height: 20.h,
                                       ),
-                                      GestureDetector(
-                                        onTap: (){
-                                          val=true;
-                                          _serviceCubit
-                                                .selectedCategoryService(_serviceCubit
-                                              .categoriesList![indexCategory]
-                                              .children[0].id);
-                                        },
-                                        child: DropdownButtonFormField<ChildCategory>(
-                                         
-                                         value:_serviceCubit.selectedCategoryId!=null? _serviceCubit
-                                              .categoriesList![indexCategory]
-                                              .children[0]:null,
-                                              style:TextStyle(color: Colors.grey,fontSize: 25.sp) ,
-                                          dropdownColor:
-                                              Theme.of(context).primaryColorDark,
-                                          // hint: Text('kk',
-                                          //     style: Theme.of(context)
-                                          //         .textTheme
-                                          //         .displayMedium),
-                                          menuMaxHeight: 200,
-                                          decoration: const InputDecoration(
-                                              errorBorder: InputBorder.none),
-                                          items:val==true&&_serviceCubit.selectedCategoryId!=null? _serviceCubit
-                                              .categoriesList![indexCategory]
-                                              .children
-                                              .map((e) =>
-                                                  DropdownMenuItem<ChildCategory>(
-                                                    value: e,
-                                                    child: Text(e.name!,
+                                      _serviceCubit.selectedCategory != null
+                                          ? Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 30.h,
+                                                ),
+                                                DropdownButtonFormField<
+                                                    ChildCategory>(
+                                                  dropdownColor:
+                                                      Theme.of(context)
+                                                          .primaryColorDark,
+                                                  menuMaxHeight: 200,
+                                                  isExpanded: false,
+
+                                                  // value:  _authCubit.selectedCategoryId!=null?_authCubit.categoriesList![indexChildCategory!].children[0]:null,
+                                                  hint: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 12.w),
+                                                    child: Text(
+                                                        localization
+                                                            .chooseSubCategory,
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .displayMedium),
-                                                  ))
-                                              .toList():null,
-                                          onChanged: (value) {
-                                           // val=value;
-                                            _serviceCubit
-                                                .selectedCategoryService(value!.id);
-                                            
-                                          },
-                                        ),
-                                      ),
+                                                  ),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          errorBorder:
+                                                              InputBorder.none),
+                                                  items:
+                                                      //indexChildCategory != null
+                                                      //? _authCubit
+                                                      //.categoriesList![indexChildCategory!].children
+                                                      _serviceCubit.catChildren
+                                                          ?.map((e) =>
+                                                              DropdownMenuItem<
+                                                                  ChildCategory>(
+                                                                value: e,
+                                                                child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              16.0.w),
+                                                                  child: Text(
+                                                                    e.name!,
+                                                                    style: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .displayMedium,
+                                                                  ),
+                                                                ),
+                                                              ))
+                                                          .toList(),
+                                                  value: _serviceCubit
+                                                      .selectedSubCategory,
+                                                  onChanged: (value) {
+                                                    _serviceCubit
+                                                        .selectedSubCategoryService(
+                                                            value!);
+                                                  },
+                                                )
+                                              ],
+                                            )
+                                          : SizedBox(),
                                     ],
                                   );
                                 },
                               ),
-                              
+
                               SizedBox(height: 80.h),
                               ElevatedButton(
                                 onPressed: () {
@@ -708,8 +725,17 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return;
                                   }
                                   _serviceCubit.getServices(GetServicesRequest(
-                                      categoryId:
-                                          _serviceCubit.selectedCategoryId,
+                                      categoryId: _serviceCubit
+                                                  .selectedCategory?.id !=
+                                              null
+                                          ? _serviceCubit.selectedSubCategory
+                                                      ?.id ==
+                                                  null
+                                              ? _serviceCubit
+                                                  .selectedCategory!.id
+                                              : _serviceCubit.selectedSubCategory!
+                                                  .id
+                                          : null,
                                       cityId: _serviceCubit.selectedCityId,
                                       countryId:
                                           _serviceCubit.selectedCountryId,
@@ -719,7 +745,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           .getCurrentLocation?.longitude,
                                       radius: _serviceCubit.selectedDistance
                                           ?.toInt(),
-                                      search: _serviceCubit   
+                                      search: _serviceCubit
                                               .searchController.text.isEmpty
                                           ? null
                                           : _serviceCubit
@@ -730,7 +756,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size(double.infinity, 48),
                                 ),
-                                child: Text("Start Search",
+                                child: Text(localization.startSearch,
                                     style:
                                         Theme.of(context).textTheme.bodyLarge),
                               ),
@@ -847,7 +873,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                                 errorBorder:
                                                                     InputBorder
                                                                         .none),
-
                                                         items: _serviceCubit
                                                             .citiesList
                                                             ?.map((e) =>
@@ -1067,6 +1092,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     menuMaxHeight: 200,
                                     decoration: const InputDecoration(
                                         errorBorder: InputBorder.none),
+                                    value: _serviceCubit.selectedCategory,
                                     items: _serviceCubit.categoriesList!
                                         .map(
                                             (e) => DropdownMenuItem<Categories>(
@@ -1078,8 +1104,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 ))
                                         .toList(),
                                     onChanged: (value) {
-                                      _serviceCubit.selectedCategoryService(
-                                          value!.id);
+                                      _serviceCubit
+                                          .selectedCategoryService(value);
                                     },
                                   );
                                 },

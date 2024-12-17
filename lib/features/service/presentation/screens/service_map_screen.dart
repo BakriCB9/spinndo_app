@@ -7,6 +7,7 @@ import '../../../../core/utils/map_helper/geocoding_service.dart';
 import '../../../../core/utils/map_helper/google_map_service.dart';
 import '../../domain/entities/google_map_marker.dart';
 import '../cubit/service_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceMapScreen extends StatefulWidget {
   static const String routeName = '/serviceMap';
@@ -44,10 +45,12 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Google Map",
+          localization.googleMap,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         backgroundColor: Theme.of(context).primaryColorDark,

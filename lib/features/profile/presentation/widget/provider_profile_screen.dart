@@ -1,3 +1,4 @@
+import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/const_variable.dart';
@@ -21,8 +22,12 @@ class ProviderProfileScreen extends StatefulWidget {
 
 
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
+  final _profileCubit = serviceLocator.get<ProfileCubit>();
+
   @override
   Widget build(BuildContext context) {
+    _profileCubit.latitu=widget.providerProfile.details!.latitude!;
+    _profileCubit.longti=widget.providerProfile.details!.longitude!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final size = MediaQuery.of(context).size;
     return Container(
@@ -73,6 +78,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
+                    lat: widget.providerProfile.details!.latitude!,
+                    lng: widget.providerProfile.details!.longitude!,
                     cityName: widget.providerProfile.details?.city.toString() ??
                         'Alep',
                     isApprovid: widget.providerProfile.details!.isApproved,

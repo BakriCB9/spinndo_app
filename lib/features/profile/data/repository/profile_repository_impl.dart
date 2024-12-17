@@ -60,25 +60,27 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return left(Failure(exception.message));
     }
   }
+
   @override
   Future<Either<Failure, UpdateClientResponse>> updateClientProfile(
-      UpdateAccountProfile  updateRequest) async {
+      UpdateAccountProfile updateRequest) async {
     try {
       final response =
-      await _profileRemoteDataSource.updateClientProfile(updateRequest);
+          await _profileRemoteDataSource.updateClientProfile(updateRequest);
       return Right(response);
     } on AppException catch (exception) {
       return left(Failure(exception.message));
     }
   }
-  Future<Either<Failure, UpdateProviderResponse>> updateProviderProfile(UpdateProviderRequest updateRequest) async{
-    try{
-      final response=await _profileRemoteDataSource.updateProviderProfile(updateRequest);
+
+  Future<Either<Failure, UpdateProviderResponse>> updateProviderProfile(
+      UpdateProviderRequest updateRequest, int typeEdit) async {
+    try {
+      final response = await _profileRemoteDataSource.updateProviderProfile(
+          updateRequest, typeEdit);
       return Right(response);
-    }on AppException catch(exception){
+    } on AppException catch (exception) {
       return left(Failure(exception.message));
     }
-
   }
-
 }
