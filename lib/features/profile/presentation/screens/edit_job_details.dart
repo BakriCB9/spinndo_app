@@ -35,13 +35,54 @@ class EditJobDetails extends StatelessWidget {
 //final _profileCubit=serviceLocator.get<ProfileCubit>();
   @override
   Widget build(BuildContext context) {
+
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     final _serviceCubit = serviceLocator.get<ServiceCubit>();
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     _profileCubit.descriptionController.text = description;
     _profileCubit.serviceNameController.text = serviceName;
     final localization = AppLocalizations.of(context)!;
+    Categories? parent;
+    ChildCategory? child;
+ //    if(_profileCubit.providerProfile!.details!.category!.parent==null){
+ //      final parentName=_profileCubit.providerProfile?.details?.category?.name;
+ //      print('the name is of parent is ############################## $parentName');
+ // parent=_profileCubit.categoriesList?.firstWhere((element) {
+ //        return  element.name==parentName;
+ //      },);
+ // print('the categoriiiiiiesssssssssssssssssssss $parent');
+ //      _profileCubit.selectedCategory=parent;
+ //      print('the value is  88888888888888888888888888888888888888888888 ${_profileCubit.selectedCategory}');
+ //    }
+ //    else {
+ //      final parentName = _profileCubit.providerProfile?.details?.category
+ //          ?.parent?.name;
+ //      final childName = _profileCubit.providerProfile?.details?.category?.name;
+ //
+ //      Categories? parent=_profileCubit.categoriesList?.firstWhere((element) {
+ //       return  element.name==parentName;
+ //      },);
+ //
+ //        child=parent?.children.firstWhere((element){
+ //          return  element.name==  childName;
+ //      });
+ //       _profileCubit.selectedCategory=parent;
+ //       _profileCubit.selectedSubCategory=child;
+ //    }
+    //print(parentName);
 
+    //print("dsaaaaaaaaaaaaaa");
+//print(childName);
+  //  print("dsaaaaaaaaaaaaaa");
+    // Categories? parent=_profileCubit.categoriesList?.firstWhere((element) {
+    //  return  element.name==parentName;
+    // },);
+    //
+    //  ChildCategory? child=parent?.children.firstWhere((element){
+    //     return  element.name==  childName;
+    // });
+    //  _profileCubit.selectedCategory=parent;
+    //  _profileCubit.selectedSubCategory=child;
     final indexOfMyCurrentCategory = _serviceCubit.categoriesList?.indexWhere(
       (element) {
         return element.name == categoryName;
@@ -59,18 +100,50 @@ class EditJobDetails extends StatelessWidget {
         body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
           if (cur is GetCategoryLoading ||
               cur is GetCategoryError ||
+              cur is SelectedCategoryState||
               cur is GetCategorySuccess) {
             return true;
           }
           return false;
         }, builder: (context, state) {
+          print(state);
+          print("jjkhjgjh");
           if (state is GetCategoryLoading) {
             return LoadingIndicator(Colors.yellow);
           } else if (state is GetCategoryError) {
             return Center(
               child: Text(state.message),
             );
-          } else if (state is GetCategorySuccess) {
+          }
+          else {
+            if(_profileCubit.providerProfile!.details!.category!.parent==null){
+              final parentName=_profileCubit.providerProfile?.details?.category?.name;
+              print('the name is of parent is ############################## $parentName');
+              parent=_profileCubit.categoriesList?.firstWhere((element) {
+                return  element.name==parentName;
+              },);
+              print('the categoriiiiiiesssssssssssssssssssss $parent');
+              _profileCubit.selectedCategory=parent;
+              print('the value is  88888888888888888888888888888888888888888888 ${_profileCubit.selectedCategory}');
+            }
+            else {
+              final parentName = _profileCubit.providerProfile?.details?.category
+                  ?.parent?.name;
+              final childName = _profileCubit.providerProfile?.details?.category?.name;
+              print('the child is ########################## $childName');
+              print('the parent is ########################### $parentName');
+               parent=_profileCubit.categoriesList?.firstWhere((element) {
+                return  element.name==parentName;
+              },);
+
+              child=parent?.children.firstWhere((element){
+                return  element.name==  childName;
+              });
+              print('the childof object is @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ${child!.name}');
+              _profileCubit.selectedCategory=parent;
+              _profileCubit.selectedSubCategory=child;
+              _profileCubit.catChildren=parent?.children;
+            }
             return SingleChildScrollView(
                 child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -106,12 +179,7 @@ class EditJobDetails extends StatelessWidget {
                             dropdownColor: Theme.of(context).primaryColorDark,
                             menuMaxHeight: 200,
                             isExpanded: false,
-                            validator: (value) {
-                              if (value == null) {
-                                return "please select category";
-                              }
-                              return null;
-                            },
+
                             hint: Padding(
                               padding: EdgeInsets.only(left: 12.w),
                               child: Row(
@@ -386,8 +454,6 @@ class EditJobDetails extends StatelessWidget {
                 ],
               ),
             ));
-          } else {
-            return SizedBox();
           }
         }));
   }

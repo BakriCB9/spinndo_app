@@ -1,3 +1,4 @@
+import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/failure.dart';
@@ -10,7 +11,7 @@ import 'package:app/features/service/domain/entities/countries.dart';
 import 'package:app/features/service/domain/entities/services.dart';
 
 import '../../../../core/error/app_exception.dart';
-import '../../../profile/data/models/provider_model/data.dart';
+
 import '../../domain/repository/service_repository.dart';
 
 @LazySingleton(as: ServiceRepository)

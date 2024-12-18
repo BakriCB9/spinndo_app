@@ -69,12 +69,14 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 15.h),
                   UserAccount(
+
                     userId: widget.providerProfile.id,
                     typeAccount: 'Provider',
                     isApprovid: widget.providerProfile.details!.isApproved,
                     firstName: widget.providerProfile.firstName!,
                     lastName: widget.providerProfile.lastName!,
                     email: widget.providerProfile.email!,
+
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(

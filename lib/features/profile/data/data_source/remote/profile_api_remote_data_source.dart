@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
 import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
+import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 import 'package:app/main.dart';
@@ -13,7 +14,6 @@ import 'package:app/core/error/app_exception.dart';
 import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:app/features/profile/data/data_source/remote/profile_remote_data_source.dart';
 import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
-import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
 
 @LazySingleton(as: ProfileRemoteDataSource)
 class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {

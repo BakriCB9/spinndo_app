@@ -1,4 +1,5 @@
-import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
+
+import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
 import 'package:app/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/get_all_countries_response.dart';
 import 'package:app/features/service/data/models/get_services_request.dart';

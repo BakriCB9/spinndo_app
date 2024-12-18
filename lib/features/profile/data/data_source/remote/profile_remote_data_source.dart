@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
 import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
-import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
+import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 

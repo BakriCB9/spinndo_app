@@ -1,3 +1,4 @@
+import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app/core/error/failure.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
@@ -6,7 +7,7 @@ import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/entities/countries.dart';
 import 'package:app/features/service/domain/entities/services.dart';
 
-import '../../../profile/data/models/provider_model/data.dart';
+
 
 abstract class ServiceRepository {
   Future<Either<Failure, List<Services>>> getServices(

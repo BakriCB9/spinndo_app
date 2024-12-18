@@ -1,5 +1,7 @@
+import 'package:app/features/profile/domain/entities/provider_profile/provider_porfile_category.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
-import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_category.dart';
+
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_city.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 
 class ProviderProfileDetailsJob {
@@ -12,11 +14,17 @@ class ProviderProfileDetailsJob {
   dynamic isApproved;
   String? certificatePath;
   ProviderProfileCategory? category;
-  dynamic city;
+//  dynamic city;
   List<ProviderPriofileWorkingday>? workingDays;
   List<ProviderProfileImage>? images;
 
+  ProviderProfileCity? city;
+
+
   ProviderProfileDetailsJob({
+    this.images,
+    this.category,
+    this.city,
     this.id,
     this.name,
     this.description,
@@ -25,9 +33,9 @@ class ProviderProfileDetailsJob {
     this.latitude,
     this.isApproved,
     this.certificatePath,
-    this.category,
-    this.city,
+
+
     this.workingDays,
-    this.images,
+
   });
 }

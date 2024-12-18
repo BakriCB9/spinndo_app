@@ -6,6 +6,7 @@ import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart';
 import 'package:app/features/profile/domain/use_cases/update_client_profile.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
@@ -49,6 +50,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   String? selectedSubCategoryId;
   ChildCategory? selectedSubCategory;
   final Getcountryname _getCountryCityName;
+  ProviderProfile? providerProfile;
    String? latitu;
    String? longti;
 
@@ -115,10 +117,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
           (failure) => emit(
         GetProfileErrorr(failure.message),
       ),
-          (data) => emit(
+          (data) {
+            providerProfile=ProviderProfile(id: data.id,email: data.email,firstName: data.firstName,imagePath: data.imagePath,lastName: data.lastName,details: data.details);
+
+            emit(
 
         GetProviderSuccess(data),
-      ),
+          );}
     );
   }
 
