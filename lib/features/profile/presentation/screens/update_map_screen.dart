@@ -94,7 +94,7 @@ class UpdateMapScreen extends StatelessWidget {
                       },
                       initialCameraPosition: CameraPosition(
                           target:
-                          _profileCubit.currentLocation ?? const LatLng(0, 0),
+                          LatLng(double.parse(_profileCubit.latitu!),double.parse(_profileCubit.longti!)),
                           zoom: 14),
                     ),
                   ],

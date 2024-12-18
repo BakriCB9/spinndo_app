@@ -362,7 +362,15 @@ class EditJobDetails extends StatelessWidget {
                           onPressed: () {
                             _profileCubit.updateProviderProfile(
                                 UpdateProviderRequest(
-                                  cityNameService:
+                                  latitudeService: _profileCubit.isCurrent
+                                      ? _profileCubit.currentLocation?.latitude.toString()
+                                      : _profileCubit.selectedLocation?.latitude
+                                      .toString(),
+                                  longitudeService:  _profileCubit.isCurrent
+                                      ? _profileCubit.currentLocation!.longitude.toString()
+                                      : _profileCubit.selectedLocation!.longitude
+                                      .toString(),
+                                  nameService:
                                       _profileCubit.serviceNameController.text,
                                   descriptionService:
                                       _profileCubit.descriptionController.text,

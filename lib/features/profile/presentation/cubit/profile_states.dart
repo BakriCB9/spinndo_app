@@ -74,3 +74,14 @@ class GetLocationCountryErrorr extends ProfileStates {
   GetLocationCountryErrorr(this.message);
 }
 class SelectedLocationUpdatedState extends ProfileStates {}
+class LoadImagePhotoLoading extends ProfileStates {}
+
+class LoadImagePhotoError extends ProfileStates {
+  final  String message;
+  LoadImagePhotoError(this.message);
+}
+
+class LoadImagePhotoSuccess extends ProfileStates {
+  final String message;
+  LoadImagePhotoSuccess(this.message);
+}

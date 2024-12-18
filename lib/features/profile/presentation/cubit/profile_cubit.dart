@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:app/core/models/google_map_model.dart';
 import 'package:app/core/utils/map_helper/location_service.dart';
 import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/domain/use_cases/add_image_photo.dart';
 import 'package:app/features/profile/domain/use_cases/update_client_profile.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
@@ -24,7 +27,7 @@ import '../../domain/use_cases/update_provider_profile.dart';
 @lazySingleton
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit(
-      this._getClientProfile, this._getProviderProfile, this._getUserRole, this._updateClientProfile, this._updateProviderProfile,this._getCategories, this._getCountryCityName)
+      this._getClientProfile, this._getProviderProfile, this._getUserRole, this._updateClientProfile, this._updateProviderProfile,this._getCategories, this._getCountryCityName, this._addImagePhoto)
       : super(ProfileInitial());
   final GetClientProfile _getClientProfile;
   final GetProviderProfile _getProviderProfile;
@@ -32,6 +35,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final UpdateClientProfile _updateClientProfile;
   final UpdateProviderProfile _updateProviderProfile;
   final GetCategories _getCategories;
+  final AddImagePhoto _addImagePhoto;
 
   //variable
   TextEditingController emailEditController = TextEditingController();
@@ -249,12 +253,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   void initCurrentLocation() {
     CameraPosition newLocation =
-    CameraPosition(target: currentLocation!, zoom: 15);
+    CameraPosition(target: LatLng(double.parse(latitu!),double.parse(longti!)), zoom: 15);
     googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(newLocation));
 
     markerLocationData.add(GoogleMapModel(
-        id: 1, name: "your current location", latLng: currentLocation!));
+        id: 1, name: "your current location",latLng:  LatLng(double.parse(latitu!),double.parse(longti!))));
     emit(SelectedLocationUpdatedState());
   }
 
@@ -305,5 +309,17 @@ class ProfileCubit extends Cubit<ProfileStates> {
     } catch (e) {
       // emit(MapStyleError("Failed to load map style."));
     }
+  }
+  void addImagePhoto(File image) async {
+    print('the image work and this is Image  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${image}');
+    emit(LoadImagePhotoLoading());
+    final result = await _addImagePhoto(image);
+    result.fold((failure) {
+      print('There are Error bakkkkkkkkkkkkkkar here now #########################################');
+      emit(LoadImagePhotoError(failure.message));},
+            (response) {
+
+          emit(LoadImagePhotoSuccess(response.data!));
+        });
   }
 }

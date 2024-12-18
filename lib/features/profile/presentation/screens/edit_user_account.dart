@@ -1,7 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:app/core/constant.dart';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/utils/image_functions.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/di/service_locator.dart';
@@ -26,7 +35,12 @@ class EditUserAccountScreen extends StatelessWidget {
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     _profileCubit.firstNameEditController.text = firstName;
     _profileCubit.lastNameEditController.text = lastName;
+    //  final base64String =sharedPref.getString(CacheConstant.imagePhoto);
+    //   if(base64String!=null){
+    //     final bytes = base64Decode(base64String);
+    //   }
 
+    print('the Image from local is ');
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -45,30 +59,198 @@ class EditUserAccountScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Positioned(
-                      child: CircleAvatar(
-                        radius: 150.r,
-                        backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.person,
-                          size: 150.r,
-                          color: Colors.white,
-                        ),
-                      ),
+                      child: Container(
+                          //radius: 150.r,
+                          //backgroundColor: Colors.grey,
+                          width: 300.w,
+                          height: 300.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey,
+                          ),
+                          child: BlocConsumer<ProfileCubit, ProfileStates>(
+                              listener: (context, state) {
+                                if (state is LoadImagePhotoError) {
+                                  UIUtils.showMessage(state.message);
+                                }
+                                if (state is LoadImagePhotoSuccess) {
+                                  UIUtils.showMessage(state.message);
+                                }
+                              },
+                              buildWhen: (pre, cur) {
+                                if (cur is LoadImagePhotoLoading ||
+                                    cur is LoadImagePhotoSuccess ||
+                                    cur is LoadImagePhotoError) {
+                                  return true;
+                                }
+                                return false;
+                              },
+                              bloc: _profileCubit,
+                              builder: (context, state) {
+                                if (state is LoadImagePhotoLoading) {
+                                  return LoadingIndicator(Colors.yellow);
+                                } else if (state is LoadImagePhotoError) {
+                                  return Icon(
+                                    Icons.person,
+                                    size: 150.r,
+                                    color: Colors.white,
+                                  );
+                                } else {
+                                  Uint8List? bytes;
+                                  final base64String = sharedPref
+                                      .getString(CacheConstant.imagePhoto);
+
+                                  if (base64String != null &&
+                                      base64String.isNotEmpty) {
+                                    bytes = base64Decode(base64String);
+                                    print(
+                                        'the image is ##############################################  $bytes');
+                                  }
+                                  return base64String == null
+                                      ? Icon(
+                                          Icons.person,
+                                          size: 150.r,
+                                          color: Colors.white,
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(150.r),
+                                          child: Image.memory(
+                                            bytes!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                }
+                              })),
                     ),
                     Positioned(
                       bottom: 10,
                       right: 10.w,
-                      child: Container(
-                        width: 80.r,
-                        height: 80.r,
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.black,
-                          size: 50.r,
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return SafeArea(
+                                    child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 30.w),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Center(
+                                              child: Text('Profile Photo'),
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.delete),
+                                            onPressed: () {},
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 30.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  Navigator.of(context).pop();
+                                                  final image =
+                                                      await ImageFunctions
+                                                          .CameraPicker();
+                                                  if (image == null) {
+                                                    return;
+                                                  }
+                                                  _profileCubit
+                                                      .addImagePhoto(image);
+                                                },
+                                                child: Container(
+                                                  width: 100.w,
+                                                  height: 100.h,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                          color: Colors.grey)),
+                                                  child: Icon(
+                                                    Icons.camera_alt_outlined,
+                                                    color: ColorManager.primary,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 15.h),
+                                              Text(
+                                                'Camera',
+                                                style:
+                                                    TextStyle(fontSize: 25.sp),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 35.w,
+                                          ),
+                                          Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  Navigator.of(context).pop();
+                                                  final image =
+                                                      await ImageFunctions
+                                                          .galleryPicker();
+                                                  if (image == null) {
+                                                    return;
+                                                  }
+                                                  _profileCubit
+                                                      .addImagePhoto(image);
+                                                },
+                                                child: Container(
+                                                  width: 100.w,
+                                                  height: 100.h,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                          color: Colors.grey)),
+                                                  child: Icon(
+                                                    Icons.image_outlined,
+                                                    color: ColorManager.primary,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 15.h),
+                                              Text(
+                                                'Gallery',
+                                                style:
+                                                    TextStyle(fontSize: 25.sp),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 50.h,
+                                      )
+                                    ],
+                                  ),
+                                ));
+                              });
+                        },
+                        child: Container(
+                          width: 80.r,
+                          height: 80.r,
+                          decoration: const BoxDecoration(
+                            color: Colors.blue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                            size: 50.r,
+                          ),
                         ),
                       ),
                     ),
@@ -150,20 +332,18 @@ class EditUserAccountScreen extends StatelessWidget {
                         TextStyle(color: Colors.black, fontSize: 20.sp)),
               ),
               SizedBox(height: 30.h),
-
               BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
                 if (cur is IsUpdated || cur is IsNotUpdated) return true;
                 return false;
               }, builder: (context, state) {
                 print('the State is ${state}');
 
-
                 if (state is IsUpdated) {
                   return BlocListener<ProfileCubit, ProfileStates>(
                     listenWhen: (pre, cur) {
-                      if (cur is UpdateLoading||
-                      cur is UpdateError||
-                      cur is UpdateSuccess) {
+                      if (cur is UpdateLoading ||
+                          cur is UpdateError ||
+                          cur is UpdateSuccess) {
                         return true;
                       }
                       return false;
@@ -183,7 +363,7 @@ class EditUserAccountScreen extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {
                           if (_profileCubit
-                              .firstNameEditController.text.isEmpty ||
+                                  .firstNameEditController.text.isEmpty ||
                               _profileCubit
                                   .lastNameEditController.text.isEmpty) {
                             return UIUtils.showMessage(
@@ -197,12 +377,14 @@ class EditUserAccountScreen extends StatelessWidget {
                                     lastName: _profileCubit
                                         .lastNameEditController.text));
                           } else {
-                            _profileCubit
-                                .updateProviderProfile(UpdateProviderRequest(
-                                firstName:
-                                _profileCubit.firstNameEditController.text,
-                                lastName: _profileCubit.lastNameEditController.text,
-                            ),1);
+                            _profileCubit.updateProviderProfile(
+                                UpdateProviderRequest(
+                                  firstName: _profileCubit
+                                      .firstNameEditController.text,
+                                  lastName:
+                                      _profileCubit.lastNameEditController.text,
+                                ),
+                                1);
                           }
                         },
                         child: Text('Save')),
@@ -238,7 +420,6 @@ class EditUserAccountScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
 //     double avatarRadius = MediaQuery.of(context).size.width * 0.3;
-
 //     return Scaffold(
 //       backgroundColor: Colors.black,
 //       body: Center(

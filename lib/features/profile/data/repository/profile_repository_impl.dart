@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
+import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 import 'package:dartz/dartz.dart';
@@ -78,6 +82,23 @@ class ProfileRepositoryImpl extends ProfileRepository {
     try {
       final response = await _profileRemoteDataSource.updateProviderProfile(
           updateRequest, typeEdit);
+      return Right(response);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+  }
+  @override
+  Future<Either<Failure, ImageProfileResponse>> addImageProfile(
+      File iamge) async {
+    try {
+      final response = await _profileRemoteDataSource.addImagePhoto(iamge);
+      // Convert the image to bytes
+      final bytes = await iamge.readAsBytes();
+
+      // Convert bytes to Base64 string
+      final base64String = base64Encode(bytes);
+      await _profileLocalDataSource.imagePhoto(base64String);
+
       return Right(response);
     } on AppException catch (exception) {
       return left(Failure(exception.message));

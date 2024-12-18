@@ -46,6 +46,8 @@ import 'package:app/features/profile/data/repository/profile_repository_impl.dar
     as _i649;
 import 'package:app/features/profile/domain/repository/profile_repository.dart'
     as _i734;
+import 'package:app/features/profile/domain/use_cases/add_image_photo.dart'
+    as _i814;
 import 'package:app/features/profile/domain/use_cases/get_client_profile.dart'
     as _i916;
 import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart'
@@ -148,6 +150,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i284.UpdateProviderProfile>(
         () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
+    gh.lazySingleton<_i814.AddImagePhoto>(
+        () => _i814.AddImagePhoto(gh<_i734.ProfileRepository>()));
     gh.singleton<_i728.Getcountryname>(
         () => _i728.Getcountryname(gh<_i651.AuthRepository>()));
     gh.singleton<_i293.Login>(() => _i293.Login(gh<_i651.AuthRepository>()));
@@ -179,6 +183,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i284.UpdateProviderProfile>(),
           gh<_i779.GetCategories>(),
           gh<_i728.Getcountryname>(),
+          gh<_i814.AddImagePhoto>(),
         ));
     return this;
   }

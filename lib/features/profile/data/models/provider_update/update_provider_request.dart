@@ -35,15 +35,21 @@ class UpdateProviderRequest {
   }
 
   Map<String, dynamic> toJsonJobDetails() {
+    //rint('the value of ');
+    //return
+    //Map<String,dynamic> ma=
     return {
-      'service[category_id]': categoryIdService,
-      'service[name]': nameService,
-      'service[description]': descriptionService,
-      'service[city_name]': cityNameService,
-      'service[latitude]': latitudeService,
-      'service[longitude]': longitudeService,
+      "service": {
+        "name": nameService,
+        'description':descriptionService,
+        'latitude':latitudeService,
+        'longitude':longitudeService
+      },
       '_method': 'PUT'
     };
+    //print(ma);
+    //return ma;
+
   }
 
   Map<String, dynamic> toJsonDateTime() {
