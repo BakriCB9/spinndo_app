@@ -26,7 +26,9 @@ class CustomDescription extends StatelessWidget {
       required this.cityName,
       required this.serviceName,
       required this.description,
-      super.key, required this.lat, required this.lng});
+      super.key,
+      required this.lat,
+      required this.lng});
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +46,17 @@ class CustomDescription extends StatelessWidget {
                 ? IconButton(
                     onPressed: isApprovid == 0
                         ? () {
+<<<<<<< HEAD
 if(                _profileCubit.selectedCategory==null){
                        _profileCubit.getCategories();
 }
+=======
+                            _profileCubit.getCategories();
+>>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => EditJobDetails(
-                                  lat: lat,lng: lng,
+                                      lat: lat,
+                                      lng: lng,
                                       locationName: cityName,
                                       categoryName: categoryName,
 

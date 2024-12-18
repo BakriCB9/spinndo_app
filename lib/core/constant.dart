@@ -15,9 +15,9 @@ class ApiConstant {
   static const String logoutEndPoint = '/logout';
   static final String googleMapApiKey =
       'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
-  static const String updateClientProfile='/profile/client/update';
-  static const String updateProviderProfile='/profile/provider/update';
-  static const String imageProfile='/profile/updateMyImage';
+  static const String updateClientProfile = '/profile/client/update';
+  static const String updateProviderProfile = '/profile/provider/update';
+  static const String imageProfile = '/profile/updateMyImage';
 }
 
 class CacheConstant {
@@ -27,5 +27,5 @@ class CacheConstant {
   static const String nameKey = 'name';
   static const String userId = 'user_id';
   static const String userRole = 'user_role';
-  static const String imagePhoto='Image_photo';
+  static const String imagePhoto = 'Image_photo';
 }

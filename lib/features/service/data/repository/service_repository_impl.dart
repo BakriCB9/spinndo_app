@@ -1,8 +1,11 @@
+<<<<<<< HEAD
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
+=======
+import 'package:app/features/profile/data/models/provider_model/provider_profile.dart';
+>>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/failure.dart';
-import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 
 import 'package:app/features/service/data/data_sources/service_data_source.dart';
 import 'package:app/features/service/data/models/get_services_request.dart';
@@ -11,7 +14,10 @@ import 'package:app/features/service/domain/entities/countries.dart';
 import 'package:app/features/service/domain/entities/services.dart';
 
 import '../../../../core/error/app_exception.dart';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
 import '../../domain/repository/service_repository.dart';
 
 @LazySingleton(as: ServiceRepository)
@@ -53,7 +59,7 @@ class ServiceRepositoryImpl implements ServiceRepository {
   }
 
   @override
-  Future<Either<Failure, Data>> showDetails(int id) async {
+  Future<Either<Failure, ProviderProfile>> showDetails(int id) async {
     try {
       final poviderService = await _serviceDataSource.getProviderService(id);
       return Right(poviderService.data!);

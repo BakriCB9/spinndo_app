@@ -39,11 +39,12 @@ class ProfileSharedPrefLocalDataSource implements ProfileLocalDataSource {
       throw LocalAppException('Failed to get role');
     }
   }
+
   @override
-  Future<void> imagePhoto(String image)async{
-    try{
-      await   _sharedPreferences.setString(CacheConstant.imagePhoto,image);
-    }catch (_){
+  Future<void> imagePhoto(String image) async {
+    try {
+      await _sharedPreferences.setString(CacheConstant.imagePhoto, image);
+    } catch (_) {
       throw LocalAppException('Failed to get role');
     }
   }

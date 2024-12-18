@@ -177,7 +177,7 @@ class VerficationCodeScreen extends StatelessWidget {
   _verifyCode() {
     if (formKey.currentState?.validate() == true) {
       _authCubit.verifyCode(VerifyCodeRequest(
-        fcmToken: fcmToken!,
+          fcmToken: fcmToken!,
           email: _authCubit.emailController.text,
           code: _authCubit.codeController.text));
     }

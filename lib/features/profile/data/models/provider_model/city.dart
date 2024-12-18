@@ -1,10 +1,10 @@
-class ChildCategory {
+class City {
   int? id;
   String? name;
 
-  ChildCategory({this.id, this.name});
+  City({this.id, this.name});
 
-  factory ChildCategory.fromJson(Map<String, dynamic> json) => ChildCategory(
+  factory City.fromJson(Map<String, dynamic> json) => City(
         id: json['id'] as int?,
         name: json['name'] as String?,
       );

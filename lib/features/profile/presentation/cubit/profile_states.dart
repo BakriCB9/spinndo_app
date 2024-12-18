@@ -36,31 +36,39 @@ class GetUserRoleErrorr extends ProfileStates {
 class IsUpdated extends ProfileStates {}
 
 class IsNotUpdated extends ProfileStates {}
+
 class UpdateLoading extends ProfileStates {}
 
 class UpdateError extends ProfileStates {
-  final  String message;
+  final String message;
   UpdateError(this.message);
 }
+
 class UpdateSuccess extends ProfileStates {}
 
-class CardState extends ProfileStates{}
-class GetCategoryLoading extends ProfileStates{}
+class CardState extends ProfileStates {}
 
-class GetCategoryError extends ProfileStates{
+class GetCategoryLoading extends ProfileStates {}
+
+class GetCategoryError extends ProfileStates {
   String message;
   GetCategoryError(this.message);
 }
-class GetCategorySuccess extends ProfileStates{}
-class SelectedCategoryState extends ProfileStates{}class GetUpdatedLocationLoading extends ProfileStates {}
 
-class GetUpdatedLocationSuccess extends ProfileStates{}
+class GetCategorySuccess extends ProfileStates {}
+
+class SelectedCategoryState extends ProfileStates {}
+
+class GetUpdatedLocationLoading extends ProfileStates {}
+
+class GetUpdatedLocationSuccess extends ProfileStates {}
 
 class GetUpdatedLocationErrorr extends ProfileStates {
   final String message;
 
   GetUpdatedLocationErrorr(this.message);
 }
+
 class GetLocationCountryLoading extends ProfileStates {}
 
 class GetLocationCountrySuccess extends ProfileStates {
@@ -73,11 +81,13 @@ class GetLocationCountryErrorr extends ProfileStates {
 
   GetLocationCountryErrorr(this.message);
 }
+
 class SelectedLocationUpdatedState extends ProfileStates {}
+
 class LoadImagePhotoLoading extends ProfileStates {}
 
 class LoadImagePhotoError extends ProfileStates {
-  final  String message;
+  final String message;
   LoadImagePhotoError(this.message);
 }
 

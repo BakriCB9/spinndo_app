@@ -49,7 +49,7 @@ class UpdateMapScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: BlocBuilder<ProfileCubit,ProfileStates>(
+      body: BlocBuilder<ProfileCubit, ProfileStates>(
         bloc: _profileCubit,
         buildWhen: (previous, current) {
           if (current is GetUpdatedLocationSuccess ||
@@ -63,7 +63,7 @@ class UpdateMapScreen extends StatelessWidget {
               child: LoadingIndicator(Theme.of(context).primaryColor),
             );
           } else if (state is GetUpdatedLocationSuccess) {
-            return BlocBuilder<ProfileCubit,ProfileStates>(
+            return BlocBuilder<ProfileCubit, ProfileStates>(
               bloc: _profileCubit,
               buildWhen: (previous, current) {
                 if (current is SelectedLocationUpdatedState) return true;
@@ -93,8 +93,8 @@ class UpdateMapScreen extends StatelessWidget {
                         _profileCubit.initMarkerAddress();
                       },
                       initialCameraPosition: CameraPosition(
-                          target:
-                          LatLng(double.parse(_profileCubit.latitu!),double.parse(_profileCubit.longti!)),
+                          target: LatLng(double.parse(_profileCubit.latitu!),
+                              double.parse(_profileCubit.longti!)),
                           zoom: 14),
                     ),
                   ],

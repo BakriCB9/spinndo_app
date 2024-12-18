@@ -1,4 +1,4 @@
-class UpdateProviderResponse  {
+class UpdateProviderResponse {
   String? status;
   int? message;
   String? data;

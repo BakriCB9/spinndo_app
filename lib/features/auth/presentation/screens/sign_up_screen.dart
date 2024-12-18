@@ -254,11 +254,11 @@ class SignUpScreen extends StatelessWidget {
         return;
       }
     } else {
-      if (formKey.currentState!.validate() && _authCubit.selectedCategory==null) {
+      if (formKey.currentState!.validate() &&
+          _authCubit.selectedCategory == null) {
         _authCubit.getCategories();
       } else {
         Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-
       }
     }
   }

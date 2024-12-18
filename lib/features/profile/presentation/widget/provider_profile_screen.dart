@@ -20,14 +20,13 @@ class ProviderProfileScreen extends StatefulWidget {
   State<ProviderProfileScreen> createState() => _ProviderProfileScreenState();
 }
 
-
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   final _profileCubit = serviceLocator.get<ProfileCubit>();
 
   @override
   Widget build(BuildContext context) {
-    _profileCubit.latitu=widget.providerProfile.details!.latitude!;
-    _profileCubit.longti=widget.providerProfile.details!.longitude!;
+    _profileCubit.latitu = widget.providerProfile.details!.latitude!;
+    _profileCubit.longti = widget.providerProfile.details!.longitude!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final size = MediaQuery.of(context).size;
     return Container(

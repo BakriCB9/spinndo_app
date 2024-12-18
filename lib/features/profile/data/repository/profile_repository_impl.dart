@@ -7,6 +7,7 @@ import 'package:app/features/profile/data/models/image_profile_photo/image_profi
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/app_exception.dart';
@@ -39,21 +40,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
   }
 
   @override
-  Future<Either<Failure, Data>> getServiceProvider() async {
-    try {
-      // print('we start now');
-      final user_id = _profileLocalDataSource.getUserId();
-      final user_token = _profileLocalDataSource.getToken();
-      final response = await _profileRemoteDataSource.getServiceProviderProfile(
-          user_id, user_token);
-      // print('we are in response now bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk  ${response}');
-      return Right(response.data!);
-    } on AppException catch (exception) {
-      // print('we failed bakkkkkkkkkkkkaer we are sorrryyyyyyyy error ${exception.message}');
 
-      return Left(Failure(exception.message));
-    }
-  }
 
   @override
   Either<Failure, String> getUserRole() {
@@ -87,6 +74,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return left(Failure(exception.message));
     }
   }
+
   @override
   Future<Either<Failure, ImageProfileResponse>> addImageProfile(
       File iamge) async {
@@ -104,4 +92,11 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return left(Failure(exception.message));
     }
   }
+
+  @override
+  Future<Either<Failure, ProviderProfile>> getServiceProvider() {
+    // TODO: implement getServiceProvider
+    throw UnimplementedError();
+  }
+
 }

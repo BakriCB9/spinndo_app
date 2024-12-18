@@ -83,6 +83,7 @@ class GetCategoryError extends AuthState {
 }
 
 class SelectedCategoryState extends AuthState {}
+
 class SelectedSubCategoryState extends AuthState {}
 
 class SelectedLocationState extends AuthState {}

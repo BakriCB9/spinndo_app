@@ -28,7 +28,14 @@ import '../../domain/use_cases/update_provider_profile.dart';
 @lazySingleton
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit(
-      this._getClientProfile, this._getProviderProfile, this._getUserRole, this._updateClientProfile, this._updateProviderProfile,this._getCategories, this._getCountryCityName, this._addImagePhoto)
+      this._getClientProfile,
+      this._getProviderProfile,
+      this._getUserRole,
+      this._updateClientProfile,
+      this._updateProviderProfile,
+      this._getCategories,
+      this._getCountryCityName,
+      this._addImagePhoto)
       : super(ProfileInitial());
   final GetClientProfile _getClientProfile;
   final GetProviderProfile _getProviderProfile;
@@ -50,9 +57,14 @@ class ProfileCubit extends Cubit<ProfileStates> {
   String? selectedSubCategoryId;
   ChildCategory? selectedSubCategory;
   final Getcountryname _getCountryCityName;
+<<<<<<< HEAD
   ProviderProfile? providerProfile;
    String? latitu;
    String? longti;
+=======
+  String? latitu;
+  String? longti;
+>>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
 
   List<DateSelect> dateSelect = [
     DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
@@ -71,14 +83,15 @@ class ProfileCubit extends Cubit<ProfileStates> {
     emit(GetProfileLoading());
     final result = await _getClientProfile();
     result.fold(
-          (failure) => emit(
+      (failure) => emit(
         GetProfileErrorr(failure.message),
       ),
-          (client) => emit(
+      (client) => emit(
         GetClientSuccess(client),
       ),
     );
   }
+
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
 
@@ -91,6 +104,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       emit(GetCategorySuccess());
     });
   }
+
 // Future<void> getCategories() async {
 //   // emit(CountryCategoryLoading());
 //   final result = await _getCategories();
@@ -114,14 +128,18 @@ class ProfileCubit extends Cubit<ProfileStates> {
     emit(GetProfileLoading());
     final result = await _getProviderProfile();
     result.fold(
-          (failure) => emit(
+      (failure) => emit(
         GetProfileErrorr(failure.message),
       ),
+<<<<<<< HEAD
           (data) {
             providerProfile=ProviderProfile(id: data.id,email: data.email,firstName: data.firstName,imagePath: data.imagePath,lastName: data.lastName,details: data.details);
 
             emit(
 
+=======
+      (data) => emit(
+>>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
         GetProviderSuccess(data),
           );}
     );
@@ -132,9 +150,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
     final result = _getUserRole();
     result.fold(
-            (failure) => emit(
-          GetUserRoleErrorr(failure.message),
-        ), (role) {
+        (failure) => emit(
+              GetUserRoleErrorr(failure.message),
+            ), (role) {
       if (role == "ServiceProvider") {
         getProviderProfile();
       } else if (role == "Client") {
@@ -144,40 +162,43 @@ class ProfileCubit extends Cubit<ProfileStates> {
       }
     });
   }
+
   void updateClientProfile(UpdateAccountProfile updateRequest) async {
     emit(UpdateLoading());
     final result = await _updateClientProfile(updateRequest);
     result.fold((failure) => emit(UpdateError(failure.message)),
-            (updateRequest) {
-          emit(UpdateSuccess());
-        });
+        (updateRequest) {
+      emit(UpdateSuccess());
+    });
   }
-  void updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit)async{
+
+  void updateProviderProfile(
+      UpdateProviderRequest updateRequest, int typeEdit) async {
     emit(UpdateLoading());
-    final result = await _updateProviderProfile(updateRequest,typeEdit);
+    final result = await _updateProviderProfile(updateRequest, typeEdit);
     result.fold((failure) => emit(UpdateError(failure.message)),
-            (updateRequest) {
-          emit(UpdateSuccess());
-        });
+        (updateRequest) {
+      emit(UpdateSuccess());
+    });
   }
+
   updateInfo(
-      {
-        required String curFirst,
-        required String newFirst,
-        required String curLast,
-        required String newLast}) {
+      {required String curFirst,
+      required String newFirst,
+      required String curLast,
+      required String newLast}) {
     if (curFirst == newFirst && curLast == newLast) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());
     }
   }
+
   updateJobDetails(
-      {
-        required String curServiceName,
-        required String newServiceName,
-        required String curDescription,
-        required String newDescription}) {
+      {required String curServiceName,
+      required String newServiceName,
+      required String curDescription,
+      required String newDescription}) {
     if (curServiceName == newServiceName && curDescription == curDescription) {
       emit(IsNotUpdated());
     } else {
@@ -216,18 +237,19 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   void selectedCategoryEvent(Categories? category) {
     // selectedCategoryId = category!.id.toString();
-    selectedCategory=category;
-    selectedSubCategory=null;
+    selectedCategory = category;
+    selectedSubCategory = null;
 
-    catChildren=category?.children;
+    catChildren = category?.children;
     emit(SelectedCategoryState());
   }
 
   void selectedSubCategoryEvent(ChildCategory category) {
-    selectedSubCategory=category;
+    selectedSubCategory = category;
     selectedSubCategoryId = category.id.toString();
     emit(SelectedCategoryState());
   }
+
   bool isCurrent = true;
 
   String? mapStyle;
@@ -244,26 +266,28 @@ class ProfileCubit extends Cubit<ProfileStates> {
     var myMarker = markerLocationData
         .map(
           (e) => Marker(
-        position: e.latLng,
-        infoWindow: InfoWindow(title: e.name),
-        markerId: MarkerId(
-          e.id.toString(),
-        ),
-      ),
-    )
+            position: e.latLng,
+            infoWindow: InfoWindow(title: e.name),
+            markerId: MarkerId(
+              e.id.toString(),
+            ),
+          ),
+        )
         .toSet();
     markers.addAll(myMarker);
     markerLocationData.clear();
   }
 
   void initCurrentLocation() {
-    CameraPosition newLocation =
-    CameraPosition(target: LatLng(double.parse(latitu!),double.parse(longti!)), zoom: 15);
+    CameraPosition newLocation = CameraPosition(
+        target: LatLng(double.parse(latitu!), double.parse(longti!)), zoom: 15);
     googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(newLocation));
 
     markerLocationData.add(GoogleMapModel(
-        id: 1, name: "your current location",latLng:  LatLng(double.parse(latitu!),double.parse(longti!))));
+        id: 1,
+        name: "your current location",
+        latLng: LatLng(double.parse(latitu!), double.parse(longti!))));
     emit(SelectedLocationUpdatedState());
   }
 
@@ -298,12 +322,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
     final result = await _getCountryCityName(lat, long);
 
     result.fold((failure) => emit(GetLocationCountryErrorr(failure.message)),
-            (response) {
-          cityName = response.cityName;
-          isCountySuccess = true;
-          country=response;
-          emit(GetLocationCountrySuccess());
-        });
+        (response) {
+      cityName = response.cityName;
+      isCountySuccess = true;
+      country = response;
+      emit(GetLocationCountrySuccess());
+    });
   }
 
   Future<void> loadMapStyle(bool isDark) async {
@@ -315,16 +339,18 @@ class ProfileCubit extends Cubit<ProfileStates> {
       // emit(MapStyleError("Failed to load map style."));
     }
   }
+
   void addImagePhoto(File image) async {
-    print('the image work and this is Image  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${image}');
+    print(
+        'the image work and this is Image  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${image}');
     emit(LoadImagePhotoLoading());
     final result = await _addImagePhoto(image);
     result.fold((failure) {
-      print('There are Error bakkkkkkkkkkkkkkar here now #########################################');
-      emit(LoadImagePhotoError(failure.message));},
-            (response) {
-
-          emit(LoadImagePhotoSuccess(response.data!));
-        });
+      print(
+          'There are Error bakkkkkkkkkkkkkkar here now #########################################');
+      emit(LoadImagePhotoError(failure.message));
+    }, (response) {
+      emit(LoadImagePhotoSuccess(response.data!));
+    });
   }
 }

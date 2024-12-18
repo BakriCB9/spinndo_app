@@ -16,7 +16,9 @@ abstract class ProfileRepository {
   Future<Either<Failure, ProviderProfile>> getServiceProvider();
   Either<Failure, String> getUserRole();
 
-  Future<Either<Failure,UpdateClientResponse>> updateClientProfile(UpdateAccountProfile updateRequest);
-  Future<Either<Failure,UpdateProviderResponse>> updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit);
-  Future<Either<Failure,ImageProfileResponse>>addImageProfile(File iamge);
+  Future<Either<Failure, UpdateClientResponse>> updateClientProfile(
+      UpdateAccountProfile updateRequest);
+  Future<Either<Failure, UpdateProviderResponse>> updateProviderProfile(
+      UpdateProviderRequest updateRequest, int typeEdit);
+  Future<Either<Failure, ImageProfileResponse>> addImageProfile(File iamge);
 }
