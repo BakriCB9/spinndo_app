@@ -30,7 +30,8 @@ class GeocodingService {
   //     throw Exception('Error fetching address: $e');
   //   }
   // }
-  static  Future<String> getAddressFromCoordinates(double lat, double long)  async {
+  static Future<String> getAddressFromCoordinates(
+      double lat, double long) async {
     final String url =
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=${ApiConstant.googleMapApiKey}';
 
@@ -51,7 +52,8 @@ class GeocodingService {
           //     data['results'][4]['address_components'][5]['long_name'];
           // var regionName =
           // data['results'][4]['address_components'][1]['long_name'];
-          var cityName=data['results'][0]['address_components'][1]['long_name'];
+          var cityName =
+              data['results'][0]['address_components'][1]['long_name'];
           return cityName;
         } else {
           throw Exception('No results found');
@@ -63,6 +65,7 @@ class GeocodingService {
       throw Exception('Error fetching address: $e');
     }
   }
+
   static Future<LatLng> getCountryLatLng(String countryName) async {
     try {
       // Build the Geocoding API URL
@@ -100,6 +103,7 @@ class GeocodingService {
       print('Error: $e');
     }
   }
+
   static Future<LatLngBounds> getCountryBounds(String countryName) async {
     try {
       // Build the Geocoding API URL
@@ -125,8 +129,9 @@ class GeocodingService {
           final southLat = geometry['bounds']['southwest']['lat'];
           final southLng = geometry['bounds']['southwest']['lng'];
 
-          return LatLngBounds(northeast: LatLng(northLat, northLng),southwest: LatLng(southLat, southLng));
-
+          return LatLngBounds(
+              northeast: LatLng(northLat, northLng),
+              southwest: LatLng(southLat, southLng));
         } else {
           throw Exception('Error: ${data['status']}');
         }

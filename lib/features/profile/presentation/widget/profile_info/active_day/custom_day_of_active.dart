@@ -6,7 +6,7 @@ import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
 //import 'package:app/features/auth/data/models/register_service_provider_request.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:app/features/profile/data/models/provider_model/working_day.dart';
+import 'package:app/features/profile/data/models/provider_model/provider_profile_workingday.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
 import 'package:app/features/profile/presentation/screens/edit_date_time.dart';
 import 'package:app/main.dart';
@@ -39,7 +39,9 @@ class CustomDayActive extends StatelessWidget {
                     onPressed: issAprrovid == 0
                         ? () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => WorkingSchedulePage(listOfworkday: listOfworkday,)));
+                                builder: (context) => WorkingSchedulePage(
+                                      listOfworkday: listOfworkday,
+                                    )));
                           }
                         : () {
                             UIUtils.showMessage(

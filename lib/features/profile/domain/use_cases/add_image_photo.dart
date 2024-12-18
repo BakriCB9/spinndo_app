@@ -12,6 +12,6 @@ class AddImagePhoto {
 
   AddImagePhoto(this._profileRepository);
 
-  Future<Either<Failure,ImageProfileResponse >> call(File image) =>
+  Future<Either<Failure, ImageProfileResponse>> call(File image) =>
       _profileRepository.addImageProfile(image);
 }

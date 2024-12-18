@@ -87,7 +87,7 @@ class AuthCubit extends Cubit<AuthState> {
   File? secondImage;
   List<Categories>? categoriesList;
   List<ChildCategory>? catChildren;
-   Country? country;
+  Country? country;
   Categories? selectedCategory;
   ChildCategory? selectedSubCategory;
   final GetCategories _getCategories;
@@ -228,16 +228,18 @@ class AuthCubit extends Cubit<AuthState> {
 
   void selectedCategoryEvent(Categories? category) {
     // selectedCategoryId = category!.id.toString();
-    selectedCategory=category;
-    selectedSubCategory=null;
+    selectedCategory = category;
+    selectedSubCategory = null;
 
-    catChildren=category?.children;
+    catChildren = category?.children;
     emit(SelectedCategoryState());
   }
+
   void selectedSubCategoryEvent(ChildCategory category) {
-    selectedSubCategory=category;
+    selectedSubCategory = category;
     emit(SelectedCategoryState());
   }
+
   void initMarkerAddress() {
     markers.clear();
     var myMarker = markerLocationData
@@ -300,7 +302,7 @@ class AuthCubit extends Cubit<AuthState> {
         (response) {
       cityName = response.cityName;
       isCountySuccess = true;
-      country=response;
+      country = response;
       emit(GetLocationCountrySuccess());
     });
   }

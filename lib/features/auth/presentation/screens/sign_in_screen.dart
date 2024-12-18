@@ -143,7 +143,8 @@ class SignInScreen extends StatelessWidget {
   }
 
   _login() {
-  print('the value of fcm token is &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${fcmToken}');
+    print(
+        'the value of fcm token is &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${fcmToken}');
     _authCubit.login(LoginRequest(
         fcmToken: fcmToken!,
         email: _authCubit.emailController.text,

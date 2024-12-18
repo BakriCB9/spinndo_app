@@ -177,10 +177,10 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
           //     data['results'][4]['address_components'][5]['long_name'];
           // var regionName =
           // data['results'][4]['address_components'][1]['long_name'];
-          var address =
-          data['results'][4]['formatted_address'];
-          var cityName=data['results'][0]['address_components'][1]['long_name'];
-          return [cityName,address];
+          var address = data['results'][4]['formatted_address'];
+          var cityName =
+              data['results'][0]['address_components'][1]['long_name'];
+          return [cityName, address];
         } else {
           throw Exception('No results found');
         }

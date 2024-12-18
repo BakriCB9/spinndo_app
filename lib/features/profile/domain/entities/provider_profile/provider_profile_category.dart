@@ -17,7 +17,7 @@ class Category {
     id = json['id'];
     name = json['name'];
     parent =
-    json['parent'] != null ? new Parent.fromJson(json['parent']) : null;
+        json['parent'] != null ? new Parent.fromJson(json['parent']) : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -37,7 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveUserEmail(requestData.email);
       await _authLocalDataSource.saveUserName(
           "${response.data!.firstName} ${response.data!.lastName}");
-      
+
       await _authLocalDataSource.saveUserUnCompliteAccount(
         requestData.email,
       );
@@ -137,10 +137,7 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await _authRemoteDataSource.getAddressFromCoordinates(lat, long);
-      final country = Country(
-        cityName: response[0],
-        address:response[1]
-      );
+      final country = Country(cityName: response[0], address: response[1]);
       return Right(country);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));

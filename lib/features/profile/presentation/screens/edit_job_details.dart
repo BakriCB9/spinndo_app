@@ -30,7 +30,9 @@ class EditJobDetails extends StatelessWidget {
       required this.description,
       required this.locationName,
       required this.serviceName,
-      super.key, required this.lat, required this.lng});
+      super.key,
+      required this.lat,
+      required this.lng});
 
 //final _profileCubit=serviceLocator.get<ProfileCubit>();
   @override
@@ -278,7 +280,7 @@ class EditJobDetails extends StatelessWidget {
                     height: 50.h,
                   ),
                   SizedBox(height: 30.h),
-                  BlocBuilder<ProfileCubit,ProfileStates>(
+                  BlocBuilder<ProfileCubit, ProfileStates>(
                     bloc: _profileCubit,
                     builder: (context, state) {
                       return InkWell(
@@ -288,16 +290,18 @@ class EditJobDetails extends StatelessWidget {
                               _drawerCubit.themeMode == ThemeMode.dark
                                   ? true
                                   : false);
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                        return    UpdateMapScreen(
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) {
+                              return UpdateMapScreen(
 
 //                            location:LatLng( double.parse(lat),double.parse(lng))
-                        );
-                          },));
+                                  );
+                            },
+                          ));
                         },
                         child: Container(
-                          padding:
-                          EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24.w, vertical: 28.h),
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColorDark,
                             borderRadius: BorderRadius.all(
@@ -312,7 +316,7 @@ class EditJobDetails extends StatelessWidget {
                               SizedBox(
                                 width: 24.w,
                               ),
-                              BlocBuilder<ProfileCubit,ProfileStates>(
+                              BlocBuilder<ProfileCubit, ProfileStates>(
                                 bloc: _profileCubit,
                                 buildWhen: (previous, current) {
                                   if (current is GetLocationCountryLoading ||
@@ -325,9 +329,11 @@ class EditJobDetails extends StatelessWidget {
                                   if (state is GetLocationCountryLoading) {
                                     return LoadingIndicator(
                                         Theme.of(context).primaryColor);
-                                  } else if (state is GetLocationCountryErrorr) {
+                                  } else if (state
+                                      is GetLocationCountryErrorr) {
                                     return Text(state.message);
-                                  } else if (state is GetLocationCountrySuccess) {
+                                  } else if (state
+                                      is GetLocationCountrySuccess) {
                                     return Expanded(
                                       child: Text(
                                           maxLines: 4,
@@ -363,13 +369,16 @@ class EditJobDetails extends StatelessWidget {
                             _profileCubit.updateProviderProfile(
                                 UpdateProviderRequest(
                                   latitudeService: _profileCubit.isCurrent
-                                      ? _profileCubit.currentLocation?.latitude.toString()
+                                      ? _profileCubit.currentLocation?.latitude
+                                          .toString()
                                       : _profileCubit.selectedLocation?.latitude
-                                      .toString(),
-                                  longitudeService:  _profileCubit.isCurrent
-                                      ? _profileCubit.currentLocation!.longitude.toString()
-                                      : _profileCubit.selectedLocation!.longitude
-                                      .toString(),
+                                          .toString(),
+                                  longitudeService: _profileCubit.isCurrent
+                                      ? _profileCubit.currentLocation!.longitude
+                                          .toString()
+                                      : _profileCubit
+                                          .selectedLocation!.longitude
+                                          .toString(),
                                   nameService:
                                       _profileCubit.serviceNameController.text,
                                   descriptionService:

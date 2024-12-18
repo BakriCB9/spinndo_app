@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
 import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
+import 'package:app/features/profile/data/models/provider_model/provider_profile_response.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 import 'package:app/main.dart';
@@ -13,7 +14,6 @@ import 'package:app/core/error/app_exception.dart';
 import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:app/features/profile/data/data_source/remote/profile_remote_data_source.dart';
 import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
-import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
 
 @LazySingleton(as: ProfileRemoteDataSource)
 class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
@@ -84,45 +84,49 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
       throw RemoteAppException('Failed to update info');
     }
   }
+
   @override
-  Future<UpdateProviderResponse> updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit) async{
-    try{
+  Future<UpdateProviderResponse> updateProviderProfile(
+      UpdateProviderRequest updateRequest, int typeEdit) async {
+    try {
       final userToken = sharedPref.getString(CacheConstant.tokenKey);
       final response = await _dio.post(ApiConstant.updateProviderProfile,
-          data:typeEdit==1?updateRequest.toJsonAccount():(typeEdit==2?updateRequest.toJsonJobDetails():(updateRequest.toJsonDateTime())),
+          data: typeEdit == 1
+              ? updateRequest.toJsonAccount()
+              : (typeEdit == 2
+                  ? updateRequest.toJsonJobDetails()
+                  : (updateRequest.toJsonDateTime())),
           options: Options(headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $userToken"
           }));
 
-
       return UpdateProviderResponse.fromJson(response.data);
-    }catch(e){
+    } catch (e) {
       throw RemoteAppException('Failed to Update info');
     }
-
-
   }
+
   @override
-  Future<ImageProfileResponse> addImagePhoto(File image) async{
-    try{
+  Future<ImageProfileResponse> addImagePhoto(File image) async {
+    try {
       final imagePhoto = await MultipartFile.fromFile(
         image.path,
         filename: image.path.split('/').last,
       );
       final userToken = sharedPref.getString(CacheConstant.tokenKey);
       final response = await _dio.post(ApiConstant.imageProfile,
-          data: FormData.fromMap({'image':imagePhoto}),
+          data: FormData.fromMap({'image': imagePhoto}),
           options: Options(headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $userToken"
           }));
 
-      print('we Do it  now yessssssssssssssssssssssssssssssssssssssssssssssssss yesssssssssssssss');
+      print(
+          'we Do it  now yessssssssssssssssssssssssssssssssssssssssssssssssss yesssssssssssssss');
       return ImageProfileResponse.fromJson(response.data);
-    }catch(e){
+    } catch (e) {
       throw RemoteAppException('Failed to add Image');
     }
-
   }
 }

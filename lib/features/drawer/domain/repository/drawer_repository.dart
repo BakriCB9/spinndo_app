@@ -1,6 +1,6 @@
 // import 'package:dartz/dartz.dart';
 // import 'package:app/core/error/failure.dart';
-// import 'package:app/features/auth/data/models/data.dart';
+// import 'package:app/features/auth/data/models/provider_profile.dart';
 // import 'package:app/features/auth/data/models/login_request.dart';
 // import 'package:app/features/auth/data/models/register_request.dart';
 // import 'package:app/features/auth/data/models/register_response.dart';

@@ -43,10 +43,10 @@ class RegisterServiceProviderRequest {
         days.add(listOfDay[i].toJson());
       }
     }
-     String firsNametLetter = firstName[0].toUpperCase();
-          String remainingNameText = firstName.substring(1);
-          String firsServiceNametLetter = nameService[0].toUpperCase();
-          String remainingServiceNameText = nameService.substring(1);
+    String firsNametLetter = firstName[0].toUpperCase();
+    String remainingNameText = firstName.substring(1);
+    String firsServiceNametLetter = nameService[0].toUpperCase();
+    String remainingServiceNameText = nameService.substring(1);
     // Convert certificate and images to MultipartFile
     final certificateFile = await MultipartFile.fromFile(
       certificate.path,
@@ -73,16 +73,16 @@ class RegisterServiceProviderRequest {
     for (int i = 0; i < imageFiles.length; i++) {
       print('the value of first is   ${imageFiles[i].filename}');
     }
-   
+
     return FormData.fromMap({
-      "first_name": firsNametLetter+remainingNameText,
+      "first_name": firsNametLetter + remainingNameText,
       "last_name": lastName,
       "email": email,
       "password": password,
       "service[images][1]": imageOne,
       "service[images][0]": imageTwo,
       "service": {
-        "name": firsServiceNametLetter+remainingServiceNameText,
+        "name": firsServiceNametLetter + remainingServiceNameText,
         "description": descriptionService,
         "category_id": categoryIdService,
         "city_name": cityNameService,

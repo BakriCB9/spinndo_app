@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
 import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
-import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
+import 'package:app/features/profile/data/models/provider_model/provider_profile_response.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 
@@ -15,7 +15,9 @@ abstract class ProfileRemoteDataSource {
   Future<ProviderProfileResponse> getServiceProviderProfile(
       int user_id, String user_token);
 
-  Future<UpdateClientResponse> updateClientProfile(UpdateAccountProfile updateRequest);
-  Future<UpdateProviderResponse>updateProviderProfile(UpdateProviderRequest updateRequest,int typeEdit);
-  Future<ImageProfileResponse>addImagePhoto(File image);
+  Future<UpdateClientResponse> updateClientProfile(
+      UpdateAccountProfile updateRequest);
+  Future<UpdateProviderResponse> updateProviderProfile(
+      UpdateProviderRequest updateRequest, int typeEdit);
+  Future<ImageProfileResponse> addImagePhoto(File image);
 }

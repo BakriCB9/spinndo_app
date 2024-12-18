@@ -1,4 +1,4 @@
-class UpdateClientResponse{
+class UpdateClientResponse {
   String? status;
   String? message;
   bool? data;
@@ -9,4 +9,5 @@ class UpdateClientResponse{
     status = json['status'];
     message = json['message'];
     data = json['data'];
-  }}
+  }
+}

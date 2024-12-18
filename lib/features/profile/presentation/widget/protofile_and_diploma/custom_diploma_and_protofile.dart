@@ -1,11 +1,10 @@
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
-import 'package:app/features/profile/data/models/provider_model/image.dart';
-import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
 import 'package:app/features/profile/presentation/screens/edit_image_screen.dart';
 import 'package:app/features/profile/presentation/widget/protofile_and_diploma/diploma_and_protofile.dart';
 import 'package:app/features/profile/presentation/widget/protofile_and_diploma/row_of_images.dart';

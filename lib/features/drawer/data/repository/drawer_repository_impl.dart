@@ -5,7 +5,7 @@
 // import 'package:app/core/error/failure.dart';
 // import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart';
 // import 'package:app/features/auth/data/data_sources/remote/auth_remote_data_source.dart';
-// import 'package:app/features/auth/data/models/data.dart';
+// import 'package:app/features/auth/data/models/provider_profile.dart';
 // import 'package:app/features/auth/data/models/login_request.dart';
 // import 'package:app/features/auth/data/models/register_request.dart';
 // import 'package:app/features/auth/data/models/register_response.dart';

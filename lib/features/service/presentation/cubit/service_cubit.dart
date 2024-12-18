@@ -30,21 +30,21 @@ class ServiceCubit extends Cubit<ServiceStates> {
   ChildCategory? selectedSubCategory;
   List<Cities>? citiesList;
   List<Categories>? categoriesList;
-  List<List<ChildCategory>>?childCategoryList;
+  List<List<ChildCategory>>? childCategoryList;
   int? selectedCountryId;
   String? selectedCountryName;
   int? selectedCityId;
   String? selectedCityName;
-  bool isCity=true;
+  bool isCity = true;
   int? selectedCategoryId;
   double? selectedDistance = 10;
   LocationData? getCurrentLocation;
   LatLng? filterLocation;
-  String ?currentLocationCityName;
+  String? currentLocationCityName;
   LatLngBounds? filterBounds;
   String failureMessegae = "";
   bool isCurrent = false;
-  int index=0;
+  int index = 0;
   TextEditingController searchController = TextEditingController();
   Future<void> getServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
@@ -114,14 +114,16 @@ class ServiceCubit extends Cubit<ServiceStates> {
   }
 
   void selectedCategoryService(Categories? category) {
-    selectedCategory=category;
-    selectedSubCategory=null;
+    selectedCategory = category;
+    selectedSubCategory = null;
 
-    catChildren=category?.children;
+    catChildren = category?.children;
 
     emit(SelectedCategoryServiceState());
-  }  void selectedSubCategoryService(ChildCategory category) {
-    selectedSubCategory=category;
+  }
+
+  void selectedSubCategoryService(ChildCategory category) {
+    selectedSubCategory = category;
     emit(SelectedCategoryServiceState());
   }
 

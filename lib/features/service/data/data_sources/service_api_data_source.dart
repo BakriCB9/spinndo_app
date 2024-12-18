@@ -1,9 +1,9 @@
+import 'package:app/features/profile/data/models/provider_model/provider_profile_response.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/error/app_exception.dart';
-import 'package:app/features/profile/data/models/provider_model/provider_profile_model.dart';
 import 'package:app/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/get_all_countries_response.dart';
 import 'package:app/features/service/data/models/get_services_request.dart';

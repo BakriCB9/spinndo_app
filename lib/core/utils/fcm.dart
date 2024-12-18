@@ -14,7 +14,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class Fcm {
   static Future<void> init() async {
     await requestPermission();
-   fcmToken= await getToken();
+    fcmToken = await getToken();
     await backGroundFcm();
     await forGroundFcm();
   }
@@ -36,7 +36,7 @@ class Fcm {
 
   static Future<String?> getToken() async {
 // use the returned token to send messages to users from your custom server
-    String? token = await messaging.getToken( );
+    String? token = await messaging.getToken();
     print("dsasdasdsadsdsaasd");
     print(token);
     return token;
