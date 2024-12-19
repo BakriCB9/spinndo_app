@@ -161,8 +161,7 @@ class VerficationCodeScreen extends StatelessWidget {
 
                   Navigator.of(context)
                       .pushReplacementNamed(ServiceScreen.routeName);
-                  _authCubit.close();
-
+                  // _authCubit.close();
                 }
               },
               child: ElevatedButton(

@@ -42,7 +42,6 @@ class SignInScreen extends StatelessWidget {
               child: Column(
                 children: [
                   CustomTextFormField(
-
                     validator: (value) {
                       if (!Validator.isEmail(value)) {
                         return localization.validEmail;
@@ -102,7 +101,7 @@ class SignInScreen extends StatelessWidget {
                 UIUtils.showLoading(context);
               } else if (state is LoginSuccess) {
                 UIUtils.hideLoading(context);
-               _authCubit.close();
+                //  _authCubit.close();
                 Navigator.of(context)
                     .pushReplacementNamed(ServiceScreen.routeName);
               } else if (state is LoginError) {
@@ -110,7 +109,6 @@ class SignInScreen extends StatelessWidget {
                 UIUtils.showMessage(state.message);
                 if (state.message ==
                     "This accouct is Inactive.You must insert verification code from your email.") {
-
                   Navigator.of(context)
                       .pushNamed(VerficationCodeScreen.routeName);
                 }
@@ -153,5 +151,4 @@ class SignInScreen extends StatelessWidget {
         email: _authCubit.emailController.text,
         password: _authCubit.passwordController.text));
   }
-
 }
