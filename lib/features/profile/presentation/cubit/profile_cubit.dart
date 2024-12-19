@@ -7,6 +7,7 @@ import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_city.dart';
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart';
 import 'package:app/features/profile/domain/use_cases/update_client_profile.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
@@ -46,6 +47,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final AddImagePhoto _addImagePhoto;
 
   //variable
+  Categories? parent;
+  ChildCategory? child;
   TextEditingController emailEditController = TextEditingController();
   TextEditingController firstNameEditController = TextEditingController();
   TextEditingController lastNameEditController = TextEditingController();
@@ -57,15 +60,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
   String? selectedSubCategoryId;
   ChildCategory? selectedSubCategory;
   final Getcountryname _getCountryCityName;
-<<<<<<< HEAD
   ProviderProfile? providerProfile;
    String? latitu;
    String? longti;
-=======
-  String? latitu;
-  String? longti;
->>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
-
   List<DateSelect> dateSelect = [
     DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
     DateSelect(day: "Monday", start: "08:00", end: "15:00"),
@@ -77,8 +74,11 @@ class ProfileCubit extends Cubit<ProfileStates> {
   ];
   DateSelect? dateSelected;
   LatLng? currentLocation;
+  String? cityName;
+  LatLng? myLocation;
+  LatLng?oldLocation;
   Country? country;
-
+  ProviderProfileCity ?city;
   Future<void> getClientProfile() async {
     emit(GetProfileLoading());
     final result = await _getClientProfile();
@@ -97,10 +97,37 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
     final result = await _getCategories();
     result.fold((failure) {
-      // failureMessegae=failure.message;
+
       emit(GetCategoryError(failure.message));
     }, (categories) {
       categoriesList = categories;
+      if(providerProfile!.details!.category!.parent==null){
+        final parentName=providerProfile?.details?.category?.name;
+
+        parent=categoriesList?.firstWhere((element) {
+          return  element.name==parentName;
+        },);
+
+        selectedCategory=parent;
+        catChildren=parent?.children;
+
+      }
+      else {
+        final parentName =providerProfile?.details?.category
+            ?.parent?.name;
+        final childName = providerProfile?.details?.category?.name;
+
+        parent=categoriesList?.firstWhere((element) {
+          return  element.name==parentName;
+        },);
+
+        child=parent?.children.firstWhere((element){
+          return  element.name==  childName;
+        });
+        selectedCategory=parent;
+        selectedSubCategory=child;
+        catChildren=parent?.children;
+      }
       emit(GetCategorySuccess());
     });
   }
@@ -131,15 +158,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
       (failure) => emit(
         GetProfileErrorr(failure.message),
       ),
-<<<<<<< HEAD
           (data) {
             providerProfile=ProviderProfile(id: data.id,email: data.email,firstName: data.firstName,imagePath: data.imagePath,lastName: data.lastName,details: data.details);
 
-            emit(
-
-=======
-      (data) => emit(
->>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
+             emit(
         GetProviderSuccess(data),
           );}
     );
@@ -196,9 +218,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   updateJobDetails(
       {required String curServiceName,
+
       required String newServiceName,
       required String curDescription,
-      required String newDescription}) {
+      required String newDescription
+
+      }) {
     if (curServiceName == newServiceName && curDescription == curDescription) {
       emit(IsNotUpdated());
     } else {
@@ -238,6 +263,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
   void selectedCategoryEvent(Categories? category) {
     // selectedCategoryId = category!.id.toString();
     selectedCategory = category;
+    selectedCategory!=parent?
+      emit(IsUpdated()):emit(IsNotUpdated());
+    
     selectedSubCategory = null;
 
     catChildren = category?.children;
@@ -246,6 +274,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   void selectedSubCategoryEvent(ChildCategory category) {
     selectedSubCategory = category;
+    selectedSubCategory!=child?
+    emit(IsUpdated()):emit(IsNotUpdated());
+    
     selectedSubCategoryId = category.id.toString();
     emit(SelectedCategoryState());
   }
@@ -254,8 +285,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   String? mapStyle;
 
-  String? cityName;
-  LatLng? selectedLocation;
   Set<Marker> markers = {};
   GoogleMapController? googleMapController;
   List<GoogleMapModel> markerLocationData = [];
@@ -267,6 +296,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
         .map(
           (e) => Marker(
             position: e.latLng,
+            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
+
             infoWindow: InfoWindow(title: e.name),
             markerId: MarkerId(
               e.id.toString(),
@@ -280,14 +311,16 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   void initCurrentLocation() {
     CameraPosition newLocation = CameraPosition(
-        target: LatLng(double.parse(latitu!), double.parse(longti!)), zoom: 15);
+        target: myLocation!, zoom: 15);
     googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(newLocation));
 
     markerLocationData.add(GoogleMapModel(
+        BitmapDescriptor.hueGreen,
         id: 1,
-        name: "your current location",
-        latLng: LatLng(double.parse(latitu!), double.parse(longti!))));
+
+        name: "your location",
+        latLng: myLocation!));
     emit(SelectedLocationUpdatedState());
   }
 
@@ -305,17 +338,20 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   void selectLocation(LatLng onSelectedLocation) {
     markerLocationData.add(GoogleMapModel(
+      BitmapDescriptor.hueGreen,
       id: 1,
       name: "your Location",
       latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
     ));
 
-    selectedLocation =
-        LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude);
+
     emit(SelectedLocationUpdatedState());
   }
 
   void getCountryAndCityNameFromCrocd(double lat, double long) async {
+    
+   lat!=latitu&&long!=longti? emit(IsUpdated()):emit(IsNotUpdated());
+
     emit(GetLocationCountryLoading());
     isCountySuccess = false;
     cityName = null;

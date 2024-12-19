@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/features/auth/data/models/register_service_provider_request.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/active_day/box_of_from_to.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkingSchedulePage extends StatefulWidget {
   final List<ProviderPriofileWorkingday> listOfworkday;
@@ -35,6 +36,8 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     for (int i = 0; i < widget.listOfworkday.length; i++) {
       for (int j = 0; j < _profileCubit.dateSelect.length; j++) {
         if (_profileCubit.dateSelect[j].day == widget.listOfworkday[i].day) {
@@ -51,7 +54,7 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Time ',
+          localization.editTime,
           style: TextStyle(fontSize: 35.sp, color: Colors.black),
         ),
         actions: [

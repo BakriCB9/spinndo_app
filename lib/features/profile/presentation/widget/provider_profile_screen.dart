@@ -11,6 +11,7 @@ import 'package:app/features/profile/presentation/widget/profile_info/job_items/
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
 import 'package:app/features/profile/presentation/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
 import 'package:app/features/profile/presentation/widget/sliver_header_widget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ProviderProfileScreen extends StatefulWidget {
   final ProviderProfile providerProfile;
@@ -27,6 +28,9 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   Widget build(BuildContext context) {
     _profileCubit.latitu = widget.providerProfile.details!.latitude!;
     _profileCubit.longti = widget.providerProfile.details!.longitude!;
+    _profileCubit.city=widget.providerProfile.details?.city;
+    _profileCubit.myLocation=LatLng(double.parse(_profileCubit.latitu!),double.parse(_profileCubit.longti!));
+    _profileCubit.oldLocation=LatLng(double.parse(_profileCubit.latitu!),double.parse(_profileCubit.longti!));
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final size = MediaQuery.of(context).size;
     return Container(
@@ -52,21 +56,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Switch(
-                    activeColor: ColorManager.primary,
-                    inactiveTrackColor: ColorManager.white,
-                    inactiveThumbColor: Theme.of(context).primaryColor,
-                    activeTrackColor: Theme.of(context).primaryColor,
-                    value: _drawerCubit.themeMode == ThemeMode.dark,
-                    onChanged: (value) {
-                      if (value) {
-                        _drawerCubit.changeTheme(ThemeMode.dark);
-                      } else {
-                        _drawerCubit.changeTheme(ThemeMode.light);
-                      }
-                    },
-                  ),
-                  SizedBox(height: 15.h),
+
                   UserAccount(
 
                     userId: widget.providerProfile.id,
@@ -81,7 +71,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   CustomDescription(
                     lat: widget.providerProfile.details!.latitude!,
                     lng: widget.providerProfile.details!.longitude!,
-                    cityName: widget.providerProfile.details?.city.toString() ??
+                    cityName: widget.providerProfile.details?.city?.name??
                         'Alep',
                     isApprovid: widget.providerProfile.details!.isApproved,
                     userId: widget.providerProfile.id!,

@@ -158,8 +158,11 @@ class VerficationCodeScreen extends StatelessWidget {
                   // }
                 } else if (state is VerifyCodeSuccess) {
                   UIUtils.hideLoading(context);
+
                   Navigator.of(context)
                       .pushReplacementNamed(ServiceScreen.routeName);
+                  _authCubit.close();
+
                 }
               },
               child: ElevatedButton(

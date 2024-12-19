@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:app/core/di/service_locator.dart';
 import 'package:app/features/auth/domain/entities/country.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +50,6 @@ class AuthCubit extends Cubit<AuthState> {
   final ResetPassword _resetPassword;
   final RegisterService _registerService;
   final Getcountryname _getCountryCityName;
-
   List<DateSelect> dateSelect = [
     DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
     DateSelect(day: "Monday", start: "08:00", end: "15:00"),
@@ -245,6 +246,7 @@ class AuthCubit extends Cubit<AuthState> {
     var myMarker = markerLocationData
         .map(
           (e) => Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
             position: e.latLng,
             infoWindow: InfoWindow(title: e.name),
             markerId: MarkerId(
@@ -263,7 +265,7 @@ class AuthCubit extends Cubit<AuthState> {
     googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(newLocation));
 
-    markerLocationData.add(GoogleMapModel(
+    markerLocationData.add(GoogleMapModel(BitmapDescriptor.hueGreen,
         id: 1, name: "your current location", latLng: currentLocation!));
     emit(SelectedLocationState());
   }
@@ -282,6 +284,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void selectLocation(LatLng onSelectedLocation) {
     markerLocationData.add(GoogleMapModel(
+      BitmapDescriptor.hueGreen,
       id: 1,
       name: "your Location",
       latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),

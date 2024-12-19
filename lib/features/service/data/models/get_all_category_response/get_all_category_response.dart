@@ -3,7 +3,7 @@ import 'data.dart';
 class GetAllCategoryResponse {
   String? status;
   String? message;
-  List<Data>? data;
+  List<DataCategory>? data;
 
   GetAllCategoryResponse({this.status, this.message, this.data});
 
@@ -12,7 +12,7 @@ class GetAllCategoryResponse {
       status: json['status'] as String?,
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => DataCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }

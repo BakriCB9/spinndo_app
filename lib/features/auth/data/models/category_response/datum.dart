@@ -1,13 +1,13 @@
 import 'child.dart';
 
-class DataCategory {
+class Data {
   int? id;
   String? name;
   List<Child>? children;
 
-  DataCategory({this.id, this.name, this.children});
+  Data({this.id, this.name, this.children});
 
-  factory DataCategory.fromJson(Map<String, dynamic> json) => DataCategory(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json['id'] as int?,
         name: json['name'] as String?,
         children: (json['children'] as List<dynamic>?)

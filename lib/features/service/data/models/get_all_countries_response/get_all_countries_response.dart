@@ -3,7 +3,7 @@ import 'data.dart';
 class GetAllCountriesResponse {
   String? status;
   String? message;
-  List<Data>? data;
+  List<DataCountries>? data;
 
   GetAllCountriesResponse({this.status, this.message, this.data});
 
@@ -12,7 +12,7 @@ class GetAllCountriesResponse {
       status: json['status'] as String?,
       message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => DataCountries.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }

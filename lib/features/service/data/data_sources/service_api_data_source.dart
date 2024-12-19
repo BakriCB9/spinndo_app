@@ -1,17 +1,10 @@
-<<<<<<< HEAD
 import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
-=======
-import 'package:app/features/profile/data/models/provider_model/provider_profile_response.dart';
->>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/error/app_exception.dart';
-<<<<<<< HEAD
 
-=======
->>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
 import 'package:app/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/get_all_countries_response.dart';
 import 'package:app/features/service/data/models/get_services_request.dart';

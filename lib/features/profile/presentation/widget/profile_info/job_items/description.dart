@@ -9,6 +9,7 @@ import 'package:app/features/profile/presentation/screens/edit_job_details.dart'
 import 'package:app/features/profile/presentation/widget/profile_info/job_items/show_more_and_show_less_text.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomDescription extends StatelessWidget {
   final String categoryName;
@@ -32,6 +33,8 @@ class CustomDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     print('the value of isAprrovid is $isApprovid');
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     final myId = sharedPref.getInt(CacheConstant.userId);
@@ -41,25 +44,21 @@ class CustomDescription extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Job Details', style: Theme.of(context).textTheme.labelLarge),
+            Text(localization.jobDetails,
+                style: Theme.of(context).textTheme.labelLarge),
             userId == myId
                 ? IconButton(
                     onPressed: isApprovid == 0
                         ? () {
-<<<<<<< HEAD
-if(                _profileCubit.selectedCategory==null){
-                       _profileCubit.getCategories();
-}
-=======
+                            _profileCubit.selectedSubCategory = null;
+                            _profileCubit.selectedCategory = null;
                             _profileCubit.getCategories();
->>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => EditJobDetails(
                                       lat: lat,
                                       lng: lng,
                                       locationName: cityName,
                                       categoryName: categoryName,
-
                                       description: description,
                                       serviceName: serviceName,
                                     )));
@@ -77,18 +76,21 @@ if(                _profileCubit.selectedCategory==null){
         ),
         InfoDetails(
             icon: Icons.work_outline_outlined,
-            title: 'Work',
+            title: localization.work,
             content: categoryName),
         InfoDetails(
-            icon: Icons.maps_home_work, title: 'Title', content: serviceName),
+            icon: Icons.maps_home_work,
+            title: localization.title,
+            content: serviceName),
         InfoDetails(
             icon: Icons.location_on_outlined,
-            title: 'Location',
+            title: localization.location,
             content: cityName),
         SizedBox(
           height: 10.h,
         ),
-        Text('Description', style: Theme.of(context).textTheme.labelLarge),
+        Text(localization.description,
+            style: Theme.of(context).textTheme.labelLarge),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
             child: ShowMoreAndShowLess(txt: description)),

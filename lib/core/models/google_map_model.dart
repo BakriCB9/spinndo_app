@@ -4,6 +4,7 @@ class GoogleMapModel {
   final int id;
   final String name;
   final LatLng latLng;
+  final dynamic color;
 
-  GoogleMapModel({required this.id, required this.name, required this.latLng});
+  GoogleMapModel(this.color, {required this.id, required this.name, required this.latLng});
 }

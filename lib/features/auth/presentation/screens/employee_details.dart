@@ -143,7 +143,7 @@ class EmployeeDetails extends StatelessWidget {
                                       SizedBox(
                                         width: 24.w,
                                       ),
-                                      Text(localization.chooseCategory,
+                                      Text(localization.chooseSubCategory,
                                           style: Theme.of(context)
                                               .textTheme
                                               .displayMedium),
@@ -152,6 +152,12 @@ class EmployeeDetails extends StatelessWidget {
                                 ),
                                 decoration: const InputDecoration(
                                     errorBorder: InputBorder.none),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return localization.pleaseChooseSubCategory;
+                                  }
+                                  return null;
+                                },
                                 items:
                                     //indexChildCategory != null
                                     //? _authCubit
@@ -188,12 +194,12 @@ class EmployeeDetails extends StatelessWidget {
             CustomTextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "enter more than 2 charecters";
+                  return localization.nameLessThanTwo;
                 } else if (!Validator.hasMinLength(
                   value,
                   minLength: 2,
                 )) {
-                  return "enter more than 2 charecters";
+                  return localization.nameLessThanTwo;
                 }
                 return null;
               },
@@ -273,12 +279,12 @@ class EmployeeDetails extends StatelessWidget {
             CustomTextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "enter more than 2 charecters";
+                  return localization.nameLessThanTwo;
                 } else if (!Validator.hasMinLength(
                   value,
                   minLength: 2,
                 )) {
-                  return "enter more than 2 charecters";
+                  return localization.nameLessThanTwo;
                 }
                 return null;
               },

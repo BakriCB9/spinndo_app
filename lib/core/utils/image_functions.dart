@@ -1,13 +1,81 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageFunctions {
-  static Future<File?> CameraPicker() async {
+  static Future<File?> _cropSquareImage(String imagePath) async {
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: imagePath,
+      aspectRatio:
+          const CropAspectRatio(ratioX: 1, ratioY: 1), // Square aspect ratio
+      uiSettings: [
+        AndroidUiSettings(hideBottomControls: false,
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.black,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+        ),
+        IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      ],
+    );
+
+    if (croppedImage != null) {
+      return File(croppedImage.path);
+    } else {
+      return null; // Cropping was canceled
+    }
+  }
+
+  static Future<File?> _cropImage(String imagePath) async {
+    final croppedImage = await ImageCropper().cropImage(
+      sourcePath: imagePath,
+      // aspectRatio:
+      //     const CropAspectRatio(ratioX: 1, ratioY: 1), //
+      // Square aspect ratio
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.black,
+          aspectRatioPresets: [
+            // CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            // CropAspectRatioPreset.ratio5x3,
+            // CropAspectRatioPreset.ratio5x4,
+            // CropAspectRatioPreset.ratio7x5,
+            CropAspectRatioPreset.ratio16x9,
+            CropAspectRatioPreset.square,
+          ],       hideBottomControls: false,
+          initAspectRatio: CropAspectRatioPreset.original,
+
+          toolbarWidgetColor: Colors.white,
+          lockAspectRatio: false,
+        ),
+        IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      ],
+    );
+
+    if (croppedImage != null) {
+      return File(croppedImage.path);
+    } else {
+      return null; // Cropping was canceled
+    }
+  }
+
+  static Future<File?> CameraPicker(bool isSquare) async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image != null) {
-      return File(image.path);
+      return await isSquare
+          ? _cropSquareImage(image.path)
+          : _cropImage(image.path);
     } else {
       return null;
     }
@@ -34,7 +102,7 @@ class ImageFunctions {
   //     }
   //   }
   // }
-  static Future<File?> galleryPicker() async {
+  static Future<File?> galleryPicker(bool isSquare) async {
     PermissionStatus status;
 
     if (Platform.isAndroid) {
@@ -57,7 +125,9 @@ class ImageFunctions {
       // Picking image from gallery
       XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image != null) {
-        return File(image.path);
+        return await isSquare
+            ? _cropSquareImage(image.path)
+            : _cropImage(image.path);
       } else {
         return null;
       }

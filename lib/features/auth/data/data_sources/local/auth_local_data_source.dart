@@ -5,6 +5,7 @@ abstract class AuthLocalDataSource {
   Future<void> saveUserUnCompliteAccount(String email);
   Future<void> saveUserName(String name);
   Future<void> saveUserEmail(String email);
+  Future<void>savePhoto(String? image);
   String getUserUnCompliteAccount();
   Future<void> deleteEmail();
 }

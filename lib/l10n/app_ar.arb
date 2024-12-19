@@ -46,8 +46,9 @@
     "gallery":"المعرض",
     "chooseCategory":"اختر صنفا",
     "pleaseChooseCategory":"يجب اخيار صنف",
+    "pleaseChooseSubCategory":"يجب اخيار صنف فرعي",
     "chooseLocation":"حدد موقعك",
-    "to":" حنى ",
+    "to":" حتى ",
     "locationRequired":"يجب ان تحدد موقعك",
     "At least one day must be selected":"يجب اختيار يوم واحد على الأقل",
     "googleMap":"خرائط غوغل",
@@ -81,7 +82,25 @@
     "pleaseLoading":"...الرحاء الانتظار",
     "somethingWentWrong":"!حدث خطأ ما",
     "clickToUpload":"انقر للرفع",
-    "youhavetouploadCertificateimage":"يجب ان ترفع صورة الشهادة"
-
+    "youhavetouploadCertificateimage":"يجب ان ترفع صورة الشهادة",
+    "reload":"اعادة التحميل",
+    "noDataYet":"لم يتم تحميل المعلومات",
+    "resetAll":"إعادة تعيين كل العناصر",
+    "edityourgallery":"تعديل المعرض",
+    "save":"حفظ",
+    "profilePhoto":"صورة الملف الشخصي",
+    "activeDay":"أيام العمل",
+    "jobDetails":"نفاصيل العمل",
+    "account":"الحساب الشخصي",
+    "images":"الصور",
+    "editJobDetails":"تعديل تفاصيل العمل",
+    "editTime":"تعديل الوقت",
+    "error":"حدث خطأ",
+    "titleService":"اسم الخدمة",
+    "certificate":"الشهادة",
+    "photos":"الصور",
+    "work":"الخدمة",
+    "title":"اسم الخدمة",
+    "location":"الموقع"
 
 }

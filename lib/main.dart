@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/core/utils/fcm.dart';
 import 'package:app/default_firebase_options.dart';
+import 'package:app/splash_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,10 @@ import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
-import 'package:app/features/home/presentation/screens/home_screen.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/profile/presentation/screens/profile_screen.dart';
-import 'package:app/features/service/presentation/screens/cat_select.dart';
 import 'package:app/features/service/presentation/screens/service_map_screen.dart';
 import 'package:app/features/service/presentation/screens/service_screen.dart';
-import 'package:app/geo.dart';
 
 late final SharedPreferences sharedPref;
 
@@ -63,6 +61,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => serviceLocator.get<ProfileCubit>(),
           ),
+
           BlocProvider(
             create: (context) => serviceLocator.get<DrawerCubit>(),
           )
@@ -86,6 +85,7 @@ class MyApp extends StatelessWidget {
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       //home: HomeScreen(),
                       initialRoute:
+                      // SplashScren.routeName,
                           sharedPref.getString(CacheConstant.tokenKey) == null
                               ? (sharedPref.getString(CacheConstant.emailKey) ==
                                       null
@@ -95,13 +95,12 @@ class MyApp extends StatelessWidget {
                       routes: {
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
-                        MapWithDioBounds.routeName: (context) =>
-                            MapWithDioBounds(),
+
                         ServiceScreen.routeName: (context) => ServiceScreen(),
+                        // SplashScren.routeName: (context) =>SplashScren(),
                         ServiceMapScreen.routeName: (context) =>
                             ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),
-                        FilterScreen.routeName: (context) => FilterScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>
                             const DeplomaProtofileImageScreen(),
                         ForgotPasswordScreen.routeName: (context) =>
@@ -113,7 +112,6 @@ class MyApp extends StatelessWidget {
                             VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
-                        HomeScreen.routeName: (context) => const HomeScreen(),
                       },
                       debugShowCheckedModeBanner: false,
                     );

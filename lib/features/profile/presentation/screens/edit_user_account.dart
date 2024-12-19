@@ -5,7 +5,9 @@ import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/image_functions.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/main.dart';
@@ -18,6 +20,7 @@ import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/core/widgets/custom_text_form_field_bakri.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_states.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditUserAccountScreen extends StatelessWidget {
   final String firstName;
@@ -32,368 +35,428 @@ class EditUserAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+    final imagePhoto = sharedPref.getString(CacheConstant.imagePhotoFromLogin);
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     _profileCubit.firstNameEditController.text = firstName;
     _profileCubit.lastNameEditController.text = lastName;
+    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+
     //  final base64String =sharedPref.getString(CacheConstant.imagePhoto);
     //   if(base64String!=null){
     //     final bytes = base64Decode(base64String);
     //   }
 
     print('the Image from local is ');
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 15.h),
-              Align(
-                alignment: Alignment.center,
-                child: Stack(
+    return Container(decoration: _drawerCubit.themeMode == ThemeMode.dark
+        ? BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        : null,
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 15.h),
+                Align(
                   alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                      child: Container(
-                          //radius: 150.r,
-                          //backgroundColor: Colors.grey,
-                          width: 300.w,
-                          height: 300.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey,
-                          ),
-                          child: BlocConsumer<ProfileCubit, ProfileStates>(
-                              listener: (context, state) {
-                                if (state is LoadImagePhotoError) {
-                                  UIUtils.showMessage(state.message);
-                                }
-                                if (state is LoadImagePhotoSuccess) {
-                                  UIUtils.showMessage(state.message);
-                                }
-                              },
-                              buildWhen: (pre, cur) {
-                                if (cur is LoadImagePhotoLoading ||
-                                    cur is LoadImagePhotoSuccess ||
-                                    cur is LoadImagePhotoError) {
-                                  return true;
-                                }
-                                return false;
-                              },
-                              bloc: _profileCubit,
-                              builder: (context, state) {
-                                if (state is LoadImagePhotoLoading) {
-                                  return LoadingIndicator(Colors.yellow);
-                                } else if (state is LoadImagePhotoError) {
-                                  return Icon(
-                                    Icons.person,
-                                    size: 150.r,
-                                    color: Colors.white,
-                                  );
-                                } else {
-                                  Uint8List? bytes;
-                                  final base64String = sharedPref
-                                      .getString(CacheConstant.imagePhoto);
-
-                                  if (base64String != null &&
-                                      base64String.isNotEmpty) {
-                                    bytes = base64Decode(base64String);
-                                    print(
-                                        'the image is ##############################################  $bytes');
-                                  }
-                                  return base64String == null
-                                      ? Icon(
-                                          Icons.person,
-                                          size: 150.r,
-                                          color: Colors.white,
-                                        )
-                                      : ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(150.r),
-                                          child: Image.memory(
-                                            bytes!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                }
-                              })),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      right: 10.w,
-                      child: GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return SafeArea(
-                                    child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 30.w),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text('Profile Photo'),
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.delete),
-                                            onPressed: () {},
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 30.h,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Navigator.of(context).pop();
-                                                  final image =
-                                                      await ImageFunctions
-                                                          .CameraPicker();
-                                                  if (image == null) {
-                                                    return;
-                                                  }
-                                                  _profileCubit
-                                                      .addImagePhoto(image);
-                                                },
-                                                child: Container(
-                                                  width: 100.w,
-                                                  height: 100.h,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  child: Icon(
-                                                    Icons.camera_alt_outlined,
-                                                    color: ColorManager.primary,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 15.h),
-                                              Text(
-                                                'Camera',
-                                                style:
-                                                    TextStyle(fontSize: 25.sp),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 35.w,
-                                          ),
-                                          Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Navigator.of(context).pop();
-                                                  final image =
-                                                      await ImageFunctions
-                                                          .galleryPicker();
-                                                  if (image == null) {
-                                                    return;
-                                                  }
-                                                  _profileCubit
-                                                      .addImagePhoto(image);
-                                                },
-                                                child: Container(
-                                                  width: 100.w,
-                                                  height: 100.h,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  child: Icon(
-                                                    Icons.image_outlined,
-                                                    color: ColorManager.primary,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 15.h),
-                                              Text(
-                                                'Gallery',
-                                                style:
-                                                    TextStyle(fontSize: 25.sp),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 50.h,
-                                      )
-                                    ],
-                                  ),
-                                ));
-                              });
-                        },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
                         child: Container(
-                          width: 80.r,
-                          height: 80.r,
-                          decoration: const BoxDecoration(
-                            color: Colors.blue,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.camera_alt,
-                            color: Colors.black,
-                            size: 50.r,
+                            //radius: 150.r,
+                            //backgroundColor: Colors.grey,
+                            width: 300.w,
+                            height: 300.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey,
+                            ),
+                            child: BlocConsumer<ProfileCubit, ProfileStates>(
+                                listener: (context, state) {
+                                  if (state is LoadImagePhotoError) {
+                                    UIUtils.showMessage(state.message);
+                                  }
+                                  if (state is LoadImagePhotoSuccess) {
+
+                                    UIUtils.showMessage(state.message);
+                                    _profileCubit.getUserRole();
+                                  }
+                                },
+                                buildWhen: (pre, cur) {
+                                  if (cur is LoadImagePhotoLoading ||
+                                      cur is LoadImagePhotoSuccess ||
+                                      cur is LoadImagePhotoError) {
+                                    return true;
+                                  }
+                                  return false;
+                                },
+                                bloc: _profileCubit,
+                                builder: (context, state) {
+                                  if (state is LoadImagePhotoLoading) {
+                                    return LoadingIndicator(Colors.yellow);
+                                  } else if (state is LoadImagePhotoError) {
+                                    return imagePhoto==null? Icon(
+                                      Icons.person,
+                                      size: 150.r,
+                                      color: Colors.white,
+                                    ):ClipRRect(child: CashImage(path: imagePhoto),);
+                                  } else if (state is LoadImagePhotoSuccess) {
+                                    Uint8List? bytes;
+                                    final base64String = sharedPref
+                                        .getString(CacheConstant.imagePhoto);
+
+                                    if (base64String != null &&
+                                        base64String.isNotEmpty) {
+                                      bytes = base64Decode(base64String);
+                                      print(
+                                          'the image is ##############################################  $bytes');
+                                    }
+                                    return base64String == null
+                                        ? Icon(
+                                            Icons.person,
+                                            size: 150.r,
+                                            color: Colors.white,
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(150.r),
+                                            child: Image.memory(
+                                              bytes!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                  } else {
+
+                                    Uint8List? bytes;
+                                    final base64String = sharedPref
+                                        .getString(CacheConstant.imagePhoto);
+
+                                    if (base64String != null &&
+                                        base64String.isNotEmpty) {
+                                      bytes = base64Decode(base64String);
+                                      print(
+                                          'the image is ##############################################  $bytes');
+                                    }
+                                    return base64String == null
+                                        ?(imagePhoto ==null? Icon(
+                                            Icons.person,
+                                            size: 150.r,
+                                            color: Colors.white,
+                                          ):ClipRRect(
+                                        borderRadius: BorderRadius.circular(300.r),
+                                        child: CashImage(path: imagePhoto)))
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(150.r),
+                                            child: Image.memory(
+                                              bytes!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                  }
+                                })),
+                      ),
+                      Positioned(
+                        bottom: 10,
+                        right: 10.w,
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return SafeArea(
+                                      child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 30.w),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                    localization.profilePhoto),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.delete),
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 30.h,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    final image =
+                                                        await ImageFunctions
+                                                            .CameraPicker(true);
+                                                    if (image == null) {
+                                                      return;
+                                                    }
+                                                    _profileCubit
+                                                        .addImagePhoto(image);
+                                                  },
+                                                  child: Container(
+                                                    width: 100.w,
+                                                    height: 100.h,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color: Colors.grey)),
+                                                    child: Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color: ColorManager.primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 15.h),
+                                                Text(
+                                                  'Camera',
+                                                  style:
+                                                      TextStyle(fontSize: 25.sp),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 35.w,
+                                            ),
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    final image =
+                                                        await ImageFunctions
+                                                            .galleryPicker(true);
+                                                    if (image == null) {
+                                                      return;
+                                                    }
+                                                    _profileCubit
+                                                        .addImagePhoto(image);
+                                                  },
+                                                  child: Container(
+                                                    width: 100.w,
+                                                    height: 100.h,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color: Colors.grey)),
+                                                    child: Icon(
+                                                      Icons.image_outlined,
+                                                      color: ColorManager.primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 15.h),
+                                                Text(
+                                                  'Gallery',
+                                                  style:
+                                                      TextStyle(fontSize: 25.sp),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 50.h,
+                                        )
+                                      ],
+                                    ),
+                                  ));
+                                });
+                          },
+                          child: Container(
+                            width: 80.r,
+                            height: 80.r,
+                            decoration: const BoxDecoration(
+                              color: ColorManager.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: Theme.of(context).primaryColorLight,
+                              size: 50.r,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // CustomTextFromFieldBakri(
-              //   icon: Icons.person_2_outlined,
-              //   label: 'First Name',
-              //   initialvalue: 'Bakri',
-              // ),
-              //  CustomTextFormField( labelText: 'FirstName',controller: _profileCubit.firstNameEditController,initValue: 'bakri',icon: Icons.person,),
-              // SizedBox(height: 40.h),
-              // CustomTextFormField( labelText: 'Last Name',controller: _profileCubit.lastNameEditController,initValue: 'aweja',icon: Icons.person,),
-              // SizedBox(height: 40.h),
+                // CustomTextFromFieldBakri(
+                //   icon: Icons.person_2_outlined,
+                //   label: 'First Name',
+                //   initialvalue: 'Bakri',
+                // ),
+                //  CustomTextFormField( labelText: 'FirstName',controller: _profileCubit.firstNameEditController,initValue: 'bakri',icon: Icons.person,),
+                // SizedBox(height: 40.h),
+                // CustomTextFormField( labelText: 'Last Name',controller: _profileCubit.lastNameEditController,initValue: 'aweja',icon: Icons.person,),
+                // SizedBox(height: 40.h),
 
-              // CustomTextFromFieldBakri(
-              //   icon: Icons.person_2_outlined,
-              //   label: 'Last Name',
-              //   initialvalue: 'aweja',
-              // ),
-              // CustomTextFormField(labelText: 'Email', controller: _profileCubit.emailEditController,initValue: 'bakkaraweja@gmail.com',icon: Icons.email,),
-              // SizedBox(height: 40.h),
-              // CustomTextFromFieldBakri(
-              //   icon: Icons.email_outlined,
-              //   label: 'Email',
-              //   initialvalue: 'bakriaweja@gmail.com',
-              // ),
-              // SizedBox(height: 40.h),
-              // CustomTextFromFieldBakri(
-              //   icon: Icons.phone,
-              //   label: 'Phone',
-              //   initialvalue: '0959280119',
-              // ),
+                // CustomTextFromFieldBakri(
+                //   icon: Icons.person_2_outlined,
+                //   label: 'Last Name',
+                //   initialvalue: 'aweja',
+                // ),
+                // CustomTextFormField(labelText: 'Email', controller: _profileCubit.emailEditController,initValue: 'bakkaraweja@gmail.com',icon: Icons.email,),
+                // SizedBox(height: 40.h),
+                // CustomTextFromFieldBakri(
+                //   icon: Icons.email_outlined,
+                //   label: 'Email',
+                //   initialvalue: 'bakriaweja@gmail.com',
+                // ),
+                // SizedBox(height: 40.h),
+                // CustomTextFromFieldBakri(
+                //   icon: Icons.phone,
+                //   label: 'Phone',
+                //   initialvalue: '0959280119',
+                // ),
 
-              SizedBox(
-                height: 70.h,
-              ),
-              TextFormField(
-                controller: _profileCubit.firstNameEditController,
-                style: TextStyle(color: Colors.black, fontSize: 25.sp),
-                onChanged: (value) {
-                  print('');
-                  _profileCubit.updateInfo(
-                      curFirst: firstName,
-                      newFirst: _profileCubit.firstNameEditController.text,
-                      curLast: lastName,
-                      newLast: _profileCubit.lastNameEditController.text);
-                },
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
-                    labelText: 'FirstName',
-                    labelStyle:
-                        TextStyle(color: Colors.black, fontSize: 20.sp)),
-              ),
-              SizedBox(
-                height: 50.h,
-              ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Error';
-                  }
-                },
-                controller: _profileCubit.lastNameEditController,
-                style: TextStyle(color: Colors.black, fontSize: 25.sp),
-                onChanged: (value) {
-                  _profileCubit.updateInfo(
-                      curFirst: firstName,
-                      newFirst: _profileCubit.firstNameEditController.text,
-                      curLast: lastName,
-                      newLast: _profileCubit.lastNameEditController.text);
-                },
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
-                    labelText: "LastName",
-                    labelStyle:
-                        TextStyle(color: Colors.black, fontSize: 20.sp)),
-              ),
-              SizedBox(height: 30.h),
-              BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
-                if (cur is IsUpdated || cur is IsNotUpdated) return true;
-                return false;
-              }, builder: (context, state) {
-                print('the State is ${state}');
+                SizedBox(
+                  height: 70.h,
+                ),
 
-                if (state is IsUpdated) {
-                  return BlocListener<ProfileCubit, ProfileStates>(
-                    listenWhen: (pre, cur) {
-                      if (cur is UpdateLoading ||
-                          cur is UpdateError ||
-                          cur is UpdateSuccess) {
-                        return true;
-                      }
-                      return false;
-                    },
-                    listener: (context, state) {
-                      if (state is UpdateLoading) {
-                        UIUtils.showLoading(context);
-                      } else if (state is UpdateError) {
-                        UIUtils.hideLoading(context);
-                        UIUtils.showMessage(state.message);
-                      } else if (state is UpdateSuccess) {
-                        UIUtils.hideLoading(context);
-                        Navigator.of(context).pop();
-                        _profileCubit.getUserRole();
-                      }
-                    },
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (_profileCubit
-                                  .firstNameEditController.text.isEmpty ||
-                              _profileCubit
-                                  .lastNameEditController.text.isEmpty) {
-                            return UIUtils.showMessage(
-                                'Enter the name the field is Empty');
-                          }
-                          if (typeAccount == 'Client') {
-                            _profileCubit.updateClientProfile(
-                                UpdateAccountProfile(
+                TextFormField(
+                  controller: _profileCubit.firstNameEditController,
+                  style: TextStyle( color:_drawerCubit.themeMode == ThemeMode.light
+                      ? Colors.black:Colors.white, fontSize: 25.sp),
+                  cursorColor: ColorManager.primary,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(200),
+                  ],
+                  decoration: InputDecoration(
+                    label: Text(
+                      localization.firstName,
+                    ),
+                    prefixIcon:  Icon(Icons.person,size: 45.sp,),
+                    // counter: SizedBox()
+                  ),
+
+                  onChanged: (value) {
+                    print('');
+                    _profileCubit.updateInfo(
+                        curFirst: firstName,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text);
+                  },
+
+
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
+                TextFormField(
+
+                  controller: _profileCubit.lastNameEditController,
+                  onChanged: (value) {
+                    _profileCubit.updateInfo(
+                        curFirst: firstName,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text);
+                  },
+                  style: TextStyle( color:_drawerCubit.themeMode == ThemeMode.light
+                      ? Colors.black:Colors.white, fontSize: 25.sp),
+                  cursorColor: ColorManager.primary,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(200),
+                  ],
+                  decoration: InputDecoration(
+                    label: Text(
+                      localization.lastName,
+                    ),
+                    prefixIcon:  Icon(Icons.person,size: 45.sp,),
+                    // counter: SizedBox()
+                  ),
+
+                ),
+                SizedBox(height: 30.h),
+                BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
+                  if (cur is IsUpdated || cur is IsNotUpdated) return true;
+                  return false;
+                }, builder: (context, state) {
+                  print('the State is ${state}');
+
+                  if (state is IsUpdated) {
+                    return BlocListener<ProfileCubit, ProfileStates>(
+                      listenWhen: (pre, cur) {
+                        if (cur is UpdateLoading ||
+                            cur is UpdateError ||
+                            cur is UpdateSuccess) {
+                          return true;
+                        }
+                        return false;
+                      },
+                      listener: (context, state) {
+                        if (state is UpdateLoading) {
+                          UIUtils.showLoading(context);
+                        } else if (state is UpdateError) {
+                          UIUtils.hideLoading(context);
+                          UIUtils.showMessage(state.message);
+                        } else if (state is UpdateSuccess) {
+                          UIUtils.hideLoading(context);
+                          Navigator.of(context).pop();
+                          _profileCubit.getUserRole();
+                        }
+                      },
+                      child: ElevatedButton(
+                          onPressed: () {
+                            if (_profileCubit
+                                    .firstNameEditController.text.isEmpty ||
+                                _profileCubit
+                                    .lastNameEditController.text.isEmpty) {
+                              return UIUtils.showMessage(
+                                  'Enter the name the field is Empty');
+                            }
+                            if (typeAccount == 'Client') {
+                              _profileCubit.updateClientProfile(
+                                  UpdateAccountProfile(
+                                      firstName: _profileCubit
+                                          .firstNameEditController.text,
+                                      lastName: _profileCubit
+                                          .lastNameEditController.text));
+                            } else {
+                              _profileCubit.updateProviderProfile(
+                                  UpdateProviderRequest(
                                     firstName: _profileCubit
                                         .firstNameEditController.text,
-                                    lastName: _profileCubit
-                                        .lastNameEditController.text));
-                          } else {
-                            _profileCubit.updateProviderProfile(
-                                UpdateProviderRequest(
-                                  firstName: _profileCubit
-                                      .firstNameEditController.text,
-                                  lastName:
-                                      _profileCubit.lastNameEditController.text,
-                                ),
-                                1);
-                          }
-                        },
-                        child: Text('Save')),
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              })
-            ],
+                                    lastName:
+                                        _profileCubit.lastNameEditController.text,
+                                  ),
+                                  1);
+                            }
+                          },
+                          child: Text(localization.save)),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                })
+              ],
+            ),
           ),
         ),
       ),

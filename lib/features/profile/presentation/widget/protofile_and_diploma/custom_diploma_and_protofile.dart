@@ -5,14 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
-<<<<<<< HEAD
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_image.dart';
-=======
->>>>>>> 867d478a456712fd63cd4cde8d7d65678a96ae1d
 import 'package:app/features/profile/presentation/screens/edit_image_screen.dart';
 import 'package:app/features/profile/presentation/widget/protofile_and_diploma/diploma_and_protofile.dart';
 import 'package:app/features/profile/presentation/widget/protofile_and_diploma/row_of_images.dart';
 import 'package:app/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomDiplomaAndProtofile extends StatefulWidget {
   final String imageCertificate;
@@ -36,6 +34,8 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   int typeSelect = 1;
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     print(
         'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
     final myId = sharedPref.getInt(CacheConstant.userId);
@@ -44,7 +44,8 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Images', style: Theme.of(context).textTheme.labelLarge),
+            Text(localization.images,
+                style: Theme.of(context).textTheme.labelLarge),
             myId == widget.userId
                 ? IconButton(
                     onPressed: widget.isApprovid == 1
@@ -67,32 +68,36 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
         SizedBox(
           height: 25.h,
         ),
-        Row(
-          children: [
-            Expanded(
-              child: InkWell(
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    setState(() {
-                      typeSelect = 1;
-                    });
-                  },
-                  child: DiplomaAndProtofile(
-                      active: typeSelect == 1, type: 1, text: 'Certificate')),
-            ),
-            Expanded(
-              child: InkWell(
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    setState(() {
-                      typeSelect = 2;
-                    });
-                  },
-                  child: DiplomaAndProtofile(
-                      active: typeSelect == 2, type: 2, text: 'Photos')),
-            ),
-          ],
-        ),
+        myId == widget.userId
+            ? Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          setState(() {
+                            typeSelect = 1;
+                          });
+                        },
+                        child: DiplomaAndProtofile(
+                            active: typeSelect == 1,
+                            type: 1,
+                            text: localization.certificate)),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          setState(() {
+                            typeSelect = 2;
+                          });
+                        },
+                        child: DiplomaAndProtofile(
+                            active: typeSelect == 2, type: 2, text: localization.photos)),
+                  ),
+                ],
+              )
+            : const SizedBox(),
         // SizedBox(height: 15.h),
 
         // ///here i have to pass the list of diploma or protofile
@@ -101,6 +106,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
           height: 30.h,
         ),
         RowOfImages(
+          userId: widget.userId,
           typeSelect: typeSelect,
           moreImage: widget.images,
           imagePic: widget.imageCertificate,

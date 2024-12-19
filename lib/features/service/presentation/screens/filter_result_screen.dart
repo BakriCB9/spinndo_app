@@ -45,6 +45,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
 
     markerLocationData.add(GoogleMapMarker(BitmapDescriptor.hueGreen,
         id: 5,
+
         name: "Current Location",
         latLng: LatLng(_serviceCubit.getCurrentLocation!.latitude!,
             _serviceCubit.getCurrentLocation!.longitude!)));
@@ -77,10 +78,9 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                         ? GeocodingService.getCountryBounds(
                             _serviceCubit.selectedCityName ??
                                 _serviceCubit.selectedCountryName!)
-                        : GeocodingService.getCountryBounds(
-                            await GeocodingService.getAddressFromCoordinates(
+                        :  GeocodingService.getCurrentLocationBounds(
                                 _serviceCubit.getCurrentLocation!.latitude!,
-                                _serviceCubit.getCurrentLocation!.longitude!)));
+                                _serviceCubit.getCurrentLocation!.longitude!));
 
                 _authCubit.loadMapStyle(
                     _drawerCubit.themeMode == ThemeMode.dark ? true : false);

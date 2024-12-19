@@ -45,6 +45,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('***************************************** ');
+    print('selectedCOuntry ${_serviceCubit.selectedCountry}');
+    print('selectedCity ${_serviceCubit.selectedCity}');
+    print('***************************************** ');
     final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     double _distance = _serviceCubit.selectedDistance ?? 10.0;
@@ -161,6 +165,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 BlocConsumer<ServiceCubit, ServiceStates>(
                   buildWhen: (previous, current) {
                     if (current is ServiceLoading ||
+                        current is ResetSettingsState ||
                         current is ServiceError ||
                         current is ServiceSuccess ||
                         current is CountryCategoryLoading ||
@@ -201,13 +206,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         child: Text(state.message,
                             style: Theme.of(context).textTheme.bodySmall),
                       );
-                    } else if (state is CountryCategorySuccess ||
-                        state is GetCurrentLocationFilterSuccess ||
-                        state is SelectedCountryCityServiceState ||
-                        state is ServiceSuccess ||
-                        state is ServiceLoading ||
-                        state is ServiceInitial ||
-                        state is ServiceError) {
+                    } else {
                       return Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -248,7 +247,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        localization.chooseCategory,
+                                        localization.chooseCountry,
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium!
@@ -270,6 +269,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               decoration: const InputDecoration(
                                                   errorBorder:
                                                       InputBorder.none),
+                                              value:
+                                                  _serviceCubit.selectedCountry,
                                               items: _serviceCubit
                                                   .countriesList!
                                                   .map((e) => DropdownMenuItem<
@@ -289,27 +290,22 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                     null;
                                                 _serviceCubit.isCity = false;
                                                 _serviceCubit.isCurrent = false;
-
+                                                _serviceCubit.selectedCity =
+                                                    null; // Reset the selected city
+                                                _serviceCubit.citiesList
+                                                    ?.clear(); // Clear the cities list
                                                 _serviceCubit
                                                     .selectedCountryService(
-                                                        value!);
+                                                        value!); // Update with the new country
                                               },
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          _serviceCubit.selectedCountryId !=
-                                                  null
-                                              ? Icon(
-                                                  Icons.check,
-                                                  color: Colors.green,
-                                                  size: 50.sp,
-                                                )
-                                              : const SizedBox()
+
                                         ],
                                       ),
-                                      _serviceCubit.selectedCountryId != null
+                                      _serviceCubit.selectedCountryId != null &&
+                                              _serviceCubit.selectedCountryId !=
+                                                  -1
                                           ? Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -335,11 +331,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                                 context)
                                                             .primaryColorDark,
                                                         hint: Text(
-                                                            localization.city,
+                                                            _serviceCubit.addAllCities.name,
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
                                                                 .displayMedium),
+                                                        value: _serviceCubit
+                                                            .selectedCity,
                                                         menuMaxHeight: 200,
                                                         decoration:
                                                             const InputDecoration(
@@ -371,18 +369,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                         },
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      width: 10.w,
-                                                    ),
-                                                    _serviceCubit
-                                                                .selectedCityId !=
-                                                            null
-                                                        ? Icon(
-                                                            Icons.check,
-                                                            color: Colors.green,
-                                                            size: 50.sp,
-                                                          )
-                                                        : const SizedBox()
+
                                                   ],
                                                 ),
                                               ],
@@ -422,6 +409,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                   .selectedCountryName = null;
                                               _serviceCubit.selectedCountryId =
                                                   null;
+                                              _serviceCubit.selectedCountry =
+                                                  null;
                                               _serviceCubit.selectedCityName =
                                                   null;
                                               _serviceCubit.selectedCityId =
@@ -439,88 +428,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   )
                                 ],
                               ),
-                              // Row(
-                              //   children: [
-                              //     ElevatedButton(
-                              //       onPressed: () {
-                              //         _serviceCubit.getCurrentLocationFilter();
-                              //         _serviceCubit.selectedCountryName = null;
-                              //         _serviceCubit.selectedCountryId = null;
-                              //         _serviceCubit.selectedCityName = null;
-                              //         _serviceCubit.selectedCityId = null;
-                              //         _serviceCubit.selectedDistance = 10;
-                              //       },
-                              //       child: BlocBuilder<ServiceCubit,
-                              //           ServiceStates>(
-                              //         bloc: _serviceCubit,
-                              //         buildWhen: (previous, current) {
-                              //           if (current is GetCurrentLocationFilterLoading ||
-                              //               current
-                              //                   is GetCurrentLocationFilterErrorr ||
-                              //               current
-                              //                   is GetCurrentLocationFilterSuccess ||
-                              //               current
-                              //                   is SelectedCountryCityServiceState)
-                              //             return true;
-                              //           return false;
-                              //         },
-                              //         builder: (context, state) {
-                              //           if (state
-                              //               is GetCurrentLocationFilterLoading) {
-                              //             return SizedBox(
-                              //                 width: 300.w,
-                              //                 child: LoadingIndicator(
-                              //                     Colors.white));
-                              //           } else if (state
-                              //               is GetCurrentLocationFilterErrorr) {
-                              //             return Text(
-                              //               state.message,
-                              //               style: Theme.of(context)
-                              //                   .textTheme
-                              //                   .bodySmall,
-                              //             );
-                              //           } else if (state
-                              //               is GetCurrentLocationFilterSuccess) {
-                              //             return Padding(
-                              //               padding: EdgeInsets.symmetric(
-                              //                   horizontal: 20.0.w),
-                              //               child: Text(
-                              //                 "current Location",
-                              //                 style: Theme.of(context)
-                              //                     .textTheme
-                              //                     .bodyLarge,
-                              //               ),
-                              //             );
-                              //           } else {
-                              //             return Padding(
-                              //               padding: EdgeInsets.symmetric(
-                              //                   horizontal: 20.0.w),
-                              //               child: Text("current Location",
-                              //                   style: Theme.of(context)
-                              //                       .textTheme
-                              //                       .bodyLarge),
-                              //             );
-                              //           }
-                              //         },
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       width: 10.w,
-                              //     ),
-                              //     BlocBuilder<ServiceCubit, ServiceStates>(
-                              //       bloc: _serviceCubit,
-                              //       builder: (context, state) {
-                              //         return _serviceCubit.isUpdat == true
-                              //             ? Icon(
-                              //                 Icons.check,
-                              //                 color: Colors.green,
-                              //                 size: 50.sp,
-                              //               )
-                              //             : SizedBox();
-                              //       },
-                              //     )
-                              //   ],
-                              // ),
                               SizedBox(height: 30.h),
                               AnimatedSize(
                                 alignment: Alignment.topCenter,
@@ -637,7 +544,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       SizedBox(
                                         height: 20.h,
                                       ),
-                                      _serviceCubit.selectedCategory != null
+                                      _serviceCubit.selectedCategory != null &&
+                                              _serviceCubit
+                                                      .selectedCategory?.id !=
+                                                  -1
                                           ? Column(
                                               children: [
                                                 SizedBox(
@@ -656,7 +566,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 12.w),
                                                     child: Text(
-                                                        localization
+                                                        _serviceCubit.addAllChildCategories.name??localization
                                                             .chooseSubCategory,
                                                         style: Theme.of(context)
                                                             .textTheme
@@ -705,18 +615,38 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   );
                                 },
                               ),
-
-                              SizedBox(height: 80.h),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w, vertical: 8.h),
+                                  child: InkWell(
+                                      onTap: () {
+                                        _serviceCubit.resetSetting();
+                                      },
+                                      child: Text(localization.resetAll,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .copyWith(
+                                                  color:
+                                                      ColorManager.primary))),
+                                ),
+                              ),
+                              SizedBox(height: 60.h),
                               ElevatedButton(
                                 onPressed: () {
-                                  if (_serviceCubit.selectedCountryName ==
-                                          null &&
-                                      _serviceCubit.getCurrentLocation ==
-                                          null) {
+                                  if ((_serviceCubit.selectedCountryId ==
+                                          null||_serviceCubit.selectedCountryId ==-1 ) &&
+                                      _serviceCubit.isCurrent ==
+                                          false &&(_serviceCubit.selectedCategory==null||_serviceCubit.selectedCategory?.id==-1)) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
-                                        'choose country or your current location',
+                                        'Filter on Location or Category',
                                         style: TextStyle(
                                             fontSize: 28.sp,
                                             color: Colors.white),
@@ -725,31 +655,46 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return;
                                   }
                                   _serviceCubit.getServices(GetServicesRequest(
-                                      categoryId: _serviceCubit
-                                                  .selectedCategory?.id !=
-                                              null
-                                          ? _serviceCubit.selectedSubCategory
-                                                      ?.id ==
+                                      categoryId:
+                                          _serviceCubit.selectedCategory?.id !=
                                                   null
                                               ? _serviceCubit
-                                                  .selectedCategory!.id
-                                              : _serviceCubit.selectedSubCategory!
-                                                  .id
-                                          : null,
-                                      cityId: _serviceCubit.selectedCityId,
+                                                          .selectedSubCategory
+                                                          ?.id ==
+                                                      null
+                                                  ? _serviceCubit
+                                                              .selectedCategory
+                                                              ?.id ==
+                                                          -1
+                                                      ? null
+                                                      : _serviceCubit
+                                                          .selectedCategory!.id
+                                                  : _serviceCubit
+                                                              .selectedSubCategory
+                                                              ?.id ==
+                                                          -1
+                                                      ? null
+                                                      : _serviceCubit
+                                                          .selectedSubCategory!
+                                                          .id
+                                              : null,
+                                      cityId: _serviceCubit.selectedCityId == -1
+                                          ? null
+                                          : _serviceCubit.selectedCityId,
                                       countryId:
-                                          _serviceCubit.selectedCountryId,
+                                          _serviceCubit.selectedCountryId == -1
+                                              ? null
+                                              : _serviceCubit.selectedCountryId,
                                       latitude: _serviceCubit
                                           .getCurrentLocation?.latitude,
                                       longitude: _serviceCubit
                                           .getCurrentLocation?.longitude,
-                                      radius: _serviceCubit.selectedDistance
-                                          ?.toInt(),
+                                      radius:_serviceCubit.isCurrent==true?  _serviceCubit.selectedDistance
+                                          ?.toInt():null,
                                       search: _serviceCubit
                                               .searchController.text.isEmpty
                                           ? null
-                                          : _serviceCubit
-                                              .searchController.text));
+                                          : _serviceCubit.searchController.text));
                                   print(
                                       'the value of distance is ${_serviceCubit.searchController.text}');
                                 },
@@ -762,545 +707,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ),
                             ],
                           ));
-                    } else {
-                      print("dddddddddddddddddddddddddddddd");
-                      print(state);
-                      return Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              BlocBuilder<ServiceCubit, ServiceStates>(
-                                bloc: _serviceCubit,
-                                buildWhen: (previous, current) {
-                                  if (current
-                                          is GetCurrentLocationFilterSuccess ||
-                                      current
-                                          is SelectedCountryCityServiceState)
-                                    return true;
-                                  return false;
-                                },
-                                builder: (context, state) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Choose Country',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(fontSize: 36.sp),
-                                      ),
-                                      SizedBox(height: 8.h),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: DropdownButtonFormField<
-                                                Countries>(
-                                              hint: Text("Country",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium),
-                                              menuMaxHeight: 200,
-                                              decoration: const InputDecoration(
-                                                  errorBorder:
-                                                      InputBorder.none),
-                                              items: _serviceCubit
-                                                  .countriesList!
-                                                  .map((e) => DropdownMenuItem<
-                                                          Countries>(
-                                                        value: e,
-                                                        child: Text(
-                                                          e.name,
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .displayMedium,
-                                                        ),
-                                                      ))
-                                                  .toList(),
-                                              onChanged: (value) {
-                                                _serviceCubit
-                                                    .getCurrentLocation = null;
-                                                _serviceCubit
-                                                    .selectedCountryService(
-                                                        value!);
-                                              },
-                                            ),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          _serviceCubit.selectedCountryId !=
-                                                  null
-                                              ? Icon(
-                                                  Icons.check,
-                                                  color: Colors.green,
-                                                  size: 50.sp,
-                                                )
-                                              : const SizedBox()
-                                        ],
-                                      ),
-                                      _serviceCubit.selectedCountryId != null
-                                          ? Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(height: 30.h),
-                                                Text(
-                                                  'Choose City',
-                                                  textAlign: TextAlign.start,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium!
-                                                      .copyWith(
-                                                          fontSize: 36.sp),
-                                                ),
-                                                SizedBox(height: 8.h),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child:
-                                                          DropdownButtonFormField<
-                                                              Cities>(
-                                                        hint: Text("City",
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .displayMedium),
-                                                        menuMaxHeight: 200,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                errorBorder:
-                                                                    InputBorder
-                                                                        .none),
-                                                        items: _serviceCubit
-                                                            .citiesList
-                                                            ?.map((e) =>
-                                                                DropdownMenuItem<
-                                                                    Cities>(
-                                                                  value: e,
-                                                                  child: Text(
-                                                                    e.name,
-                                                                    style: Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .displayMedium,
-                                                                  ),
-                                                                ))
-                                                            .toList(),
-                                                        onChanged: (value) {
-                                                          _serviceCubit
-                                                                  .getCurrentLocation =
-                                                              null;
-
-                                                          _serviceCubit
-                                                              .selectedCityService(
-                                                                  value!);
-                                                        },
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10.w,
-                                                    ),
-                                                    _serviceCubit
-                                                                .selectedCityId !=
-                                                            null
-                                                        ? Icon(
-                                                            Icons.check,
-                                                            color: Colors.green,
-                                                            size: 50.sp,
-                                                          )
-                                                        : const SizedBox()
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          : const SizedBox()
-                                    ],
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 30.h),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      _serviceCubit.getCurrentLocationFilter();
-                                      _serviceCubit.selectedCountryName = null;
-                                      _serviceCubit.selectedCountryId = null;
-                                      _serviceCubit.selectedCityName = null;
-                                      _serviceCubit.selectedCityId = null;
-                                    },
-                                    child: BlocBuilder<ServiceCubit,
-                                        ServiceStates>(
-                                      bloc: _serviceCubit,
-                                      buildWhen: (previous, current) {
-                                        if (current is GetCurrentLocationFilterLoading ||
-                                            current
-                                                is GetCurrentLocationFilterErrorr ||
-                                            current
-                                                is GetCurrentLocationFilterSuccess ||
-                                            current
-                                                is SelectedCountryCityServiceState)
-                                          return true;
-                                        return false;
-                                      },
-                                      builder: (context, state) {
-                                        if (state
-                                            is GetCurrentLocationFilterLoading) {
-                                          return SizedBox(
-                                              width: 300.w,
-                                              child: LoadingIndicator(
-                                                  Colors.white));
-                                        } else if (state
-                                            is GetCurrentLocationFilterErrorr) {
-                                          return Text(
-                                            state.message,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall,
-                                          );
-                                        } else if (state
-                                            is GetCurrentLocationFilterSuccess) {
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.0.w),
-                                            child: Text(
-                                              "current Location",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge,
-                                            ),
-                                          );
-                                        } else {
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.0.w),
-                                            child: Text("current Location",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  BlocBuilder<ServiceCubit, ServiceStates>(
-                                    bloc: _serviceCubit,
-                                    builder: (context, state) {
-                                      return _serviceCubit.isUpdat == true
-                                          ? Icon(
-                                              Icons.check,
-                                              color: Colors.green,
-                                              size: 50.sp,
-                                            )
-                                          : const SizedBox();
-                                    },
-                                  )
-                                ],
-                              ),
-                              SizedBox(height: 30.h),
-                              AnimatedSize(
-                                alignment: Alignment.topCenter,
-                                duration: const Duration(milliseconds: 500),
-                                child: BlocBuilder<ServiceCubit, ServiceStates>(
-                                  bloc: _serviceCubit,
-                                  buildWhen: (previous, current) {
-                                    if (current is DistanceSelectUpdate ||
-                                        current
-                                            is GetCurrentLocationFilterSuccess ||
-                                        current
-                                            is SelectedCountryCityServiceState) {
-                                      return true;
-                                    }
-                                    return false;
-                                  },
-                                  builder: (context, state) {
-                                    return (_serviceCubit.getCurrentLocation !=
-                                                null &&
-                                            _serviceCubit.selectedCountryId ==
-                                                null)
-                                        ? Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Distance",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium),
-                                              SizedBox(
-                                                height: 10.h,
-                                              ),
-                                              Slider(
-                                                activeColor: Theme.of(context)
-                                                    .primaryColor,
-                                                inactiveColor: Colors.black,
-                                                value: _serviceCubit
-                                                        .selectedDistance ??
-                                                    10,
-                                                min: 0,
-                                                max: 25,
-                                                divisions: 5,
-                                                label:
-                                                    "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
-                                                onChanged: (value) {
-                                                  _serviceCubit
-                                                      .distanceSelect(value);
-                                                },
-                                              ),
-                                              Text(
-                                                  "${_serviceCubit.selectedDistance?.toInt() ?? 10} km",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium),
-                                              SizedBox(height: 16.h),
-                                            ],
-                                          )
-                                        : const SizedBox();
-                                  },
-                                ),
-                              ),
-                              // Container(color: Colors.red,width: 200.w,height: 200.h,),
-                              Text(
-                                'Choose Category',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(fontSize: 36.sp),
-                              ),
-
-                              SizedBox(height: 8.h),
-                              BlocBuilder<ServiceCubit, ServiceStates>(
-                                bloc: _serviceCubit,
-                                buildWhen: (previous, current) {
-                                  if (current is SelectedCategoryServiceState)
-                                    return true;
-                                  else
-                                    return false;
-                                },
-                                builder: (context, state) {
-                                  return DropdownButtonFormField<Categories>(
-                                    hint: Text("Cateory",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium),
-                                    menuMaxHeight: 200,
-                                    decoration: const InputDecoration(
-                                        errorBorder: InputBorder.none),
-                                    value: _serviceCubit.selectedCategory,
-                                    items: _serviceCubit.categoriesList!
-                                        .map(
-                                            (e) => DropdownMenuItem<Categories>(
-                                                  value: e,
-                                                  child: Text(e.name,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .displayMedium),
-                                                ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      _serviceCubit
-                                          .selectedCategoryService(value);
-                                    },
-                                  );
-                                },
-                              ),
-                              SizedBox(
-                                height: 30.h,
-                              ),
-                              // CustomTextFormField(controller: TextEditingController(),hintText: 'Enter your Service Name or Name of Provider',),
-                              //TextFormField(decoration: InputDecoration(),),
-                              // Text('Heloo bakri',style: TextStyle(fontSize: 30.sp,color: Colors.green),),
-
-                              SizedBox(height: 30.h),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_serviceCubit.selectedCountryName ==
-                                          null &&
-                                      _serviceCubit.getCurrentLocation ==
-                                          null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                        'choose country or your current location',
-                                        style: TextStyle(
-                                            fontSize: 28.sp,
-                                            color: Colors.white),
-                                      )),
-                                    );
-                                    return;
-                                  }
-                                  _serviceCubit.getServices(GetServicesRequest(
-                                    categoryId:
-                                        _serviceCubit.selectedCategoryId,
-                                    cityId: _serviceCubit.selectedCityId,
-                                    countryId: _serviceCubit.selectedCountryId,
-                                    latitude: _serviceCubit
-                                        .getCurrentLocation?.latitude,
-                                    longitude: _serviceCubit
-                                        .getCurrentLocation?.longitude,
-                                    radius:
-                                        _serviceCubit.selectedDistance?.toInt(),
-                                    search: _serviceCubit.searchController.text,
-                                  ));
-                                  print(
-                                      'the service is ${_serviceCubit.searchController}');
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(double.infinity, 48),
-                                ),
-                                child: Text("Start Search",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge),
-                              ),
-                              SizedBox(
-                                height: 30.h,
-                              ),
-
-                              //Container(width: 200.w,height: 200.h,color: Colors.red,)
-                            ],
-                          ));
-                      // Padding(
-                      //   padding: const EdgeInsets.all(16.0),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       Text(
-                      //         'Choose Country',
-                      //         style: Theme.of(context).textTheme.titleMedium,
-                      //       ),
-                      //       SizedBox(height: 8),
-                      //       DropdownButtonFormField<Countries>(
-                      //         hint: Text("Select Country"),
-                      //         menuMaxHeight: 400,
-                      //         decoration: InputDecoration(
-                      //           border: OutlineInputBorder(),
-                      //         ),
-                      //         items: _serviceCubit.countriesList!
-                      //             .map((e) => DropdownMenuItem<Countries>(
-                      //                   value: e,
-                      //                   child: Text(e.name),
-                      //                 ))
-                      //             .toList(),
-                      //         onChanged: (value) {
-                      //
-                      //             _serviceCubit.selectedCountryService(value!);
-                      //
-                      //         },
-                      //       ),
-                      //       SizedBox(height: 16),
-                      //       Text(
-                      //         'Choose City',
-                      //         style: Theme.of(context).textTheme.titleMedium,
-                      //       ),
-                      //       SizedBox(height: 8),
-                      //       DropdownButtonFormField<Cities>(
-                      //         hint: Text("Select City"),
-                      //         menuMaxHeight: 400,
-                      //         decoration: InputDecoration(
-                      //           border: OutlineInputBorder(),
-                      //         ),
-                      //         items: _serviceCubit.citiesList
-                      //             ?.map((e) => DropdownMenuItem<Cities>(
-                      //                   enabled:
-                      //                       _serviceCubit.selectedCountryId != null
-                      //                           ? true
-                      //                           : false,
-                      //                   value: e,
-                      //                   child: Text(e.name),
-                      //                 ))
-                      //             .toList(),
-                      //         onChanged: (value) {
-                      //         _serviceCubit.selectedCityService(value!);
-                      //
-                      //         },
-                      //       ),
-                      //       SizedBox(height: 16),
-                      //       ElevatedButton(
-                      //         onPressed: () async {
-                      //           LocationData location =
-                      //               await LocationService.getLocationData();
-                      //           _serviceCubit.getCurrentLocation = location;
-                      //           setState(() {});
-                      //         },
-                      //         child: Text("get current Location"),
-                      //       ),
-                      //       SizedBox(height: 16),
-                      //       Text("Distance",
-                      //           style: Theme.of(context).textTheme.headlineMedium),
-                      //       SizedBox(height: 8),
-                      //       _serviceCubit.getCurrentLocation != null
-                      //           ? Column(
-                      //               crossAxisAlignment: CrossAxisAlignment.start,
-                      //               children: [
-                      //                 Slider(
-                      //                   activeColor: Colors.blue,
-                      //                   inactiveColor: Colors.grey.shade300,
-                      //                   value: _distance,
-                      //                   min: 0,
-                      //                   max: 25,
-                      //                   divisions: 5,
-                      //                   label: "${_distance.toInt()}km",
-                      //                   onChanged: (value) {
-                      //                     setState(() {
-                      //                       _distance = value;
-                      //                       _serviceCubit.selectedDistance = value;
-                      //                     });
-                      //                   },
-                      //                 ),
-                      //                 Text("${_distance.toInt()}km"),
-                      //                 SizedBox(height: 16),
-                      //               ],
-                      //             )
-                      //           : SizedBox(),
-                      //       SizedBox(height: 16),
-                      //       Text(
-                      //         'Choose Category',
-                      //         style: Theme.of(context).textTheme.titleMedium,
-                      //       ),
-                      //       SizedBox(height: 8),
-                      //       DropdownButtonFormField<Categories>(
-                      //         hint: Text("Select Cateory"),
-                      //         menuMaxHeight: 400,
-                      //         decoration: InputDecoration(
-                      //           border: OutlineInputBorder(),
-                      //         ),
-                      //         items: _serviceCubit.categoriesList!
-                      //             .map((e) => DropdownMenuItem<Categories>(
-                      //                   value: e,
-                      //                   child: Text(e.name),
-                      //                 ))
-                      //             .toList(),
-                      //         onChanged: (value) {
-                      //
-                      //         _serviceCubit.selectedCategoryService(value!);
-                      //         },
-                      //       ),
-                      //       SizedBox(height: 16),
-                      //       ElevatedButton(
-                      //         onPressed: () {
-                      //           _serviceCubit.getServices(GetServicesRequest(
-                      //               categoryId: _serviceCubit.selectedCategoryId,
-                      //               cityId: _serviceCubit.selectedCityId,
-                      //               countryId: _serviceCubit.selectedCountryId,
-                      //               latitude:
-                      //                   _serviceCubit.getCurrentLocation?.latitude,
-                      //               longitude:
-                      //                   _serviceCubit.getCurrentLocation?.longitude,
-                      //               radius: 25));
-                      //         },
-                      //         style: ElevatedButton.styleFrom(
-                      //           minimumSize: Size(double.infinity, 48),
-                      //         ),
-                      //         child: Text("Start Search"),
-                      //       ),
-                      //     ],
-                      //   ));
                     }
                   },
                 ),

@@ -20,13 +20,12 @@ class UpdateMapScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+
           _profileCubit.getCountryAndCityNameFromCrocd(
-              _profileCubit.isCurrent
-                  ? _profileCubit.currentLocation!.latitude
-                  : _profileCubit.selectedLocation!.latitude,
-              _profileCubit.isCurrent
-                  ? _profileCubit.currentLocation!.longitude
-                  : _profileCubit.selectedLocation!.longitude);
+
+              _profileCubit.myLocation!.latitude,_profileCubit.myLocation!.longitude);
+          _profileCubit.oldLocation=_profileCubit.myLocation;
+
           Navigator.pop(context);
         },
         child: Icon(
@@ -38,6 +37,8 @@ class UpdateMapScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
+                _profileCubit.myLocation=_profileCubit.currentLocation;
+
                 _profileCubit.initCurrentLocation();
                 _profileCubit.initMarkerAddress();
                 _profileCubit.isCurrent = true;
@@ -62,7 +63,11 @@ class UpdateMapScreen extends StatelessWidget {
             return Center(
               child: LoadingIndicator(Theme.of(context).primaryColor),
             );
-          } else if (state is GetUpdatedLocationSuccess) {
+          } else if (state is GetUpdatedLocationErrorr) {
+            return Center(
+              child: Text(state.message),
+            );
+          }else  {
             return BlocBuilder<ProfileCubit, ProfileStates>(
               bloc: _profileCubit,
               buildWhen: (previous, current) {
@@ -80,33 +85,27 @@ class UpdateMapScreen extends StatelessWidget {
                       markers: _profileCubit.markers,
                       style: _profileCubit.mapStyle,
                       onTap: (argument) {
+                        _profileCubit.myLocation=argument;
                         _profileCubit.selectLocation(argument);
 
                         _profileCubit.initMarkerAddress();
                         _profileCubit.isCurrent = false;
                       },
                       onMapCreated: (controller) async {
-                        _profileCubit.isCurrent = true;
-
+                        _profileCubit.isCurrent = false;
+                        _profileCubit.myLocation=_profileCubit.oldLocation;
                         _profileCubit.googleMapController = controller;
                         _profileCubit.initCurrentLocation();
                         _profileCubit.initMarkerAddress();
                       },
                       initialCameraPosition: CameraPosition(
-                          target: LatLng(double.parse(_profileCubit.latitu!),
-                              double.parse(_profileCubit.longti!)),
+                          target: _profileCubit.myLocation!,
                           zoom: 14),
                     ),
                   ],
                 );
               },
             );
-          } else if (state is GetUpdatedLocationErrorr) {
-            return Center(
-              child: Text(state.message),
-            );
-          } else {
-            return const SizedBox();
           }
         },
       ),

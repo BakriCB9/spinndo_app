@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/const_variable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditImageScreen extends StatefulWidget {
   const EditImageScreen({super.key});
@@ -20,6 +21,8 @@ class _EditImageScreenState extends State<EditImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     ans = false;
     for (int i = 0; i < listonClick.length; i++) {
       if (listonClick[i].isClicked) {
@@ -30,7 +33,7 @@ class _EditImageScreenState extends State<EditImageScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: ans ? [Icon(Icons.delete)] : null,
-        title: Text('Edit your gallery'),
+        title: Text(localization.edityourgallery),
         iconTheme: IconThemeData(color: Colors.white),
         leading: ans
             ? IconButton(

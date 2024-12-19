@@ -61,6 +61,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
         markers: markers,
         cameraTargetBounds: CameraTargetBounds(_serviceCubit.filterBounds),
         initialCameraPosition: initialCameraPosition,
+
         style: _authCubit.mapStyle,
       ),
     );

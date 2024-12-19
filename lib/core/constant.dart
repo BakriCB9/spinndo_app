@@ -28,4 +28,5 @@ class CacheConstant {
   static const String userId = 'user_id';
   static const String userRole = 'user_role';
   static const String imagePhoto = 'Image_photo';
+  static const String imagePhotoFromLogin='image_phot';
 }

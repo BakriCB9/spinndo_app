@@ -2,10 +2,10 @@ import 'package:app/features/auth/data/models/category_response/child.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 
-class Data extends Categories {
-  Data({required super.id, required super.name, required super.children});
+class DataCategory extends Categories {
+  DataCategory({required super.id, required super.name, required super.children});
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory DataCategory.fromJson(Map<String, dynamic> json) => DataCategory(
         id: json['id'] as int,
         name: json['name'] as String,
         children: (json['children'] as List<dynamic>)

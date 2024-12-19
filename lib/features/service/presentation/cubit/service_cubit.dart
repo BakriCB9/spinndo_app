@@ -1,3 +1,6 @@
+import 'package:app/features/service/data/models/get_all_category_response/data.dart';
+import 'package:app/features/service/data/models/get_all_countries_response/city.dart';
+import 'package:app/features/service/data/models/get_all_countries_response/data.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,21 +33,28 @@ class ServiceCubit extends Cubit<ServiceStates> {
   ChildCategory? selectedSubCategory;
   List<Cities>? citiesList;
   List<Categories>? categoriesList;
-  List<List<ChildCategory>>? childCategoryList;
   int? selectedCountryId;
+  Countries? selectedCountry;
+
   String? selectedCountryName;
   int? selectedCityId;
+  Cities? selectedCity;
   String? selectedCityName;
   bool isCity = true;
-  int? selectedCategoryId;
   double? selectedDistance = 10;
   LocationData? getCurrentLocation;
+
   LatLng? filterLocation;
   String? currentLocationCityName;
   LatLngBounds? filterBounds;
   String failureMessegae = "";
   bool isCurrent = false;
   int index = 0;
+
+  DataCountries addAllCountry=DataCountries(id: -1, name: "All Countries", cities: []);
+  City addAllCities=City(id: -1, name: "All Cities");
+  DataCategory addAllCategories=DataCategory(name: "All Categories", id: -1, children: []);
+  ChildCategory addAllChildCategories=ChildCategory(id: -1,name: "All Sub Categories");
   TextEditingController searchController = TextEditingController();
   Future<void> getServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
@@ -65,6 +75,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
       // emit(CountryCategoryError(failure.message)),
     }, (categories) {
       categoriesList = categories;
+      categoriesList?.add( addAllCategories);
       // for(int i=0;i<categoriesList!.length;i++){
       //   var chid=categoriesList?[i].children;
       //   for(int j=0;j<chid!.length;i++){
@@ -86,11 +97,15 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
       // emit(CountryCategoryError(failure.message)),
     }, (countries) {
+      // countriesList?.clear();
       countriesList = countries;
+      countriesList?.add(addAllCountry);
       // emit(CountryCategorySuccess());
     });
   }
-
+  // List<Countries> getAllCategoriess() {
+  //   return [...?countriesList, ...addAllCountry];
+  // }
   Future<void> getCountriesAndCategories() async {
     emit(CountryCategoryLoading());
     await getCountries();
@@ -116,8 +131,17 @@ class ServiceCubit extends Cubit<ServiceStates> {
   void selectedCategoryService(Categories? category) {
     selectedCategory = category;
     selectedSubCategory = null;
+    // Initialize or update the cities list based on the selected country
 
-    catChildren = category?.children;
+    // Initialize or update the cities list based on the selected country
+    if (category?.children != null && category!.children.isNotEmpty) {
+      catChildren = List.from(category.children); // Use a new list instance
+    } else {
+      catChildren= []; // Reset to an empty list if there are no cities
+    }
+
+
+    catChildren?.add(addAllChildCategories);
 
     emit(SelectedCategoryServiceState());
   }
@@ -130,15 +154,26 @@ class ServiceCubit extends Cubit<ServiceStates> {
   void selectedCountryService(Countries country) {
     selectedCountryId = country.id;
     selectedCountryName = country.name;
-    citiesList = country.cities;
-    isUpdat = false;
+    selectedCountry=country;
+    // Initialize or update the cities list based on the selected country
+    if (country.cities.isNotEmpty) {
+      citiesList = List.from(country.cities); // Use a new list instance
+    } else {
+      citiesList = []; // Reset to an empty list if there are no cities
+    }
+
+    // Add the "All Cities" option to the list
+    citiesList?.add(addAllCities);
+
+    isUpdat = false; // Reset update flag
     emit(SelectedCountryCityServiceState());
   }
+
 
   void selectedCityService(Cities city) {
     selectedCityId = city.id;
     selectedCityName = city.name;
-
+selectedCity=city;
     emit(SelectedCountryCityServiceState());
   }
 
@@ -165,5 +200,17 @@ class ServiceCubit extends Cubit<ServiceStates> {
   void chooseCurrentLocation(bool value) {
     isCurrent = value;
     emit(IsCurrentLocation());
+  }
+  void resetSetting(){
+searchController.clear();
+selectedCountry=null;
+selectedCountryId=null;
+selectedCity=null;
+selectedCityId=null;
+selectedCategory=null;
+selectedSubCategory=null;
+isCurrent=false;
+selectedDistance=10;
+emit(ResetSettingsState());
   }
 }

@@ -143,4 +143,37 @@ class GeocodingService {
       print('Error: $e');
     }
   }
+  static Future<LatLngBounds> getCurrentLocationBounds(
+      double lat, double long) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=${ApiConstant.googleMapApiKey}';
+
+    try {
+      final response = await _dio.get(url);
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+
+        if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+
+          final geometry = data['results'][5]['geometry'];
+          final northLat = geometry['bounds']['northeast']['lat'];
+          final northLng = geometry['bounds']['northeast']['lng'];
+          final southLat = geometry['bounds']['southwest']['lat'];
+          final southLng = geometry['bounds']['southwest']['lng'];
+
+          return LatLngBounds(
+              northeast: LatLng(northLat, northLng),
+              southwest: LatLng(southLat, southLng));
+        } else {
+          throw Exception('No results found');
+        }
+      } else {
+        throw Exception('Failed to load geocoding data');
+      }
+    } catch (e) {
+      throw Exception('Error fetching address: $e');
+    }
+  }
+
 }

@@ -18,6 +18,7 @@ class CustomTextFormField extends StatefulWidget {
   final bool isPassword;
   final IconData? icon;
   final TextInputType? keyboardType;
+
   const CustomTextFormField(
       {Key? key,
       this.labelText,
@@ -38,8 +39,9 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormField extends State<CustomTextFormField> {
-  bool isObsecure = false;
+  bool isObsecure =  false;
   late FocusNode _focus;
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +69,8 @@ class _CustomTextFormField extends State<CustomTextFormField> {
       style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
           hintText: widget.hintText,
-          hintStyle: TextStyle(fontSize: 25.sp, color: Colors.grey),
+          hintStyle:
+              Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 30.sp),
           label: widget.labelText != null
               ? Text(
                   widget.labelText!,
@@ -81,14 +84,14 @@ class _CustomTextFormField extends State<CustomTextFormField> {
                         setState(() {});
                       },
                       icon: isObsecure
+
                           ? Icon(
-                              Icons.visibility_off_outlined,
-                              size: 40.sp,
-                            )
-                          : Icon(
                               Icons.visibility_outlined,
                               size: 40.sp,
-                            ))
+                            ): Icon(
+            Icons.visibility_off_outlined,
+            size: 40.sp,
+          ))
                   : null
               : null,
           prefixIcon: widget.icon == null
@@ -107,7 +110,8 @@ class _CustomTextFormField extends State<CustomTextFormField> {
             }
           : null,
       cursorColor: ColorManager.primary,
-      obscureText: isObsecure, controller: widget.controller,
+      obscureText: widget.isPassword? !isObsecure:isObsecure,
+      controller: widget.controller,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
       validator: widget.validator,

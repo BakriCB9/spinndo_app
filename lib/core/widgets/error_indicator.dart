@@ -10,7 +10,7 @@ class ErrorIndicator extends StatelessWidget {
     // final localization = AppLocalizations.of(context)!;
 
     return Center(
-      child: Text(message),
+      child: Text(message,style: Theme.of(context).textTheme.bodySmall),
     );
   }
 }

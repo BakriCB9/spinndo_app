@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:app/core/resources/assets_manager.dart';
+import 'package:app/core/widgets/cash_network.dart';
+import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
@@ -20,17 +26,49 @@ class CustomDrawer extends StatelessWidget {
   CustomDrawer({super.key});
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   Dio? _dio;
+  final _serviceCubit = serviceLocator.get<ServiceCubit>();
+
+  final imagePhoto=sharedPref.getString(CacheConstant.imagePhoto);
 
   List<Languages> languages = [
     Languages(name: 'English', code: 'en'),
     Languages(name: 'العربية', code: 'ar'),
   ];
+  Uint8List? bytes;
   @override
   Widget build(BuildContext context) {
+    final imagePhoto=sharedPref.getString(CacheConstant.imagePhotoFromLogin);
+    print('the image phto is $imagePhoto');
     final email = sharedPref.getString(CacheConstant.semailKey);
     final name = sharedPref.getString(CacheConstant.nameKey);
     final localization = AppLocalizations.of(context)!;
 
+    final base64String = sharedPref
+        .getString(CacheConstant.imagePhoto);
+
+    //bytes = base64Decode(base64String?) as Uint8List?  ;
+    // if (base64String != null &&
+    //     base64String.isNotEmpty) {
+    //   bytes = base64Decode(base64String);
+    //   print(
+    //       'the image is ##############################################  $bytes');
+    // }
+    // return base64String == null
+    //     ?(imagePhoto ==null? Icon(
+    //   Icons.person,
+    //   size: 150.r,
+    //   color: Colors.white,
+    // ):ClipRRect(
+    //     borderRadius: BorderRadius.circular(300.r),
+    //     child: CashImage(path: imagePhoto)))
+    //     : ClipRRect(
+    //   borderRadius:
+    //   BorderRadius.circular(150.r),
+    //   child: Image.memory(
+    //     bytes!,
+    //     fit: BoxFit.cover,
+    //   ),
+    // );
     return Drawer(
       backgroundColor: _drawerCubit.themeMode == ThemeMode.dark
           ? ColorManager.darkBlue
@@ -55,12 +93,52 @@ class CustomDrawer extends StatelessWidget {
                       width: 175.w,
                       height: 175.h,
                       decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('asset/images/no_profile.png'),
-                            fit: BoxFit.cover),
+                        // image: DecorationImage(
+                        //     image: AssetImage('asset/images/no_profile.png'),
+                        //     fit: BoxFit.cover),
                         shape: BoxShape.circle,
                         color: Colors.grey,
+
                       ),
+                      child:Builder(builder: (context) {
+                        Uint8List? bytes;
+                        final base64String = sharedPref
+                            .getString(CacheConstant.imagePhoto);
+
+                        if (base64String != null &&
+                            base64String.isNotEmpty) {
+                          bytes = base64Decode(base64String);
+                          print(
+                              'the image is ##############################################  $bytes');
+                        }
+                        return base64String == null
+                            ?(imagePhoto ==null? Icon(
+                          Icons.person,
+                          size: 150.r,
+                          color: Colors.white,
+                        ):ClipRRect(
+                            borderRadius: BorderRadius.circular(300.r),
+                            child: CashImage(path: imagePhoto)))
+                            : ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(150.r),
+                          child: Image.memory(
+                            bytes!,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },)
+                    //   base64String==null? (imagePhoto==null?ClipRRect(
+                    //       borderRadius: BorderRadius.circular(175.r),
+                    //       child: Image.asset('asset/images/no_profile.png')):ClipRRect(
+                    //       borderRadius: BorderRadius.circular(175.r),
+                    //       child: CashImage(path:imagePhoto)),
+                    // ):
+
+                      // Image.memory(
+                      //        bytes!,
+                      //       fit: BoxFit.cover,
+                      //      )
                     ),
                     // Text(
                     //   'Bakri aweja',
@@ -213,8 +291,11 @@ class CustomDrawer extends StatelessWidget {
                         UIUtils.showMessage(state.message);
                       } else if (state is LogOutSuccess) {
                         UIUtils.hideLoading(context);
+
                         Navigator.of(context)
                             .pushReplacementNamed(SignInScreen.routeName);
+                        _disposeResources();
+
                       }
                     },
                     child: InkWell(
@@ -239,5 +320,9 @@ class CustomDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+  void _disposeResources() {
+    _serviceCubit.close();
+    _drawerCubit.close();
   }
 }

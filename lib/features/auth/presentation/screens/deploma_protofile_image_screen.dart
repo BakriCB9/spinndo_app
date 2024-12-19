@@ -43,26 +43,6 @@ class _DeplomaProtofileImageScreenState
           : null,
       child: Scaffold(
         appBar: AppBar(
-          actions: [
-            Transform.scale(
-              scale: 0.8,
-              //g
-              child: Switch(
-                activeColor: ColorManager.primary,
-                inactiveTrackColor: ColorManager.white,
-                inactiveThumbColor: Theme.of(context).primaryColor,
-                activeTrackColor: Theme.of(context).primaryColor,
-                value: _drawerCubit.themeMode == ThemeMode.dark,
-                onChanged: (value) {
-                  if (value) {
-                    _drawerCubit.changeTheme(ThemeMode.dark);
-                  } else {
-                    _drawerCubit.changeTheme(ThemeMode.light);
-                  }
-                },
-              ),
-            ),
-          ],
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -278,42 +258,44 @@ class _DeplomaProtofileImageScreenState
   void singleDialog(int type, bool hasImage) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _imagePickerOption(
-              icon: Icons.camera_alt_outlined,
-              label: "Camera",
-              onTap: () async {
-                final image = await ImageFunctions.CameraPicker();
-                if (image != null) {
-                  _updateImage(type, image);
-                }
-                Navigator.pop(context);
-              },
-            ),
-            _imagePickerOption(
-              icon: Icons.image,
-              label: "Gallery",
-              onTap: () async {
-                final image = await ImageFunctions.galleryPicker();
-                if (image != null) {
-                  _updateImage(type, image);
-                }
-                Navigator.pop(context);
-              },
-            ),
-            if (hasImage)
+      builder: (context) => AlertDialog(backgroundColor: Theme.of(context).primaryColorDark,
+        content: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
               _imagePickerOption(
-                icon: Icons.delete,
-                label: "Delete",
-                onTap: () {
-                  _deleteImage(type);
+                icon: Icons.camera_alt_outlined,
+                label: _drawerCubit.languageCode == "en" ? "Camera" : "الكاميرا",
+                onTap: () async {
+                  final image = await ImageFunctions.CameraPicker(false);
+                  if (image != null) {
+                    _updateImage(type, image);
+                  }
                   Navigator.pop(context);
                 },
               ),
-          ],
+              _imagePickerOption(
+                icon: Icons.image,
+                label: _drawerCubit.languageCode == "en" ? "Gallery" : "المعرض",
+                onTap: () async {
+                  final image = await ImageFunctions.galleryPicker(false);
+                  if (image != null) {
+                    _updateImage(type, image);
+                  }
+                  Navigator.pop(context);
+                },
+              ),
+              if (hasImage)
+                _imagePickerOption(
+                  icon: Icons.delete,
+                  label: _drawerCubit.languageCode == "en" ? "Delete" : "حذف",
+                  onTap: () {
+                    _deleteImage(type);
+                    Navigator.pop(context);
+                  },
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -336,7 +318,7 @@ class _DeplomaProtofileImageScreenState
             ),
             onPressed: onTap,
           ),
-          Text(label),
+          Text(label,style: TextStyle(color: Theme.of(context).primaryColor,)),
         ],
       ),
     );

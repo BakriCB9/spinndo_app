@@ -9,6 +9,7 @@ import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 import 'package:app/features/profile/presentation/widget/client_prfile_screen.dart';
 import 'package:app/features/profile/presentation/widget/provider_profile_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -32,6 +33,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
@@ -73,7 +76,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                       _profileCubit.getUserRole();
                     },
                     child: Text(
-                      'Reload',
+                      localization.reload,
                       style: TextStyle(fontSize: 25.sp, color: Colors.white),
                     ))
               ],
@@ -84,8 +87,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
         } else if (state is GetClientSuccess) {
           return ClientProfileScreen(clientProfile: state.client);
         } else {
-          return const SizedBox(
-            child: Text("No data yet"),
+          return SizedBox(
+            child: Text(localization.noDataYet),
           );
         }
       }),

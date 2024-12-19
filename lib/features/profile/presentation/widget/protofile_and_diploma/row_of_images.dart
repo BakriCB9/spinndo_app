@@ -1,3 +1,5 @@
+import 'package:app/core/constant.dart';
+import 'package:app/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,16 +11,26 @@ class RowOfImages extends StatelessWidget {
   String? imagePic;
   List<ProviderProfileImage>? moreImage;
   int typeSelect;
+  int userId;
 
   RowOfImages(
-      {required this.typeSelect, this.imagePic, this.moreImage, super.key});
+      {
+        required this.userId,
+        required this.typeSelect, this.imagePic, this.moreImage, super.key});
 
   ///here i have to take list of images for protofile or diploma
+  final myId = sharedPref.getInt(CacheConstant.userId);
   @override
   Widget build(BuildContext context) {
+     // myId != userId?typeSelect=2:typeSelect;
+    if(myId!=userId){
+      typeSelect=2;
+    }
     print(
         'the image is of provider is ${moreImage![0].path} and seeeeeco is ${moreImage![1].path}');
-    return typeSelect == 2
+    return
+
+      typeSelect == 2
         ? moreImage!.isEmpty
             ? SizedBox(
                 height: 350.w,
@@ -42,7 +54,7 @@ class RowOfImages extends StatelessWidget {
                         ? const SizedBox()
                         : CashImage(path: moreImage![1].path!))
               ])
-        : imagePic == null
+        : myId == userId?imagePic == null
             ? SizedBox(
                 child: Center(
                     child: Text(
@@ -51,6 +63,6 @@ class RowOfImages extends StatelessWidget {
               )))
             : Align(
                 alignment: Alignment.topLeft,
-                child: CashImage(path: imagePic!));
+                child: CashImage(path: imagePic!)):const SizedBox();
   }
 }

@@ -93,10 +93,20 @@ class ProfileRepositoryImpl extends ProfileRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, ProviderProfile>> getServiceProvider() {
-    // TODO: implement getServiceProvider
-    throw UnimplementedError();
+  Future<Either<Failure, Data>> getServiceProvider() async {
+    try {
+      // print('we start now');
+      final user_id = _profileLocalDataSource.getUserId();
+      final user_token = _profileLocalDataSource.getToken();
+      final response = await _profileRemoteDataSource.getServiceProviderProfile(
+          user_id, user_token);
+      // print('we are in response now bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk  ${response}');
+      return Right(response.data!);
+    } on AppException catch (exception) {
+      // print('we failed bakkkkkkkkkkkkaer we are sorrryyyyyyyy error ${exception.message}');
+
+      return Left(Failure(exception.message));
+    }
   }
 
 }

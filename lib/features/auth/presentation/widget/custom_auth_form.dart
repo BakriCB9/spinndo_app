@@ -45,72 +45,7 @@ class CustomAuthForm extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            Navigator.of(context).canPop()
-                ? IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 0,
-                    ))
-                : SizedBox(),
-            Transform.scale(
-              scale: 0.8,
-              child: Switch(
-                activeColor: ColorManager.primary,
-                inactiveTrackColor: ColorManager.white,
-                inactiveThumbColor: Theme.of(context).primaryColor,
-                activeTrackColor: Theme.of(context).primaryColor,
-                value: _drawerCubit.themeMode == ThemeMode.dark,
-                onChanged: (value) {
-                  if (value) {
-                    _drawerCubit.changeTheme(ThemeMode.dark);
-                  } else {
-                    _drawerCubit.changeTheme(ThemeMode.light);
-                  }
-                },
-              ),
-            ),
-            Expanded(child: SizedBox()),
-            Expanded(
-              child: SizedBox(
-                width: 90.w,
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton<Languages>(
-                  isExpanded: false,
-                  value: languages.firstWhere(
-                    (lang) => lang.code == _drawerCubit.languageCode,
-                  ),
-                  dropdownColor: _drawerCubit.themeMode == ThemeMode.dark
-                      ? ColorManager.black
-                      : ColorManager.white,
-                  items: languages
-                      .map(
-                        (language) => DropdownMenuItem<Languages>(
-                          value: language,
-                          child: Text(language.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: _drawerCubit.themeMode ==
-                                              ThemeMode.dark
-                                          ? ColorManager.primary
-                                          : ColorManager.black)),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (selectedLanguage) {
-                    if (selectedLanguage != null) {
-                      _drawerCubit.changeLanguage(selectedLanguage.code);
-                    }
-                  },
-                  borderRadius: BorderRadius.circular(25),
-                )),
-              ),
-            ),
+
             isGuest
                 ? Align(
                     alignment: AlignmentDirectional.centerEnd,

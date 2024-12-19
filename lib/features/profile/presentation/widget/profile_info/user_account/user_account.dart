@@ -6,6 +6,7 @@ import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/profile/presentation/screens/edit_user_account.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserAccount extends StatelessWidget {
   final String firstName;
@@ -26,13 +27,16 @@ class UserAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Account', style: Theme.of(context).textTheme.labelLarge),
+            Text(localization.account,
+                style: Theme.of(context).textTheme.labelLarge),
             typeAccount == 'Client'
                 ? IconButton(
                     onPressed: () {
@@ -70,13 +74,16 @@ class UserAccount extends StatelessWidget {
         ),
         InfoDetails(
             icon: Icons.person_2_outlined,
-            title: 'First Name',
+            title: localization.firstName,
             content: firstName),
         InfoDetails(
             icon: Icons.person_2_outlined,
-            title: 'Last Name',
+            title: localization.lastName,
             content: lastName),
-        InfoDetails(icon: Icons.email_outlined, title: 'Email', content: email),
+        InfoDetails(
+            icon: Icons.email_outlined,
+            title: localization.email,
+            content: email),
       ],
     );
   }
