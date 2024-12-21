@@ -12,7 +12,7 @@ import 'package:app/main.dart';
 @lazySingleton
 class DrawerCubit extends Cubit<DrawerStates> {
   DrawerCubit({required this.sharedPreferences}) : super(DrawerInitial());
-  final SharedPreferences sharedPreferences;
+   SharedPreferences sharedPreferences;
   ThemeMode themeMode = ThemeMode.light;
   String languageCode = 'en';
   Color get backgroundColor => themeMode == ThemeMode.light
@@ -35,6 +35,8 @@ class DrawerCubit extends Cubit<DrawerStates> {
   }
 
   Future<void> loadThemeData() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
     String? oldTheme = getTheme();
     if (oldTheme != null) {
       themeMode = oldTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
@@ -57,6 +59,8 @@ class DrawerCubit extends Cubit<DrawerStates> {
   }
 
   Future<void> loadLanguage() async {
+   sharedPreferences = await SharedPreferences.getInstance();
+
     String? language = getLanguage();
     if (language != null) {
       languageCode = language;
