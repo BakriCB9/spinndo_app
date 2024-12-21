@@ -1,5 +1,6 @@
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/values_manager.dart';
+import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
@@ -393,24 +394,41 @@ class EditJobDetails extends StatelessWidget {
                       print('the State is $state');
 
                       if (state is IsUpdated) {
-                        return ElevatedButton(
-                            onPressed: () {
-                              _profileCubit.updateProviderProfile(
-                                  UpdateProviderRequest(
-                                    latitudeService: _profileCubit.myLocation?.latitude.toString(),
-                                    longitudeService: _profileCubit.myLocation?.longitude.toString(),
-                                    cityNameService: _profileCubit.cityName,
-                                    categoryIdService: _profileCubit.selectedSubCategory?.id.toString()??_profileCubit.selectedCategory?.id.toString(),
-                                    nameService:
-                                        _profileCubit.serviceNameController.text,
-                                    descriptionService:
-                                        _profileCubit.descriptionController.text,
-
-                                    ////////////////////////////////////////////// resssssssssst
-                                  ),
-                                  2);
-                            },
-                            child: Text(localization.save));
+                        return BlocListener(
+                          bloc: _profileCubit,
+                          listener: (context,state){
+                                if(state is UpdateLoading ){
+                                  UIUtils.showLoading(context);
+                                }else if (state is UpdateError){
+                                  UIUtils.hideLoading(context);
+                                  UIUtils.showMessage(state.message);
+                                }
+                                else if (state is UpdateSuccess){
+                                    UIUtils.hideLoading(context);
+                                    _profileCubit.getUserRole();
+                                    Navigator.of(context).pop();
+                                    
+                                }
+                          },
+                          child: ElevatedButton(
+                              onPressed: () {
+                                _profileCubit.updateProviderProfile(
+                                    UpdateProviderRequest(
+                                      latitudeService: _profileCubit.myLocation?.latitude.toString(),
+                                      longitudeService: _profileCubit.myLocation?.longitude.toString(),
+                                      //cityNameService: _profileCubit.cityName,
+                                      categoryIdService: _profileCubit.selectedSubCategory?.id.toString()??_profileCubit.selectedCategory?.id.toString(),
+                                      nameService:
+                                          _profileCubit.serviceNameController.text,
+                                      descriptionService:
+                                          _profileCubit.descriptionController.text,
+                          
+                                      ////////////////////////////////////////////// resssssssssst
+                                    ),
+                                    2);
+                              },
+                              child: Text(localization.save)),
+                        );
                       } else if(state is IsNotUpdated){
                         return const SizedBox();
                       }else{

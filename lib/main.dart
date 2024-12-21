@@ -42,7 +42,9 @@ Future<void> main() async {
   Fcm.init();
   sharedPref = await SharedPreferences.getInstance();
   await ScreenUtil.ensureScreenSize();
-
+final _drawerCubit=serviceLocator.get<DrawerCubit>();
+await _drawerCubit.loadLanguage();
+await _drawerCubit.loadThemeData();
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: false,
@@ -85,19 +87,19 @@ class MyApp extends StatelessWidget {
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       //home: HomeScreen(),
                       initialRoute:
-                      // SplashScren.routeName,
-                          sharedPref.getString(CacheConstant.tokenKey) == null
-                              ? (sharedPref.getString(CacheConstant.emailKey) ==
-                                      null
-                                  ? SignUpScreen.routeName
-                                  : SignInScreen.routeName)
-                              : ServiceScreen.routeName,
+                      SplashScreen.routeName,
+                          // sharedPref.getString(CacheConstant.tokenKey) == null
+                          //     ? (sharedPref.getString(CacheConstant.emailKey) ==
+                          //             null
+                          //         ? SignUpScreen.routeName
+                          //         : SignInScreen.routeName)
+                          //     : ServiceScreen.routeName,
                       routes: {
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
 
                         ServiceScreen.routeName: (context) => ServiceScreen(),
-                        // SplashScren.routeName: (context) =>SplashScren(),
+                        SplashScreen.routeName: (context) =>SplashScreen(),
                         ServiceMapScreen.routeName: (context) =>
                             ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),

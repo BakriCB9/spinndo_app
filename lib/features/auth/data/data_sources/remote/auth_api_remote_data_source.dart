@@ -36,7 +36,9 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
           data: requestBody.toJson());
       print(response);
       print("asdasd");
-      return LoginResponse.fromJson(response.data);
+      final ans= LoginResponse.fromJson(response.data);
+      print('the value from  ans is remoter apoi is &&&&&&&&&&&&&&&&&&&&&&&&&&&  ${ans} ');
+      return ans;
     } catch (exception) {
       var message = 'Failed to login';
 

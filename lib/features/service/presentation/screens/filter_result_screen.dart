@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
-import 'package:app/core/resources/font_manager.dart';
+
 import 'package:app/core/utils/map_helper/geocoding_service.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/core/widgets/cash_network.dart';
@@ -101,14 +99,20 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                 itemBuilder: (context) => [
                       PopupMenuItem(
                         height: 60.h,
-                        child: Text(
-                          localization.sortByName,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(
-                                  color: Theme.of(context).primaryColorLight,
-                                  fontSize: 22.sp),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              localization.sortByName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                      color: Theme.of(context).primaryColorLight,
+                                      fontSize: 22.sp),
+                            ),
+                           sortByName? Container(width: 20.w,height: 20.h,decoration:const  BoxDecoration(shape: BoxShape.circle,color: ColorManager.primary),):const  SizedBox()
+                          ],
                         ),
                         onTap: () {
                           widget.services.sort(
@@ -122,14 +126,20 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       ),
                       PopupMenuItem(
                         height: 60.h,
-                        child: Text(
-                          localization.sortByDistance,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(
-                                  color: Theme.of(context).primaryColorLight,
-                                  fontSize: 22.sp),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              localization.sortByDistance,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                      color: Theme.of(context).primaryColorLight,
+                                      fontSize: 22.sp),
+                            ),
+                           sortByDistance? Container(width: 20.w,height: 20.h,decoration:const  BoxDecoration(shape: BoxShape.circle,color: ColorManager.primary,),):const  SizedBox()
+                          ],
                         ),
                         onTap: () {
                           widget.services.sort(
@@ -214,16 +224,19 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        service.name ?? "Service Name",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          service.name ?? "Service Name",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall!
+                                              .copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                       Expanded(
                                           child: Row(

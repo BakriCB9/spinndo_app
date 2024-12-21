@@ -43,7 +43,8 @@ class UpdateProviderRequest {
         "name": nameService,
         'description': descriptionService,
         'latitude': latitudeService,
-        'longitude': longitudeService
+        'longitude': longitudeService,
+        'category_id':categoryIdService
       },
       '_method': 'PUT'
     };

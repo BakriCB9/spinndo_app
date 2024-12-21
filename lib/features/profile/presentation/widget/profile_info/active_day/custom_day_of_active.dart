@@ -41,7 +41,7 @@ class CustomDayActive extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             myId == userId
                 ? IconButton(
-                    onPressed: issAprrovid == 0
+                    onPressed: issAprrovid == 1
                         ? () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => WorkingSchedulePage(

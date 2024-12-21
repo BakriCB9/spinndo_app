@@ -224,7 +224,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       required String newDescription
 
       }) {
-    if (curServiceName == newServiceName && curDescription == curDescription) {
+    if (curServiceName == newServiceName && curDescription == newDescription) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());

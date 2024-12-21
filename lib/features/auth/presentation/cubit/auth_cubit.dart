@@ -112,8 +112,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LoginLoading());
 
     final result = await _login(requestData);
+    print('the result is bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkar ${result}');
     result.fold(
-      (failure) => emit(LoginError(failure.message)),
+      (failure) 
+       {
+        print('here is big errrorr rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+        emit(LoginError(failure.message));},
       (response) => emit(LoginSuccess()),
     );
   }

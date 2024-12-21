@@ -20,7 +20,7 @@ import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:app/features/service/presentation/screens/filter_result_screen.dart';
 import 'package:app/main.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class ServiceScreen extends StatefulWidget {
 
 class _ServiceScreenState extends State<ServiceScreen> {
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  //final _drawerCubit = serviceLocator.get<DrawerCubit>();
   int indexCategory = 0;
   List<ChildCategory> lisChild = [];
   // bool val=false;
@@ -45,10 +45,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('***************************************** ');
-    print('selectedCOuntry ${_serviceCubit.selectedCountry}');
-    print('selectedCity ${_serviceCubit.selectedCity}');
-    print('***************************************** ');
+    
     final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     double _distance = _serviceCubit.selectedDistance ?? 10.0;
@@ -119,39 +116,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     } else {
                       // Open the drawer
                       Scaffold.of(context).openDrawer();
+                      //Scaffold.of(context).closeDrawer();
+                      
                     }
                   },
                 );
               },
             ),
             actions: [
-              // IconButton(
-              //   icon: Icon(
-              //     Icons.arrow_back,
-              //     size: 1.sp,
-              //   ),
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //   },
-              // ),
-
-              // Transform.scale(
-              //   scale: 0.8,
-              //   child: Switch(
-              //     activeColor: ColorManager.primary,
-              //     inactiveTrackColor: ColorManager.white,
-              //     inactiveThumbColor: Theme.of(context).primaryColor,
-              //     activeTrackColor: Theme.of(context).primaryColor,
-              //     value: _drawerCubit.themeMode == ThemeMode.dark,
-              //     onChanged: (value) {
-              //       if (value) {
-              //         _drawerCubit.changeTheme(ThemeMode.dark);
-              //       } else {
-              //         _drawerCubit.changeTheme(ThemeMode.light);
-              //       }
-              //     },
-              //   ),
-              // ),
+             
             ],
             title: Text(
               localization.searchSetting,

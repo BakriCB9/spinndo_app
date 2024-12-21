@@ -53,7 +53,7 @@ class UserAccount extends StatelessWidget {
                     ))
                 : userId == myId
                     ? IconButton(
-                        onPressed: isApprovid == 0
+                        onPressed: isApprovid == 1
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
@@ -67,7 +67,7 @@ class UserAccount extends StatelessWidget {
                               },
                         icon: Icon(
                           Icons.edit,
-                          color: isApprovid == 0 ? Colors.yellow : Colors.grey,
+                          color: isApprovid == 1 ? Colors.yellow : Colors.grey,
                         ))
                     : const SizedBox()
           ],

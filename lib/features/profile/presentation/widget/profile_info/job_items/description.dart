@@ -48,7 +48,7 @@ class CustomDescription extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             userId == myId
                 ? IconButton(
-                    onPressed: isApprovid == 0
+                    onPressed: isApprovid == 1
                         ? () {
                             _profileCubit.selectedSubCategory = null;
                             _profileCubit.selectedCategory = null;
@@ -69,7 +69,7 @@ class CustomDescription extends StatelessWidget {
                           },
                     icon: Icon(
                       Icons.edit,
-                      color: isApprovid == 0 ? Colors.yellow : Colors.grey,
+                      color: isApprovid == 1 ? Colors.yellow : Colors.grey,
                     ))
                 : const SizedBox()
           ],

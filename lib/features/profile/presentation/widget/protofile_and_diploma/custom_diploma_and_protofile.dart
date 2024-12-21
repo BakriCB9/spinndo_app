@@ -46,23 +46,23 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
           children: [
             Text(localization.images,
                 style: Theme.of(context).textTheme.labelLarge),
-            myId == widget.userId
-                ? IconButton(
-                    onPressed: widget.isApprovid == 1
-                        ? () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => EditImageScreen()));
-                          }
-                        : () {
-                            UIUtils.showMessage(
-                                'You Have to wait to Accept your Informations');
-                          },
-                    icon: Icon(
-                      Icons.edit,
-                      color:
-                          widget.isApprovid == 1 ? Colors.yellow : Colors.grey,
-                    ))
-                : const SizedBox()
+            // myId == widget.userId
+            //     ? IconButton(
+            //         onPressed: widget.isApprovid == 1
+            //             ? () {
+            //                 Navigator.of(context).push(MaterialPageRoute(
+            //                     builder: (context) => EditImageScreen()));
+            //               }
+            //             : () {
+            //                 UIUtils.showMessage(
+            //                     'You Have to wait to Accept your Informations');
+            //               },
+            //         icon: Icon(
+            //           Icons.edit,
+            //           color:
+            //               widget.isApprovid == 1 ? Colors.yellow : Colors.grey,
+            //         ))
+            //     : const SizedBox()
           ],
         ),
         SizedBox(

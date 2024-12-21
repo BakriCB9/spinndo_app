@@ -30,7 +30,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, Data>> login(LoginRequest requestData) async {
     try {
+      print('bakkkkkkkkar awejaaaaaaaaaaaa number one');
       final response = await _authRemoteDataSource.login(requestData);
+print('bakkkkkkkkar awejaaaaaaaaaaaa number 2');
       await _authLocalDataSource.saveToken(response.data!.token);
       await _authLocalDataSource.saveUserId(response.data!.id);
       await _authLocalDataSource.saveUserRole(response.data!.role);
@@ -42,8 +44,10 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveUserUnCompliteAccount(
         requestData.email,
       );
+      print('the data from right is resposirty  ${response.data}');
       return Right(response.data!);
     } on AppException catch (exception) {
+      print('the data from right is resposirty  ${exception.message}');
       return Left(Failure(exception.message));
     }
   }

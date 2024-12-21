@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
-import 'package:app/core/resources/theme_manager.dart';
+
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -258,6 +258,7 @@ class CustomDrawer extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).pushNamed(Profile_Screen.routeName);
+                      Scaffold.of(context).closeDrawer();
                     },
                     child: ListTile(
                       leading: Icon(
@@ -294,8 +295,9 @@ class CustomDrawer extends StatelessWidget {
 
                         Navigator.of(context)
                             .pushReplacementNamed(SignInScreen.routeName);
-                        _disposeResources();
-
+                      //  _disposeResources();
+                          _serviceCubit.resetSetting();
+                          
                       }
                     },
                     child: InkWell(
@@ -321,8 +323,8 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
-  void _disposeResources() {
-    _serviceCubit.close();
-    _drawerCubit.close();
-  }
+  // void _disposeResources() {
+  //   _serviceCubit.close();
+  //   _drawerCubit.close();
+  // }
 }
