@@ -17,7 +17,7 @@ class RegisterServiceProviderRequest {
 
   final List<DateSelect> listOfDay;
   final File certificate;
-  final List<File> images;
+  final List<File?> images;
 
   RegisterServiceProviderRequest(
       {required this.firstName,
@@ -43,6 +43,7 @@ class RegisterServiceProviderRequest {
         days.add(listOfDay[i].toJson());
       }
     }
+
     String firsNametLetter = firstName[0].toUpperCase();
     String remainingNameText = firstName.substring(1);
     String firsServiceNametLetter = nameService[0].toUpperCase();
@@ -52,35 +53,51 @@ class RegisterServiceProviderRequest {
       certificate.path,
       filename: certificate.path.split('/').last,
     );
+  //      List<MultipartFile> listOfMultipart = await Future.wait(
+  //   images.map(
+  //     (imageFile) async => await MultipartFile.fromFile(
+  //       imageFile!.path,
+  //       filename: imageFile.path.split('/').last,
+  //     ),
+  //   ),
+  // );
+    // List<MultipartFile> imageFiles = await Future.wait(
+    //   images.map((image) async {
+    //     return await MultipartFile.fromFile(
+    //       image.path,
+    //       filename: image.path.split('/').last,
+    //     );
+    //   }),
+    // );
+    // List<MultipartFile>listOfMultiPart=[];
+    // for(int i=0;i<images.length;i++){
+    //    final imageone=await MultipartFile.fromFile(images[i]!.path,filename: images[i]!.path.split('/').last); 
+    //   listOfMultiPart.add(imageone);
+    // }
+    //print('the legnhth of multipartfile is @@@@@@@@@@@@@@@@@@@@@@@@@@@ ${listOfMultiPart.length} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    // final imageOne = await MultipartFile.fromFile(
+    //   images[0].path,
+    //   filename: images[0].path.split('/').last,
+    // );
+    // final imageTwo = await MultipartFile.fromFile(
+    //   images[1].path,
+    //   filename: images[1].path.split('/').last,
+    // );
 
-    List<MultipartFile> imageFiles = await Future.wait(
-      images.map((image) async {
-        return await MultipartFile.fromFile(
-          image.path,
-          filename: image.path.split('/').last,
-        );
-      }),
-    );
-    final imageOne = await MultipartFile.fromFile(
-      images[0].path,
-      filename: images[0].path.split('/').last,
-    );
-    final imageTwo = await MultipartFile.fromFile(
-      images[1].path,
-      filename: images[1].path.split('/').last,
-    );
-
-    for (int i = 0; i < imageFiles.length; i++) {
-      print('the value of first is   ${imageFiles[i].filename}');
-    }
-
+    // for (int i = 0; i < imageFiles.length; i++) {
+    //   print('the value of first is   ${imageFiles[i].filename}');
+    // }
+    
+    
+      // "service[images][1]": imageOne,
+      // "service[images][0]": imageTwo, 
+    
     return FormData.fromMap({
       "first_name": firsNametLetter + remainingNameText,
       "last_name": lastName,
       "email": email,
       "password": password,
-      "service[images][1]": imageOne,
-      "service[images][0]": imageTwo,
+    
       "service": {
         "name": firsServiceNametLetter + remainingServiceNameText,
         "description": descriptionService,
@@ -91,6 +108,7 @@ class RegisterServiceProviderRequest {
         "latitude": latitudeService,
         "working_days": days,
         "certificate": certificateFile,
+   
       },
     });
   }

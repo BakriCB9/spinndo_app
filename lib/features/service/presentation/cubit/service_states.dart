@@ -1,4 +1,5 @@
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/service/domain/entities/notifications.dart';
 import 'package:app/features/service/domain/entities/services.dart';
 
 abstract class ServiceStates {}
@@ -41,6 +42,18 @@ class CountryCategoryError extends ServiceStates {
   CountryCategoryError(this.message);
 }
 
+class GetNotificationLoading extends ServiceStates {}
+
+class GetNotificationError extends ServiceStates {
+  String message;
+  GetNotificationError(this.message);
+}
+
+class GetNotificationSuccess extends ServiceStates {
+  
+  
+}
+
 class SelectedCategoryServiceState extends ServiceStates {}
 
 class SelectedCountryCityServiceState extends ServiceStates {}
@@ -60,4 +73,5 @@ class GetCurrentLocationFilterErrorr extends ServiceStates {
 class DistanceSelectUpdate extends ServiceStates {}
 
 class IsCurrentLocation extends ServiceStates {}
+
 class ResetSettingsState extends ServiceStates {}

@@ -118,9 +118,9 @@ class CertificateImageUpdated extends AuthState {
   CertificateImageUpdated(this.certificateImage);
 }
 
-class FirstImageUpdated extends AuthState {
-  final File? firstImage;
-  FirstImageUpdated(this.firstImage);
+class UpdateImageProtofile extends AuthState {
+  // final File? firstImage;
+  // (this.firstImage);
 }
 
 class SecondImageUpdated extends AuthState {

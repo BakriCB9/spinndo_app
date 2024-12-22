@@ -74,6 +74,7 @@
     "chooseCity":"اختر محافظة",
     "country":"الدولة",
     "category":"الصنف",
+    "subCategory":"الصنف الفرعي",
     "city":"المحافظة",
     "currentLocation":"الموقع الحالي",
     "distance":"المسافة",

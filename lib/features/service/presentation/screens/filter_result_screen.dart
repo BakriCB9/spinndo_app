@@ -89,7 +89,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               },
               icon: Icon(Icons.map, color: Theme.of(context).primaryColorLight),
             ),
-            PopupMenuButton(
+          widget.services.isNotEmpty?  PopupMenuButton(
                 icon: Icon(sortByName
                     ? Icons.sort_by_alpha_sharp
                     : sortByDistance
@@ -150,7 +150,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                           setState(() {});
                         },
                       )
-                    ]),
+                    ]):const  SizedBox(),
           ],
           elevation: 0,
         ),

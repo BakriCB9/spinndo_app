@@ -109,4 +109,43 @@ class DrawerCubit extends Cubit<DrawerStates> {
       emit(LogOutErrorr("An error occurred. Please try again."));
     }
   }
+
+Future<void>deleteAccount()async{
+Dio _dio = Dio(BaseOptions(
+      baseUrl: ApiConstant.baseUrl,
+      receiveDataWhenStatusError: true,
+      
+    ));
+  try{
+      final token = sharedPref.getString(CacheConstant.tokenKey);
+      final userId=sharedPref.getInt(CacheConstant.userId);
+      emit(DeleteAccountLoading());
+       final response = await _dio.delete(
+        '${ApiConstant.deleteMyAccount}/$userId',
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
+          },
+        ),
+      );
+       if (response.statusCode == 200) {
+        // Clear user session
+        
+        await sharedPref.remove(CacheConstant.tokenKey);
+        await sharedPref.remove(CacheConstant.emailKey);
+        await sharedPref.remove(CacheConstant.imagePhoto);
+        await sharedPref.remove(CacheConstant.nameKey);
+        await sharedPref.remove(CacheConstant.imagePhotoFromLogin);
+        await sharedPref.remove(CacheConstant.userRole);
+        await sharedPreferences.remove(CacheConstant.semailKey);
+        emit(DeleteAccountSuccess());
+      }
+
+  }catch(e){
+    print('the error is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ${e}');
+      emit(DeleteAccountError("An error occurred. Please try again."));
+  }
+}
+
 }

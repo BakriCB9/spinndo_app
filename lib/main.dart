@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/core/utils/fcm.dart';
 import 'package:app/default_firebase_options.dart';
+import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/splash_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/core/app_bloc_observer.dart';
-import 'package:app/core/constant.dart';
+
 import 'package:app/core/di/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:app/core/resources/theme_manager.dart';
@@ -97,8 +98,8 @@ class MyApp extends StatelessWidget {
                       routes: {
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
-
-                        ServiceScreen.routeName: (context) => ServiceScreen(),
+                         NotificationScreen.routeName:(context)=>const  NotificationScreen(),
+                        ServiceScreen.routeName: (context) =>  ServiceScreen(),
                         SplashScreen.routeName: (context) =>SplashScreen(),
                         ServiceMapScreen.routeName: (context) =>
                             ServiceMapScreen(),

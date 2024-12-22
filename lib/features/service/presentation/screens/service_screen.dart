@@ -1,7 +1,6 @@
-import 'package:app/core/utils/map_helper/geocoding_service.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
-import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
+import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,13 +44,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
-    double _distance = _serviceCubit.selectedDistance ?? 10.0;
+    final String? token = sharedPref.getString(CacheConstant.tokenKey);
+    //  double _distance = _serviceCubit.selectedDistance ?? 10.0;
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? BoxDecoration(
+          ?const  BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
@@ -64,8 +63,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   icon: const Icon(Icons.menu),
                   onPressed: () {
                     // Replace this with your shared preference or token-check logic
-                    final String? token =
-                        sharedPref.getString(CacheConstant.tokenKey);
 
                     if (token == null) {
                       // UIUtils.showMessage("You have to Sign in first");
@@ -102,7 +99,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       Navigator.of(context).pop();
-                                      //Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
                                     },
                                     child: Text(
                                       localization.ok,
@@ -112,19 +108,17 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ],
                             );
                           });
-                      // showdialog();
                     } else {
-                      // Open the drawer
                       Scaffold.of(context).openDrawer();
-                      //Scaffold.of(context).closeDrawer();
-                      
                     }
                   },
                 );
               },
             ),
             actions: [
-             
+             token!=null? IconButton(
+                  onPressed: () {Navigator.of(context).pushNamed(NotificationScreen.routeName);},
+                  icon: const Icon(Icons.notifications_none_outlined)):const  SizedBox()
             ],
             title: Text(
               localization.searchSetting,
@@ -185,19 +179,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                localization
-                                    .searchByUseingServiceOrProviderName,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(fontSize: 36.sp),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
                               CustomTextFormField(
+                                icon: Icons.search,
                                 controller: _serviceCubit.searchController,
                                 hintText: 'service or provider name',
                                 padding: 20.w,
@@ -273,7 +256,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               },
                                             ),
                                           ),
-
                                         ],
                                       ),
                                       _serviceCubit.selectedCountryId != null &&
@@ -304,7 +286,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                                 context)
                                                             .primaryColorDark,
                                                         hint: Text(
-                                                            _serviceCubit.addAllCities.name,
+                                                            _serviceCubit
+                                                                .addAllCities
+                                                                .name,
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
@@ -342,7 +326,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                         },
                                                       ),
                                                     ),
-
                                                   ],
                                                 ),
                                               ],
@@ -474,7 +457,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     .titleMedium!
                                     .copyWith(fontSize: 36.sp),
                               ),
-                              SizedBox(height: 8),
+                              SizedBox(height: 8.h),
                               BlocBuilder<ServiceCubit, ServiceStates>(
                                 bloc: _serviceCubit,
                                 buildWhen: (previous, current) {
@@ -539,8 +522,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                     padding: EdgeInsets.only(
                                                         left: 12.w),
                                                     child: Text(
-                                                        _serviceCubit.addAllChildCategories.name??localization
-                                                            .chooseSubCategory,
+                                                        _serviceCubit
+                                                                .addAllChildCategories
+                                                                .name ??
+                                                            localization
+                                                                .chooseSubCategory,
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .displayMedium),
@@ -613,9 +599,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ElevatedButton(
                                 onPressed: () {
                                   if ((_serviceCubit.selectedCountryId ==
-                                          null||_serviceCubit.selectedCountryId ==-1 ) &&
-                                      _serviceCubit.isCurrent ==
-                                          false &&(_serviceCubit.selectedCategory==null||_serviceCubit.selectedCategory?.id==-1)) {
+                                              null ||
+                                          _serviceCubit.selectedCountryId ==
+                                              -1) &&
+                                      _serviceCubit.isCurrent == false &&
+                                      (_serviceCubit.selectedCategory == null ||
+                                          _serviceCubit.selectedCategory?.id ==
+                                              -1)) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
@@ -628,29 +618,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return;
                                   }
                                   _serviceCubit.getServices(GetServicesRequest(
-                                      categoryId:
-                                          _serviceCubit.selectedCategory?.id !=
+                                      categoryId: _serviceCubit.selectedCategory?.id !=
+                                              null
+                                          ? _serviceCubit.selectedSubCategory?.id ==
                                                   null
-                                              ? _serviceCubit
+                                              ? _serviceCubit.selectedCategory?.id ==
+                                                      -1
+                                                  ? null
+                                                  : _serviceCubit
+                                                      .selectedCategory!.id
+                                              : _serviceCubit
                                                           .selectedSubCategory
                                                           ?.id ==
-                                                      null
-                                                  ? _serviceCubit
-                                                              .selectedCategory
-                                                              ?.id ==
-                                                          -1
-                                                      ? null
-                                                      : _serviceCubit
-                                                          .selectedCategory!.id
+                                                      -1
+                                                  ? null
                                                   : _serviceCubit
-                                                              .selectedSubCategory
-                                                              ?.id ==
-                                                          -1
-                                                      ? null
-                                                      : _serviceCubit
-                                                          .selectedSubCategory!
-                                                          .id
-                                              : null,
+                                                      .selectedSubCategory!.id
+                                          : null,
                                       cityId: _serviceCubit.selectedCityId == -1
                                           ? null
                                           : _serviceCubit.selectedCityId,
@@ -662,8 +646,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           .getCurrentLocation?.latitude,
                                       longitude: _serviceCubit
                                           .getCurrentLocation?.longitude,
-                                      radius:_serviceCubit.isCurrent==true?  _serviceCubit.selectedDistance
-                                          ?.toInt():null,
+                                      radius: _serviceCubit.isCurrent == true
+                                          ? _serviceCubit.selectedDistance
+                                              ?.toInt()
+                                          : null,
                                       search: _serviceCubit
                                               .searchController.text.isEmpty
                                           ? null

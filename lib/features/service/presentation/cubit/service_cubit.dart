@@ -2,6 +2,8 @@ import 'package:app/features/service/data/models/get_all_category_response/data.
 import 'package:app/features/service/data/models/get_all_countries_response/city.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/data.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
+import 'package:app/features/service/domain/entities/notifications.dart';
+import 'package:app/features/service/domain/use_cases/get_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,12 +23,13 @@ import 'package:app/features/service/presentation/cubit/service_states.dart';
 @singleton
 class ServiceCubit extends Cubit<ServiceStates> {
   ServiceCubit(this._getServices, this._getCountries, this._getCategories,
-      this._getServiceProfile)
+      this._getServiceProfile,this._getNotifications)
       : super(ServiceInitial());
   final GetCountries _getCountries;
   final GetCategories _getCategories;
   final GetServices _getServices;
   final GetServiceProfile _getServiceProfile;
+  final GetNotifications _getNotifications;
   List<Countries>? countriesList;
   List<ChildCategory>? catChildren;
   Categories? selectedCategory;
@@ -50,7 +53,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
   String failureMessegae = "";
   bool isCurrent = false;
   int index = 0;
-
+  List<Notifications>listNotification=[];
   DataCountries addAllCountry=DataCountries(id: -1, name: "All Countries", cities: []);
   City addAllCities=City(id: -1, name: "All Cities");
   DataCategory addAllCategories=DataCategory(name: "All Categories", id: -1, children: []);
@@ -63,6 +66,18 @@ class ServiceCubit extends Cubit<ServiceStates> {
     result.fold(
       (failure) => emit(ServiceError(failure.message)),
       (services) => emit(ServiceSuccess(services)),
+    );
+  }
+
+  Future<void> getAllNotification()async{
+    emit(GetNotificationLoading());
+
+    final result = await _getNotifications();
+    result.fold(
+      (failure) => emit(GetNotificationError(failure.message)),
+      (notification) { 
+        listNotification=notification;
+        emit(GetNotificationSuccess());},
     );
   }
 

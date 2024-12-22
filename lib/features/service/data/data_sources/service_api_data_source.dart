@@ -1,4 +1,5 @@
 import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
+import 'package:app/features/service/data/models/notification/notification_model/notification_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,6 +84,24 @@ class ServiceApiDataSource implements ServiceDataSource {
       return ProviderProfileResponse.fromJson(response.data);
     } catch (exciption) {
       throw RemoteAppException("Failed to get Details");
+    }
+  }
+
+  @override
+  Future<NotificationModel> getAllNotification() async{
+   
+    try {
+      String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
+      final response = await _dio.get(
+          ApiConstant.getAllNotification,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $user_token"
+          }));
+
+      return NotificationModel.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get Notification");
     }
   }
 }

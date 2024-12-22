@@ -74,6 +74,12 @@ import 'package:app/features/service/domain/use_cases/get_countries.dart'
     as _i538;
 import 'package:app/features/service/domain/use_cases/get_details.dart'
     as _i904;
+
+import 'package:app/features/service/domain/use_cases/get_notifications.dart' as _i787;
+
+
+
+
 import 'package:app/features/service/domain/use_cases/get_services.dart'
     as _i590;
 import 'package:app/features/service/presentation/cubit/service_cubit.dart'
@@ -122,6 +128,9 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
         ));
+
+   // gh.lazySingleton<_i770.GetNotifications>( () => _i770.GetNotifications(gh<_i1054.ServiceRepository>()));  
+    gh.lazySingleton<_i787.GetNotifications>(()=>_i787.GetNotifications(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i779.GetCategories>(
         () => _i779.GetCategories(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i538.GetCountries>(
@@ -139,7 +148,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i538.GetCountries>(),
           gh<_i779.GetCategories>(),
           gh<_i904.GetServiceProfile>(),
+          gh<_i787.GetNotifications>(),
         ));
+    gh.lazySingleton<_i814.AddImagePhoto>(
+        () => _i814.AddImagePhoto(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i916.GetClientProfile>(
         () => _i916.GetClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i140.GetProviderProfile>(
@@ -150,8 +162,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i284.UpdateProviderProfile>(
         () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
-    gh.lazySingleton<_i814.AddImagePhoto>(
-        () => _i814.AddImagePhoto(gh<_i734.ProfileRepository>()));
     gh.singleton<_i728.Getcountryname>(
         () => _i728.Getcountryname(gh<_i651.AuthRepository>()));
     gh.singleton<_i293.Login>(() => _i293.Login(gh<_i651.AuthRepository>()));

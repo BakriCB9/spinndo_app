@@ -1,5 +1,6 @@
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late AnimationController _logoController;
   late Animation<double> _logoFadeAnimation;
   late Animation<double> _logoScaleAnimation;
-
+final _authCubit = serviceLocator.get<AuthCubit>();
   late AnimationController _textController;
   late Animation<double> _textFadeAnimation;
   late Animation<Offset> _textSlideAnimation;
@@ -69,8 +70,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     });
 
     // Navigate to the next screen
-    Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushNamed(context,
+    Future.delayed(const Duration(seconds: 4), () async{
+      //await _authCubit.getCategories();
+      Navigator.pushReplacementNamed(context,
 
         sharedPref.getString(CacheConstant.tokenKey) == null
             ? (sharedPref.getString(CacheConstant.emailKey) ==

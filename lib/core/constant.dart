@@ -13,11 +13,13 @@ class ApiConstant {
   static const String getAllCountries = '/countries/getAll';
   static const String getAllCategory = '/categories/getAll';
   static const String logoutEndPoint = '/logout';
-  static final String googleMapApiKey =
+  static const  String googleMapApiKey =
       'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
   static const String updateClientProfile = '/profile/client/update';
   static const String updateProviderProfile = '/profile/provider/update';
   static const String imageProfile = '/profile/updateMyImage';
+  static const String getAllNotification='/myNotification';
+  static const String deleteMyAccount='/user';
 }
 
 class CacheConstant {

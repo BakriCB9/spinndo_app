@@ -1,5 +1,6 @@
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/service/domain/entities/notifications.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/failure.dart';
@@ -57,6 +58,16 @@ class ServiceRepositoryImpl implements ServiceRepository {
     try {
       final poviderService = await _serviceDataSource.getProviderService(id);
       return Right(poviderService.data!);
+    } on AppException catch (exception) {
+      return left(Failure(exception.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Notifications>>> getAllNotification()async {
+    try {
+      final response = await _serviceDataSource.getAllNotification();
+      return Right(response.data!);
     } on AppException catch (exception) {
       return left(Failure(exception.message));
     }

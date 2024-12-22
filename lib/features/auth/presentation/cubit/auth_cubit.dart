@@ -79,6 +79,7 @@ class AuthCubit extends Cubit<AuthState> {
   final serviceNameController = TextEditingController();
   final addressController = TextEditingController();
   final serviceDescriptionController = TextEditingController();
+  List<File?> listOfFileImagesProtofile = [];
   bool isClient = true;
   int resendCodeTime = 60;
   Timer? timer;
@@ -236,7 +237,7 @@ class AuthCubit extends Cubit<AuthState> {
     selectedCategory = category;
     selectedSubCategory = null;
 
-    catChildren = category?.children;
+    // catChildren = category?.children;
     emit(SelectedCategoryState());
   }
 
@@ -319,15 +320,20 @@ class AuthCubit extends Cubit<AuthState> {
     emit(CertificateImageUpdated(image));
   }
 
-  void updateFirstImage(File? image) {
-    firstImage = image;
-    emit(FirstImageUpdated(image));
+  void addImagetoProtofile(File? image) {
+    //firstImage = image;
+    listOfFileImagesProtofile.add(image);
+    emit(UpdateImageProtofile());
+  }
+  void deleteImageProtofile(File?imgae ,int index){
+    listOfFileImagesProtofile.removeAt(index);
+    emit(UpdateImageProtofile());
   }
 
-  void updateSecondImage(File? image) {
-    secondImage = image;
-    emit(SecondImageUpdated(image));
-  }
+  // void updateSecondImage(File? image) {
+  //   secondImage = image;
+  //   emit(SecondImageUpdated(image));
+  // }
 
   String? mapStyle;
 

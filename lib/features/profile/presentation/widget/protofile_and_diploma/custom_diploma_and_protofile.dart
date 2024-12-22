@@ -36,8 +36,8 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
-    print(
-        'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
+    // print(
+    //     'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [

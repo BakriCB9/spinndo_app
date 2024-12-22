@@ -13,7 +13,6 @@ import 'package:app/features/auth/data/models/reset_password_request.dart';
 import 'package:app/features/auth/data/models/reset_password_response.dart';
 import 'package:app/features/auth/data/models/verify_code_request.dart';
 import 'package:app/features/auth/data/models/verify_code_response.dart';
-import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 
 import '../../models/login_request.dart';
@@ -30,14 +29,11 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
   @override
   Future<LoginResponse> login(LoginRequest requestBody) async {
     try {
-      print("ccccc");
-      print(requestBody.toJson());
       final response = await _dio.post(ApiConstant.loginEndPoint,
           data: requestBody.toJson());
-      print(response);
-      print("asdasd");
-      final ans= LoginResponse.fromJson(response.data);
-      print('the value from  ans is remoter apoi is &&&&&&&&&&&&&&&&&&&&&&&&&&&  ${ans} ');
+
+      final ans = LoginResponse.fromJson(response.data);
+
       return ans;
     } catch (exception) {
       var message = 'Failed to login';
@@ -72,14 +68,13 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
     try {
       final response = await _dio.post(ApiConstant.verifyCodeEndPoint,
           data: requestBody.toJson());
-      print(
-          'the data response  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  is ${response.data}');
+    
       return VerifyCodeResponse.fromJson(response.data);
     } catch (exception) {
       var message = 'Failed to verify Code';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
-        print('the error message is $errorMessage');
+    
         if (errorMessage != null) message = errorMessage;
       }
       throw RemoteAppException(message);
@@ -90,8 +85,24 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
   Future<RegisterServiceProviderResponse> registerService(
       RegisterServiceProviderRequest requestBody) async {
     try {
-      final requestSend = await requestBody.toFormData();
-
+      var requestSend = await requestBody.toFormData();
+       //requestSend.files.add();
+//    for (var file in requestBody.images) {
+//   requestSend.files.addAll([
+//   MapEntry("service[images]", await MultipartFile.fromFile(file!.path,filename: file.path.split('/').last)),
+// ]);
+// }
+       for (int i = 0; i < requestBody.images.length; i++) {
+      requestSend.files.add(
+        MapEntry(
+          'service[images][$i]', // Field name expected by the server
+          await MultipartFile.fromFile(
+            requestBody.images[i]!.path,
+            filename: requestBody.images[i]!.path.split('/').last,
+          ),
+        ),
+      );
+    }
       final response = await _dio
           .post(ApiConstant.registerServiceProviderEndPoint, data: requestSend);
       return RegisterServiceProviderResponse.fromJson(response.data);
@@ -99,8 +110,7 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       var message = 'Failed to register';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
-        print('the message error ${errorMessage}');
-        print('the exception error ${exception}');
+    
         if (errorMessage != null) message = errorMessage;
       }
 

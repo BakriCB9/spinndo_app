@@ -74,6 +74,7 @@
     "chooseCity":"Choose City",
     "country":"Country",
     "category":"Category",
+    "subCategory":"Sub-category",
     "city":"City",
     "currentLocation":"Current Location",
     "distance":"Distance",
