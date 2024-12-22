@@ -1,6 +1,7 @@
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
+import 'package:app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -467,111 +468,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return false;
                                 },
                                 builder: (context, state) {
-                                  return Column(
-                                    children: [
-                                      DropdownButtonFormField<Categories>(
-                                        dropdownColor:
-                                            Theme.of(context).primaryColorDark,
-                                        hint: Text(localization.category,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium),
-                                        menuMaxHeight: 200,
-                                        decoration: const InputDecoration(
-                                            errorBorder: InputBorder.none),
-                                        value: _serviceCubit.selectedCategory,
-                                        items: _serviceCubit.categoriesList!
-                                            .map((e) =>
-                                                DropdownMenuItem<Categories>(
-                                                  value: e,
-                                                  child: Text(e.name,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .displayMedium),
-                                                ))
-                                            .toList(),
-                                        onChanged: (value) {
-                                          // val=false;
-                                          _serviceCubit.selectedCategoryService(
-                                            value,
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                      _serviceCubit.selectedCategory != null &&
-                                              _serviceCubit
-                                                      .selectedCategory?.id !=
-                                                  -1
-                                          ? Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 30.h,
-                                                ),
-                                                DropdownButtonFormField<
-                                                    ChildCategory>(
-                                                  dropdownColor:
-                                                      Theme.of(context)
-                                                          .primaryColorDark,
-                                                  menuMaxHeight: 200,
-                                                  isExpanded: false,
-
-                                                  // value:  _authCubit.selectedCategoryId!=null?_authCubit.categoriesList![indexChildCategory!].children[0]:null,
-                                                  hint: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 12.w),
-                                                    child: Text(
-                                                        _serviceCubit
-                                                                .addAllChildCategories
-                                                                .name ??
-                                                            localization
-                                                                .chooseSubCategory,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .displayMedium),
-                                                  ),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                          errorBorder:
-                                                              InputBorder.none),
-                                                  items:
-                                                      //indexChildCategory != null
-                                                      //? _authCubit
-                                                      //.categoriesList![indexChildCategory!].children
-                                                      _serviceCubit.catChildren
-                                                          ?.map((e) =>
-                                                              DropdownMenuItem<
-                                                                  ChildCategory>(
-                                                                value: e,
-                                                                child: Padding(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              16.0.w),
-                                                                  child: Text(
-                                                                    e.name!,
-                                                                    style: Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .displayMedium,
-                                                                  ),
-                                                                ),
-                                                              ))
-                                                          .toList(),
-                                                  value: _serviceCubit
-                                                      .selectedSubCategory,
-                                                  onChanged: (value) {
-                                                    _serviceCubit
-                                                        .selectedSubCategoryService(
-                                                            value!);
-                                                  },
-                                                )
-                                              ],
-                                            )
-                                          : SizedBox(),
-                                    ],
-                                  );
+                                  return CascadingDropdowns(categories: _serviceCubit.categoriesList,);
                                 },
                               ),
                               SizedBox(

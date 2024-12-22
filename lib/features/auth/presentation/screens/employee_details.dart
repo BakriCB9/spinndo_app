@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app/features/service/domain/entities/child_category.dart';
+import 'package:app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,131 +64,7 @@ class EmployeeDetails extends StatelessWidget {
             BlocBuilder<AuthCubit, AuthState>(
               bloc: _authCubit,
               builder: (context, state) {
-                return Column(
-                  children: [
-                    DropdownButtonFormField<Categories>(
-                      dropdownColor: Theme.of(context).primaryColorDark,
-                      menuMaxHeight: 200,
-                      isExpanded: false,
-                      validator: (value) {
-                        if (value == null) {
-                          return localization.pleaseChooseCategory;
-                        }
-                        return null;
-                      },
-                      hint: Padding(
-                        padding: EdgeInsets.only(left: 12.w),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.category,
-                            ),
-                            SizedBox(
-                              width: 24.w,
-                            ),
-                            Text(localization.chooseCategory,
-                                style:
-                                    Theme.of(context).textTheme.displayMedium),
-                          ],
-                        ),
-                      ),
-                      decoration:
-                          const InputDecoration(errorBorder: InputBorder.none),
-                      items: _authCubit.categoriesList!
-                          .map((e) => DropdownMenuItem<Categories>(
-                                value: e,
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 16.0.w),
-                                  child: Text(
-                                    e.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium,
-                                  ),
-                                ),
-                              ))
-                          .toList(),
-                      value: _authCubit.selectedCategory,
-                      onChanged: (value) {
-                        // _authCubit.catChildren=value?.children ?? [];
-                        _authCubit.selectedCategoryEvent(value);
-                        // int val = int.parse(_authCubit.selectedCategoryId!);
-                        // indexChildCategory =
-                        //     _authCubit.categoriesList!.indexWhere(
-                        //   (element) => element.id == val,
-                        // );
-                        //   _authCubit.selectedCategoryId=_authCubit.categoriesList![indexChildCategory!].children[0].id.toString();
-                      },
-                    ),
-                    _authCubit.selectedCategory != null
-                        ? Column(
-                            children: [
-                              SizedBox(
-                                height: 30.h,
-                              ),
-                              DropdownButtonFormField<ChildCategory>(
-                                dropdownColor:
-                                    Theme.of(context).primaryColorDark,
-                                menuMaxHeight: 200,
-                                isExpanded: false,
-
-                                // value:  _authCubit.selectedCategoryId!=null?_authCubit.categoriesList![indexChildCategory!].children[0]:null,
-                                hint: Padding(
-                                  padding: EdgeInsets.only(left: 12.w),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.category,
-                                      ),
-                                      SizedBox(
-                                        width: 24.w,
-                                      ),
-                                      Text(localization.chooseSubCategory,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium),
-                                    ],
-                                  ),
-                                ),
-                                decoration: const InputDecoration(
-                                    errorBorder: InputBorder.none),
-                                validator: (value) {
-                                  if (value == null) {
-                                    return localization.pleaseChooseSubCategory;
-                                  }
-                                  return null;
-                                },
-                                items:
-                                    //indexChildCategory != null
-                                    //? _authCubit
-                                    //.categoriesList![indexChildCategory!].children
-                                    _authCubit.catChildren
-                                        ?.map((e) =>
-                                            DropdownMenuItem<ChildCategory>(
-                                              value: e,
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 16.0.w),
-                                                child: Text(
-                                                  e.name!,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium,
-                                                ),
-                                              ),
-                                            ))
-                                        .toList(),
-                                value: _authCubit.selectedSubCategory,
-                                onChanged: (value) {
-                                  _authCubit.selectedSubCategoryEvent(value!);
-                                },
-                              )
-                            ],
-                          )
-                        : SizedBox(),
-                  ],
-                );
+                return CascadingDropdowns(categories: _authCubit.categoriesList);
               },
             ),
             SizedBox(height: 30.h),

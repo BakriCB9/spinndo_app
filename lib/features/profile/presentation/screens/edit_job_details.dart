@@ -245,7 +245,7 @@ class EditJobDetails extends StatelessWidget {
                                       SizedBox(
                                         height: 50.h,
                                       ),
-                                      DropdownButtonFormField<ChildCategory>(
+                                      DropdownButtonFormField<Categories>(
                                         dropdownColor:
                                             Theme.of(context).primaryColorDark,
                                         menuMaxHeight: 200,
@@ -277,7 +277,7 @@ class EditJobDetails extends StatelessWidget {
                                             //.categoriesList![indexChildCategory!].children
                                             _profileCubit.catChildren
                                                 ?.map((e) => DropdownMenuItem<
-                                                        ChildCategory>(
+                                                        Categories>(
                                                       value: e,
                                                       child: Padding(
                                                         padding:

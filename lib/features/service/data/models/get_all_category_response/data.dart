@@ -9,7 +9,7 @@ class DataCategory extends Categories {
         id: json['id'] as int,
         name: json['name'] as String,
         children: (json['children'] as List<dynamic>)
-            .map((e) => ChildCategory.fromJson(e as Map<String, dynamic>))
+            .map((e) => DataCategory.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
 

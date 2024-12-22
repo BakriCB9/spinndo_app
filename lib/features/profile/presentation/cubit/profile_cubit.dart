@@ -48,7 +48,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   //variable
   Categories? parent;
-  ChildCategory? child;
+  Categories? child;
   TextEditingController emailEditController = TextEditingController();
   TextEditingController firstNameEditController = TextEditingController();
   TextEditingController lastNameEditController = TextEditingController();
@@ -56,9 +56,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TextEditingController descriptionController = TextEditingController();
   Categories? selectedCategory;
   List<Categories>? categoriesList;
-  List<ChildCategory>? catChildren;
+  List<Categories>? catChildren;
   String? selectedSubCategoryId;
-  ChildCategory? selectedSubCategory;
+  Categories? selectedSubCategory;
   final Getcountryname _getCountryCityName;
   ProviderProfile? providerProfile;
    String? latitu;
@@ -272,7 +272,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
     emit(SelectedCategoryState());
   }
 
-  void selectedSubCategoryEvent(ChildCategory category) {
+  void selectedSubCategoryEvent(Categories category) {
     selectedSubCategory = category;
     selectedSubCategory!=child?
     emit(IsUpdated()):emit(IsNotUpdated());
