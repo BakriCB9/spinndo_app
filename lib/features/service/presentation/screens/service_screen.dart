@@ -37,23 +37,25 @@ class _ServiceScreenState extends State<ServiceScreen> {
   //final _drawerCubit = serviceLocator.get<DrawerCubit>();
   int indexCategory = 0;
   List<ChildCategory> lisChild = [];
-  initalMessage()async{
-    var message=await FirebaseMessaging.instance.getInitialMessage();
-    if(message !=null){
+  initalMessage() async {
+    var message = await FirebaseMessaging.instance.getInitialMessage();
+    if (message != null) {
       Navigator.of(context).pushNamed(NotificationScreen.routeName);
     }
   }
+
   // bool val=false;
   @override
   void initState() {
     initalMessage();
     _serviceCubit.getCountriesAndCategories();
-    super.initState();FirebaseMessaging.onMessageOpenedApp.listen((event){
-      if(event.notification?.body!=null|| event.notification?.title!=null ){
+    super.initState();
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      if (event.notification?.body != null ||
+          event.notification?.title != null) {
         Navigator.of(context).pushNamed(NotificationScreen.routeName);
       }
     });
-
   }
 
   @override
@@ -132,11 +134,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
             actions: [
               token != null
                   ? IconButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(NotificationScreen.routeName);
-                  },
-                  icon: const Icon(Icons.notifications_none_outlined))
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(NotificationScreen.routeName);
+                      },
+                      icon: const Icon(Icons.notifications_none_outlined))
                   : const SizedBox()
             ],
             title: Text(
