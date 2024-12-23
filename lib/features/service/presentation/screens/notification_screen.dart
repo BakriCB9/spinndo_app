@@ -7,6 +7,7 @@ import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -27,6 +28,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
@@ -35,7 +37,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           : null,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Notifications'),
+          title: Text(localization.notifications),
         ),
         body:
             BlocBuilder<ServiceCubit, ServiceStates>(
@@ -57,7 +59,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               itemCount: _serviceCubit.listNotification.length,
               itemBuilder: (context, index) {
                 return _serviceCubit.listNotification.isEmpty?
-                Center(child: Row(children: [Text('No notification Recived'),SizedBox(width: 10.w,),Icon(Icons.error_outline)],),):
+                Center(child: Row(children: [Text(localization.noNotificationRecived),SizedBox(width: 10.w,),Icon(Icons.error_outline)],),):
                  Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),

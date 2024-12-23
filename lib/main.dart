@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/core/utils/fcm.dart';
 import 'package:app/default_firebase_options.dart';
+import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/splash_screen.dart';
 import 'package:device_preview/device_preview.dart';
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
                       routes: {
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
+                        SettingScreen.routeName:(context)=>SettingScreen(),
                          NotificationScreen.routeName:(context)=>const  NotificationScreen(),
                         ServiceScreen.routeName: (context) =>  ServiceScreen(),
                         SplashScreen.routeName: (context) =>SplashScreen(),

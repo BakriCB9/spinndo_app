@@ -20,6 +20,7 @@ class Details extends ProviderProfileDetailsJob{
 		super.city,
 		super.workingDays,
 		super.images,
+		super.isopen
 	});
 
 	factory Details.fromJson(Map<String, dynamic> json) => Details(
@@ -31,6 +32,7 @@ class Details extends ProviderProfileDetailsJob{
 				latitude: json['latitude'] as String?,
 				isApproved: json['is_approved'] as int?,
 				certificatePath: json['certificate_path'] as String?,
+		isopen: json['isOpenNow'] as bool ?,
 				category: json['category'] == null
 						? null
 						: Category.fromJson(json['category'] as Map<String, dynamic>),

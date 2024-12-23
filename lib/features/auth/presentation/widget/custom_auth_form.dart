@@ -34,6 +34,7 @@ class CustomAuthForm extends StatelessWidget {
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     List<Languages> languages = [
       Languages(name: 'English', code: 'en'),
+      Languages(name: 'Deutsch', code: 'de'),
       Languages(name: 'العربية', code: 'ar'),
     ];
     return Container(

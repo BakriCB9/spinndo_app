@@ -98,9 +98,12 @@ class DrawerCubit extends Cubit<DrawerStates> {
 
       // Check the response status
       if (response.statusCode == 200) {
-        // Clear user session
         await sharedPref.remove(CacheConstant.tokenKey);
         await sharedPref.remove(CacheConstant.emailKey);
+        await sharedPref.remove(CacheConstant.imagePhoto);
+        await sharedPref.remove(CacheConstant.imagePhotoFromLogin);
+        await sharedPref.remove(CacheConstant.userId);
+        await sharedPref.clear();
         emit(LogOutSuccess());
       }
     } catch (error) {

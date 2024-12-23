@@ -14,6 +14,7 @@ class ProviderProfileDetailsJob {
   dynamic isApproved;
   String? certificatePath;
   ProviderProfileCategory? category;
+  bool?isopen;
 //  dynamic city;
   List<ProviderPriofileWorkingday>? workingDays;
   List<ProviderProfileImage>? images;
@@ -33,7 +34,7 @@ class ProviderProfileDetailsJob {
     this.latitude,
     this.isApproved,
     this.certificatePath,
-
+this.isopen,
 
     this.workingDays,
 

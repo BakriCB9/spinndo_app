@@ -1,0 +1,9 @@
+flutter_native_splash:
+  color: "#FAFAFA" # Light mode background color
+  background_image_dark: "asset/images/bg.png" # Dark mode background image
+  android: true
+  ios: true
+  web: false
+  android_12:
+    color: "#FAFAFA" # Light mode background color for Android 12+
+    background_image_dark: "asset/images/bg.png" # Dark mode background image for Android 12+

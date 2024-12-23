@@ -2,6 +2,7 @@ import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/test.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,11 +37,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
   //final _drawerCubit = serviceLocator.get<DrawerCubit>();
   int indexCategory = 0;
   List<ChildCategory> lisChild = [];
+  initalMessage()async{
+    var message=await FirebaseMessaging.instance.getInitialMessage();
+    if(message !=null){
+      Navigator.of(context).pushNamed(NotificationScreen.routeName);
+    }
+  }
   // bool val=false;
   @override
   void initState() {
+    initalMessage();
     _serviceCubit.getCountriesAndCategories();
-    super.initState();
+    super.initState();FirebaseMessaging.onMessageOpenedApp.listen((event){
+      if(event.notification?.body!=null|| event.notification?.title!=null ){
+        Navigator.of(context).pushNamed(NotificationScreen.routeName);
+      }
+    });
+
   }
 
   @override
@@ -51,7 +64,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     //  double _distance = _serviceCubit.selectedDistance ?? 10.0;
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ?const  BoxDecoration(
+          ? const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
@@ -117,9 +130,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
               },
             ),
             actions: [
-             token!=null? IconButton(
-                  onPressed: () {Navigator.of(context).pushNamed(NotificationScreen.routeName);},
-                  icon: const Icon(Icons.notifications_none_outlined)):const  SizedBox()
+              token != null
+                  ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(NotificationScreen.routeName);
+                  },
+                  icon: const Icon(Icons.notifications_none_outlined))
+                  : const SizedBox()
             ],
             title: Text(
               localization.searchSetting,
@@ -183,7 +201,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               CustomTextFormField(
                                 icon: Icons.search,
                                 controller: _serviceCubit.searchController,
-                                hintText: 'service or provider name',
+                                hintText: localization.serviceOrProviderName,
                                 padding: 20.w,
                               ),
                               SizedBox(
@@ -468,7 +486,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return false;
                                 },
                                 builder: (context, state) {
-                                  return CascadingDropdowns(categories: _serviceCubit.categoriesList,);
+                                  return CascadingDropdowns(
+                                    categories: _serviceCubit.categoriesList,
+                                  );
                                 },
                               ),
                               SizedBox(

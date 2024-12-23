@@ -57,6 +57,10 @@
     "language":"اللغة",
     "profile":"الملف الشخصي",
     "setting":"الاعدادات",
+    "connectwith":"تواصل معنا",
+    "ourlinks":"روابطنا للتوتصل",
+    "facebook":"فايس بوك",
+    "sms":"رسالة نصية",
     "logout":"تسجيل خروج",
     "filterResults":"نتائج البحث",
     "sortByName":"الفرز حسب الاسم",
@@ -102,6 +106,10 @@
     "photos":"الصور",
     "work":"الخدمة",
     "title":"اسم الخدمة",
-    "location":"الموقع"
+    "location":"الموقع",
+    "deleteAccount":"حذف الحساب",
+    "notifications":"الاشعارات",
+    "noNotificationRecived":"لم يتم تلقي أي اشعار",
+    "serviceOrProviderName":"اسم الخدمة او صاحب الخدمة"
 
 }

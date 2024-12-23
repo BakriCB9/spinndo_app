@@ -57,6 +57,10 @@
     "language":"Language",
     "profile":"Profile",
     "setting":"Setting",
+    "connectwith":"Connect with us",
+    "ourlinks":"Our links",
+    "facebook":"Facebook",
+    "sms":"SMS",
     "logout":"Log out",
     "filterResults":"Filter Results",
     "sortByName":"Sort by name",
@@ -102,6 +106,9 @@
     "photos":"Photos",
     "work":"Work",
     "title":"Title",
-    "location":"Location"
-
+    "location":"Location",
+    "deleteAccount":"Delete Account",
+    "notifications":"Notifications",
+    "noNotificationRecived":"No Notification Recived",
+    "serviceOrProviderName":"service or provider name"
 }

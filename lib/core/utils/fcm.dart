@@ -102,10 +102,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
   
   // Add logic to navigate to the specific screen using the payload
-  if (message.data['route'] != null) {
-    // Use global navigation key to navigate to the route
-    globalNavigatorKey.currentState?.pushNamed('/${message.data['route']}');
-  }
+  // if (message.data['route'] != null) {
+  //   // Use global navigation key to navigate to the route
+  //   globalNavigatorKey.currentState?.pushNamed('/${message.data['route']}');
+  // }
 }
 
 final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
