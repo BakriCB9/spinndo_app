@@ -6,6 +6,7 @@ import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/domain/entities/provider_profile/provider_porfile_category.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_city.dart';
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart';
@@ -47,8 +48,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final AddImagePhoto _addImagePhoto;
 
   //variable
-  Categories? parent;
-  Categories? child;
+  // Categories? parent;
+  // Categories? child;
   TextEditingController emailEditController = TextEditingController();
   TextEditingController firstNameEditController = TextEditingController();
   TextEditingController lastNameEditController = TextEditingController();
@@ -62,6 +63,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final Getcountryname _getCountryCityName;
   ProviderProfile? providerProfile;
    String? latitu;
+
    String? longti;
   List<DateSelect> dateSelect = [
     DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
@@ -78,20 +80,77 @@ class ProfileCubit extends Cubit<ProfileStates> {
   LatLng? myLocation;
   LatLng?oldLocation;
   Country? country;
-  ProviderProfileCity ?city;
-  Future<void> getClientProfile() async {
-    emit(GetProfileLoading());
-    final result = await _getClientProfile();
-    result.fold(
-      (failure) => emit(
-        GetProfileErrorr(failure.message),
-      ),
-      (client) => emit(
-        GetClientSuccess(client),
-      ),
-    );
-  }
+  List<Categories?> chosenCategories = [];
 
+  ProviderProfileCity ?city;
+//   void extractCategoryNames(ProviderProfileCategory? category,List<Categories>? categoriesListll) {
+//     List<Categories?> names = [];
+// Categories ?name;
+//     // Traverse up the parent hierarchy
+//     while (category != null) {
+//
+//       name = categoriesListll?.firstWhere(
+//             (element) => element.name == category?.name,
+//         orElse: () => Categories(name: "name", id: -50, children: []), // Return null if no match is found
+//       );
+//
+//       if (name != null&&name.id!=-50) {
+//         names.add(name);
+//       }
+//       category = category.parent ; // Move to the parent category
+//     }
+//
+//     // Reverse the list to start with the root category
+//     chosenCategories =names.reversed.toList();
+//   }
+
+  void extractCategoryNames(ProviderProfileCategory? category, List<Categories>? categoriesList) {
+    List<Categories?> names = [];
+    Categories? name;
+    // Helper function to find a category by name recursively
+    Categories? findCategoryByName(List<Categories> categories, String? name) {
+      for (var cat in categories) {
+        if (cat.name == name) {
+          return cat;
+        }
+        if (cat.children.isNotEmpty) {
+          final result = findCategoryByName(cat.children, name);
+          if (result != null) {
+            return result;
+          }
+        }
+      }
+      return null; // Not found
+    }
+
+    // Traverse the ProviderProfileCategory hierarchy
+    while (category != null) {
+      name = findCategoryByName(categoriesList ?? [], category.name);
+
+      if (name != null) {
+        names.add(name);
+      }
+
+      category = category.parent; // Move to the parent category
+    }
+
+    // Reverse the list to start with the root category
+    chosenCategories = names.reversed.toList();
+  }
+void slesctedProfileCat(){
+    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    print(selectedCategory?.id);
+    print(providerProfile?.details?.category?.id);
+    print("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+  selectedCategory?.id!=
+      providerProfile?.details?.category?.id?
+
+  emit(IsUpdated()):emit(IsNotUpdated());
+
+    emit(SelectedCategoryState());
+
+
+}
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
 
@@ -101,35 +160,69 @@ class ProfileCubit extends Cubit<ProfileStates> {
       emit(GetCategoryError(failure.message));
     }, (categories) {
       categoriesList = categories;
-      if(providerProfile!.details!.category!.parent==null){
-        final parentName=providerProfile?.details?.category?.name;
+      extractCategoryNames(      providerProfile?.details?.category,categoriesList
+      );
 
-        parent=categoriesList?.firstWhere((element) {
-          return  element.name==parentName;
-        },);
 
-        selectedCategory=parent;
-        catChildren=parent?.children;
 
-      }
-      else {
-        final parentName =providerProfile?.details?.category
-            ?.parent?.name;
-        final childName = providerProfile?.details?.category?.name;
-
-        parent=categoriesList?.firstWhere((element) {
-          return  element.name==parentName;
-        },);
-
-        child=parent?.children.firstWhere((element){
-          return  element.name==  childName;
-        });
-        selectedCategory=parent;
-        selectedSubCategory=child;
-        catChildren=parent?.children;
-      }
       emit(GetCategorySuccess());
+      slesctedProfileCat();
+
     });
+  }
+  Future<void> getProviderProfile() async {
+    emit(GetProfileLoading());
+    final result = await _getProviderProfile();
+    result.fold(
+            (failure) => emit(
+          GetProfileErrorr(failure.message),
+        ),
+            (data) {
+          providerProfile=ProviderProfile(id: data.id,email: data.email,firstName: data.firstName,imagePath: data.imagePath,lastName: data.lastName,details: data.details);
+
+          emit(
+            GetProviderSuccess(data),
+          );}
+    );
+  }
+  void updateProviderProfile(
+      UpdateProviderRequest updateRequest, int typeEdit) async {
+    emit(UpdateLoading());
+    final result = await _updateProviderProfile(updateRequest, typeEdit);
+    result.fold((failure) => emit(UpdateError(failure.message)),
+            (updateRequest) {
+          emit(UpdateSuccess());
+        });
+  }
+  void getUserRole() {
+    emit(GetProfileLoading());
+
+    final result = _getUserRole();
+    result.fold(
+            (failure) => emit(
+          GetUserRoleErrorr(failure.message),
+        ), (role) {
+      if (role == "ServiceProvider") {
+        getProviderProfile();
+      } else if (role == "Client") {
+        getClientProfile();
+      } else {
+        emit(GetProfileErrorr(role));
+      }
+    });
+  }
+  Future<void> getClientProfile() async {
+    emit(GetProfileLoading());
+    final result = await _getClientProfile();
+    result.fold(
+          (failure) => emit(
+        GetProfileErrorr(failure.message),
+
+      ),
+          (client) => emit(
+        GetClientSuccess(client),
+      ),
+    );
   }
 
 // Future<void> getCategories() async {
@@ -151,53 +244,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
   //     // emit(CountryCategorySuccess());
   //   });
   // }
-  Future<void> getProviderProfile() async {
-    emit(GetProfileLoading());
-    final result = await _getProviderProfile();
-    result.fold(
-      (failure) => emit(
-        GetProfileErrorr(failure.message),
-      ),
-          (data) {
-            providerProfile=ProviderProfile(id: data.id,email: data.email,firstName: data.firstName,imagePath: data.imagePath,lastName: data.lastName,details: data.details);
-
-             emit(
-        GetProviderSuccess(data),
-          );}
-    );
-  }
-
-  void getUserRole() {
-    emit(GetProfileLoading());
-
-    final result = _getUserRole();
-    result.fold(
-        (failure) => emit(
-              GetUserRoleErrorr(failure.message),
-            ), (role) {
-      if (role == "ServiceProvider") {
-        getProviderProfile();
-      } else if (role == "Client") {
-        getClientProfile();
-      } else {
-        emit(GetProfileErrorr(role));
-      }
-    });
-  }
 
   void updateClientProfile(UpdateAccountProfile updateRequest) async {
     emit(UpdateLoading());
     final result = await _updateClientProfile(updateRequest);
-    result.fold((failure) => emit(UpdateError(failure.message)),
-        (updateRequest) {
-      emit(UpdateSuccess());
-    });
-  }
-
-  void updateProviderProfile(
-      UpdateProviderRequest updateRequest, int typeEdit) async {
-    emit(UpdateLoading());
-    final result = await _updateProviderProfile(updateRequest, typeEdit);
     result.fold((failure) => emit(UpdateError(failure.message)),
         (updateRequest) {
       emit(UpdateSuccess());
@@ -260,26 +310,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
     return false;
   }
 
-  void selectedCategoryEvent(Categories? category) {
-    // selectedCategoryId = category!.id.toString();
-    selectedCategory = category;
-    selectedCategory!=parent?
-      emit(IsUpdated()):emit(IsNotUpdated());
-    
-    selectedSubCategory = null;
 
-    catChildren = category?.children;
-    emit(SelectedCategoryState());
-  }
 
-  void selectedSubCategoryEvent(Categories category) {
-    selectedSubCategory = category;
-    selectedSubCategory!=child?
-    emit(IsUpdated()):emit(IsNotUpdated());
-    
-    selectedSubCategoryId = category.id.toString();
-    emit(SelectedCategoryState());
-  }
+
 
   bool isCurrent = true;
 
@@ -349,7 +382,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   void getCountryAndCityNameFromCrocd(double lat, double long) async {
-    
+
    lat!=latitu&&long!=longti? emit(IsUpdated()):emit(IsNotUpdated());
 
     emit(GetLocationCountryLoading());

@@ -1,3 +1,7 @@
+import 'package:app/core/constant.dart';
+import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/features/service/presentation/screens/show_details.dart';
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
@@ -28,7 +32,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
   void initState() {
     initialCameraPosition = CameraPosition(
         target: _serviceCubit.filterLocation!,
-        zoom: _serviceCubit.isCity ? 12 : 8);
+        zoom: _serviceCubit.isCity ? 12 : 6);
     // markers.addAll([Marker(markerId: MarkerId('1'),position: LatLng(37.0989075, 36.1721064) ),Marker(markerId: MarkerId('2'),position: LatLng(37.0989105, 36.1721026)),Marker(markerId: MarkerId('3'),position: LatLng(36.297607719898224, 33.50574174037673))]);
     initMarkers();
     for (int i = 0; i < markerLocationData.length; i++) {
@@ -61,7 +65,6 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
         markers: markers,
         cameraTargetBounds: CameraTargetBounds(_serviceCubit.filterBounds),
         initialCameraPosition: initialCameraPosition,
-
         style: _authCubit.mapStyle,
       ),
     );
@@ -75,6 +78,17 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
             icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
             position: e.latLng,
             infoWindow: InfoWindow(title: e.name),
+            onTap: () {
+              if (sharedPref.getString(CacheConstant.tokenKey) == null) {
+                UIUtils.showMessage("You have to Sign in first");
+                return;
+              }
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ShowDetails(id: e.providerId!),
+                ),
+              );
+            },
             markerId: MarkerId(
               e.id.toString(),
             ),
@@ -84,9 +98,7 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
     print(
         'the aux Marker is  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${myMarker.length}');
     markers.addAll(myMarker);
-    // setState(() {
 
-    // });
 
     print(
         'the marker main is ########################################    ${markers.length}');

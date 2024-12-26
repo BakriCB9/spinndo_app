@@ -28,8 +28,6 @@ class MapScreen extends StatelessWidget {
                   ? _authCubit.currentLocation!.longitude
                   : _authCubit.selectedLocation!.longitude);
           Navigator.pop(context);
-          print(
-              'the location of country is ############################  countrylocation  long ${_authCubit.selectedLocation!.longitude} and latitued is ${_authCubit.selectedLocation!.latitude}');
         },
         child: Icon(
           Icons.save,

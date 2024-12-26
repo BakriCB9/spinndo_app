@@ -6,6 +6,7 @@ import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/presentation/screens/update_map_screen.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
+import 'package:app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -194,116 +195,8 @@ class EditJobDetails extends StatelessWidget {
                     BlocBuilder<ProfileCubit, ProfileStates>(
                       bloc: _profileCubit,
                       builder: (context, state) {
-                        return Column(
-                          children: [
-                            DropdownButtonFormField<Categories>(
-                              dropdownColor: Theme.of(context).primaryColorDark,
-                              menuMaxHeight: 200,
-                              isExpanded: false,
-                              hint: Padding(
-                                padding: EdgeInsets.only(left: 12.w),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.category,
-                                    ),
-                                    SizedBox(
-                                      width: 24.w,
-                                    ),
-                                    Text(localization.chooseCategory,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium),
-                                  ],
-                                ),
-                              ),
-                              decoration: const InputDecoration(
-                                  errorBorder: InputBorder.none),
-                              items: _profileCubit.categoriesList!
-                                  .map((e) => DropdownMenuItem<Categories>(
-                                        value: e,
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16.0.w),
-                                          child: Text(
-                                            e.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium,
-                                          ),
-                                        ),
-                                      ))
-                                  .toList(),
-                              value: _profileCubit.selectedCategory,
-                              onChanged: (value) {
-                                _profileCubit.selectedCategoryEvent(value);
-                              },
-                            ),
-                            _profileCubit.selectedCategory != null
-                                ? Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 50.h,
-                                      ),
-                                      DropdownButtonFormField<Categories>(
-                                        dropdownColor:
-                                            Theme.of(context).primaryColorDark,
-                                        menuMaxHeight: 200,
-                                        isExpanded: false,
+                                         return CascadingDropdowns(categories: _profileCubit.categoriesList,isProfile: true,);
 
-                                        // value:  _authCubit.selectedCategoryId!=null?_authCubit.categoriesList![indexChildCategory!].children[0]:null,
-                                        hint: Padding(
-                                          padding: EdgeInsets.only(left: 12.w),
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.category,
-                                              ),
-                                              SizedBox(
-                                                width: 24.w,
-                                              ),
-                                              Text(localization.chooseSubCategory,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayMedium),
-                                            ],
-                                          ),
-                                        ),
-                                        decoration: const InputDecoration(
-                                            errorBorder: InputBorder.none),
-                                        items:
-                                            //indexChildCategory != null
-                                            //? _authCubit
-                                            //.categoriesList![indexChildCategory!].children
-                                            _profileCubit.catChildren
-                                                ?.map((e) => DropdownMenuItem<
-                                                        Categories>(
-                                                      value: e,
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
-                                                                horizontal:
-                                                                    16.0.w),
-                                                        child: Text(
-                                                          e.name!,
-                                                          style: Theme.of(context)
-                                                              .textTheme
-                                                              .displayMedium,
-                                                        ),
-                                                      ),
-                                                    ))
-                                                .toList(),
-                                        value: _profileCubit.selectedSubCategory,
-                                        onChanged: (value) {
-                                          _profileCubit
-                                              .selectedSubCategoryEvent(value!);
-                                        },
-                                      )
-                                    ],
-                                  )
-                                : const SizedBox(),
-                          ],
-                        );
                       },
                     ),
                     SizedBox(
@@ -393,7 +286,8 @@ class EditJobDetails extends StatelessWidget {
                     }, builder: (context, state) {
                       print('the State is $state');
 
-                      if (state is IsUpdated) {
+if (state is IsUpdated) {
+
                         return BlocListener(
                           bloc: _profileCubit,
                           listener: (context,state){
@@ -417,7 +311,7 @@ class EditJobDetails extends StatelessWidget {
                                       latitudeService: _profileCubit.myLocation?.latitude.toString(),
                                       longitudeService: _profileCubit.myLocation?.longitude.toString(),
                                       //cityNameService: _profileCubit.cityName,
-                                      categoryIdService: _profileCubit.selectedSubCategory?.id.toString()??_profileCubit.selectedCategory?.id.toString(),
+                                      categoryIdService:_profileCubit.selectedCategory?.id.toString(),
                                       nameService:
                                           _profileCubit.serviceNameController.text,
                                       descriptionService:
@@ -429,7 +323,7 @@ class EditJobDetails extends StatelessWidget {
                               },
                               child: Text(localization.save)),
                         );
-                      } else if(state is IsNotUpdated){
+                      } else if(state is IsNotUpdated  ){
                         return const SizedBox();
                       }else{
                        return SizedBox();

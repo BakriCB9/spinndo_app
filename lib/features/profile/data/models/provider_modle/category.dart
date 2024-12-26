@@ -3,20 +3,18 @@ import 'package:app/features/profile/domain/entities/provider_profile/provider_p
 import 'parent.dart';
 
 class Category extends ProviderProfileCategory {
+  Category({super.id, super.name, super.parent});
 
-	Category({super.id, super.name,super.parent});
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      parent: json['parent'] == null
+          ? null
+          : Category.fromJson(json['parent'] as Map<String, dynamic>));
 
-	factory Category.fromJson(Map<String, dynamic> json) => Category(
-				id: json['id'] as int?,
-				name: json['name'] as String?,
-				 parent: json['parent'] == null
-				 		? null
-				 		: Parent.fromJson(json['parent'] as Map<String, dynamic>),
-			);
-
-	Map<String, dynamic> toJson() => {
-				'id': id,
-				'name': name,
-				//'parent': parent?.toJson(),
-			};
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        //'parent': parent?.toJson(),
+      };
 }

@@ -25,6 +25,7 @@ import '../../data/model/languages.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({super.key});
+
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   Dio? _dio;
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
@@ -37,6 +38,7 @@ class CustomDrawer extends StatelessWidget {
     Languages(name: 'العربية', code: 'ar'),
   ];
   Uint8List? bytes;
+
   @override
   Widget build(BuildContext context) {
     final imagePhoto = sharedPref.getString(CacheConstant.imagePhotoFromLogin);
@@ -46,414 +48,240 @@ class CustomDrawer extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
 
     final base64String = sharedPref.getString(CacheConstant.imagePhoto);
-
     return Drawer(
-        backgroundColor: _drawerCubit.themeMode == ThemeMode.dark
-        ? ColorManager.darkBlue
-            : Colors.white,
-        child: Column(
+      backgroundColor: _drawerCubit.themeMode == ThemeMode.dark
+          ? ColorManager.darkBlue
+          : Colors.white,
+      child: Column(
         children: [
-        Expanded(
-        flex: 2,
-        child: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-        color: ColorManager.primary,
-    ),
-    child: Padding(
-    padding: EdgeInsets.only(left: 20.w),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: [
-    // SizedBox(height: 100.h,),
-    Container(
-    width: 175.w,
-    height: 175.h,
-    decoration: const BoxDecoration(
-    // image: DecorationImage(
-    //     image: AssetImage('asset/images/no_profile.png'),
-    //     fit: BoxFit.cover),
-    shape: BoxShape.circle,
-    color: Colors.grey,
-    ),
-    child: Builder(
-    builder: (context) {
-    Uint8List? bytes;
-    final base64String =
-    sharedPref.getString(CacheConstant.imagePhoto);
-    if (base64String != null &&
-    base64String.isNotEmpty) {
-    bytes = base64Decode(base64String);
-    print(
-    'the image is ##############################################  $bytes');
-    }
-    return base64String == null
-    ? (imagePhoto == null
-    ? Icon(
-    Icons.person,
-    size: 150.r,
-    color: Colors.white,
-    )
-        : ClipRRect(
-    borderRadius:
-    BorderRadius.circular(300.r),
-    child: CashImage(path: imagePhoto)))
-        : ClipRRect(
-    borderRadius: BorderRadius.circular(150.r),
-    child: Image.memory(
-    bytes!,
-    fit: BoxFit.cover,
-    ),
-    );
-    },
-    )
-    //   base64String==null? (imagePhoto==null?ClipRRect(
-    //       borderRadius: BorderRadius.circular(175.r),
-    //       child: Image.asset('asset/images/no_profile.png')):ClipRRect(
-    //       borderRadius: BorderRadius.circular(175.r),
-    //       child: CashImage(path:imagePhoto)),
-    // ):
-
-    // Image.memory(
-    //        bytes!,
-    //       fit: BoxFit.cover,
-    //      )
-    ),
-
-    ListTile(
-    contentPadding: EdgeInsets.zero,
-    title: Text(name ?? localization.user,
-    style: Theme.of(context)
-        .textTheme
-        .labelSmall!
-        .copyWith(
-    color: Theme.of(context).primaryColorLight)),
-    subtitle: Text(email ?? 'User@gmail.com',
-    style: Theme.of(context)
-        .textTheme
-        .labelSmall!
-        .copyWith(
-    color: Theme.of(context).primaryColorLight)),
-    ),
-    SizedBox(
-    height: 10.h,
-    )
-    ],
-    ),
-    ),
-    ),
-    ),
-    Expanded(
-    flex: 5,
-    child: Column(
-    children: [
-    Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-    children: [
-    // Row(
-    //   children: [
-    //     Expanded(
-    //       child: Text(localization.themeMood,
-    //           style: Theme.of(context)
-    //               .textTheme
-    //               .titleLarge!
-    //               .copyWith(fontSize: 36.sp)),
-    //     ),
-    //     Expanded(
-    //       child: Switch(
-    //         activeColor: ColorManager.primary,
-    //         activeTrackColor: ColorManager.black,
-    //         value: _drawerCubit.themeMode == ThemeMode.dark,
-    //         onChanged: (value) {
-    //           if (value) {
-    //             _drawerCubit.changeTheme(ThemeMode.dark);
-    //           } else {
-    //             _drawerCubit.changeTheme(ThemeMode.light);
-    //           }
-    //         },
-    //       ),
-    //     )
-    //   ],
-    // ),
-    // Row(
-    //   children: [
-    //     Expanded(
-    //         child: Text(localization.language,
-    //             style: Theme.of(context)
-    //                 .textTheme
-    //                 .titleLarge!
-    //                 .copyWith(fontSize: 36.sp))),
-    //     Expanded(
-    //       child: SizedBox(
-    //         width: 90.w,
-    //         child: DropdownButtonHideUnderline(
-    //             child: DropdownButton<Languages>(
-    //                 value: languages.firstWhere(
-    //                   (lang) =>
-    //                       lang.code ==
-    //                       _drawerCubit.languageCode,
-    //                 ),
-    //                 style: Theme.of(context)
-    //                     .textTheme
-    //                     .displayMedium,
-    //                 items: languages
-    //                     .map(
-    //                       (language) =>
-    //                           DropdownMenuItem<Languages>(
-    //                         value: language,
-    //                         child: Text(language.name,
-    //                             style: Theme.of(context)
-    //                                 .textTheme
-    //                                 .displayMedium),
-    //                       ),
-    //                     )
-    //                     .toList(),
-    //                 onChanged: (selectedLanguage) {
-    //                   if (selectedLanguage != null) {
-    //                     _drawerCubit.changeLanguage(
-    //                         selectedLanguage.code);
-    //                   }
-    //                 },
-    //                 borderRadius: BorderRadius.circular(25),
-    //                 dropdownColor: _drawerCubit.themeMode ==
-    //                         ThemeMode.dark
-    //                     ? ColorManager.darkBlue
-    //                     : ColorManager.white)),
-    //       ),
-    //     )
-    //   ],
-    // )
-    ],
-    ),
-    ),
-    // Theme(
-    //   data: Theme.of(context).copyWith(
-    //     dividerColor: Colors.transparent, // Remove divider color
-    //   ),
-    //   child: ExpansionTile(
-    //     // expandedAlignment: Alignment.centerLeft,
-    //     leading: Icon(
-    //       Icons.settings,
-    //       color: ColorManager.primary,
-    //     ),
-    //     tilePadding: EdgeInsets.symmetric(
-    //         horizontal: 10.w), // Remove padding for seamless look
-    //     collapsedBackgroundColor:
-    //         Colors.transparent, // Match the background
-    //     backgroundColor: Colors.transparent,
-    //     title: Text(
-    //       'Setting',
-    //       style: Theme.of(context)
-    //           .textTheme
-    //           .titleLarge!
-    //           .copyWith(fontSize: 32.sp),
-    //     ),
-
-    //     children: [
-    //       Padding(
-    //         padding: EdgeInsets.symmetric(horizontal: 15.w),
-    //         child: Row(
-    //           children: [
-    //             Expanded(
-    //               flex: 3,
-    //               child: Text(localization.themeMood,
-    //                   style: Theme.of(context)
-    //                       .textTheme
-    //                       .titleLarge!
-    //                       .copyWith(fontSize: 28.sp)),
-    //             ),
-    //             Expanded(
-    //               child: Switch(
-    //                 activeColor: ColorManager.primary,
-    //                 activeTrackColor: ColorManager.black,
-    //                 value:
-    //                     _drawerCubit.themeMode == ThemeMode.dark,
-    //                 onChanged: (value) {
-    //                   if (value) {
-    //                     _drawerCubit.changeTheme(ThemeMode.dark);
-    //                   } else {
-    //                     _drawerCubit.changeTheme(ThemeMode.light);
-    //                   }
-    //                 },
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //       Padding(
-    //         padding: EdgeInsets.symmetric(horizontal: 15.w),
-    //         child: Row(
-    //           children: [
-    //             Expanded(
-    //                 child: Text(localization.language,
-    //                     style: Theme.of(context)
-    //                         .textTheme
-    //                         .titleLarge!
-    //                         .copyWith(fontSize: 28.sp))),
-    //             Expanded(
-    //               child: SizedBox(
-    //                 width: 90.w,
-    //                 child: DropdownButtonHideUnderline(
-    //                     child: DropdownButton<Languages>(
-    //                         value: languages.firstWhere(
-    //                           (lang) =>
-    //                               lang.code ==
-    //                               _drawerCubit.languageCode,
-    //                         ),
-    //                         style: Theme.of(context)
-    //                             .textTheme
-    //                             .displayMedium,
-    //                         items: languages
-    //                             .map(
-    //                               (language) =>
-    //                                   DropdownMenuItem<Languages>(
-    //                                 value: language,
-    //                                 child: Text(language.name,
-    //                                     style: Theme.of(context)
-    //                                         .textTheme
-    //                                         .displayMedium),
-        //                               ),
-        //                             )
-        //                             .toList(),
-        //                         onChanged: (selectedLanguage) {
-        //                           if (selectedLanguage != null) {
-        //                             _drawerCubit.changeLanguage(
-        //                                 selectedLanguage.code);
-        //                           }
-        //                         },
-        //                         borderRadius:
-        //                             BorderRadius.circular(25),
-        //                         dropdownColor:
-        //                             _drawerCubit.themeMode ==
-        //                                     ThemeMode.dark
-        //                                 ? ColorManager.darkBlue
-        //                                 : ColorManager.white)),
-        //               ),
-        //             )
-        //           ],
-        //         ),
-        //       ),
-
-        //     ],
-        //   ),
-        // ),
-
-
-        SizedBox(height: 20.h,),
-        InkWell(
-          onTap: (){
-
-            Navigator.of(context).pushNamed(SettingScreen.routeName);
-            Scaffold.of(context).closeDrawer();
-          },
-
-          child: ListTile(
-            leading:const  Icon(Icons.settings,color: ColorManager.primary,),
-            title: Text(localization.setting,style:Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontSize: 32.sp) ,),),
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(Profile_Screen.routeName);
-            Scaffold.of(context).closeDrawer();
-          },
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              color: ColorManager.primary,
-            ),
-            title: Text(localization.profile,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(fontSize: 32.sp)),
-          ),
-        ),
-
-        // ListTile(
-        //   leading: Icon(
-        //     Icons.settings,
-        //     color: ColorManager.primary,
-        //   ),
-        //   title: Text(localization.setting,
-        //       style: Theme.of(context)
-        //           .textTheme
-        //           .titleLarge!
-        //           .copyWith(fontSize: 32.sp)),
-        // ),
-
-
-        BlocListener<DrawerCubit, DrawerStates>(
-        listener: (context, state) {
-      if (state is LogOutLoading) {
-        UIUtils.showLoading(context);
-      } else if (state is LogOutErrorr) {
-        UIUtils.hideLoading(context);
-        UIUtils.showMessage(state.message);
-      } else if (state is LogOutSuccess) {
-        UIUtils.hideLoading(context);
-        Navigator.of(context)
-            .pushReplacementNamed(SignInScreen.routeName);
-        //  _disposeResources();
-        _serviceCubit.resetSetting();
-      }
-        },
-          child: InkWell(
-            onTap: () {
-              _drawerCubit.logout();
-            },
-            child: ListTile(
-              leading: Icon(
-                Icons.login_outlined,
+          Expanded(
+            flex: 2,
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
                 color: ColorManager.primary,
               ),
-              title: Text(localization.logout,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontSize: 32.sp)),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // SizedBox(height: 100.h,),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            // barrierColor: Colors.black54,
+                            barrierColor: Colors.black.withOpacity(0.6),
+                            context: context,
+                            builder: (context) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                        width: 500.w,
+                                        height: 500.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(300.r)
+                                            //color: Colors.grey,
+                                            ),
+                                        child: Builder(
+                                          builder: (context) {
+                                            Uint8List? bytes;
+                                            final base64String =
+                                                sharedPref.getString(
+                                                    CacheConstant.imagePhoto);
+                                            if (base64String != null &&
+                                                base64String.isNotEmpty) {
+                                              bytes =
+                                                  base64Decode(base64String);
+                                            }
+                                            return base64String == null
+                                                ? (imagePhoto == null
+                                                    ? Icon(
+                                                        Icons.person,
+                                                        size: 150.r,
+                                                        color: Colors.white,
+                                                      )
+                                                    : ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    400.r),
+                                                        child: CashImage(
+                                                            path: imagePhoto)))
+                                                : ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            400.r),
+                                                    child: Image.memory(
+                                                      bytes!,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  );
+                                          },
+                                        )),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                          width: 175.w,
+                          height: 175.h,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey,
+                          ),
+                          child: Hero(
+                            tag: 'image',
+                            child: Builder(
+                              builder: (context) {
+                                Uint8List? bytes;
+                                final base64String = sharedPref
+                                    .getString(CacheConstant.imagePhoto);
+                                if (base64String != null &&
+                                    base64String.isNotEmpty) {
+                                  bytes = base64Decode(base64String);
+                                  print(
+                                      'the image is ##############################################  $bytes');
+                                }
+                                return base64String == null
+                                    ? (imagePhoto == null
+                                        ? Icon(
+                                            Icons.person,
+                                            size: 150.r,
+                                            color: Colors.white,
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(300.r),
+                                            child: CashImage(path: imagePhoto)))
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(150.r),
+                                        child: Image.memory(
+                                          bytes!,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                              },
+                            ),
+                          )),
+                    ),
+
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(name ?? localization.user,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorLight)),
+                      subtitle: Text(email ?? 'User@gmail.com',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorLight)),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      // BlocListener<DrawerCubit,DrawerStates>(
-      //   bloc: _drawerCubit,
-      //   listener: (context,state){
-      //     if(state is DeleteAccountLoading){
-      //       UIUtils.showLoading(context);
-      //     }
-      //     else if (state is DeleteAccountError){
-      //       UIUtils.hideLoading(context);
-      //       UIUtils.showMessage(state.message);
-      //     }
-      //     else if (state is DeleteAccountSuccess){
-      //       UIUtils.hideLoading(context);
-      //       Navigator.of(context).pushReplacementNamed(SignInScreen.routeName);
-      //     }
-      //   },
-      //   child: InkWell(
-      //           onTap: (){
-      //             _drawerCubit.deleteAccount();
-      //           },
-      //           child: ListTile(
-      //             leading:const  Icon(Icons.delete,color: ColorManager.primary,),
-      //             title: Text('Delete Account',style: Theme.of(context)
-      //                           .textTheme
-      //                           .titleLarge!
-      //                           .copyWith(fontSize: 32.sp)),),
-      //         ),
-      // ),
-    ],
-    )),
+          Expanded(
+              flex: 5,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(SettingScreen.routeName);
+                      Scaffold.of(context).closeDrawer();
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.settings,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        localization.setting,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Profile_Screen.routeName);
+                      Scaffold.of(context).closeDrawer();
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(localization.profile,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(fontSize: 32.sp)),
+                    ),
+                  ),
+                  BlocListener<DrawerCubit, DrawerStates>(
+                    listener: (context, state) {
+                      if (state is LogOutLoading) {
+                        UIUtils.showLoading(context);
+                      } else if (state is LogOutErrorr) {
+                        UIUtils.hideLoading(context);
+                        UIUtils.showMessage(state.message);
+                      } else if (state is LogOutSuccess) {
+                        UIUtils.hideLoading(context);
+                        Navigator.of(context)
+                            .pushReplacementNamed(SignInScreen.routeName);
+                        //  _disposeResources();
+                        _serviceCubit.resetSetting();
+                      }
+                    },
+                    child: InkWell(
+                      onTap: () {
+                        _drawerCubit.logout();
+                      },
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.login_outlined,
+                          color: ColorManager.primary,
+                        ),
+                        title: Text(localization.logout,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(fontSize: 32.sp)),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
         ],
-        ),
+      ),
     );
   }
-// void _disposeResources() {
-//   _serviceCubit.close();
-//   _drawerCubit.close();
-// }
 }

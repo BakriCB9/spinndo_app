@@ -31,7 +31,6 @@ import 'package:app/features/service/presentation/screens/service_map_screen.dar
 import 'package:app/features/service/presentation/screens/service_screen.dart';
 
 late final SharedPreferences sharedPref;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
@@ -119,6 +118,7 @@ class MyApp extends StatelessWidget {
                             const Profile_Screen(),
                       },
                       debugShowCheckedModeBanner: false,
+
                     );
                   },
                 );

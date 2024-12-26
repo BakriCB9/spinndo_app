@@ -27,6 +27,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   void initState() {
     super.initState();
     _profileCubit.getUserRole();
+
   }
 
   int typeSelect = 1;
@@ -50,6 +51,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
         if (state is GetProfileLoading) {
           return LoadingIndicator(Theme.of(context).primaryColor);
         } else if (state is GetProfileErrorr) {
+
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

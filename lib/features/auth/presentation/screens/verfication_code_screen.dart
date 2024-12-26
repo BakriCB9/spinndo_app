@@ -34,7 +34,6 @@ class VerficationCodeScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context)!;
     final style = Theme.of(context).elevatedButtonTheme.style!;
     return CustomAuthForm(
-      canback: false,
       hasTitle: false,
       hasAvatar: false,
       child: Column(

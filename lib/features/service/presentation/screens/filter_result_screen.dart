@@ -42,8 +42,8 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
     final localization = AppLocalizations.of(context)!;
 
     markerLocationData.add(GoogleMapMarker(BitmapDescriptor.hueGreen,
-        id: 5,
-
+        id: -1,
+        providerId: sharedPref.getInt(CacheConstant.userId)!,
         name: "Current Location",
         latLng: LatLng(_serviceCubit.getCurrentLocation!.latitude!,
             _serviceCubit.getCurrentLocation!.longitude!)));
@@ -76,9 +76,9 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                         ? GeocodingService.getCountryBounds(
                             _serviceCubit.selectedCityName ??
                                 _serviceCubit.selectedCountryName!)
-                        :  GeocodingService.getCurrentLocationBounds(
-                                _serviceCubit.getCurrentLocation!.latitude!,
-                                _serviceCubit.getCurrentLocation!.longitude!));
+                        : GeocodingService.getCurrentLocationBounds(
+                            _serviceCubit.getCurrentLocation!.latitude!,
+                            _serviceCubit.getCurrentLocation!.longitude!));
 
                 _authCubit.loadMapStyle(
                     _drawerCubit.themeMode == ThemeMode.dark ? true : false);
@@ -89,68 +89,89 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               },
               icon: Icon(Icons.map, color: Theme.of(context).primaryColorLight),
             ),
-          widget.services.isNotEmpty?  PopupMenuButton(
-                icon: Icon(sortByName
-                    ? Icons.sort_by_alpha_sharp
-                    : sortByDistance
-                        ? Icons.social_distance_sharp
-                        : Icons.sort_sharp),
-                color: Theme.of(context).primaryColorDark,
-                itemBuilder: (context) => [
-                      PopupMenuItem(
-                        height: 60.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              localization.sortByName,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColorLight,
-                                      fontSize: 22.sp),
+            widget.services.isNotEmpty
+                ? PopupMenuButton(
+                    icon: Icon(sortByName
+                        ? Icons.sort_by_alpha_sharp
+                        : sortByDistance
+                            ? Icons.social_distance_sharp
+                            : Icons.sort_sharp),
+                    color: Theme.of(context).primaryColorDark,
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            height: 60.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  localization.sortByName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          fontSize: 22.sp),
+                                ),
+                                sortByName
+                                    ? Container(
+                                        width: 20.w,
+                                        height: 20.h,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: ColorManager.primary),
+                                      )
+                                    : const SizedBox()
+                              ],
                             ),
-                           sortByName? Container(width: 20.w,height: 20.h,decoration:const  BoxDecoration(shape: BoxShape.circle,color: ColorManager.primary),):const  SizedBox()
-                          ],
-                        ),
-                        onTap: () {
-                          widget.services.sort(
-                            (a, b) => a.name!.compareTo(b.name!),
-                          );
-                          sortByName = true;
-                          sortByDistance = false;
+                            onTap: () {
+                              widget.services.sort(
+                                (a, b) => a.name!.compareTo(b.name!),
+                              );
+                              sortByName = true;
+                              sortByDistance = false;
 
-                          setState(() {});
-                        },
-                      ),
-                      PopupMenuItem(
-                        height: 60.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              localization.sortByDistance,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColorLight,
-                                      fontSize: 22.sp),
+                              setState(() {});
+                            },
+                          ),
+                          PopupMenuItem(
+                            height: 60.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  localization.sortByDistance,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          fontSize: 22.sp),
+                                ),
+                                sortByDistance
+                                    ? Container(
+                                        width: 20.w,
+                                        height: 20.h,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: ColorManager.primary,
+                                        ),
+                                      )
+                                    : const SizedBox()
+                              ],
                             ),
-                           sortByDistance? Container(width: 20.w,height: 20.h,decoration:const  BoxDecoration(shape: BoxShape.circle,color: ColorManager.primary,),):const  SizedBox()
-                          ],
-                        ),
-                        onTap: () {
-                          widget.services.sort(
-                            (a, b) => a.distance!.compareTo(b.distance!),
-                          );
-                          sortByName = false;
-                          sortByDistance = true;
-                          setState(() {});
-                        },
-                      )
-                    ]):const  SizedBox(),
+                            onTap: () {
+                              widget.services.sort(
+                                (a, b) => a.distance!.compareTo(b.distance!),
+                              );
+                              sortByName = false;
+                              sortByDistance = true;
+                              setState(() {});
+                            },
+                          )
+                        ])
+                : const SizedBox(),
           ],
           elevation: 0,
         ),
@@ -166,6 +187,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                 itemCount: widget.services.length,
                 itemBuilder: (context, index) {
                   markerLocationData.add(GoogleMapMarker(
+                    providerId: widget.services[index].providerId!,
                     BitmapDescriptor.hueRed,
                     id: widget.services[index].id!,
                     name: widget.services[index].name!,
@@ -239,31 +261,34 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                         ),
                                       ),
                                       Expanded(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 12.r,
-                                            backgroundColor:
-                                                ColorManager.primary,
-                                          ),
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          Text(
-                                            service.distance != null
-                                                ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
-                                                : '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ],
+                                          child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 12.r,
+                                              backgroundColor:
+                                                  ColorManager.primary,
+                                            ),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Text(
+                                              service.distance != null
+                                                  ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
+                                                  : '',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ],
+                                        ),
                                       ))
                                     ],
                                   ),

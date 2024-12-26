@@ -67,6 +67,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
         _focus.unfocus();
       },
       style: Theme.of(context).textTheme.bodyMedium,
+
       decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle:
@@ -78,7 +79,8 @@ class _CustomTextFormField extends State<CustomTextFormField> {
               : null,
           suffixIcon: widget.controller.text.isNotEmpty
               ? widget.isPassword
-                  ? IconButton(
+                  ? IconButton(splashColor: Colors.transparent,
+                     highlightColor:Colors.transparent ,
                       onPressed: () {
                         isObsecure = !isObsecure;
                         setState(() {});
@@ -101,7 +103,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
                   size: 45.sp,
                 ),
           enabled: true,
-          contentPadding: EdgeInsets.only(left: widget.padding ?? 0)
+          contentPadding: EdgeInsets.only(left: 50.w)
           // counter: SizedBox()
           ),
       onChanged: widget.isPassword

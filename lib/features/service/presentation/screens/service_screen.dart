@@ -489,7 +489,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 },
                                 builder: (context, state) {
                                   return CascadingDropdowns(
-                                    categories: _serviceCubit.categoriesList,
+                                    categories: _serviceCubit.categoriesList,isService: true,
                                   );
                                 },
                               ),
@@ -537,23 +537,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     return;
                                   }
                                   _serviceCubit.getServices(GetServicesRequest(
-                                      categoryId: _serviceCubit.selectedCategory?.id !=
-                                              null
-                                          ? _serviceCubit.selectedSubCategory?.id ==
-                                                  null
-                                              ? _serviceCubit.selectedCategory?.id ==
-                                                      -1
-                                                  ? null
-                                                  : _serviceCubit
-                                                      .selectedCategory!.id
-                                              : _serviceCubit
-                                                          .selectedSubCategory
-                                                          ?.id ==
-                                                      -1
-                                                  ? null
-                                                  : _serviceCubit
-                                                      .selectedSubCategory!.id
-                                          : null,
+                                      categoryId: _serviceCubit.selectedCategory?.id==-1?null: _serviceCubit.selectedCategory?.id,
                                       cityId: _serviceCubit.selectedCityId == -1
                                           ? null
                                           : _serviceCubit.selectedCityId,

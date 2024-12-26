@@ -34,7 +34,7 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final style = Theme.of(context).elevatedButtonTheme.style!;
-    return CustomAuthForm(
+    return CustomAuthForm(canBack: false,isGuest: true,
       child: Column(
         children: [
           Form(

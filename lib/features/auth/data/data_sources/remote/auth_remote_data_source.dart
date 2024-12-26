@@ -15,12 +15,19 @@ import 'package:app/features/service/data/models/get_all_category_response/get_a
 
 abstract class AuthRemoteDataSource {
   Future<RegisterResponse> register(RegisterRequest requestBody);
+
   Future<LoginResponse> login(LoginRequest requestBody);
+
   Future<VerifyCodeResponse> verifyCode(VerifyCodeRequest requestBody);
+
   Future<RegisterServiceProviderResponse> registerService(
       RegisterServiceProviderRequest requestBody);
+
   Future<ResendCodeResponse> resendCode(ResendCodeRequest requestBody);
+
   Future<ResetPasswordResponse> resetPassword(ResetPasswordRequest requestBody);
+
   Future<GetAllCategoryResponse> getAllCategory();
+
   Future<List<String>> getAddressFromCoordinates(double lat, double long);
 }

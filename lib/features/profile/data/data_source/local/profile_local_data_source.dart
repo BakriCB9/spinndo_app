@@ -3,4 +3,5 @@ abstract class ProfileLocalDataSource {
   int getUserId();
   String getUserRole();
   Future<void> imagePhoto(String image);
+  Future<void> imagePhotoFromFile(String image);
 }

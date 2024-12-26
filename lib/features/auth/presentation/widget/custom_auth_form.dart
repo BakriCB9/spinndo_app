@@ -16,16 +16,16 @@ class CustomAuthForm extends StatelessWidget {
   CustomAuthForm(
       {super.key,
       required this.child,
-      this.isGuest = true,
+      this.isGuest = false,
       this.hasTitle = true,
-      this.hasAvatar = true,
-      this.canback = false});
+      this.hasAvatar = true,  this.canBack=true,
+      });
 
   final bool isGuest;
   final bool hasAvatar;
-  final bool canback;
   final bool hasTitle;
   final Widget child;
+  final bool canBack;
   final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
@@ -44,54 +44,48 @@ class CustomAuthForm extends StatelessWidget {
                   image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
 
-            isGuest
-                ? Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: InkWell(
-                      onTap: () {
-                        _authCubit.emailController.clear();
-                        _authCubit.passwordController.clear();
-                        Navigator.of(context).pushNamed(
-                          ServiceScreen.routeName,
-                        );
-                      },
-                      child: Text(localization.guest,
-                          style: Theme.of(context).textTheme.titleSmall),
-                    ),
-                  )
-                : const SizedBox(),
-          ],
-        ),
         body: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 20.w,
+            vertical: 20.h
           ),
           child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      canback
-                          ? Align(
-                              alignment: Alignment.centerLeft,
-                              child: InkWell(
-                                  onTap: () {
-                                    _authCubit.resendCodeTime = 60;
-                                    _authCubit.timer?.cancel();
+                Row(
+                  children: [
+canBack             ? InkWell(
+  onTap: () {
+    Navigator.of(context).pop();
+  },
+  child: Icon(Icons.arrow_back_sharp,color: Colors.grey.shade800,size: 45.sp,)
+)
+    : const SizedBox(),
+                    Spacer(),
+                    isGuest
+                        ? InkWell(
+                          onTap: () {
+                            _authCubit.emailController.clear();
+                            _authCubit.passwordController.clear();
+                            _authCubit.firstNameContoller.clear();
+                            _authCubit.lastNameContoller.clear();
+                            _authCubit.passwordController.clear();
+                            _authCubit.confirmPasswordController.clear();
 
-                                    Navigator.of(context).pushReplacementNamed(
-                                        SignUpScreen.routeName);
-                                  },
-                                  child: Icon(Icons.arrow_back)),
-                            )
-                          : SizedBox(),
-                    ],
-                  ),
+
+                            Navigator.of(context).pushNamed(
+                              ServiceScreen.routeName,
+                            );
+                          },
+                          child: Text(localization.guest,
+                              style: Theme.of(context).textTheme.titleSmall),
+                        )
+                        : const SizedBox(),
+                  ],
+                ),
+                  SizedBox(height: 80.h,),
                   hasAvatar
                       ? CircleAvatar(
                           radius: 170.r,

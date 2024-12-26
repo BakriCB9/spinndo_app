@@ -78,11 +78,14 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
       throw LocalAppException('Failed to store name');
     }
   }
+
   @override
-  Future<void>savePhoto(String? image)async{
+  Future<void> savePhoto(String? image) async {
     try {
-      if(image!=null)
-      {await _sharedPreferences.setString(CacheConstant.imagePhotoFromLogin,image);}
+      if (image != null) {
+        await _sharedPreferences.setString(
+            CacheConstant.imagePhotoFromLogin, image);
+      }
     } catch (_) {
       throw LocalAppException('Failed to store image');
     }

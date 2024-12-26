@@ -8,6 +8,7 @@ import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/main.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/app_exception.dart';
@@ -17,6 +18,7 @@ import 'package:app/features/profile/data/data_source/remote/profile_remote_data
 
 import 'package:app/features/profile/domain/entities/client_profile.dart';
 import 'package:app/features/profile/domain/repository/profile_repository.dart';
+import 'package:path_provider/path_provider.dart';
 
 @LazySingleton(as: ProfileRepository)
 class ProfileRepositoryImpl extends ProfileRepository {
@@ -86,7 +88,19 @@ class ProfileRepositoryImpl extends ProfileRepository {
       // Convert bytes to Base64 string
       final base64String = base64Encode(bytes);
       await _profileLocalDataSource.imagePhoto(base64String);
+//       import 'dart:io';
+// import 'dart:typed_data';
+// import 'package:path_provider/path_provider.dart';
 
+      /// Save Uint8List to a file in the app's local directory.
+
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/bb';
+      final file = File(filePath);
+      final ans= await file.writeAsBytes(bytes, flush: true);
+      await  sharedPref.setString('imageFile',ans.path);
+
+      // return filePath;
       return Right(response);
     } on AppException catch (exception) {
       return left(Failure(exception.message));

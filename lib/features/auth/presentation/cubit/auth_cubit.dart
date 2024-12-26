@@ -79,7 +79,9 @@ class AuthCubit extends Cubit<AuthState> {
   final serviceNameController = TextEditingController();
   final addressController = TextEditingController();
   final serviceDescriptionController = TextEditingController();
-  List<File?> listOfFileImagesProtofile = [];
+  List<File?> listOfFileImagesProtofile = [
+    File("")
+  ];
   bool isClient = true;
   int resendCodeTime = 60;
   Timer? timer;
@@ -88,10 +90,8 @@ class AuthCubit extends Cubit<AuthState> {
   File? firstImage;
   File? secondImage;
   List<Categories>? categoriesList;
-  List<ChildCategory>? catChildren;
   Country? country;
   Categories? selectedCategory;
-  ChildCategory? selectedSubCategory;
   final GetCategories _getCategories;
   // String? selectedCategoryId;
   late CameraPosition initialCameraPosition;
@@ -229,22 +229,16 @@ class AuthCubit extends Cubit<AuthState> {
     }, (categories) {
       categoriesList = categories;
       emit(GetCategorySuccess());
+      selectedAuthCat();
+
     });
   }
-
-  void selectedCategoryEvent(Categories? category) {
-    // selectedCategoryId = category!.id.toString();
-    selectedCategory = category;
-    selectedSubCategory = null;
-
-    // catChildren = category?.children;
+  void selectedAuthCat(){
     emit(SelectedCategoryState());
+
   }
 
-  void selectedSubCategoryEvent(ChildCategory category) {
-    selectedSubCategory = category;
-    emit(SelectedCategoryState());
-  }
+
 
   void initMarkerAddress() {
     markers.clear();
@@ -320,9 +314,11 @@ class AuthCubit extends Cubit<AuthState> {
     emit(CertificateImageUpdated(image));
   }
 
-  void addImagetoProtofile(File? image) {
+  void addImagetoProtofile(File? image,) {
     //firstImage = image;
+    listOfFileImagesProtofile.removeLast();
     listOfFileImagesProtofile.add(image);
+    listOfFileImagesProtofile.add(File(""));
     emit(UpdateImageProtofile());
   }
   void deleteImageProtofile(File?imgae ,int index){

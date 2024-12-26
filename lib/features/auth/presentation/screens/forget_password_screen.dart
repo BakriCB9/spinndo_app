@@ -29,7 +29,6 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     return CustomAuthForm(
-      isGuest: false,
       hasAvatar: false,
       hasTitle: false,
       child: SingleChildScrollView(

@@ -67,7 +67,6 @@ class EmployeeDetails extends StatelessWidget {
                 return CascadingDropdowns(categories: _authCubit.categoriesList);
               },
             ),
-            SizedBox(height: 30.h),
             CustomTextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -85,6 +84,26 @@ class EmployeeDetails extends StatelessWidget {
               labelText: localization.jobTitle,
             ),
             SizedBox(height: 30.h),
+
+            CustomTextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return localization.nameLessThanTwo;
+                } else if (!Validator.hasMinLength(
+                  value,
+                  minLength: 2,
+                )) {
+                  return localization.nameLessThanTwo;
+                }
+                return null;
+              },
+              controller: _authCubit.serviceDescriptionController,
+              icon: Icons.description,
+              labelText: localization.description,
+              maxLines: 5,
+              minLines: 1,
+            ),
+            SizedBox(height: 30.h),
             BlocBuilder<AuthCubit, AuthState>(
               bloc: _authCubit,
               builder: (context, state) {
@@ -99,7 +118,7 @@ class EmployeeDetails extends StatelessWidget {
                   },
                   child: Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
+                    EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColorDark,
                       borderRadius: BorderRadius.all(
@@ -151,25 +170,6 @@ class EmployeeDetails extends StatelessWidget {
                   ),
                 );
               },
-            ),
-            SizedBox(height: 30.h),
-            CustomTextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return localization.nameLessThanTwo;
-                } else if (!Validator.hasMinLength(
-                  value,
-                  minLength: 2,
-                )) {
-                  return localization.nameLessThanTwo;
-                }
-                return null;
-              },
-              controller: _authCubit.serviceDescriptionController,
-              icon: Icons.description,
-              labelText: localization.description,
-              maxLines: 5,
-              minLines: 1,
             ),
             SizedBox(height: 30.h),
             ListView.builder(

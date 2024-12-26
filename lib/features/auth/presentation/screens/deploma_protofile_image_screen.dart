@@ -30,6 +30,7 @@ class _DeplomaProtofileImageScreenState
     extends State<DeplomaProtofileImageScreen> {
   final _authCubit = serviceLocator.get<AuthCubit>();
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
+
   // List<File?> listOfFileImagesProtofile = [];
   @override
   Widget build(BuildContext context) {
@@ -56,12 +57,14 @@ class _DeplomaProtofileImageScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 20.h),
+
                 Text(localization.uploadCertificateImage,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge!
-                        .copyWith(fontSize: 48.sp)),
-                SizedBox(height: 30.h),
+                        .copyWith(fontSize: 40.sp)),
+                SizedBox(height: 50.h),
                 GestureDetector(
                   onTap: () =>
                       singleDialog(1, _authCubit.certificateImage != null),
@@ -80,37 +83,63 @@ class _DeplomaProtofileImageScreenState
                         ),
                         child: certificateImage == null
                             ? Center(
-                                child: Column(
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(localization.uploadYourCertificate,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall),
+                                    SizedBox(width: 20.w,),
                                     Icon(
-                                      Icons.upload_file_rounded,
+                                      Icons.upload,size: 45.sp,
                                     ),
                                   ],
                                 ),
                               )
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(30.r),
-                                child: Image.file(
-                                  certificateImage,
-                                  fit: BoxFit.cover,
+                                child: SingleChildScrollView(
+                                  child: Image.file(
+                                    certificateImage,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                       );
                     },
                   ),
                 ),
+                BlocBuilder<AuthCubit, AuthState>(
+                  bloc: _authCubit,
+                  buildWhen: (previous, current) =>
+                  current is CertificateImageUpdated,
+  builder: (context, state) {
+
+    return   _authCubit.certificateImage == null?SizedBox():   Column(
+                  
+                  children: [
+                    SizedBox(height: 20.h,),
+                    
+                    Row(
+                      children: [
+                        Text("try scroll",style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),),
+                        SizedBox(width: 10.w,),
+                        Icon(Icons.touch_app,size: 35.sp,),
+                    
+                      ],
+                    ),
+                  ],
+                );
+  },
+),
                 SizedBox(height: 50.h),
                 Text(localization.uploadProtofileImage,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge!
-                        .copyWith(fontSize: 48.sp)),
-                SizedBox(height: 30.h),
+                        .copyWith(fontSize: 40.sp)),
+                SizedBox(height: 50.h),
                 // SizedBox(
                 //   height: 350.h,
                 //   child: Row(
@@ -188,83 +217,126 @@ class _DeplomaProtofileImageScreenState
                 //   ),
                 // ),
 
-                BlocBuilder<AuthCubit,AuthState>(
-                  bloc: _authCubit,
-                  buildWhen: (previous, current) {
-                    if(current is UpdateImageProtofile){
-                      return true;
-                    }
-                    return false;
-                  },
-                  builder: (context,state) {
-                    return GridView.builder(
-                        shrinkWrap: true,
-                        physics:const  NeverScrollableScrollPhysics(),
-                        itemCount: _authCubit.listOfFileImagesProtofile.length,
-                        gridDelegate:const  SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                        itemBuilder: (context, index) {
-                          return Stack(
-                            // fit: StackFit.passthrough,
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                height: 250,
-                                color: Colors.red,
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image(
-                                    image: FileImage(
-                                      _authCubit
-                                          .listOfFileImagesProtofile[index]!,
+                BlocBuilder<AuthCubit, AuthState>(
+                    bloc: _authCubit,
+                    buildWhen: (previous, current) {
+                      if (current is UpdateImageProtofile) {
+                        return true;
+                      }
+                      return false;
+                    },
+                    builder: (context, state) {
+                      return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              _authCubit.listOfFileImagesProtofile.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,childAspectRatio: 3/4,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20),
+                          itemBuilder: (context, index) {
+                            return index ==
+                                    _authCubit
+                                            .listOfFileImagesProtofile.length -1
+                                ? SizedBox(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () => singleDialog(2, false),
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          25.r),
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1),
+                                                ),
+                                                child: Center(
+                                                  child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                          localization
+                                                              .clickToUpload,
+                                                          style: Theme.of(context)
+                                                              .textTheme
+                                                              .bodySmall),
+                                                      SizedBox(width: 20.w,),
+                                                      Icon(
+                                                        Icons.upload,size: 45.sp,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                  width: 50.w,
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.grey, width: 2)),
-                                  child: Center(
-                                      child: InkWell(
-                                    onTap: () {
-                                      //listOfFileImage.removeAt(index);
-                                      _authCubit.deleteImageProtofile(_authCubit.listOfFileImagesProtofile[index], index);
-                                      
-                                      setState(() {});
-                                    },
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                  )))
-                            ],
-                          );
-                        });
-                  }
-                ),
+                                  )
+                                : Stack(
+                                    // fit: StackFit.passthrough,
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              25.r),
+                                          color: Colors.grey
+                                              .withOpacity(0.1),
+                                        ),
+                                        child: AspectRatio(
+                                          aspectRatio: 3/4,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(Radius.circular(25.r)),
+                                            child: Image(
+                                              image: FileImage(
+                                                _authCubit
+                                                        .listOfFileImagesProtofile[
+                                                    index]!,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                          width: 50.w,
+                                          height: 50.h,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 2)),
+                                          child: Center(
+                                              child: InkWell(
+                                            onTap: () {
+                                              //listOfFileImage.removeAt(index);
+                                              _authCubit.deleteImageProtofile(
+                                                  _authCubit
+                                                          .listOfFileImagesProtofile[
+                                                      index],
+                                                  index);
+
+                                              // setState(() {});
+                                            },
+                                            child:  Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size:30.sp ,
+                                            ),
+                                          )))
+                                    ],
+                                  );
+                          });
+                    }),
+
                 SizedBox(
                   height: 20.h,
                 ),
-                Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                        onPressed: () {
-                          singleDialog(2, false);
-                        },
-                        child: Text(
-                          'Add Protofile',
-                          style: TextStyle(
-                              color: ColorManager.primary,
-                              fontSize: 30.sp,
-                              fontWeight: FontWeight.w600),
-                        ))),
+
                 SizedBox(
                   height: 30.h,
                 ),
@@ -289,7 +361,8 @@ class _DeplomaProtofileImageScreenState
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        print('the lenght of image is now ${_authCubit.listOfFileImagesProtofile.length} bakkkkkkkkkar ');
+                        print(
+                            'the lenght of image is now ${_authCubit.listOfFileImagesProtofile.length} bakkkkkkkkkar ');
                         if (_authCubit.certificateImage == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -301,7 +374,7 @@ class _DeplomaProtofileImageScreenState
                           );
                           return;
                         }
-     
+_authCubit.listOfFileImagesProtofile.removeLast();
                         _authCubit.registerService(
                             RegisterServiceProviderRequest(
                                 firstName: _authCubit.firstNameContoller.text,
@@ -313,26 +386,23 @@ class _DeplomaProtofileImageScreenState
                                     _authCubit.serviceNameController.text,
                                 descriptionService: _authCubit
                                     .serviceDescriptionController.text,
-                                categoryIdService: _authCubit
-                                            .selectedSubCategory?.id
-                                            .toString() ==
-                                        null
-                                    ? _authCubit.selectedCategory!.id.toString()
-                                    : _authCubit.selectedSubCategory!.id
-                                        .toString(),
+                                categoryIdService:
+                                    _authCubit.selectedCategory!.id.toString(),
                                 cityNameService: _authCubit.cityName!,
                                 websiteService: _authCubit.website,
                                 certificate: _authCubit.certificateImage!,
-                                latitudeService: _authCubit.isCurrent
-                                    ? _authCubit.currentLocation!.latitude
-                                        .toString()
-                                    : _authCubit.selectedLocation!.latitude
-                                        .toString(),
-                                longitudeService: _authCubit.isCurrent
-                                    ? _authCubit.currentLocation!.longitude
-                                        .toString()
-                                    : _authCubit.selectedLocation!.longitude
-                                        .toString(),
+                                latitudeService:
+                                    _authCubit.isCurrent
+                                        ? _authCubit.currentLocation!.latitude
+                                            .toString()
+                                        : _authCubit.selectedLocation!.latitude
+                                            .toString(),
+                                longitudeService:
+                                    _authCubit.isCurrent
+                                        ? _authCubit.currentLocation!.longitude
+                                            .toString()
+                                        : _authCubit.selectedLocation!.longitude
+                                            .toString(),
                                 images: _authCubit.listOfFileImagesProtofile));
                       },
                       child: Text(localization.signUp,
@@ -451,7 +521,6 @@ class _DeplomaProtofileImageScreenState
   void _deleteImage(int type) {
     if (type == 1) {
       _authCubit.updateCertificateImage(null);
-    } 
-    
+    }
   }
 }

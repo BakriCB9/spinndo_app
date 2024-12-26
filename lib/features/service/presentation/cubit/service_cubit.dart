@@ -1,3 +1,4 @@
+import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/service/data/models/get_all_category_response/data.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/city.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/data.dart';
@@ -31,9 +32,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
   final GetServiceProfile _getServiceProfile;
   final GetNotifications _getNotifications;
   List<Countries>? countriesList;
-  List<ChildCategory>? catChildren;
   Categories? selectedCategory;
-  ChildCategory? selectedSubCategory;
   List<Cities>? citiesList;
   List<Categories>? categoriesList;
   int? selectedCountryId;
@@ -83,7 +82,6 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
   Future<void> getCategories() async {
     // emit(CountryCategoryLoading());
-
     final result = await _getCategories();
     result.fold((failure) {
       failureMessegae = failure.message;
@@ -100,9 +98,14 @@ class ServiceCubit extends Cubit<ServiceStates> {
       // }
       // print('the final list is now of child ############################  ${childCategoryList}');
       // emit(CountryCategorySuccess());
+      selectedServiceCat();
+
     });
   }
+  void selectedServiceCat(){
+      emit(SelectedCategoryServiceState());
 
+  }
   Future<void> getCountries() async {
     // emit(CountryCategoryLoading());
 
@@ -143,28 +146,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
     );
   }
 
-  void selectedCategoryService(Categories? category) {
-    selectedCategory = category;
-    selectedSubCategory = null;
-    // Initialize or update the cities list based on the selected country
 
-    // Initialize or update the cities list based on the selected country
-    if (category?.children != null && category!.children.isNotEmpty) {
-      catChildren = List.from(category.children); // Use a new list instance
-    } else {
-      catChildren= []; // Reset to an empty list if there are no cities
-    }
-
-
-    catChildren?.add(addAllChildCategories);
-
-    emit(SelectedCategoryServiceState());
-  }
-
-  void selectedSubCategoryService(ChildCategory category) {
-    selectedSubCategory = category;
-    emit(SelectedCategoryServiceState());
-  }
 
   void selectedCountryService(Countries country) {
     selectedCountryId = country.id;
@@ -223,7 +205,6 @@ selectedCountryId=null;
 selectedCity=null;
 selectedCityId=null;
 selectedCategory=null;
-selectedSubCategory=null;
 isCurrent=false;
 selectedDistance=10;
 emit(ResetSettingsState());

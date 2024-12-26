@@ -1,6 +1,7 @@
 import 'package:app/core/resources/styles_manager.dart';
 import 'package:app/core/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'color_manager.dart';
@@ -13,11 +14,18 @@ class ThemeManager {
         backgroundColor: ColorManager.white,
         foregroundColor: ColorManager.black),
     primaryColor: ColorManager.primary,
-    iconTheme: IconThemeData(color: ColorManager.primary, size: 40.sp),
+    iconTheme: IconThemeData(
+      color: ColorManager.primary,
+      size: 40.sp,
+    ),
     primaryColorLight: ColorManager.black,
     primaryColorDark: Colors.white,
     scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
     appBarTheme: AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+
+      ),
       backgroundColor: Colors.transparent,
       foregroundColor: ColorManager.black,
       elevation: 0,

@@ -68,13 +68,13 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
     try {
       final response = await _dio.post(ApiConstant.verifyCodeEndPoint,
           data: requestBody.toJson());
-    
+
       return VerifyCodeResponse.fromJson(response.data);
     } catch (exception) {
       var message = 'Failed to verify Code';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
-    
+
         if (errorMessage != null) message = errorMessage;
       }
       throw RemoteAppException(message);
@@ -86,23 +86,18 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       RegisterServiceProviderRequest requestBody) async {
     try {
       var requestSend = await requestBody.toFormData();
-       //requestSend.files.add();
-//    for (var file in requestBody.images) {
-//   requestSend.files.addAll([
-//   MapEntry("service[images]", await MultipartFile.fromFile(file!.path,filename: file.path.split('/').last)),
-// ]);
-// }
-       for (int i = 0; i < requestBody.images.length; i++) {
-      requestSend.files.add(
-        MapEntry(
-          'service[images][$i]', // Field name expected by the server
-          await MultipartFile.fromFile(
-            requestBody.images[i]!.path,
-            filename: requestBody.images[i]!.path.split('/').last,
+
+      for (int i = 0; i < requestBody.images.length; i++) {
+        requestSend.files.add(
+          MapEntry(
+            'service[images][$i]', // Field name expected by the server
+            await MultipartFile.fromFile(
+              requestBody.images[i]!.path,
+              filename: requestBody.images[i]!.path.split('/').last,
+            ),
           ),
-        ),
-      );
-    }
+        );
+      }
       final response = await _dio
           .post(ApiConstant.registerServiceProviderEndPoint, data: requestSend);
       return RegisterServiceProviderResponse.fromJson(response.data);
@@ -110,7 +105,7 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       var message = 'Failed to register';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
-    
+
         if (errorMessage != null) message = errorMessage;
       }
 
@@ -179,16 +174,6 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
         final data = response.data;
 
         if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-          // print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-          // print(data['results']);
-          // print(lat);print(long);
-          // print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-          // var cityName =
-          //     data['results'][4]['address_components'][2]['long_name'];
-          // var countryName =
-          //     data['results'][4]['address_components'][5]['long_name'];
-          // var regionName =
-          // data['results'][4]['address_components'][1]['long_name'];
           var address = data['results'][4]['formatted_address'];
           var cityName =
               data['results'][0]['address_components'][1]['long_name'];
