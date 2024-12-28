@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app/core/constant.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
+import 'package:app/features/profile/data/models/delete_image/delete_image.dart';
 import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
@@ -122,5 +124,17 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return Left(Failure(exception.message));
     }
   }
+@override
+  Future<Either<Failure, DeleteImageResponse>> deleteImage() async {
+    try {
+      final response = await _profileRemoteDataSource.deleteImage();
 
+      sharedPref.remove(CacheConstant.imagePhotoFromLogin);
+      sharedPref.remove(CacheConstant.imagePhoto);
+      sharedPref.remove('imageFile');
+      return Right(response);
+    } on AppException catch (exception) {
+      return Left(Failure(exception.message));
+    }
+  }
 }

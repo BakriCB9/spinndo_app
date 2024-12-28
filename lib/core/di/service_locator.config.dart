@@ -11,6 +11,7 @@
 import 'package:app/core/di/register_module.dart' as _i313;
 import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart'
     as _i456;
+    import 'package:app/features/profile/domain/use_cases/delete_image.dart' as _i810;
 import 'package:app/features/auth/data/data_sources/local/auth_shared_pref_local_data_source.dart'
     as _i545;
 import 'package:app/features/auth/data/data_sources/remote/auth_api_remote_data_source.dart'
@@ -130,6 +131,7 @@ extension GetItInjectableX on _i174.GetIt {
         ));
 
    // gh.lazySingleton<_i770.GetNotifications>( () => _i770.GetNotifications(gh<_i1054.ServiceRepository>()));  
+    gh.lazySingleton<_i810.DeleteImage>(()=>_i810.DeleteImage(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i787.GetNotifications>(()=>_i787.GetNotifications(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i779.GetCategories>(
         () => _i779.GetCategories(gh<_i1054.ServiceRepository>()));
@@ -194,6 +196,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i779.GetCategories>(),
           gh<_i728.Getcountryname>(),
           gh<_i814.AddImagePhoto>(),
+           gh<_i810.DeleteImage>(),
         ));
     return this;
   }

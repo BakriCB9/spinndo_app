@@ -48,6 +48,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
           slivers: [
           SliverPersistentHeader(
           delegate: SliverPersistentDelegate(
+           widget.providerProfile.id!,
           size, widget.providerProfile.imagePath),
       pinned: true,
     ),

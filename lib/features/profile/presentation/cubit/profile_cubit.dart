@@ -10,9 +10,10 @@ import 'package:app/features/profile/domain/entities/provider_profile/provider_p
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_city.dart';
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart';
+import 'package:app/features/profile/domain/use_cases/delete_image.dart';
 import 'package:app/features/profile/domain/use_cases/update_client_profile.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
-import 'package:app/features/service/domain/entities/child_category.dart';
+
 import 'package:app/features/service/domain/use_cases/get_categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       this._updateProviderProfile,
       this._getCategories,
       this._getCountryCityName,
-      this._addImagePhoto)
+      this._addImagePhoto,this._deleteImage)
       : super(ProfileInitial());
   final GetClientProfile _getClientProfile;
   final GetProviderProfile _getProviderProfile;
@@ -46,6 +47,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final UpdateProviderProfile _updateProviderProfile;
   final GetCategories _getCategories;
   final AddImagePhoto _addImagePhoto;
+  final DeleteImage _deleteImage;
 
   //variable
   // Categories? parent;
@@ -417,6 +419,15 @@ void slesctedProfileCat(){
     result.fold((failure) {
       print(
           'There are Error bakkkkkkkkkkkkkkar here now #########################################');
+      emit(LoadImagePhotoError(failure.message));
+    }, (response) {
+      emit(LoadImagePhotoSuccess(response.data!));
+    });
+  }
+  void deleteImage() async {
+    emit(LoadImagePhotoLoading());
+    final result = await _deleteImage();
+    result.fold((failure) {
       emit(LoadImagePhotoError(failure.message));
     }, (response) {
       emit(LoadImagePhotoSuccess(response.data!));

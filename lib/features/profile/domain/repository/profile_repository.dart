@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/client_update/update_client_response.dart';
+import 'package:app/features/profile/data/models/delete_image/delete_image.dart';
 import 'package:app/features/profile/data/models/image_profile_photo/image_profile_response.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
@@ -21,4 +22,5 @@ abstract class ProfileRepository {
   Future<Either<Failure, UpdateProviderResponse>> updateProviderProfile(
       UpdateProviderRequest updateRequest, int typeEdit);
   Future<Either<Failure, ImageProfileResponse>> addImageProfile(File iamge);
+  Future<Either<Failure,DeleteImageResponse>> deleteImage();
 }

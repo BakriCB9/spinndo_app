@@ -84,9 +84,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                         );
                       } else if (state is GetNotificationError) {
-                        return Center(
-                          child: Text(state.message),
-                        );
+                         return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.replay_outlined,
+                        color: ColorManager.primary,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            _serviceCubit.getAllNotification();
+                          },
+                          child: Text(
+                            localization.reload,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(fontSize: 30.sp),
+                          )),
+                    ],
+                  ),
+                );
                       } else {
                         return Expanded(
                           child: AnimationLimiter(

@@ -1,7 +1,8 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -21,7 +22,7 @@ class Profile_Screen extends StatefulWidget {
 
 class _Profile_ScreenState extends State<Profile_Screen> {
   final _profileCubit = serviceLocator.get<ProfileCubit>();
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  // final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   void initState() {
@@ -34,66 +35,84 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-
-    return Scaffold(
-      body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
-        if (cur is GetProfileLoading ||
-            cur is GetProfileErrorr ||
-            cur is GetProviderSuccess ||
-            cur is GetClientSuccess) {
-          return true;
-        } else {
-          return false;
-        }
-      }, builder: (context, state) {
-        if (state is GetProfileLoading) {
-          return LoadingIndicator(
-            Theme.of(context).primaryColor,
-            isBackGround: true,
-          );
-        } else if (state is GetProfileErrorr) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  state.message,
-                  style: TextStyle(
-                      fontSize: 30.sp,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(height: 20.h),
-                Lottie.asset('asset/animation/error.json'),
-                SizedBox(
-                  height: 30.h,
-                ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(
-                          Theme.of(context).primaryColor,
-                        )),
+    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    return Container(
+      decoration: _drawerCubit.themeMode == ThemeMode.dark
+          ? const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          : null,
+      child: Scaffold(
+        body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
+          if (cur is GetProfileLoading ||
+              cur is GetProfileErrorr ||
+              cur is GetProviderSuccess ||
+              cur is GetClientSuccess) {
+            return true;
+          } else {
+            return false;
+          }
+        }, builder: (context, state) {
+          if (state is GetProfileLoading) {
+            return LoadingIndicator(Theme.of(context).primaryColor);
+          } else if (state is GetProfileErrorr) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Text(
+                  //   state.message,
+                  //   style: TextStyle(
+                  //       fontSize: 30.sp,
+                  //       color: Colors.black,
+                  //       fontWeight: FontWeight.w500),
+                  // ),
+                  SizedBox(height: 20.h),
+                  Icon(
+                    Icons.replay_outlined,
+                    color: ColorManager.primary,
+                  ),
+                  TextButton(
                     onPressed: () {
                       _profileCubit.getUserRole();
                     },
                     child: Text(
                       localization.reload,
-                      style: TextStyle(fontSize: 25.sp, color: Colors.white),
-                    ))
-              ],
-            ),
-          );
-        } else if (state is GetProviderSuccess) {
-          return ProviderProfileScreen(providerProfile: state.provider);
-        } else if (state is GetClientSuccess) {
-          return ClientProfileScreen(clientProfile: state.client);
-        } else {
-          return SizedBox(
-            child: Text(localization.noDataYet),
-          );
-        }
-      }),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontSize: 30.sp),
+                    ),
+                  ),
+                  // Lottie.asset('asset/animation/error.json'),
+                  SizedBox(height: 30.h),
+                  // ElevatedButton(
+                  //     style: ButtonStyle(
+                  //         backgroundColor: WidgetStatePropertyAll(
+                  //       Theme.of(context).primaryColor,
+                  //     )),
+                  //     onPressed: () {
+                  //       _profileCubit.getUserRole();
+                  //     },
+                  //     child: Text(
+                  //       localization.reload,
+                  //       style: TextStyle(fontSize: 25.sp, color: Colors.white),
+                  //     ))
+                ],
+              ),
+            );
+          } else if (state is GetProviderSuccess) {
+            return ProviderProfileScreen(providerProfile: state.provider);
+          } else if (state is GetClientSuccess) {
+            return ClientProfileScreen(clientProfile: state.client);
+          } else {
+            return SizedBox(
+              child: Text(localization.noDataYet),
+            );
+          }
+        }),
+      ),
     );
   }
 }

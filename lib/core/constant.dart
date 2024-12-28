@@ -20,6 +20,7 @@ class ApiConstant {
   static const String imageProfile = '/profile/updateMyImage';
   static const String getAllNotification='/myNotification';
   static const String deleteMyAccount='/user';
+  static const String deleteImage='/profile/updateMyImage';
 }
 
 class CacheConstant {

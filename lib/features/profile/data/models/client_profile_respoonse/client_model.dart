@@ -1,9 +1,9 @@
 import 'package:app/features/profile/domain/entities/client_profile.dart';
 
 class ClientModel extends ClientProfile {
-  final int id;
+  
   const ClientModel({
-    required this.id,
+    required super.id,
     required super.firstName,
     required super.lastName,
     required super.email,

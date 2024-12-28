@@ -212,8 +212,9 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed(SettingScreen.routeName);
                       Scaffold.of(context).closeDrawer();
+                      Navigator.of(context).pushNamed(SettingScreen.routeName);
+                      
                     },
                     child: ListTile(
                       leading: const Icon(

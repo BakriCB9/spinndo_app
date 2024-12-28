@@ -14,7 +14,7 @@ import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/screens/drawer.dart';
 import 'package:app/features/service/data/models/get_services_request.dart';
-import 'package:app/features/service/domain/entities/categories.dart';
+
 import 'package:app/features/service/domain/entities/cities.dart';
 import 'package:app/features/service/domain/entities/countries.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
@@ -153,7 +153,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         localization.searchSetting,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
-                      Spacer(),
+                     const  Spacer(),
                       token != null
                           ? IconButton(
                           onPressed: () {
@@ -216,14 +216,69 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   ),
                                 );
                               } else if (state is CountryCategoryError) {
-                                return Center(
-                                  child: Text(state.message,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall),
-                                );
+                                return SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.2,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Text(state.message,
+                              //     style: Theme.of(context).textTheme.bodySmall),
+                              const Icon(
+                                Icons.replay_outlined,
+                                color: ColorManager.primary,
+                              ),
+
+                              TextButton(
+                                onPressed: () {
+                                  _serviceCubit.getCountriesAndCategories();
+                                },
+                                child: Text(
+                                  localization.reload,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(fontSize: 30.sp),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
                               } else {
-                                return Padding(
+                                return  _serviceCubit.categoriesList == null ||
+                              _serviceCubit.countriesList == null
+                          ? SizedBox(
+                              height: MediaQuery.of(context).size.height / 1.2,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Text(state.message,
+                                    //     style: Theme.of(context).textTheme.bodySmall),
+                                    const Icon(
+                                      Icons.replay_outlined,
+                                      color: ColorManager.primary,
+                                    ),
+
+                                    TextButton(
+                                      onPressed: () {
+                                        _serviceCubit
+                                            .getCountriesAndCategories();
+                                      },
+                                      child: Text(
+                                        localization.reload,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .copyWith(fontSize: 30.sp),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          :  Padding(
                                     padding: const EdgeInsets.all(16.0),
                                     child: Column(
                                       crossAxisAlignment:
