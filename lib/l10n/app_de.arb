@@ -110,7 +110,9 @@
   "deleteAccount":"Konto löschen",
   "notifications":"Benachrichtigungen",
   "noNotificationRecived":"Keine Benachrichtigung erhalten",
-  "serviceOrProviderName":"Name des Dienstes oder Anbieters"
+  "serviceOrProviderName":"Name des Dienstes oder Anbieters",
+  "filterOnlocationOrCategory":"Filtern nach Standort oder Kategorie",
+  "categoryRequired":"Kategorie erforderlich"
 
 
 }

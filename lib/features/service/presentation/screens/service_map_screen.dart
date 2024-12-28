@@ -75,30 +75,29 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
     Set<Marker> myMarker = markerLocationData
         .map(
           (e) => Marker(
-            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-            position: e.latLng,
-            infoWindow: InfoWindow(title: e.name),
-            onTap: () {
-              if (sharedPref.getString(CacheConstant.tokenKey) == null) {
-                UIUtils.showMessage("You have to Sign in first");
-                return;
-              }
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ShowDetails(id: e.providerId!),
-                ),
-              );
-            },
-            markerId: MarkerId(
-              e.id.toString(),
+        icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
+        position: e.latLng,
+        infoWindow: InfoWindow(title: e.name),
+        onTap: () {
+          if (sharedPref.getString(CacheConstant.tokenKey) == null) {
+            UIUtils.showMessage("You have to Sign in first");
+            return;
+          }
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ShowDetails(id: e.providerId!),
             ),
-          ),
-        )
+          );
+        },
+        markerId: MarkerId(
+          e.id.toString(),
+        ),
+      ),
+    )
         .toSet();
     print(
         'the aux Marker is  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${myMarker.length}');
     markers.addAll(myMarker);
-
 
     print(
         'the marker main is ########################################    ${markers.length}');

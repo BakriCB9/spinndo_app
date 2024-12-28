@@ -45,7 +45,8 @@ class UIUtils {
   static void hideLoading(BuildContext context) => Navigator.of(context).pop();
 
   static void showMessage(String message) {
-    Fluttertoast.showToast(backgroundColor: Colors.grey.shade800,
+    Fluttertoast.showToast(
+      backgroundColor: Colors.grey.shade800,
       msg: message,
       toastLength: Toast.LENGTH_LONG,
     );

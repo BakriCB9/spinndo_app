@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {
   final Color? color;
-  const LoadingIndicator(this.color);
+  final bool ?isBackGround;
+  const LoadingIndicator(this.color,{ this.isBackGround=false});
 
   @override
   Widget build(BuildContext context) {
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
-    return Container(
+    return isBackGround==true? Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
           image: DecorationImage(
@@ -21,6 +22,11 @@ class LoadingIndicator extends StatelessWidget {
           color: color ?? Theme.of(context).primaryColor,
         ),
       ),
+    ):  Center(
+      child: CircularProgressIndicator(
+        color: color ?? Theme.of(context).primaryColor,
+      ),
+
     );
   }
 }

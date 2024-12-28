@@ -23,7 +23,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final _profileCubit=serviceLocator.get<ProfileCubit>();
+    final _profileCubit = serviceLocator.get<ProfileCubit>();
     final localization = AppLocalizations.of(context)!;
 
     final double maxHeaderHeight = size.height * .3;
@@ -47,162 +47,161 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final double rightSpace = size.width * 0.03;
     return Container(
-        color: _drawerCubit.themeMode == ThemeMode.dark
-        ? Theme.of(context).primaryColorDark
-        : ColorManager.primary,
-    // color: Theme.of(context)
-    //     .appBarTheme
-    //     .
-    //     .withOpacity(percent * 2 < 1 ? percent * 2 : 1),
-    child: Stack(
-    children: [
-    CustomPosition(
-    bottom: isImageBig ? bottomSpaceForImage : null,
-    top: isImageBig ? topSpace : null,
-    left: isImageBig ? currentImagePosition : null,
-    child:CustomContainer(
-    shape: isImageBig ? BoxShape.circle : BoxShape.rectangle,
-    width: isImageBig ? currentImageSize : double.infinity,
-    initialImage: image)
-    ),
-    CustomPosition(
-    left: 0,
-    top: topSpace,
-    child: CustomIconButton(
-    ontap: () {
-    Navigator.pop(context);
-    },
-    icon: Icons.arrow_back)),
-    CustomPosition(
-    right: 0,
-    top: topSpace,
-    child: CustomIconButton(
-    ontap: () {
-    showModalBottomSheet(
-    backgroundColor: Theme.of(context).primaryColorDark,
-    context: context,
-    builder: (context) {
-    return SafeArea(
-    child: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 30.w),
-    child: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-    Row(
-    children: [
-    Expanded(
-    child: Center(
-    child: Text(localization.profilePhoto),
-    ),
-    ),
-    IconButton(
-    icon:const  Icon(Icons.delete),
-    onPressed: () {},
-    ),
-    ],
-    ),
-    SizedBox(
-    height: 30.h,
-    ),
-    Row(
-    children: [
-    Column(
-    children: [
-    GestureDetector(
-    onTap: () async {
-    Navigator.of(context).pop();
-    final image = await ImageFunctions
-        .CameraPicker(true);
-    if (image == null) {
-    return;
-    }
-    _profileCubit.addImagePhoto(image);
-    },
-    child: Container(
-    width: 100.w,
-    height: 100.h,
-    decoration: BoxDecoration(
-    shape: BoxShape.circle,
-    border: Border.all(
-    color: Colors.grey)),
-    child: Icon(
-    Icons.camera_alt_outlined,
-    color: ColorManager.primary,
-    ),
-    ),
-    ),
-      SizedBox(height: 15.h),
-      Text(
-        'Camera',
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge!
-            .copyWith(fontSize: 25.sp),
-      )
-    ],
-    ),
-      SizedBox(
-        width: 35.w,
-      ),
-      Column(
+      color: _drawerCubit.themeMode == ThemeMode.dark
+          ? Theme.of(context).primaryColorDark
+          : ColorManager.primary,
+      // color: Theme.of(context)
+      //     .appBarTheme
+      //     .
+      //     .withOpacity(percent * 2 < 1 ? percent * 2 : 1),
+      child: Stack(
         children: [
-          GestureDetector(
-            onTap: () async {
-              Navigator.of(context).pop();
-              final image = await ImageFunctions
-                  .galleryPicker(true);
-              if (image == null) {
-                return;
-              }
-              _profileCubit.addImagePhoto(image);
-            },
-            child: Container(
-              width: 100.w,
-              height: 100.h,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: Colors.grey)),
-              child: Icon(
-                Icons.image_outlined,
-                color: ColorManager.primary,
-              ),
-            ),
-          ),
-          SizedBox(height: 15.h),
-          Text(
-            'Gallery',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontSize: 25.sp),
-          )
+          CustomPosition(
+              bottom: isImageBig ? bottomSpaceForImage : null,
+              top: isImageBig ? topSpace : null,
+              left: isImageBig ? currentImagePosition : null,
+              child: CustomContainer(
+                  shape: isImageBig ? BoxShape.circle : BoxShape.rectangle,
+                  width: isImageBig ? currentImageSize : double.infinity,
+                  initialImage: image)),
+          CustomPosition(
+              left: 0,
+              top: topSpace,
+              child: CustomIconButton(
+                  ontap: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icons.arrow_back)),
+          CustomPosition(
+              right: 0,
+              top: topSpace,
+              child: CustomIconButton(
+                  ontap: () {
+                    showModalBottomSheet(
+                        backgroundColor: Theme.of(context).primaryColorDark,
+                        context: context,
+                        builder: (context) {
+                          return SafeArea(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Center(
+                                            child: Text(localization.profilePhoto),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {},
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 30.h,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                Navigator.of(context).pop();
+                                                final image = await ImageFunctions
+                                                    .CameraPicker(true);
+                                                if (image == null) {
+                                                  return;
+                                                }
+                                                _profileCubit.addImagePhoto(image);
+                                              },
+                                              child: Container(
+                                                width: 100.w,
+                                                height: 100.h,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                        color: Colors.grey)),
+                                                child: Icon(
+                                                  Icons.camera_alt_outlined,
+                                                  color: ColorManager.primary,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 15.h),
+                                            Text(
+                                              'Camera',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge!
+                                                  .copyWith(fontSize: 25.sp),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 35.w,
+                                        ),
+                                        Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                Navigator.of(context).pop();
+                                                final image = await ImageFunctions
+                                                    .galleryPicker(true);
+                                                if (image == null) {
+                                                  return;
+                                                }
+                                                _profileCubit.addImagePhoto(image);
+                                              },
+                                              child: Container(
+                                                width: 100.w,
+                                                height: 100.h,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                        color: Colors.grey)),
+                                                child: Icon(
+                                                  Icons.image_outlined,
+                                                  color: ColorManager.primary,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 15.h),
+                                            Text(
+                                              'Gallery',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge!
+                                                  .copyWith(fontSize: 25.sp),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 50.h,
+                                    )
+                                  ],
+                                ),
+                              ));
+                        });
+                  },
+                  icon: Icons.camera_alt_outlined)),
+          // CustomPosition(child: IconButton(onPressed: (){}, icon:Icon(Icons.camera_alt_outlined,color: ColorManager.primary,))),
+          // CustomPosition(
+          //   top: isImageBig
+          //       ? max(currentPositionforText, topSPaceForImage)
+          //       : initPositionForText * (1 - percent),
+          //   left: isImageBig
+          //       ? max(((size.width / 1.1)) * (1 - percent), minImageSize * 8.5)
+          //       : rightSpace,
+          //   isAnimated: true,
+          //   child: Icon(Icons.camera_alt_outlined,color: Colors.white,)
+          // )
         ],
       ),
-    ],
-    ),
-      SizedBox(
-        height: 50.h,
-      )
-    ],
-    ),
-    ));
-    });
-    },
-        icon: Icons.camera_alt_outlined)),
-      // CustomPosition(child: IconButton(onPressed: (){}, icon:Icon(Icons.camera_alt_outlined,color: ColorManager.primary,))),
-      // CustomPosition(
-      //   top: isImageBig
-      //       ? max(currentPositionforText, topSPaceForImage)
-      //       : initPositionForText * (1 - percent),
-      //   left: isImageBig
-      //       ? max(((size.width / 1.1)) * (1 - percent), minImageSize * 8.5)
-      //       : rightSpace,
-      //   isAnimated: true,
-      //   child: Icon(Icons.camera_alt_outlined,color: Colors.white,)
-      // )
-    ],
-    ),
     );
   }
 

@@ -110,5 +110,7 @@
     "deleteAccount":"Delete Account",
     "notifications":"Notifications",
     "noNotificationRecived":"No Notification Recived",
-    "serviceOrProviderName":"service or provider name"
+    "serviceOrProviderName":"service or provider name",
+    "filterOnlocationOrCategory":"Filter on Location or Category",
+    "categoryRequired":"Category Required"
 }

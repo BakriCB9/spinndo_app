@@ -19,10 +19,10 @@ class CustomDiplomaAndProtofile extends StatefulWidget {
   final List<ProviderProfileImage> images;
   const CustomDiplomaAndProtofile(
       {required this.images,
-      required this.imageCertificate,
-      required this.userId,
-      required this.isApprovid,
-      super.key});
+        required this.imageCertificate,
+        required this.userId,
+        required this.isApprovid,
+        super.key});
 
   @override
   State<CustomDiplomaAndProtofile> createState() =>
@@ -70,33 +70,35 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
         ),
         myId == widget.userId
             ? Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            typeSelect = 1;
-                          });
-                        },
-                        child: DiplomaAndProtofile(
-                            active: typeSelect == 1,
-                            type: 1,
-                            text: localization.certificate)),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            typeSelect = 2;
-                          });
-                        },
-                        child: DiplomaAndProtofile(
-                            active: typeSelect == 2, type: 2, text: localization.photos)),
-                  ),
-                ],
-              )
+          children: [
+            Expanded(
+              child: InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      typeSelect = 1;
+                    });
+                  },
+                  child: DiplomaAndProtofile(
+                      active: typeSelect == 1,
+                      type: 1,
+                      text: localization.certificate)),
+            ),
+            Expanded(
+              child: InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      typeSelect = 2;
+                    });
+                  },
+                  child: DiplomaAndProtofile(
+                      active: typeSelect == 2,
+                      type: 2,
+                      text: localization.photos)),
+            ),
+          ],
+        )
             : const SizedBox(),
         // SizedBox(height: 15.h),
 

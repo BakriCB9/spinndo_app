@@ -20,11 +20,10 @@ class UpdateMapScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
           _profileCubit.getCountryAndCityNameFromCrocd(
-
-              _profileCubit.myLocation!.latitude,_profileCubit.myLocation!.longitude);
-          _profileCubit.oldLocation=_profileCubit.myLocation;
+              _profileCubit.myLocation!.latitude,
+              _profileCubit.myLocation!.longitude);
+          _profileCubit.oldLocation = _profileCubit.myLocation;
 
           Navigator.pop(context);
         },
@@ -37,7 +36,7 @@ class UpdateMapScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                _profileCubit.myLocation=_profileCubit.currentLocation;
+                _profileCubit.myLocation = _profileCubit.currentLocation;
 
                 _profileCubit.initCurrentLocation();
                 _profileCubit.initMarkerAddress();
@@ -67,7 +66,7 @@ class UpdateMapScreen extends StatelessWidget {
             return Center(
               child: Text(state.message),
             );
-          }else  {
+          } else {
             return BlocBuilder<ProfileCubit, ProfileStates>(
               bloc: _profileCubit,
               buildWhen: (previous, current) {
@@ -85,7 +84,7 @@ class UpdateMapScreen extends StatelessWidget {
                       markers: _profileCubit.markers,
                       style: _profileCubit.mapStyle,
                       onTap: (argument) {
-                        _profileCubit.myLocation=argument;
+                        _profileCubit.myLocation = argument;
                         _profileCubit.selectLocation(argument);
 
                         _profileCubit.initMarkerAddress();
@@ -93,14 +92,13 @@ class UpdateMapScreen extends StatelessWidget {
                       },
                       onMapCreated: (controller) async {
                         _profileCubit.isCurrent = false;
-                        _profileCubit.myLocation=_profileCubit.oldLocation;
+                        _profileCubit.myLocation = _profileCubit.oldLocation;
                         _profileCubit.googleMapController = controller;
                         _profileCubit.initCurrentLocation();
                         _profileCubit.initMarkerAddress();
                       },
                       initialCameraPosition: CameraPosition(
-                          target: _profileCubit.myLocation!,
-                          zoom: 14),
+                          target: _profileCubit.myLocation!, zoom: 14),
                     ),
                   ],
                 );

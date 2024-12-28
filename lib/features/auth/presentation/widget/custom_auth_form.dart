@@ -13,13 +13,14 @@ import '../../../profile/presentation/screens/profile_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomAuthForm extends StatelessWidget {
-  CustomAuthForm(
-      {super.key,
-      required this.child,
-      this.isGuest = false,
-      this.hasTitle = true,
-      this.hasAvatar = true,  this.canBack=true,
-      });
+  CustomAuthForm({
+    super.key,
+    required this.child,
+    this.isGuest = false,
+    this.hasTitle = true,
+    this.hasAvatar = true,
+    this.canBack = true,
+  });
 
   final bool isGuest;
   final bool hasAvatar;
@@ -40,69 +41,68 @@ class CustomAuthForm extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          image: DecorationImage(
+              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
-
         body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 20.w,
-            vertical: 20.h
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                Row(
-                  children: [
-canBack             ? InkWell(
-  onTap: () {
-    Navigator.of(context).pop();
-  },
-  child: Icon(Icons.arrow_back_sharp,color: Colors.grey.shade800,size: 45.sp,)
-)
-    : const SizedBox(),
-                    Spacer(),
-                    isGuest
-                        ? InkWell(
+                  Row(
+                    children: [
+                      canBack
+                          ? InkWell(
                           onTap: () {
-                            _authCubit.emailController.clear();
-                            _authCubit.passwordController.clear();
-                            _authCubit.firstNameContoller.clear();
-                            _authCubit.lastNameContoller.clear();
-                            _authCubit.passwordController.clear();
-                            _authCubit.confirmPasswordController.clear();
-
-
-                            Navigator.of(context).pushNamed(
-                              ServiceScreen.routeName,
-                            );
+                            Navigator.of(context).pop();
                           },
-                          child: Text(localization.guest,
-                              style: Theme.of(context).textTheme.titleSmall),
-                        )
-                        : const SizedBox(),
-                  ],
-                ),
-                  SizedBox(height: 80.h,),
+                          child: Icon(
+                            Icons.arrow_back_sharp,
+                            color: Theme.of(context).primaryColorLight,
+                            size: 45.sp,
+                          ))
+                          : const SizedBox(),
+                      Spacer(),
+                      isGuest
+                          ? InkWell(
+                        onTap: () {
+                          _authCubit.emailController.clear();
+                          _authCubit.passwordController.clear();
+                          _authCubit.firstNameContoller.clear();
+                          _authCubit.lastNameContoller.clear();
+                          _authCubit.passwordController.clear();
+                          _authCubit.confirmPasswordController.clear();
+
+                          Navigator.of(context).pushNamed(
+                            ServiceScreen.routeName,
+                          );
+                        },
+                        child: Text(localization.guest,
+                            style:
+                            Theme.of(context).textTheme.titleSmall),
+                      )
+                          : const SizedBox(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 80.h,
+                  ),
                   hasAvatar
                       ? CircleAvatar(
-                          radius: 170.r,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(200.r),
-                              child: SvgPicture.asset("asset/images/logo.svg"))
-                          // Icon(
-                          //   Icons.person,
-                          //   size: 246.sp,
-                          //   color: ColorManager.white,
-                          // ),
-                          )
+                      radius: 170.r,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(200.r),
+                          child: SvgPicture.asset("asset/images/logo.svg"))
+                    // Icon(
+                    //   Icons.person,
+                    //   size: 246.sp,
+                    //   color: ColorManager.white,
+                    // ),
+                  )
                       : const SizedBox(),
-                  SizedBox(
-                    height: 60.h,
-                  ),
                   child
                 ],
               ),

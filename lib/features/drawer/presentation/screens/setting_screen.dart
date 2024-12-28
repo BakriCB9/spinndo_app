@@ -29,8 +29,8 @@ class SettingScreen extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          image: DecorationImage(
+              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
         appBar: AppBar(
@@ -78,7 +78,7 @@ class SettingScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    flex: 2,
+                      flex: 2,
                       child: Text(localization.language,
                           style: Theme.of(context)
                               .textTheme
@@ -90,20 +90,20 @@ class SettingScreen extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                           child: DropdownButton<Languages>(
                               value: languages.firstWhere(
-                                (lang) =>
-                                    lang.code == _drawerCubit.languageCode,
+                                    (lang) =>
+                                lang.code == _drawerCubit.languageCode,
                               ),
                               style: Theme.of(context).textTheme.displayMedium,
                               items: languages
                                   .map(
                                     (language) => DropdownMenuItem<Languages>(
-                                      value: language,
-                                      child: Text(language.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium),
-                                    ),
-                                  )
+                                  value: language,
+                                  child: Text(language.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium),
+                                ),
+                              )
                                   .toList(),
                               onChanged: (selectedLanguage) {
                                 if (selectedLanguage != null) {
@@ -113,9 +113,9 @@ class SettingScreen extends StatelessWidget {
                               },
                               borderRadius: BorderRadius.circular(25),
                               dropdownColor:
-                                  _drawerCubit.themeMode == ThemeMode.dark
-                                      ? ColorManager.darkBlue
-                                      : ColorManager.white)),
+                              _drawerCubit.themeMode == ThemeMode.dark
+                                  ? ColorManager.darkBlue
+                                  : ColorManager.white)),
                     ),
                   )
                 ],
@@ -131,88 +131,88 @@ class SettingScreen extends StatelessWidget {
                       builder: (context) {
                         return SafeArea(
                             child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 30.w),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              Text(
-                                localization.ourlinks,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(fontSize: 30.sp),
-                              ),
-                              SizedBox(
-                                height: 100.h,
-                              ),
-                              Row(
+                              padding: EdgeInsets.symmetric(horizontal: 30.w),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Column(
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Text(
+                                    localization.ourlinks,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(fontSize: 30.sp),
+                                  ),
+                                  SizedBox(
+                                    height: 100.h,
+                                  ),
+                                  Row(
                                     children: [
-                                      Container(
-                                        width: 100.w,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border:
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: 100.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border:
                                                 Border.all(color: Colors.grey)),
-                                        child: Icon(
-                                          Icons.facebook,
-                                          color: ColorManager.primary,
-                                        ),
+                                            child: Icon(
+                                              Icons.facebook,
+                                              color: ColorManager.primary,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Text(
+                                            localization.facebook,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(fontSize: 25.sp),
+                                          )
+                                        ],
                                       ),
                                       SizedBox(
-                                        height: 10.h,
+                                        width: 30.w,
                                       ),
-                                      Text(
-                                        localization.facebook,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(fontSize: 25.sp),
-                                      )
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: 100.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border:
+                                                Border.all(color: Colors.grey)),
+                                            child: Icon(
+                                              Icons.message,
+                                              color: ColorManager.primary,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Text(
+                                            localization.sms,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(fontSize: 25.sp),
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   SizedBox(
-                                    width: 30.w,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 100.w,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border:
-                                                Border.all(color: Colors.grey)),
-                                        child: Icon(
-                                          Icons.message,
-                                          color: ColorManager.primary,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        localization.sms,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(fontSize: 25.sp),
-                                      )
-                                    ],
+                                    height: 40.h,
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 40.h,
-                              ),
-                            ],
-                          ),
-                        ));
+                            ));
                       });
                 },
                 child: ListTile(

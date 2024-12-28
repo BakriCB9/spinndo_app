@@ -110,6 +110,7 @@
     "deleteAccount":"حذف الحساب",
     "notifications":"الاشعارات",
     "noNotificationRecived":"لم يتم تلقي أي اشعار",
-    "serviceOrProviderName":"اسم الخدمة او صاحب الخدمة"
-
+    "serviceOrProviderName":"اسم الخدمة او صاحب الخدمة",
+    "filterOnlocationOrCategory":"يجب ان تختار موقع او خدمة للفلترة",
+    "categoryRequired":"يجب ان خدمتك"
 }

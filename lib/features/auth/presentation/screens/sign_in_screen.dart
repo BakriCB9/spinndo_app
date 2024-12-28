@@ -34,15 +34,19 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final style = Theme.of(context).elevatedButtonTheme.style!;
-    return CustomAuthForm(canBack: false,isGuest: true,
+    return CustomAuthForm(
+      canBack: false,
+      isGuest: true,
       child: Column(
         children: [
+          SizedBox(
+            height: 60.h,
+          ),
           Form(
               key: formKey,
               child: Column(
                 children: [
                   CustomTextFormField(
-
                     validator: (value) {
                       if (!Validator.isEmail(value)) {
                         return localization.validEmail;
@@ -99,12 +103,11 @@ class SignInScreen extends StatelessWidget {
             bloc: _authCubit,
             listener: (_, state) {
               if (state is LoginLoading) {
-
                 UIUtils.showLoading(context);
               } else if (state is LoginSuccess) {
                 UIUtils.hideLoading(context);
-            
-             //  _authCubit.close();
+
+                //  _authCubit.close();
                 _authCubit.emailController.clear();
                 _authCubit.passwordController.clear();
                 Navigator.of(context)
@@ -114,7 +117,6 @@ class SignInScreen extends StatelessWidget {
                 UIUtils.showMessage(state.message);
                 if (state.message ==
                     "This accouct is Inactive.You must insert verification code from your email.") {
-
                   Navigator.of(context)
                       .pushNamed(VerficationCodeScreen.routeName);
                 }
@@ -150,7 +152,8 @@ class SignInScreen extends StatelessWidget {
   }
 
   _login() {
-   print('the value of login is ${_authCubit.emailController} and ${_authCubit.passwordController.text}');
+    print(
+        'the value of login is ${_authCubit.emailController} and ${_authCubit.passwordController.text}');
     print(
         'the value of fcm token is &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${fcmToken}');
     _authCubit.login(LoginRequest(
@@ -158,5 +161,4 @@ class SignInScreen extends StatelessWidget {
         email: _authCubit.emailController.text,
         password: _authCubit.passwordController.text));
   }
-
 }

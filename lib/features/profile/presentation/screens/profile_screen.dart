@@ -27,7 +27,6 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   void initState() {
     super.initState();
     _profileCubit.getUserRole();
-
   }
 
   int typeSelect = 1;
@@ -37,7 +36,6 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
         if (cur is GetProfileLoading ||
             cur is GetProfileErrorr ||
@@ -49,9 +47,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
         }
       }, builder: (context, state) {
         if (state is GetProfileLoading) {
-          return LoadingIndicator(Theme.of(context).primaryColor);
+          return LoadingIndicator(
+            Theme.of(context).primaryColor,
+            isBackGround: true,
+          );
         } else if (state is GetProfileErrorr) {
-
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -72,8 +72,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(
-                      Theme.of(context).primaryColor,
-                    )),
+                          Theme.of(context).primaryColor,
+                        )),
                     onPressed: () {
                       _profileCubit.getUserRole();
                     },

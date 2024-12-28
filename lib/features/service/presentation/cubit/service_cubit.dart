@@ -198,6 +198,7 @@ selectedCity=city;
     isCurrent = value;
     emit(IsCurrentLocation());
   }
+  bool ?isReset=false;
   void resetSetting(){
 searchController.clear();
 selectedCountry=null;
@@ -207,6 +208,7 @@ selectedCityId=null;
 selectedCategory=null;
 isCurrent=false;
 selectedDistance=10;
+isReset=true;
 emit(ResetSettingsState());
   }
 }

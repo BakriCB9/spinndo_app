@@ -28,12 +28,12 @@ class EditJobDetails extends StatelessWidget {
 
   const EditJobDetails(
       {required this.categoryName,
-      required this.description,
-      required this.locationName,
-      required this.serviceName,
-      super.key,
-      required this.lat,
-      required this.lng});
+        required this.description,
+        required this.locationName,
+        required this.serviceName,
+        super.key,
+        required this.lat,
+        required this.lng});
 
 //final _profileCubit=serviceLocator.get<ProfileCubit>();
   @override
@@ -102,7 +102,7 @@ class EditJobDetails extends StatelessWidget {
           appBar: AppBar(
             title: Text(
               localization.editJobDetails,
-              style:Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             iconTheme: const IconThemeData(color: Colors.white),
           ),
@@ -124,214 +124,233 @@ class EditJobDetails extends StatelessWidget {
             } else {
               return SingleChildScrollView(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 100.h),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    TextFormField(
-                      controller: _profileCubit.serviceNameController,
-
-                      onChanged: (value) {
-                        _profileCubit.updateJobDetails(
-                            curServiceName: serviceName,
-                            newServiceName:
-                                _profileCubit.serviceNameController.text,
-                            curDescription: description,
-                            newDescription:
-                                _profileCubit.descriptionController.text);
-                      },
-                      style: TextStyle( color:_drawerCubit.themeMode == ThemeMode.light
-                          ? Colors.black:Colors.white, fontSize: 25.sp),
-                      cursorColor: ColorManager.primary,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      textInputAction: TextInputAction.done,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(200),
-                      ],
-                      decoration: InputDecoration(
-                        label: Text(
-                          localization.titleService,
+                    padding: EdgeInsets.symmetric(horizontal: 30.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 100.h),
+                        SizedBox(
+                          height: 30.h,
                         ),
-                        prefixIcon:  Icon(Icons.person,size: 45.sp,),
-                        // counter: SizedBox()
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                    TextFormField(
-                      controller: _profileCubit.descriptionController,
-
-                      onChanged: (value) {
-                        _profileCubit.updateJobDetails(
-                            curServiceName: serviceName,
-                            newServiceName:
+                        TextFormField(
+                          controller: _profileCubit.serviceNameController,
+                          onChanged: (value) {
+                            _profileCubit.updateJobDetails(
+                                curServiceName: serviceName,
+                                newServiceName:
                                 _profileCubit.serviceNameController.text,
-                            curDescription: description,
-                            newDescription:
+                                curDescription: description,
+                                newDescription:
                                 _profileCubit.descriptionController.text);
-                      },
-                      style: TextStyle( color:_drawerCubit.themeMode == ThemeMode.light
-                          ? Colors.black:Colors.white, fontSize: 25.sp),
-                      cursorColor: ColorManager.primary,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      textInputAction: TextInputAction.done,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(200),
-                      ],
-                      decoration: InputDecoration(
-                        label: Text(
-                          localization.description,
-                        ),
-                        prefixIcon:  Icon(Icons.person,size: 45.sp,),
-                        // counter: SizedBox()
-                      ),
-                    ),
-                    SizedBox(height: 50.h),
-                    BlocBuilder<ProfileCubit, ProfileStates>(
-                      bloc: _profileCubit,
-                      builder: (context, state) {
-                                         return CascadingDropdowns(categories: _profileCubit.categoriesList,isProfile: true,);
-
-                      },
-                    ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                    BlocBuilder<ProfileCubit, ProfileStates>(
-                      bloc: _profileCubit,
-                      builder: (context, state) {
-                        return InkWell(
-                          onTap: () {
-                            _profileCubit.getCurrentLocation();
-                            _profileCubit.loadMapStyle(
-                                _drawerCubit.themeMode == ThemeMode.dark
-                                    ? true
-                                    : false);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                return const UpdateMapScreen(
-
-      //                            location:LatLng( double.parse(lat),double.parse(lng))
-                                    );
-                              },
-                            ));
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24.w, vertical: 28.h),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColorDark,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(AppSize.s28.r),
-                              ),
+                          style: TextStyle(
+                              color: _drawerCubit.themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white,
+                              fontSize: 25.sp),
+                          cursorColor: ColorManager.primary,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(200),
+                          ],
+                          decoration: InputDecoration(
+                            label: Text(
+                              localization.titleService,
                             ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on_outlined,
-                                ),
-                                SizedBox(
-                                  width: 24.w,
-                                ),
-                                BlocBuilder<ProfileCubit, ProfileStates>(
-                                  bloc: _profileCubit,
-                                  buildWhen: (previous, current) {
-                                    if (current is GetLocationCountryLoading ||
-                                        current is GetLocationCountryErrorr ||
-                                        current is GetLocationCountrySuccess)
-                                      return true;
-                                    return false;
-                                  },
-                                  builder: (context, state) {
-                                    if (state is GetLocationCountryLoading) {
-                                      return LoadingIndicator(
-                                          Theme.of(context).primaryColor);
-                                    } else if (state
-                                        is GetLocationCountryErrorr) {
-                                      return Text(state.message);
-                                    } else if (state
-                                        is GetLocationCountrySuccess) {
-                                      return Expanded(
-                                        child: Text(
-                                            maxLines: 4,
-                                            "${_profileCubit.country?.address ?? "please try again"}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium),
-                                      );
-                                    } else {
-                                      return Text(_profileCubit.city?.name??localization.chooseLocation,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium);
-                                    }
-                                  },
-                                )
-                              ],
+                            prefixIcon: Icon(
+                              Icons.person,
+                              size: 45.sp,
                             ),
+                            // counter: SizedBox()
                           ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 40.h,),
-                    BlocBuilder<ProfileCubit, ProfileStates>(
-                        buildWhen: (pre, cur) {
-                      if (cur is IsUpdated || cur is IsNotUpdated) return true;
-                      return false;
-                    }, builder: (context, state) {
-                      print('the State is $state');
-
-if (state is IsUpdated) {
-
-                        return BlocListener(
+                        ),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        TextFormField(
+                          controller: _profileCubit.descriptionController,
+                          onChanged: (value) {
+                            _profileCubit.updateJobDetails(
+                                curServiceName: serviceName,
+                                newServiceName:
+                                _profileCubit.serviceNameController.text,
+                                curDescription: description,
+                                newDescription:
+                                _profileCubit.descriptionController.text);
+                          },
+                          style: TextStyle(
+                              color: _drawerCubit.themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white,
+                              fontSize: 25.sp),
+                          cursorColor: ColorManager.primary,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(200),
+                          ],
+                          decoration: InputDecoration(
+                            label: Text(
+                              localization.description,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              size: 45.sp,
+                            ),
+                            // counter: SizedBox()
+                          ),
+                        ),
+                        SizedBox(height: 50.h),
+                        BlocBuilder<ProfileCubit, ProfileStates>(
                           bloc: _profileCubit,
-                          listener: (context,state){
-                                if(state is UpdateLoading ){
+                          builder: (context, state) {
+                            return CascadingDropdowns(
+                              categories: _profileCubit.categoriesList,
+                              isProfile: true,
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        BlocBuilder<ProfileCubit, ProfileStates>(
+                          bloc: _profileCubit,
+                          builder: (context, state) {
+                            return InkWell(
+                              onTap: () {
+                                _profileCubit.getCurrentLocation();
+                                _profileCubit.loadMapStyle(
+                                    _drawerCubit.themeMode == ThemeMode.dark
+                                        ? true
+                                        : false);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) {
+                                    return const UpdateMapScreen(
+
+                                      //                            location:LatLng( double.parse(lat),double.parse(lng))
+                                    );
+                                  },
+                                ));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24.w, vertical: 28.h),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColorDark,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(AppSize.s28.r),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on_outlined,
+                                    ),
+                                    SizedBox(
+                                      width: 24.w,
+                                    ),
+                                    BlocBuilder<ProfileCubit, ProfileStates>(
+                                      bloc: _profileCubit,
+                                      buildWhen: (previous, current) {
+                                        if (current is GetLocationCountryLoading ||
+                                            current is GetLocationCountryErrorr ||
+                                            current is GetLocationCountrySuccess)
+                                          return true;
+                                        return false;
+                                      },
+                                      builder: (context, state) {
+                                        if (state is GetLocationCountryLoading) {
+                                          return LoadingIndicator(
+                                              Theme.of(context).primaryColor);
+                                        } else if (state
+                                        is GetLocationCountryErrorr) {
+                                          return Text(state.message);
+                                        } else if (state
+                                        is GetLocationCountrySuccess) {
+                                          return Expanded(
+                                            child: Text(
+                                                maxLines: 4,
+                                                "${_profileCubit.country?.address ?? "please try again"}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayMedium),
+                                          );
+                                        } else {
+                                          return Text(
+                                              _profileCubit.city?.name ??
+                                                  localization.chooseLocation,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displayMedium);
+                                        }
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
+                        BlocBuilder<ProfileCubit, ProfileStates>(
+                            buildWhen: (pre, cur) {
+                              if (cur is IsUpdated || cur is IsNotUpdated) return true;
+                              return false;
+                            }, builder: (context, state) {
+                          print('the State is $state');
+
+                          if (state is IsUpdated) {
+                            return BlocListener(
+                              bloc: _profileCubit,
+                              listener: (context, state) {
+                                if (state is UpdateLoading) {
                                   UIUtils.showLoading(context);
-                                }else if (state is UpdateError){
+                                } else if (state is UpdateError) {
                                   UIUtils.hideLoading(context);
                                   UIUtils.showMessage(state.message);
+                                } else if (state is UpdateSuccess) {
+                                  UIUtils.hideLoading(context);
+                                  _profileCubit.getUserRole();
+                                  Navigator.of(context).pop();
                                 }
-                                else if (state is UpdateSuccess){
-                                    UIUtils.hideLoading(context);
-                                    _profileCubit.getUserRole();
-                                    Navigator.of(context).pop();
-                                    
-                                }
-                          },
-                          child: ElevatedButton(
-                              onPressed: () {
-                                _profileCubit.updateProviderProfile(
-                                    UpdateProviderRequest(
-                                      latitudeService: _profileCubit.myLocation?.latitude.toString(),
-                                      longitudeService: _profileCubit.myLocation?.longitude.toString(),
-                                      //cityNameService: _profileCubit.cityName,
-                                      categoryIdService:_profileCubit.selectedCategory?.id.toString(),
-                                      nameService:
-                                          _profileCubit.serviceNameController.text,
-                                      descriptionService:
-                                          _profileCubit.descriptionController.text,
-                          
-                                      ////////////////////////////////////////////// resssssssssst
-                                    ),
-                                    2);
                               },
-                              child: Text(localization.save)),
-                        );
-                      } else if(state is IsNotUpdated  ){
-                        return const SizedBox();
-                      }else{
-                       return SizedBox();
-                      }
-                    })
-                  ],
-                ),
-              ));
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    _profileCubit.updateProviderProfile(
+                                        UpdateProviderRequest(
+                                          latitudeService: _profileCubit
+                                              .myLocation?.latitude
+                                              .toString(),
+                                          longitudeService: _profileCubit
+                                              .myLocation?.longitude
+                                              .toString(),
+                                          //cityNameService: _profileCubit.cityName,
+                                          categoryIdService: _profileCubit
+                                              .selectedCategory?.id
+                                              .toString(),
+                                          nameService: _profileCubit
+                                              .serviceNameController.text,
+                                          descriptionService: _profileCubit
+                                              .descriptionController.text,
+
+                                          ////////////////////////////////////////////// resssssssssst
+                                        ),
+                                        2);
+                                  },
+                                  child: Text(localization.save)),
+                            );
+                          } else if (state is IsNotUpdated) {
+                            return const SizedBox();
+                          } else {
+                            return SizedBox();
+                          }
+                        })
+                      ],
+                    ),
+                  ));
             }
           })),
     );

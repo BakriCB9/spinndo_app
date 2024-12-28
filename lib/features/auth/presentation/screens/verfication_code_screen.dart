@@ -39,6 +39,9 @@ class VerficationCodeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(
+            height: 60.h,
+          ),
           Text(localization.resendCode,
               style: Theme.of(context)
                   .textTheme
@@ -107,18 +110,18 @@ class VerficationCodeScreen extends StatelessWidget {
                     child: TextButton(
                       onPressed: _authCubit.canResend
                           ? () {
-                              _authCubit.resendCode(ResendCodeRequest(
-                                  email: _authCubit.emailController.text));
-                            }
+                        _authCubit.resendCode(ResendCodeRequest(
+                            email: _authCubit.emailController.text));
+                      }
                           : null,
                       child: Text(localization.resendCode,
                           style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    fontSize: 25.sp,
-                                    color: _authCubit.canResend
-                                        ? ColorManager.primary
-                                        : ColorManager.grey,
-                                  )),
+                          Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontSize: 25.sp,
+                            color: _authCubit.canResend
+                                ? ColorManager.primary
+                                : ColorManager.grey,
+                          )),
                     ),
                   ),
                 ],
@@ -160,8 +163,7 @@ class VerficationCodeScreen extends StatelessWidget {
 
                   Navigator.of(context)
                       .pushReplacementNamed(ServiceScreen.routeName);
-                //  _authCubit.close();
-
+                  //  _authCubit.close();
                 }
               },
               child: ElevatedButton(

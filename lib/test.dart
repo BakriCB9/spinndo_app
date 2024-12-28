@@ -15,8 +15,8 @@ class CascadingDropdowns extends StatefulWidget {
   final bool isProfile;
   CascadingDropdowns(
       {required this.categories,
-      this.isService = false,
-      this.isProfile = false});
+        this.isService = false,
+        this.isProfile = false});
 
   @override
   _CascadingDropdownsState createState() => _CascadingDropdownsState();
@@ -37,82 +37,73 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
     }
   }
 
-  void
-  updateSelectedCategory(int level, Categories? selected) {
+  void updateSelectedCategory(int level, Categories? selected) {
+    // Update the selected category at the current level
+    if (selectedCategories.length > level) {
+      final currentSelection = selectedCategories[level];
 
-      // Update the selected category at the current level
-      if (selectedCategories.length > level) {
-        final currentSelection = selectedCategories[level];
+      // If the new selection is different, update it and reset deeper levels
 
-          // If the new selection is different, update it and reset deeper levels
+      selectedCategories[level] = selected;
+      selectedCategories = selectedCategories.sublist(0, level + 1);
 
-          selectedCategories[level] = selected;
-          selectedCategories = selectedCategories.sublist(0, level + 1);
-
-
-        //
-        // selectedCategories[level] = selected;
-        //
-        // // Remove any deeper selections
-        // selectedCategories = selectedCategories.sublist(0, level + 1);
-      } else {
-        selectedCategories.add(selected);
-      }
-      if (selected != null) {
-        if (selected.id == -1 && level > 0) {
-          // "All Sub Categories" is selected, save the parent category's ID
-          widget.isProfile
-              ? _profileCubit.selectedCategory = selectedCategories[level - 1]
-              : widget.isService
-                  ? _serviceCubit.selectedCategory =
-                      selectedCategories[level - 1]
-                  : _authCubit.selectedCategory = selectedCategories[level - 1];
-        } else {
-          // Save the current category's ID
-          widget.isProfile
-              ? _profileCubit.selectedCategory = selected
-              : widget.isService
-                  ? _serviceCubit.selectedCategory = selected
-                  : _authCubit.selectedCategory = selected;
-        }
-      } else if (level > 0) {
-        // No selection, fallback to the parent category
+      //
+      // selectedCategories[level] = selected;
+      //
+      // // Remove any deeper selections
+      // selectedCategories = selectedCategories.sublist(0, level + 1);
+    } else {
+      selectedCategories.add(selected);
+    }
+    if (selected != null) {
+      if (selected.id == -1 && level > 0) {
+        // "All Sub Categories" is selected, save the parent category's ID
         widget.isProfile
             ? _profileCubit.selectedCategory = selectedCategories[level - 1]
             : widget.isService
-                ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
-                : _authCubit.selectedCategory = selectedCategories[level - 1];
+            ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
+            : _authCubit.selectedCategory = selectedCategories[level - 1];
+      } else {
+        // Save the current category's ID
+        widget.isProfile
+            ? _profileCubit.selectedCategory = selected
+            : widget.isService
+            ? _serviceCubit.selectedCategory = selected
+            : _authCubit.selectedCategory = selected;
       }
-      // Ensure no dropdowns are shown for empty children
-      while (selected != null &&
-          (selected!.children.isEmpty || selected.children == null) &&
-          level + 1 >= selectedCategories.length) {
-        selected = null;
-        break;
-      }
-      // Stop showing children if the selected category's id is -1
-      if (selected != null && selected.id == -1) {
-        selectedCategories = selectedCategories.sublist(0, level + 1);
-      }
-      if (widget.isProfile) {
-        _profileCubit.slesctedProfileCat();
-
-
-
-      }else if(widget.isService){
-        _serviceCubit.selectedServiceCat();
-      }else{
-        _authCubit.selectedAuthCat();
-      }    if (widget.isProfile) {
-        _profileCubit.slesctedProfileCat();
-
-
-
-      }else if(widget.isService){
-        _serviceCubit.selectedServiceCat();
-      }else{
-        _authCubit.selectedAuthCat();
-      }
+    } else if (level > 0) {
+      // No selection, fallback to the parent category
+      widget.isProfile
+          ? _profileCubit.selectedCategory = selectedCategories[level - 1]
+          : widget.isService
+          ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
+          : _authCubit.selectedCategory = selectedCategories[level - 1];
+    }
+    // Ensure no dropdowns are shown for empty children
+    while (selected != null &&
+        (selected!.children.isEmpty || selected.children == null) &&
+        level + 1 >= selectedCategories.length) {
+      selected = null;
+      break;
+    }
+    // Stop showing children if the selected category's id is -1
+    if (selected != null && selected.id == -1) {
+      selectedCategories = selectedCategories.sublist(0, level + 1);
+    }
+    if (widget.isProfile) {
+      _profileCubit.slesctedProfileCat();
+    } else if (widget.isService) {
+      _serviceCubit.selectedServiceCat();
+    } else {
+      _authCubit.selectedAuthCat();
+    }
+    if (widget.isProfile) {
+      _profileCubit.slesctedProfileCat();
+    } else if (widget.isService) {
+      _serviceCubit.selectedServiceCat();
+    } else {
+      _authCubit.selectedAuthCat();
+    }
   }
 
   List<Widget> buildDropdowns(BuildContext context) {
@@ -140,18 +131,16 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
       // print("xxxxxxxxxxxxxxxxxxxx");
       //   print(!currentList.contains(addAllCategory));
       // };
+     if (      _serviceCubit.isReset==true){
+selectedCategories.clear();      }
+
       dropdowns.add(Column(
         children: [
           DropdownButtonFormField<Categories>(
             dropdownColor: Theme.of(context).primaryColorDark,
             menuMaxHeight: 200,
             isExpanded: false,
-            validator: (value) {
-              if (value == null) {
-                return localization.pleaseChooseCategory;
-              }
-              return null;
-            },
+
             value: i < selectedCategories.length ? selectedCategories[i] : null,
             hint: Padding(
               padding: EdgeInsets.only(left: 12.w),
@@ -172,17 +161,18 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
             decoration: const InputDecoration(errorBorder: InputBorder.none),
             items: currentList
                 .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                        child: Text(
-                          category.name,
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                      ),
-                    ))
+              value: category,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                child: Text(
+                  category.name,
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+              ),
+            ))
                 .toList(),
             onChanged: (value) {
+              _serviceCubit.isReset=false;
               updateSelectedCategory(i, value);
             },
           ),
