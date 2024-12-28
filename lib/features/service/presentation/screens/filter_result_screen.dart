@@ -243,15 +243,13 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       
                           return AnimationConfiguration.staggeredList(
                             position: index,
-                            delay: Duration(milliseconds: 100),
+                            delay: Duration(milliseconds: 200),
                             child: SlideAnimation(
+                              duration: Duration(milliseconds: 2500),
                               curve: Curves.fastLinearToSlowEaseIn,
-                              horizontalOffset: 30,
-                              verticalOffset: 300.0,
-                              child: FlipAnimation(
-                                duration: Duration(milliseconds: 3000),
+                              child: FadeInAnimation(
                                 curve: Curves.fastLinearToSlowEaseIn,
-                                flipAxis: FlipAxis.y,
+                                duration: Duration(milliseconds: 3000),
                                 child: GestureDetector(
                                   onTap: () {
                                     if (sharedPref

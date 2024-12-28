@@ -21,7 +21,6 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   final _serviceCubit = serviceLocator.get<ServiceCubit>();
-
   @override
   void initState() {
     super.initState();
@@ -47,15 +46,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_sharp,
-                        color: Theme.of(context).primaryColorLight,
-                        size: 45.sp,
-                      ),
-                    ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.arrow_back_sharp,
+                          color: Theme.of(context).primaryColorLight,
+                          size: 45.sp,
+                        )),
                     SizedBox(
                       width: 40.w,
                     ),
@@ -69,141 +67,134 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   height: 40.h,
                 ),
                 BlocBuilder<ServiceCubit, ServiceStates>(
-                  bloc: _serviceCubit,
-                  buildWhen: (pre, cur) {
-                    if (cur is GetNotificationError ||
-                        cur is GetNotificationLoading ||
-                        cur is GetNotificationSuccess) {
-                      return true;
-                    }
-                    return false;
-                  },
-                  builder: (context, state) {
-                    if (state is GetNotificationLoading) {
-                      return Expanded(
-                        child: const Center(
-                          child: LoadingIndicator(ColorManager.primary),
-                        ),
-                      );
-                    } else if (state is GetNotificationError) {
-                      return Center(
-                        child: Text(state.message),
-                      );
-                    } else {
-                      return Expanded(
-                        child: AnimationLimiter(
-                          child: ListView.builder(
-                            itemCount: _serviceCubit.listNotification.length,
-                            itemBuilder: (context, index) {
-                              return _serviceCubit.listNotification.isEmpty
-                                  ? Center(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                        localization.noNotificationRecived),
-                                    SizedBox(
-                                      width: 10.w,
+                    bloc: _serviceCubit,
+                    buildWhen: (pre, cur) {
+                      if (cur is GetNotificationError ||
+                          cur is GetNotificationLoading ||
+                          cur is GetNotificationSuccess) {
+                        return true;
+                      }
+                      return false;
+                    },
+                    builder: (context, state) {
+                      if (state is GetNotificationLoading) {
+                        return Expanded(
+                          child: const Center(
+                            child: LoadingIndicator(ColorManager.primary),
+                          ),
+                        );
+                      } else if (state is GetNotificationError) {
+                        return Center(
+                          child: Text(state.message),
+                        );
+                      } else {
+                        return Expanded(
+                          child: AnimationLimiter(
+                            child: ListView.builder(
+                                physics:
+                                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                itemCount: _serviceCubit.listNotification.length,
+                                itemBuilder: (context, index) {
+                                  return _serviceCubit.listNotification.isEmpty
+                                      ? Center(
+                                    child: Row(
+                                      children: [
+                                        Text(localization
+                                            .noNotificationRecived),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Icon(Icons.error_outline)
+                                      ],
                                     ),
-                                    Icon(Icons.error_outline)
-                                  ],
-                                ),
-                              )
-                                  : AnimationConfiguration.staggeredList(
-                                position: index,
-                                delay: Duration(milliseconds: 100),
-                                child: SlideAnimation(
-                                  duration: Duration(milliseconds: 500),
+                                  )
+                                      : AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    delay: Duration(milliseconds: 200),
+                                        child: SlideAnimation(
+                                  duration: Duration(milliseconds: 2500),
                                   curve: Curves.fastLinearToSlowEaseIn,
                                   child: FadeInAnimation(
-                                    curve: Curves.fastLinearToSlowEaseIn,
-                                    duration:
-                                    Duration(milliseconds: 500),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w,
-                                          vertical: 10.h),
-                                      child: Card(
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20.w,
-                                              vertical: 20.h),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Container(
-                                                  width: 100.w,
-                                                  height: 100.h,
-                                                  decoration:
-                                                  BoxDecoration(
-                                                    shape:
-                                                    BoxShape.circle,
-                                                    border: Border.all(
-                                                        color: ColorManager
-                                                            .primary,
-                                                        width: 2),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons
-                                                        .notifications_none,
-                                                    color:
-                                                    Theme.of(context)
-                                                        .primaryColorLight,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 4,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment
-                                                      .start,
-                                                  children: [
-                                                    Text(
-                                                      _serviceCubit
-                                                          .listNotification[
-                                                      index]
-                                                          .title ??
-                                                          '',
-                                                      style: Theme.of(
-                                                          context)
-                                                          .textTheme
-                                                          .labelLarge,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10.h,
-                                                    ),
-                                                    Text(
-                                                      _serviceCubit
-                                                          .listNotification[
-                                                      index]
-                                                          .description ??
-                                                          '',
-                                                      style: Theme.of(
-                                                          context)
-                                                          .textTheme
-                                                          .labelMedium,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10.h,
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  duration: Duration(milliseconds: 3000),
+                                          child: Padding(
+                                                                              padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w, vertical: 10.h),
+                                                                              child: Card(
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.w,
+                                                vertical: 20.h),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    child: Container(
+                                                        width: 100.w,
+                                                        height: 100.h,
+                                                        decoration: BoxDecoration(
+                                                            shape:
+                                                            BoxShape.circle,
+                                                            border: Border.all(
+                                                                color:
+                                                                ColorManager
+                                                                    .primary,
+                                                                width: 2)),
+                                                        child: Icon(
+                                                          Icons
+                                                              .notifications_none,
+                                                          color: Theme.of(
+                                                              context)
+                                                              .primaryColorLight,
+                                                        ))),
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .start,
+                                                      children: [
+                                                        Text(
+                                                          _serviceCubit
+                                                              .listNotification[
+                                                          index]
+                                                              .title ??
+                                                              '',
+                                                          style:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .labelLarge,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10.h,
+                                                        ),
+                                                        Text(
+                                                          _serviceCubit
+                                                              .listNotification[
+                                                          index]
+                                                              .description ??
+                                                              '',
+                                                          style:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .labelMedium,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10.h,
+                                                        ),
+                                                      ],
+                                                    ))
+                                              ],
+                                            ),
                                           ),
+                                                                              ),
+                                                                            ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                                      ));
+                                }),
                           ),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                        );
+                      }
+                    }),
               ],
             ),
           ),

@@ -157,8 +157,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       token != null
                           ? IconButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(NotificationScreen.routeName);
+                            Navigator.push(context, SizeTransition4(NotificationScreen()));
                           },
                           icon: Icon(
                             Icons.notifications_none_outlined,
@@ -692,3 +691,31 @@ class _ServiceScreenState extends State<ServiceScreen> {
     );
   }
 }
+class SizeTransition4 extends PageRouteBuilder {
+  final Widget page;
+  SizeTransition4(this.page)
+      : super(
+    pageBuilder: (context, animation, anotherAnimation) => page,
+    transitionDuration: Duration(milliseconds: 1000),
+    reverseTransitionDuration: Duration(milliseconds: 200),
+    transitionsBuilder: (context, animation, anotherAnimation, child) {
+      final _drawerCubit = serviceLocator.get<DrawerCubit>();
+
+      animation = CurvedAnimation(
+
+          curve: Curves.fastLinearToSlowEaseIn,
+          parent: animation,
+          reverseCurve: Curves.fastOutSlowIn);
+      return Align(
+        alignment:_drawerCubit.languageCode=='en'||_drawerCubit.languageCode=='de'? Alignment.centerLeft:Alignment.centerRight,
+        child: SizeTransition(
+          axis: Axis.horizontal,
+          sizeFactor: animation,
+          child: page,
+          axisAlignment: 0,
+        ),
+      );
+    },
+  );
+}
+
