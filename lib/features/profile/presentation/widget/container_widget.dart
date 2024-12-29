@@ -15,12 +15,12 @@ class CustomContainer extends StatelessWidget {
   final String? initialImage;
   final double? width;
   final BoxShape shape;
-
+final int theId;
   const CustomContainer({
     required this.shape,
     this.width,
     required this.initialImage,
-    super.key,
+    super.key, required this.theId,
   });
 
   // String? _currentImage;
@@ -29,7 +29,7 @@ class CustomContainer extends StatelessWidget {
     final imagePhotoLogin =
     sharedPref.getString(CacheConstant.imagePhotoFromLogin);
     final imagePhotoGallery = sharedPref.getString(CacheConstant.imagePhoto);
-
+final myId=sharedPref.getInt(CacheConstant.userId);
     return Stack(
       // fit: StackFit.expand,
       children: [
@@ -40,8 +40,16 @@ class CustomContainer extends StatelessWidget {
             shape: shape,
           ),
           clipBehavior: Clip.antiAlias,
-          child: BlocConsumer<ProfileCubit, ProfileStates>(
+          child:
+          theId!=myId?initialImage!=null? CashImage(path: initialImage!):Image.asset(
+            'asset/images/aaaa.png',
+            fit: BoxFit.cover,
+          ):
+          BlocConsumer<ProfileCubit, ProfileStates>(
+
               listener: (context, state) {
+                print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                print(initialImage);
                 if (state is LoadImagePhotoError) {
                   UIUtils.showMessage(state.message);
                 }
@@ -58,13 +66,6 @@ class CustomContainer extends StatelessWidget {
               builder: (context, state) {
                 final ans = sharedPref.getString('imageFile');
 
-                if (state is LoadImagePhotoLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  );
-                }
                 if (state is LoadImagePhotoLoading) {
                   return const Center(
                     child: CircularProgressIndicator(

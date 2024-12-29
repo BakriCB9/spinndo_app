@@ -73,6 +73,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                   },
                   builder: (context, state) {
                     return CustomContainer(
+                       theId: userId,
                         shape:
                             isImageBig ? BoxShape.circle : BoxShape.rectangle,
                         width: isImageBig ? currentImageSize : double.infinity,

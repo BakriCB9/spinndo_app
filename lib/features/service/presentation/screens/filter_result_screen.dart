@@ -44,7 +44,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
 
     markerLocationData.add(GoogleMapMarker(BitmapDescriptor.hueGreen,
         id: -1,
-        providerId: sharedPref.getInt(CacheConstant.userId)!,
+        providerId: sharedPref.getInt(CacheConstant.userId),
         name: "Current Location",
         latLng: LatLng(_serviceCubit.getCurrentLocation!.latitude!,
             _serviceCubit.getCurrentLocation!.longitude!)));
@@ -76,9 +76,11 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       SizedBox(
                         width: 40.w,
                       ),
-                      Text(
-                        localization.filterResults,
-                        style: Theme.of(context).textTheme.titleLarge,
+                      FittedBox(fit: BoxFit.scaleDown,
+                        child: Text(
+                          localization.filterResults,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                       ),
                       Spacer(),
                       IconButton(

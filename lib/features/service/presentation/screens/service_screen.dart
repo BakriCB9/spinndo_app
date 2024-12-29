@@ -149,9 +149,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       SizedBox(
                         width: 40.w,
                       ),
-                      Text(
-                        localization.searchSetting,
-                        style: Theme.of(context).textTheme.titleLarge,
+                      FittedBox(fit: BoxFit.scaleDown,
+                        child: Text(
+                          localization.searchSetting,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                       ),
                      const  Spacer(),
                       token != null

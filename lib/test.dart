@@ -153,7 +153,7 @@ selectedCategories.clear();      }
                     width: 24.w,
                   ),
                   Text(
-                      'Select ${i == 0 ? "${localization.category}" : "${localization.subCategory}"}',
+                      '${i == 0 ? "${localization.category}" : "${localization.subCategory}"}',
                       style: Theme.of(context).textTheme.displayMedium),
                 ],
               ),

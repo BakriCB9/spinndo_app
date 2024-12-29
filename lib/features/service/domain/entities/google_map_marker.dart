@@ -4,10 +4,10 @@ class GoogleMapMarker {
   final int id;
   final String name;
   final LatLng latLng;
-  final int providerId;
+  final int? providerId;
   final dynamic color;
   GoogleMapMarker(this.color,
-      {required this.id, required this.name, required this.latLng ,required this.providerId,});
+      {required this.id, required this.name, required this.latLng , this.providerId,});
 }
 
 List<GoogleMapMarker> markerLocationData = [];

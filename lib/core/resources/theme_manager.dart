@@ -24,6 +24,9 @@ class ThemeManager {
     appBarTheme: AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor:  Colors.white.withOpacity(0.95),
+
+
 
       ),
       backgroundColor: Colors.transparent,
@@ -161,6 +164,10 @@ class ThemeManager {
     primaryColorDark: ColorManager.darkBlue,
     scaffoldBackgroundColor: Colors.transparent,
     appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: ColorManager.darkBlue,
+
+        ),
         backgroundColor: Colors.transparent,
         foregroundColor: ColorManager.white,
         elevation: 0),
