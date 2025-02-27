@@ -1,5 +1,5 @@
 name: app
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -86,16 +85,15 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
   generate: true
-#l10n:
-#  arb-dir: lib/l10n
-#  template-arb-file: app_en.arb
-#  output-localization-file: app_localizations.dart
+  #l10n:
+  #  arb-dir: lib/l10n
+  #  template-arb-file: app_en.arb
+  #  output-localization-file: app_localizations.dart
   # To add assets to your application, add an assets section, like this:
   assets:
     - asset/map_styles/night_map_style.json
@@ -138,5 +136,5 @@ flutter:
 #         - asset: fonts/TrajanPro_Bold.ttf
 #           weight: 700
 
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+# For details regarding fonts from package dependencies,
+# see https://flutter.dev/to/font-from-package

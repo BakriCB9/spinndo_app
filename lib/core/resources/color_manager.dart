@@ -25,6 +25,7 @@ class ColorManager {
   static Color babyBlue = Colors.blue.shade300;
   static Color lightGrey = Colors.grey.shade300;
   static Color darkGrey = Colors.grey.shade700;
+  static const Color red = Colors.red;
 }
 
 /// HEX value Transparent
