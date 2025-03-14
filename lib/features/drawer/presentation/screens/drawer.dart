@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/core/resources/assets_manager.dart';
 import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
+import 'package:app/features/favorite/presentation/view/favorite_screen.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -214,7 +215,6 @@ class CustomDrawer extends StatelessWidget {
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
                       Navigator.of(context).pushNamed(SettingScreen.routeName);
-                      
                     },
                     child: ListTile(
                       leading: const Icon(
@@ -245,6 +245,24 @@ class CustomDrawer extends StatelessWidget {
                               .textTheme
                               .titleLarge!
                               .copyWith(fontSize: 32.sp)),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context).pushNamed(FavoriteScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.favorite,
+                      ),
+                      title: Text(
+                        'Favorite',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
                     ),
                   ),
                   BlocListener<DrawerCubit, DrawerStates>(

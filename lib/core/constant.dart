@@ -13,14 +13,17 @@ class ApiConstant {
   static const String getAllCountries = '/countries/getAll';
   static const String getAllCategory = '/categories/getAll';
   static const String logoutEndPoint = '/logout';
-  static const  String googleMapApiKey =
+  static const String googleMapApiKey =
       'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
   static const String updateClientProfile = '/profile/client/update';
   static const String updateProviderProfile = '/profile/provider/update';
   static const String imageProfile = '/profile/updateMyImage';
-  static const String getAllNotification='/myNotification';
-  static const String deleteMyAccount='/user';
-  static const String deleteImage='/profile/updateMyImage';
+  static const String getAllNotification = '/myNotification';
+  static const String deleteMyAccount = '/user';
+  static const String deleteImage = '/profile/updateMyImage';
+  static const String addTofavorite = '/profile/addToFavorite';
+  static const String removeFromFavorite = '/profile/removeFromFavorite';
+  static const String getAllFavorite = '/profile/favorites';
 }
 
 class CacheConstant {
@@ -31,5 +34,5 @@ class CacheConstant {
   static const String userId = 'user_id';
   static const String userRole = 'user_role';
   static const String imagePhoto = 'Image_photo';
-  static const String imagePhotoFromLogin='image_phot';
+  static const String imagePhotoFromLogin = 'image_phot';
 }

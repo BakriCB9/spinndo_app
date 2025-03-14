@@ -10,7 +10,7 @@ import 'package:app/features/auth/data/models/reset_password_request.dart';
 import 'package:app/features/auth/data/models/reset_password_response.dart';
 import 'package:app/features/auth/data/models/verify_code_request.dart';
 import 'package:app/features/auth/data/models/verify_code_response.dart';
-import 'package:app/features/auth/domain/entities/country.dart';
+
 import 'package:app/features/service/data/models/get_all_category_response/get_all_category_response.dart';
 
 abstract class AuthRemoteDataSource {

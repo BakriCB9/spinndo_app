@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:app/core/utils/fcm.dart';
 import 'package:app/default_firebase_options.dart';
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
+import 'package:app/features/favorite/presentation/view/favorite_screen.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/splash_screen.dart';
 import 'package:device_preview/device_preview.dart';
@@ -96,6 +95,7 @@ class MyApp extends StatelessWidget {
                           //         : SignInScreen.routeName)
                           //     : ServiceScreen.routeName,
                       routes: {
+                        FavoriteScreen.routeName:(context)=>FavoriteScreen(),
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
                         SettingScreen.routeName:(context)=>SettingScreen(),

@@ -11,7 +11,6 @@
 import 'package:app/core/di/register_module.dart' as _i313;
 import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart'
     as _i456;
-    import 'package:app/features/profile/domain/use_cases/delete_image.dart' as _i810;
 import 'package:app/features/auth/data/data_sources/local/auth_shared_pref_local_data_source.dart'
     as _i545;
 import 'package:app/features/auth/data/data_sources/remote/auth_api_remote_data_source.dart'
@@ -35,6 +34,22 @@ import 'package:app/features/auth/domain/use_cases/verify_code.dart' as _i833;
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart' as _i580;
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart'
     as _i649;
+import 'package:app/features/favorite/data/dataSource/remote/remote_datasource.dart'
+    as _i306;
+import 'package:app/features/favorite/data/dataSource/remote/remote_datasource_impl.dart'
+    as _i685;
+import 'package:app/features/favorite/data/repositry/fav_repositry_impl.dart'
+    as _i983;
+import 'package:app/features/favorite/domain/repositry/fav_repositry.dart'
+    as _i258;
+import 'package:app/features/favorite/domain/usecase/add_to_fav_useCase.dart'
+    as _i619;
+import 'package:app/features/favorite/domain/usecase/get_all_fav_useCase.dart'
+    as _i614;
+import 'package:app/features/favorite/domain/usecase/remove_from_fav_useCase.dart'
+    as _i654;
+import 'package:app/features/favorite/presentation/view_model/cubit/favorite_cubit_cubit.dart'
+    as _i364;
 import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart'
     as _i597;
 import 'package:app/features/profile/data/data_source/local/profile_shared_pref_local_data_source.dart'
@@ -49,6 +64,8 @@ import 'package:app/features/profile/domain/repository/profile_repository.dart'
     as _i734;
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart'
     as _i814;
+import 'package:app/features/profile/domain/use_cases/delete_image.dart'
+    as _i628;
 import 'package:app/features/profile/domain/use_cases/get_client_profile.dart'
     as _i916;
 import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart'
@@ -75,12 +92,8 @@ import 'package:app/features/service/domain/use_cases/get_countries.dart'
     as _i538;
 import 'package:app/features/service/domain/use_cases/get_details.dart'
     as _i904;
-
-import 'package:app/features/service/domain/use_cases/get_notifications.dart' as _i787;
-
-
-
-
+import 'package:app/features/service/domain/use_cases/get_notifications.dart'
+    as _i302;
 import 'package:app/features/service/domain/use_cases/get_services.dart'
     as _i590;
 import 'package:app/features/service/presentation/cubit/service_cubit.dart'
@@ -115,6 +128,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1038.ServiceRepositoryImpl(gh<_i328.ServiceDataSource>()));
     gh.lazySingleton<_i437.ProfileRemoteDataSource>(
         () => _i1045.ProfileApiRemoteDataSource(gh<_i361.Dio>()));
+    gh.factory<_i306.RemoteDatasource>(
+        () => _i685.RemoteDatasourceImpl(dio: gh<_i361.Dio>()));
     gh.singleton<_i597.ProfileLocalDataSource>(() =>
         _i373.ProfileSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -122,6 +137,10 @@ extension GetItInjectableX on _i174.GetIt {
         _i649.DrawerCubit(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.singleton<_i856.AuthRemoteDataSource>(
         () => _i27.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
+    gh.factory<_i258.FavRepositry>(() => _i983.FavRepositryImpl(
+          gh<_i306.RemoteDatasource>(),
+          gh<_i460.SharedPreferences>(),
+        ));
     gh.singleton<_i456.AuthLocalDataSource>(() =>
         _i545.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -129,31 +148,24 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
         ));
-
-   // gh.lazySingleton<_i770.GetNotifications>( () => _i770.GetNotifications(gh<_i1054.ServiceRepository>()));  
-    gh.lazySingleton<_i810.DeleteImage>(()=>_i810.DeleteImage(gh<_i734.ProfileRepository>()));
-    gh.lazySingleton<_i787.GetNotifications>(()=>_i787.GetNotifications(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i779.GetCategories>(
         () => _i779.GetCategories(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i538.GetCountries>(
         () => _i538.GetCountries(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i904.GetServiceProfile>(
         () => _i904.GetServiceProfile(gh<_i1054.ServiceRepository>()));
+    gh.lazySingleton<_i302.GetNotifications>(
+        () => _i302.GetNotifications(gh<_i1054.ServiceRepository>()));
     gh.lazySingleton<_i590.GetServices>(
         () => _i590.GetServices(gh<_i1054.ServiceRepository>()));
     gh.singleton<_i651.AuthRepository>(() => _i201.AuthRepositoryImpl(
           gh<_i856.AuthRemoteDataSource>(),
           gh<_i456.AuthLocalDataSource>(),
         ));
-    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
-          gh<_i590.GetServices>(),
-          gh<_i538.GetCountries>(),
-          gh<_i779.GetCategories>(),
-          gh<_i904.GetServiceProfile>(),
-          gh<_i787.GetNotifications>(),
-        ));
     gh.lazySingleton<_i814.AddImagePhoto>(
         () => _i814.AddImagePhoto(gh<_i734.ProfileRepository>()));
+    gh.lazySingleton<_i628.DeleteImage>(
+        () => _i628.DeleteImage(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i916.GetClientProfile>(
         () => _i916.GetClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i140.GetProviderProfile>(
@@ -164,6 +176,19 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i284.UpdateProviderProfile>(
         () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
+    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
+          gh<_i590.GetServices>(),
+          gh<_i538.GetCountries>(),
+          gh<_i779.GetCategories>(),
+          gh<_i904.GetServiceProfile>(),
+          gh<_i302.GetNotifications>(),
+        ));
+    gh.factory<_i619.AddFavUseCase>(
+        () => _i619.AddFavUseCase(gh<_i258.FavRepositry>()));
+    gh.factory<_i614.GetAllFavUsecase>(
+        () => _i614.GetAllFavUsecase(gh<_i258.FavRepositry>()));
+    gh.factory<_i654.RemoveFromFavUsecase>(
+        () => _i654.RemoveFromFavUsecase(gh<_i258.FavRepositry>()));
     gh.singleton<_i728.Getcountryname>(
         () => _i728.Getcountryname(gh<_i651.AuthRepository>()));
     gh.singleton<_i293.Login>(() => _i293.Login(gh<_i651.AuthRepository>()));
@@ -187,6 +212,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i779.GetCategories>(),
           gh<_i728.Getcountryname>(),
         ));
+    gh.factory<_i364.FavoriteCubit>(() => _i364.FavoriteCubit(
+          gh<_i619.AddFavUseCase>(),
+          gh<_i614.GetAllFavUsecase>(),
+          gh<_i654.RemoveFromFavUsecase>(),
+        ));
     gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
           gh<_i916.GetClientProfile>(),
           gh<_i140.GetProviderProfile>(),
@@ -196,7 +226,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i779.GetCategories>(),
           gh<_i728.Getcountryname>(),
           gh<_i814.AddImagePhoto>(),
-           gh<_i810.DeleteImage>(),
+          gh<_i628.DeleteImage>(),
         ));
     return this;
   }

@@ -1,6 +1,14 @@
 part of 'favorite_cubit_cubit.dart';
 
-@immutable
 sealed class FavoriteCubitState {}
 
-final class FavoriteCubitInitial extends FavoriteCubitState {}
+class FavoriteCubitInitial extends FavoriteCubitState {}
+
+class FavoriteCubitLoading extends FavoriteCubitState {}
+
+class FavoriteCubitError extends FavoriteCubitState {}
+
+class FavoriteCubitSuccess extends FavoriteCubitState {
+  final List<Data?> listOfFavorite;
+  FavoriteCubitSuccess(this.listOfFavorite);
+}

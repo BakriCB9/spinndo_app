@@ -52,7 +52,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
 
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? BoxDecoration(
+          ? const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
@@ -248,13 +248,13 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
 
                             return AnimationConfiguration.staggeredList(
                               position: index,
-                              delay: Duration(milliseconds: 200),
+                              delay: const Duration(milliseconds: 200),
                               child: SlideAnimation(
-                                duration: Duration(milliseconds: 2500),
+                                duration: const Duration(milliseconds: 2500),
                                 curve: Curves.fastLinearToSlowEaseIn,
                                 child: FadeInAnimation(
                                   curve: Curves.fastLinearToSlowEaseIn,
-                                  duration: Duration(milliseconds: 3000),
+                                  duration: const Duration(milliseconds: 3000),
                                   child: GestureDetector(
                                     onTap: () {
                                       if (sharedPref.getString(
@@ -419,7 +419,11 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                                       //       Alignment.bottomLeft,
                                                       //   child: FavoriteWidget(),
                                                       // )
-                                                      FavoriteWidget()
+                                                      FavoriteWidget(
+                                                        userId: service
+                                                            .providerId
+                                                            .toString(),
+                                                      )
                                                     ],
                                                   ),
                                                   //SizedBox(height: 10.h),
