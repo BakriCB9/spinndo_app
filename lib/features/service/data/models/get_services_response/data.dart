@@ -2,7 +2,8 @@ import 'package:app/features/service/domain/entities/services.dart';
 
 class Data extends Services {
   Data(
-      {required super.name,
+      {required super.numberOfvisitors,
+      required super.name,
       required super.description,
       required super.website,
       required super.longitude,
@@ -16,6 +17,7 @@ class Data extends Services {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json['id'] as int?,
+        numberOfvisitors: json['num_of_visitors'] as int?,
         name: (json['name'] as String),
         description: json['description'] as String?,
         website: json['website'] as dynamic,

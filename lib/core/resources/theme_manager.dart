@@ -9,8 +9,19 @@ import 'font_manager.dart';
 
 class ThemeManager {
   static ThemeData lightTheme = ThemeData(
+    menuButtonTheme: MenuButtonThemeData(
+        style: ButtonStyle(
+            textStyle: WidgetStatePropertyAll(
+                TextStyle(fontSize: 30.sp, color: ColorManager.black)),
+            foregroundColor: WidgetStatePropertyAll(ColorManager.black))),
+    dropdownMenuTheme: DropdownMenuThemeData(
+        menuStyle: MenuStyle(
+            backgroundColor: WidgetStatePropertyAll(ColorManager.white)),
+        textStyle: TextStyle(fontSize: 25.sp, color: Colors.black)),
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: ColorManager.white),
+
     /// Main Colors
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: ColorManager.white,
         foregroundColor: ColorManager.black),
     primaryColor: ColorManager.primary,
@@ -22,18 +33,21 @@ class ThemeManager {
     primaryColorDark: Colors.white,
     scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
     appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyle(
+          fontSize: 45.sp,
+          color: ColorManager.black,
+          fontWeight: FontWeight.w600),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor:  Colors.white.withOpacity(0.95),
-
-
-
+        systemNavigationBarColor: Colors.white.withOpacity(0.95),
       ),
       backgroundColor: Colors.transparent,
       foregroundColor: ColorManager.black,
       elevation: 0,
     ),
-
+    dialogBackgroundColor: ColorManager.white,
+    checkboxTheme: const CheckboxThemeData(
+        checkColor: WidgetStatePropertyAll(ColorManager.white)),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
           foregroundColor: WidgetStatePropertyAll(ColorManager.black),
@@ -84,7 +98,7 @@ class ThemeManager {
       //title spinndo
       titleLarge: getBoldStyle(
         color: ColorManager.black,
-        fontSize: FontSize.s54.sp,
+        fontSize: FontSize.s48.sp,
       ),
       //text in body
       bodySmall:
@@ -154,19 +168,31 @@ class ThemeManager {
   );
   static ThemeData darkTheme = ThemeData(
     /// Main Colors
+    ///
+    ///
+    menuButtonTheme: MenuButtonThemeData(
+        style: ButtonStyle(
+            textStyle: WidgetStatePropertyAll(
+                TextStyle(fontSize: 30.sp, color: ColorManager.white)),
+            foregroundColor: WidgetStatePropertyAll(ColorManager.white))),
+    dropdownMenuTheme: DropdownMenuThemeData(
+        menuStyle: MenuStyle(
+            backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue)),
+        textStyle: TextStyle(fontSize: 30.sp, color: Colors.white)),
+    bottomSheetTheme:
+        BottomSheetThemeData(backgroundColor: ColorManager.darkBlue),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: ColorManager.darkBlue,
         foregroundColor: ColorManager.white),
     primaryColor: ColorManager.primary,
     iconTheme: IconThemeData(color: ColorManager.primary, size: 40.sp),
-
+    dialogBackgroundColor: ColorManager.darkBlue,
     primaryColorLight: ColorManager.white,
     primaryColorDark: ColorManager.darkBlue,
     scaffoldBackgroundColor: Colors.transparent,
     appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
           systemNavigationBarColor: ColorManager.darkBlue,
-
         ),
         backgroundColor: Colors.transparent,
         foregroundColor: ColorManager.white,
@@ -222,7 +248,7 @@ class ThemeManager {
       //title spinndo
       titleLarge: getBoldStyle(
         color: ColorManager.white,
-        fontSize: FontSize.s54.sp,
+        fontSize: FontSize.s48.sp,
       ),
       //text in body
       bodySmall:

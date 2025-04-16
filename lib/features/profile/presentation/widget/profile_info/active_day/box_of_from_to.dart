@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app/features/auth/data/models/register_service_provider_request.dart';
 
 class BoxFromDateToDate extends StatefulWidget {
   final String time;
@@ -29,7 +28,7 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
       //onTap: widget.dateSelect.daySelect
 
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: FittedBox(

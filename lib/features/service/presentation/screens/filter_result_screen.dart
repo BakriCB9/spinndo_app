@@ -1,4 +1,5 @@
 import 'package:app/features/favorite/presentation/view/favorite.dart';
+import 'package:app/features/service/presentation/widgets/show_discount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -19,6 +20,7 @@ import 'package:app/features/service/presentation/screens/service_map_screen.dar
 import 'package:app/features/service/presentation/screens/show_details.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lottie/lottie.dart';
 
 class FilterResultScreen extends StatefulWidget {
   final List<Services> services;
@@ -38,8 +40,16 @@ bool sortByName = false;
 bool sortByDistance = false;
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
+  late Size size;
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    size = MediaQuery.of(context).size;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
     markerLocationData.clear();
     final localization = AppLocalizations.of(context)!;
 
@@ -77,14 +87,18 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                   SizedBox(
                     width: 40.w,
                   ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      localization.filterResults,
-                      style: Theme.of(context).textTheme.titleLarge,
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Directionality.of(context) == TextDirection.rtl
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Text(
+                        localization.filterResults,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
                   ),
-                  const Spacer(),
                   IconButton(
                     onPressed: () async {
                       _serviceCubit.filterLocation =
@@ -213,22 +227,38 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       : const SizedBox(),
                 ],
               ),
-              SizedBox(
-                height: 20.h,
-              ),
+              // SizedBox(
+              //   height: 20.h,
+              // ),
+              Expanded(child: ShowDiscount()),
+
               widget.services.length == 0
                   ? Expanded(
+                      flex: 3,
                       child: Center(
-                        child: Text(
-                          localization.noServicesFoundedinlocation,
-                          style: TextStyle(fontSize: 30.sp),
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            SizedBox(
+                              height: size.height / 3.5,
+                              child: Lottie.asset(
+                                'asset/animation/empty.json',
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              localization.noServicesFoundedinlocation,
+                              style: TextStyle(fontSize: 30.sp),
+                            ),
+                            const Spacer(flex: 2)
+                          ],
                         ),
                       ),
                     )
                   : Expanded(
                       child: AnimationLimiter(
                         child: ListView.builder(
-                          physics: BouncingScrollPhysics(
+                          physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
                           padding: EdgeInsets.all(16.w),
                           itemCount: widget.services.length,
@@ -399,6 +429,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                                               .primary),
                                                       SizedBox(width: 10.w),
                                                       Expanded(
+                                                        flex: 2,
                                                         child: Text(
                                                           service.categoryName ??
                                                               "Category",
@@ -419,11 +450,45 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                                       //       Alignment.bottomLeft,
                                                       //   child: FavoriteWidget(),
                                                       // )
+
+                                                      Expanded(
+                                                          flex: 1,
+                                                          child: Row(
+                                                            children: [
+                                                              const Icon(Icons
+                                                                  .visibility_outlined),
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    FittedBox(
+                                                                  alignment: Directionality.of(
+                                                                              context) ==
+                                                                          TextDirection
+                                                                              .rtl
+                                                                      ? Alignment
+                                                                          .centerRight
+                                                                      : Alignment
+                                                                          .centerLeft,
+                                                                  fit: BoxFit
+                                                                      .scaleDown,
+                                                                  child: Text(
+                                                                      '${service.numberOfvisitors}',
+                                                                      style: theme
+                                                                          .labelMedium!
+                                                                          .copyWith(
+                                                                              fontSize: 24.sp)),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          )),
                                                       FavoriteWidget(
                                                         userId: service
                                                             .providerId
                                                             .toString(),
-                                                      )
+                                                      ),
+                                                      //Icon(Icons.visibility_outlined)
                                                     ],
                                                   ),
                                                   //SizedBox(height: 10.h),

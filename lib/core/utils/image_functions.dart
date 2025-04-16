@@ -12,7 +12,8 @@ class ImageFunctions {
       aspectRatio:
           const CropAspectRatio(ratioX: 1, ratioY: 1), // Square aspect ratio
       uiSettings: [
-        AndroidUiSettings(hideBottomControls: false,
+        AndroidUiSettings(
+          hideBottomControls: false,
           toolbarTitle: 'Crop Image',
           toolbarColor: Colors.black,
           toolbarWidgetColor: Colors.white,
@@ -51,9 +52,9 @@ class ImageFunctions {
             // CropAspectRatioPreset.ratio7x5,
             CropAspectRatioPreset.ratio16x9,
             CropAspectRatioPreset.square,
-          ],       hideBottomControls: false,
+          ],
+          hideBottomControls: false,
           initAspectRatio: CropAspectRatioPreset.original,
-
           toolbarWidgetColor: Colors.white,
           lockAspectRatio: false,
         ),

@@ -5,7 +5,7 @@ import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/drawer/data/model/languages.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +20,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final _serviceCubit = serviceLocator.get<ServiceCubit>();
     List<Languages> languages = [
       Languages(name: 'English', code: 'en'),
       Languages(name: 'Deutsch', code: 'de'),
@@ -29,8 +30,8 @@ class SettingScreen extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
         appBar: AppBar(
@@ -90,32 +91,35 @@ class SettingScreen extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                           child: DropdownButton<Languages>(
                               value: languages.firstWhere(
-                                    (lang) =>
-                                lang.code == _drawerCubit.languageCode,
+                                (lang) =>
+                                    lang.code == _drawerCubit.languageCode,
                               ),
                               style: Theme.of(context).textTheme.displayMedium,
                               items: languages
                                   .map(
                                     (language) => DropdownMenuItem<Languages>(
-                                  value: language,
-                                  child: Text(language.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displayMedium),
-                                ),
-                              )
+                                      value: language,
+                                      child: Text(language.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayMedium),
+                                    ),
+                                  )
                                   .toList(),
                               onChanged: (selectedLanguage) {
                                 if (selectedLanguage != null) {
                                   _drawerCubit
                                       .changeLanguage(selectedLanguage.code);
+
+                                  ///bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+                                  _serviceCubit.getCountriesAndCategories();
                                 }
                               },
                               borderRadius: BorderRadius.circular(25),
                               dropdownColor:
-                              _drawerCubit.themeMode == ThemeMode.dark
-                                  ? ColorManager.darkBlue
-                                  : ColorManager.white)),
+                                  _drawerCubit.themeMode == ThemeMode.dark
+                                      ? ColorManager.darkBlue
+                                      : ColorManager.white)),
                     ),
                   )
                 ],
@@ -131,88 +135,88 @@ class SettingScreen extends StatelessWidget {
                       builder: (context) {
                         return SafeArea(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30.w),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
+                          padding: EdgeInsets.symmetric(horizontal: 30.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Text(
+                                localization.ourlinks,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(fontSize: 30.sp),
+                              ),
+                              SizedBox(
+                                height: 100.h,
+                              ),
+                              Row(
                                 children: [
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  Text(
-                                    localization.ourlinks,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(fontSize: 30.sp),
-                                  ),
-                                  SizedBox(
-                                    height: 100.h,
-                                  ),
-                                  Row(
+                                  Column(
                                     children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: 100.w,
-                                            height: 100.h,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border:
+                                      Container(
+                                        width: 100.w,
+                                        height: 100.h,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border:
                                                 Border.all(color: Colors.grey)),
-                                            child: Icon(
-                                              Icons.facebook,
-                                              color: ColorManager.primary,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Text(
-                                            localization.facebook,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge!
-                                                .copyWith(fontSize: 25.sp),
-                                          )
-                                        ],
+                                        child: Icon(
+                                          Icons.facebook,
+                                          color: ColorManager.primary,
+                                        ),
                                       ),
                                       SizedBox(
-                                        width: 30.w,
+                                        height: 10.h,
                                       ),
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: 100.w,
-                                            height: 100.h,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border:
-                                                Border.all(color: Colors.grey)),
-                                            child: Icon(
-                                              Icons.message,
-                                              color: ColorManager.primary,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Text(
-                                            localization.sms,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge!
-                                                .copyWith(fontSize: 25.sp),
-                                          )
-                                        ],
-                                      ),
+                                      Text(
+                                        localization.facebook,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(fontSize: 25.sp),
+                                      )
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 40.h,
+                                    width: 30.w,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        width: 100.w,
+                                        height: 100.h,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border:
+                                                Border.all(color: Colors.grey)),
+                                        child: Icon(
+                                          Icons.message,
+                                          color: ColorManager.primary,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Text(
+                                        localization.sms,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(fontSize: 25.sp),
+                                      )
+                                    ],
                                   ),
                                 ],
                               ),
-                            ));
+                              SizedBox(
+                                height: 40.h,
+                              ),
+                            ],
+                          ),
+                        ));
                       });
                 },
                 child: ListTile(
@@ -246,7 +250,38 @@ class SettingScreen extends StatelessWidget {
                 },
                 child: InkWell(
                   onTap: () {
-                    _drawerCubit.deleteAccount();
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content:
+                                Text(localization.areYouSureToDeleteAccount),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    localization.cancel,
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        color: ColorManager.red),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _drawerCubit.deleteAccount();
+                                  },
+                                  child: Text(
+                                    localization.ok,
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        color: ColorManager.green),
+                                  ))
+                            ],
+                          );
+                        });
+                    // _drawerCubit.deleteAccount();
                   },
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,

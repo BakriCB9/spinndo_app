@@ -1,6 +1,6 @@
 import 'package:app/features/profile/domain/entities/provider_profile/provider_porfile_category.dart';
 
-import 'parent.dart';
+
 
 class Category extends ProviderProfileCategory {
   Category({super.id, super.name, super.parent});

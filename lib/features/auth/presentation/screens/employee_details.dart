@@ -177,6 +177,12 @@ class EmployeeDetails extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 40.h),
+                CustomTextFormField(
+                  controller: _authCubit.websiteController,
+                  labelText: 'WebSite',
+                  icon: Icons.web,
+                ),
+                SizedBox(height: 40.h),
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -206,9 +212,9 @@ class EmployeeDetails extends StatelessWidget {
                                       child: Switch(
                                         activeColor: ColorManager.primary,
                                         inactiveThumbColor:
-                                        Theme.of(context).primaryColor,
+                                            Theme.of(context).primaryColor,
                                         inactiveTrackColor:
-                                        Theme.of(context).primaryColorDark,
+                                            Theme.of(context).primaryColorDark,
                                         value: _authCubit
                                             .dateSelect[index].daySelect,
                                         onChanged: (value) {
@@ -221,25 +227,25 @@ class EmployeeDetails extends StatelessWidget {
                                       child: Text(
                                         _authCubit.dateSelect[index].daySelect
                                             ? _authCubit.dateSelect[index]
-                                            .arrowSelect
-                                            ? day
-                                            : "$day   ${_authCubit.dateSelect[index].start} - ${_authCubit.dateSelect[index].end}"
+                                                    .arrowSelect
+                                                ? day
+                                                : "$day   ${_authCubit.dateSelect[index].start} - ${_authCubit.dateSelect[index].end}"
                                             : day,
                                         style: _authCubit
-                                            .dateSelect[index].daySelect
+                                                .dateSelect[index].daySelect
                                             ? Theme.of(context)
-                                            .textTheme
-                                            .displayMedium
+                                                .textTheme
+                                                .displayMedium
                                             : Theme.of(context)
-                                            .textTheme
-                                            .displayMedium!
-                                            .copyWith(color: Colors.grey),
+                                                .textTheme
+                                                .displayMedium!
+                                                .copyWith(color: Colors.grey),
                                       ),
                                     ),
                                     if (_authCubit.dateSelect[index].daySelect)
                                       IconButton(
                                           icon: Icon(_authCubit
-                                              .dateSelect[index].arrowSelect
+                                                  .dateSelect[index].arrowSelect
                                               ? Icons.keyboard_arrow_left
                                               : Icons.keyboard_arrow_down),
                                           onPressed: () {
@@ -266,7 +272,7 @@ class EmployeeDetails extends StatelessWidget {
                                                 .textTheme
                                                 .displayMedium,
                                             iconEnabledColor:
-                                            ColorManager.primary,
+                                                ColorManager.primary,
                                             onChanged: (value) {
                                               _authCubit.onStartTimeUpdate(
                                                   value!,
@@ -292,7 +298,7 @@ class EmployeeDetails extends StatelessWidget {
                                             isExpanded: true,
                                             menuMaxHeight: 200,
                                             iconEnabledColor:
-                                            ColorManager.primary,
+                                                ColorManager.primary,
                                             value: _authCubit
                                                 .dateSelect[index].end,
                                             style: Theme.of(context)
@@ -328,8 +334,7 @@ class EmployeeDetails extends StatelessWidget {
                               .pushNamed(DeplomaProtofileImageScreen.routeName);
                           return;
                         } else {
-                          if( _authCubit.selectedCategory ==
-                          null){
+                          if (_authCubit.selectedCategory == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(localization.categoryRequired,
@@ -337,8 +342,7 @@ class EmployeeDetails extends StatelessWidget {
                                           fontSize: 28.sp,
                                           color: Colors.white))),
                             );
-                          }
-                         else if (_authCubit.isCountySuccess == false) {
+                          } else if (_authCubit.isCountySuccess == false) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(localization.locationRequired,
@@ -346,8 +350,7 @@ class EmployeeDetails extends StatelessWidget {
                                           fontSize: 28.sp,
                                           color: Colors.white))),
                             );
-                          }
-                          else {
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(localization
@@ -379,10 +382,10 @@ class EmployeeDetails extends StatelessWidget {
     }
     return times
         .map((time) => DropdownMenuItem(
-        value: time,
-        child: Text(
-          time,
-        )))
+            value: time,
+            child: Text(
+              time,
+            )))
         .toList();
   }
 }

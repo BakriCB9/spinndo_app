@@ -12,7 +12,7 @@ class UserAccount extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String email;
-  final int? isApprovid;
+  final bool? isApprovid;
   final String typeAccount;
   final int? userId;
   const UserAccount({
@@ -53,7 +53,7 @@ class UserAccount extends StatelessWidget {
                     ))
                 : userId == myId
                     ? IconButton(
-                        onPressed: isApprovid == 1
+                        onPressed: isApprovid == true
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
@@ -67,7 +67,8 @@ class UserAccount extends StatelessWidget {
                               },
                         icon: Icon(
                           Icons.edit,
-                          color: isApprovid == 1 ? Colors.yellow : Colors.grey,
+                          color:
+                              isApprovid == true ? Colors.yellow : Colors.grey,
                         ))
                     : const SizedBox()
           ],

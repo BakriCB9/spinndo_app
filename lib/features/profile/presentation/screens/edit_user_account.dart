@@ -27,9 +27,9 @@ class EditUserAccountScreen extends StatelessWidget {
 
   const EditUserAccountScreen(
       {required this.firstName,
-        required this.lastName,
-        required this.typeAccount,
-        super.key});
+      required this.lastName,
+      required this.typeAccount,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class EditUserAccountScreen extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
         appBar: AppBar(
@@ -71,8 +71,8 @@ class EditUserAccountScreen extends StatelessWidget {
                     children: [
                       Positioned(
                         child: Container(
-                          //radius: 150.r,
-                          //backgroundColor: Colors.grey,
+                            //radius: 150.r,
+                            //backgroundColor: Colors.grey,
                             width: 300.w,
                             height: 300.h,
                             decoration: BoxDecoration(
@@ -104,13 +104,13 @@ class EditUserAccountScreen extends StatelessWidget {
                                   } else if (state is LoadImagePhotoError) {
                                     return imagePhoto == null
                                         ? Icon(
-                                      Icons.person,
-                                      size: 150.r,
-                                      color: Colors.white,
-                                    )
+                                            Icons.person,
+                                            size: 150.r,
+                                            color: Colors.white,
+                                          )
                                         : ClipRRect(
-                                      child: CashImage(path: imagePhoto),
-                                    );
+                                            child: CashImage(path: imagePhoto),
+                                          );
                                   } else if (state is LoadImagePhotoSuccess) {
                                     Uint8List? bytes;
                                     final base64String = sharedPref
@@ -124,18 +124,18 @@ class EditUserAccountScreen extends StatelessWidget {
                                     }
                                     return base64String == null
                                         ? Icon(
-                                      Icons.person,
-                                      size: 150.r,
-                                      color: Colors.white,
-                                    )
+                                            Icons.person,
+                                            size: 150.r,
+                                            color: Colors.white,
+                                          )
                                         : ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(150.r),
-                                      child: Image.memory(
-                                        bytes!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    );
+                                            borderRadius:
+                                                BorderRadius.circular(150.r),
+                                            child: Image.memory(
+                                              bytes!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
                                   } else {
                                     Uint8List? bytes;
                                     final base64String = sharedPref
@@ -148,25 +148,25 @@ class EditUserAccountScreen extends StatelessWidget {
                                     }
                                     return base64String == null
                                         ? (imagePhoto == null
-                                        ? Icon(
-                                      Icons.person,
-                                      size: 150.r,
-                                      color: Colors.white,
-                                    )
+                                            ? Icon(
+                                                Icons.person,
+                                                size: 150.r,
+                                                color: Colors.white,
+                                              )
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        300.r),
+                                                child: CashImage(
+                                                    path: imagePhoto)))
                                         : ClipRRect(
-                                        borderRadius:
-                                        BorderRadius.circular(
-                                            300.r),
-                                        child: CashImage(
-                                            path: imagePhoto)))
-                                        : ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.circular(150.r),
-                                      child: Image.memory(
-                                        bytes!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    );
+                                            borderRadius:
+                                                BorderRadius.circular(150.r),
+                                            child: Image.memory(
+                                              bytes!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
                                   }
                                 })),
                       ),
@@ -177,127 +177,127 @@ class EditUserAccountScreen extends StatelessWidget {
                           onTap: () {
                             showModalBottomSheet(
                                 backgroundColor:
-                                Theme.of(context).primaryColorDark,
+                                    Theme.of(context).primaryColorDark,
                                 context: context,
                                 builder: (context) {
                                   return SafeArea(
                                       child: Padding(
-                                        padding:
+                                    padding:
                                         EdgeInsets.symmetric(horizontal: 30.w),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Center(
-                                                    child: Text(
-                                                        localization.profilePhoto),
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(Icons.delete),
-                                                  onPressed: () {},
-                                                ),
-                                              ],
+                                            Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                    localization.profilePhoto),
+                                              ),
                                             ),
-                                            SizedBox(
-                                              height: 30.h,
+                                            IconButton(
+                                              icon: Icon(Icons.delete),
+                                              onPressed: () {},
                                             ),
-                                            Row(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        Navigator.of(context).pop();
-                                                        final image =
-                                                        await ImageFunctions
-                                                            .CameraPicker(true);
-                                                        if (image == null) {
-                                                          return;
-                                                        }
-                                                        _profileCubit
-                                                            .addImagePhoto(image);
-                                                      },
-                                                      child: Container(
-                                                        width: 100.w,
-                                                        height: 100.h,
-                                                        decoration: BoxDecoration(
-                                                            shape: BoxShape.circle,
-                                                            border: Border.all(
-                                                                color:
-                                                                Colors.grey)),
-                                                        child: Icon(
-                                                          Icons.camera_alt_outlined,
-                                                          color:
-                                                          ColorManager.primary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 15.h),
-                                                    Text(
-                                                      'Camera',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleLarge!
-                                                          .copyWith(
-                                                          fontSize: 25.sp),
-                                                    )
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: 35.w,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        Navigator.of(context).pop();
-                                                        final image =
-                                                        await ImageFunctions
-                                                            .galleryPicker(
-                                                            true);
-                                                        if (image == null) {
-                                                          return;
-                                                        }
-                                                        _profileCubit
-                                                            .addImagePhoto(image);
-                                                      },
-                                                      child: Container(
-                                                        width: 100.w,
-                                                        height: 100.h,
-                                                        decoration: BoxDecoration(
-                                                            shape: BoxShape.circle,
-                                                            border: Border.all(
-                                                                color:
-                                                                Colors.grey)),
-                                                        child: Icon(
-                                                          Icons.image_outlined,
-                                                          color:
-                                                          ColorManager.primary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 15.h),
-                                                    Text(
-                                                      'Gallery',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleLarge!
-                                                          .copyWith(
-                                                          fontSize: 25.sp),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 50.h,
-                                            )
                                           ],
                                         ),
-                                      ));
+                                        SizedBox(
+                                          height: 30.h,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    final image =
+                                                        await ImageFunctions
+                                                            .CameraPicker(true);
+                                                    if (image == null) {
+                                                      return;
+                                                    }
+                                                    _profileCubit
+                                                        .addImagePhoto(image);
+                                                  },
+                                                  child: Container(
+                                                    width: 100.w,
+                                                    height: 100.h,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color:
+                                                          ColorManager.primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 15.h),
+                                                Text(
+                                                  'Camera',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge!
+                                                      .copyWith(
+                                                          fontSize: 25.sp),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 35.w,
+                                            ),
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    final image =
+                                                        await ImageFunctions
+                                                            .galleryPicker(
+                                                                true);
+                                                    if (image == null) {
+                                                      return;
+                                                    }
+                                                    _profileCubit
+                                                        .addImagePhoto(image);
+                                                  },
+                                                  child: Container(
+                                                    width: 100.w,
+                                                    height: 100.h,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Icon(
+                                                      Icons.image_outlined,
+                                                      color:
+                                                          ColorManager.primary,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 15.h),
+                                                Text(
+                                                  'Gallery',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge!
+                                                      .copyWith(
+                                                          fontSize: 25.sp),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 50.h,
+                                        )
+                                      ],
+                                    ),
+                                  ));
                                 });
                           },
                           child: Container(
@@ -450,7 +450,7 @@ class EditUserAccountScreen extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             if (_profileCubit
-                                .firstNameEditController.text.isEmpty ||
+                                    .firstNameEditController.text.isEmpty ||
                                 _profileCubit
                                     .lastNameEditController.text.isEmpty) {
                               return UIUtils.showMessage(

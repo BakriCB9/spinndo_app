@@ -1,3 +1,4 @@
+import 'package:app/features/auth/presentation/widget/section_remember_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,6 +54,44 @@ class SignUpScreen extends StatelessWidget {
                     }
                     return null;
                   },
+                  controller: _authCubit.firstNameArcontroller,
+                  icon: Icons.person,
+                  labelText: 'First name ar',
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(
+                      value,
+                      minLength: 2,
+                    )) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _authCubit.lastNameArCOntroller,
+                  icon: Icons.person,
+                  labelText: 'Last name ar',
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(
+                      value,
+                      minLength: 2,
+                    )) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
                   controller: _authCubit.firstNameContoller,
                   icon: Icons.person,
                   labelText: localization.firstName,
@@ -94,6 +133,23 @@ class SignUpScreen extends StatelessWidget {
                   height: 30.h,
                 ),
                 CustomTextFormField(
+                  controller: _authCubit.phoneNumberController,
+                  labelText: 'Phone Number',
+                  icon: Icons.phone,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return localization.validEmail;
+                    }
+                    if (!Validator.isEGPhoneNumber(value)) {
+                      return localization.valideCorrectPhoneNumber;
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                CustomTextFormField(
                   validator: (value) {
                     if (!Validator.isPassword(value)) {
                       return localization.passwordLessThanSix;
@@ -105,9 +161,7 @@ class SignUpScreen extends StatelessWidget {
                   isPassword: true,
                   labelText: localization.password,
                 ),
-                SizedBox(
-                  height: 30.h,
-                ),
+                SizedBox(height: 30.h),
                 CustomTextFormField(
                   validator: (value) {
                     if (!Validator.isPassword(value)) {
@@ -125,6 +179,12 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          SectionRememberMe(
+            authCubit: _authCubit,
           ),
           SizedBox(
             height: 20.h,
@@ -205,8 +265,8 @@ class SignUpScreen extends StatelessWidget {
               },
               buildWhen: (previous, current) {
                 if (
-                //(previous is AuthInitial || previous is ChooseAccountState) &&
-                current is ChooseAccountState) {
+                    //(previous is AuthInitial || previous is ChooseAccountState) &&
+                    current is ChooseAccountState) {
                   return true;
                 }
                 return false;
@@ -235,11 +295,16 @@ class SignUpScreen extends StatelessWidget {
                     _authCubit.confirmPasswordController.clear();
                     _authCubit.firstNameContoller.clear();
                     _authCubit.lastNameContoller.clear();
+                    _authCubit.firstNameArcontroller.clear();
+                    _authCubit.lastNameArCOntroller.clear();
                     Navigator.of(context)
                         .pushReplacementNamed(SignInScreen.routeName);
                   },
                   child: Text(localization.alreadyHaveAccount,
-                      style: Theme.of(context).textTheme.titleMedium)))
+                      style: Theme.of(context).textTheme.titleMedium))),
+          SizedBox(
+            height: 100.h,
+          )
         ]));
   }
 
@@ -251,6 +316,8 @@ class SignUpScreen extends StatelessWidget {
     if (_authCubit.isClient) {
       if (formKey.currentState!.validate()) {
         _authCubit.register(RegisterRequest(
+            first_name_ar: _authCubit.firstNameArcontroller.text,
+            last_name_ar: _authCubit.lastNameArCOntroller.text,
             first_name: _authCubit.firstNameContoller.text,
             last_name: _authCubit.lastNameContoller.text,
             email: _authCubit.emailController.text,
@@ -259,12 +326,27 @@ class SignUpScreen extends StatelessWidget {
         return;
       }
     } else {
-      if (formKey.currentState!.validate() &&
-          _authCubit.selectedCategory == null) {
-        _authCubit.getCategories();
+      if (formKey.currentState!.validate()) {
+        if (_authCubit.selectedCategory == null) {
+          _authCubit.getCategories();
+        } else {
+          Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+        }
       } else {
-        Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+        return;
       }
+      // print('yes it else now RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
+      // print(
+      //     'the value of validate is now  ${formKey.currentState!.validate()}');
+      // if (formKey.currentState!.validate() &&
+      //     _authCubit.selectedCategory == null) {
+      //   print('********************************');
+      //   _authCubit.getCategories();
+      //   print('we get the element nnow bakri');
+      // } else {
+      //   //_authCubit.getCategories();
+      //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
+      // }
     }
   }
 }

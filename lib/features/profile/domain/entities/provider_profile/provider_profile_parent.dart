@@ -4,6 +4,4 @@ class PorfivderPorfileParent {
   dynamic parent;
 
   PorfivderPorfileParent({this.id, this.name, this.parent});
-
-
 }

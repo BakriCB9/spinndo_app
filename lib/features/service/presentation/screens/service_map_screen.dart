@@ -53,9 +53,15 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          localization.googleMap,
-          style: Theme.of(context).textTheme.titleLarge,
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Directionality.of(context) == TextDirection.rtl
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
+          child: Text(
+            localization.googleMap,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
         backgroundColor: Theme.of(context).primaryColorDark,
       ),
@@ -75,25 +81,25 @@ class _ServiceMapScreenState extends State<ServiceMapScreen> {
     Set<Marker> myMarker = markerLocationData
         .map(
           (e) => Marker(
-        icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-        position: e.latLng,
-        infoWindow: InfoWindow(title: e.name),
-        onTap: () {
-          if (sharedPref.getString(CacheConstant.tokenKey) == null) {
-            UIUtils.showMessage("You have to Sign in first");
-            return;
-          }
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ShowDetails(id: e.providerId!),
+            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
+            position: e.latLng,
+            infoWindow: InfoWindow(title: e.name),
+            onTap: () {
+              if (sharedPref.getString(CacheConstant.tokenKey) == null) {
+                UIUtils.showMessage("You have to Sign in first");
+                return;
+              }
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ShowDetails(id: e.providerId!),
+                ),
+              );
+            },
+            markerId: MarkerId(
+              e.id.toString(),
             ),
-          );
-        },
-        markerId: MarkerId(
-          e.id.toString(),
-        ),
-      ),
-    )
+          ),
+        )
         .toSet();
     print(
         'the aux Marker is  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  ${myMarker.length}');

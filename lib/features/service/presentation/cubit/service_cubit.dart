@@ -1,9 +1,14 @@
-import 'package:app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:app/core/error/apiResult.dart';
+import 'package:app/features/discount/domain/entity/all_discount_entity.dart';
+import 'package:app/features/discount/domain/useCase/get_discount.dart';
 import 'package:app/features/service/data/models/get_all_category_response/data.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/city.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/data.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
+import 'package:app/features/service/domain/entities/main_category/all_category_main_entity.dart';
+import 'package:app/features/service/domain/entities/main_category/data_of_item_main_category.dart';
 import 'package:app/features/service/domain/entities/notifications.dart';
+import 'package:app/features/service/domain/use_cases/get_main_category.dart';
 import 'package:app/features/service/domain/use_cases/get_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,18 +28,28 @@ import 'package:app/features/service/presentation/cubit/service_states.dart';
 
 @singleton
 class ServiceCubit extends Cubit<ServiceStates> {
-  ServiceCubit(this._getServices, this._getCountries, this._getCategories,
-      this._getServiceProfile,this._getNotifications)
+  ServiceCubit(
+      this._getServices,
+      this._getCountries,
+      this._getCategories,
+      this._getServiceProfile,
+      this._getNotifications,
+      this._getAllDiscountUseCase,
+      this._getMainCategory)
       : super(ServiceInitial());
   final GetCountries _getCountries;
   final GetCategories _getCategories;
   final GetServices _getServices;
   final GetServiceProfile _getServiceProfile;
   final GetNotifications _getNotifications;
+  final GetAllDiscountUseCase _getAllDiscountUseCase;
+  final GetMainCategory _getMainCategory;
+  List<AllDiscountEntity> listAllDiscount = [];
   List<Countries>? countriesList;
   Categories? selectedCategory;
   List<Cities>? citiesList;
   List<Categories>? categoriesList;
+  List<DataOfItemMainCategoryEntity>listOfAllMainCategory=[];
   int? selectedCountryId;
   Countries? selectedCountry;
 
@@ -52,31 +67,60 @@ class ServiceCubit extends Cubit<ServiceStates> {
   String failureMessegae = "";
   bool isCurrent = false;
   int index = 0;
-  List<Notifications>listNotification=[];
-  DataCountries addAllCountry=DataCountries(id: -1, name: "All Countries", cities: []);
-  City addAllCities=City(id: -1, name: "All Cities");
-  DataCategory addAllCategories=DataCategory(name: "All Categories", id: -1, children: []);
-  ChildCategory addAllChildCategories=ChildCategory(id: -1,name: "All Sub Categories");
+  List<Notifications> listNotification = [];
+  DataCountries addAllCountry =
+      DataCountries(id: -1, name: "All Countries", cities: []);
+  City addAllCities = City(id: -1, name: "All Cities");
+  DataCategory addAllCategories =
+      DataCategory(name: "All Categories", id: -1, children: []);
+  ChildCategory addAllChildCategories =
+      ChildCategory(id: -1, name: "All Sub Categories");
   TextEditingController searchController = TextEditingController();
-  Future<void> getServices(GetServicesRequest requestData) async {
+
+  getServiceAndDiscount(GetServicesRequest requestData) {
+    Future.wait([_getAllServices(requestData), _getAllDiscount()]);
+  }
+
+  Future<void> _getAllServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
 
     final result = await _getServices(requestData);
-    result.fold(
-      (failure) => emit(ServiceError(failure.message)),
-      (services) => emit(ServiceSuccess(services)),
-    );
+    result.fold((failure) => emit(ServiceError(failure.message)), (services) {
+      // print('we emit the successs state in get service ');
+      emit(ServiceSuccess(services));
+    });
   }
 
-  Future<void> getAllNotification()async{
+  Future<void> _getAllDiscount() async {
+    listAllDiscount.clear();
+
+    emit(GetDiscountLoadingState());
+
+    final ans = await _getAllDiscountUseCase();
+    switch (ans) {
+      case ApiResultSuccess():
+        {
+          print('we emit disscount State success now');
+          listAllDiscount = ans.data;
+          emit(GetDiscountSuccessState<List<AllDiscountEntity>>(ans.data));
+        }
+      case ApiresultError():
+        {
+          emit(GetDiscountFailState());
+        }
+    }
+  }
+
+  Future<void> getAllNotification() async {
     emit(GetNotificationLoading());
 
     final result = await _getNotifications();
     result.fold(
       (failure) => emit(GetNotificationError(failure.message)),
-      (notification) { 
-        listNotification=notification;
-        emit(GetNotificationSuccess());},
+      (notification) {
+        listNotification = notification;
+        emit(GetNotificationSuccess());
+      },
     );
   }
 
@@ -88,7 +132,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
       // emit(CountryCategoryError(failure.message)),
     }, (categories) {
       categoriesList = categories;
-      categoriesList?.add( addAllCategories);
+      categoriesList?.add(addAllCategories);
       // for(int i=0;i<categoriesList!.length;i++){
       //   var chid=categoriesList?[i].children;
       //   for(int j=0;j<chid!.length;i++){
@@ -99,13 +143,13 @@ class ServiceCubit extends Cubit<ServiceStates> {
       // print('the final list is now of child ############################  ${childCategoryList}');
       // emit(CountryCategorySuccess());
       selectedServiceCat();
-
     });
   }
-  void selectedServiceCat(){
-      emit(SelectedCategoryServiceState());
 
+  void selectedServiceCat() {
+    emit(SelectedCategoryServiceState());
   }
+
   Future<void> getCountries() async {
     // emit(CountryCategoryLoading());
 
@@ -121,6 +165,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
       // emit(CountryCategorySuccess());
     });
   }
+
   // List<Countries> getAllCategoriess() {
   //   return [...?countriesList, ...addAllCountry];
   // }
@@ -146,12 +191,10 @@ class ServiceCubit extends Cubit<ServiceStates> {
     );
   }
 
-
-
   void selectedCountryService(Countries country) {
     selectedCountryId = country.id;
     selectedCountryName = country.name;
-    selectedCountry=country;
+    selectedCountry = country;
     // Initialize or update the cities list based on the selected country
     if (country.cities.isNotEmpty) {
       citiesList = List.from(country.cities); // Use a new list instance
@@ -166,11 +209,10 @@ class ServiceCubit extends Cubit<ServiceStates> {
     emit(SelectedCountryCityServiceState());
   }
 
-
   void selectedCityService(Cities city) {
     selectedCityId = city.id;
     selectedCityName = city.name;
-selectedCity=city;
+    selectedCity = city;
     emit(SelectedCountryCityServiceState());
   }
 
@@ -198,17 +240,30 @@ selectedCity=city;
     isCurrent = value;
     emit(IsCurrentLocation());
   }
-  bool ?isReset=false;
-  void resetSetting(){
-searchController.clear();
-selectedCountry=null;
-selectedCountryId=null;
-selectedCity=null;
-selectedCityId=null;
-selectedCategory=null;
-isCurrent=false;
-selectedDistance=10;
-isReset=true;
-emit(ResetSettingsState());
+
+  bool? isReset = false;
+  void resetSetting() {
+    searchController.clear();
+    selectedCountry = null;
+    selectedCountryId = null;
+    selectedCity = null;
+    selectedCityId = null;
+    selectedCategory = null;
+    isCurrent = false;
+    selectedDistance = 10;
+    isReset = true;
+    emit(ResetSettingsState());
+  }
+
+  getAllMainCategory() async {
+    emit(GetMainCategoryLoading());
+    final result = await _getMainCategory();
+    result.fold((failure) {
+      
+      emit(GetMainCategoryError(failure.message));
+    }, (list) {
+      listOfAllMainCategory=list.listOfItemMainCategory;    
+      emit(GetMainCategorySuccess());
+    });
   }
 }

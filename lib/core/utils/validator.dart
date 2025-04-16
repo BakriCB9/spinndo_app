@@ -17,6 +17,6 @@ class Validator {
 
   static bool isEGPhoneNumber(String? value) {
     if (value == null) return false;
-    return RegExp(r'^(010|011|012|015)[0-9]{8}$').hasMatch(value);
+    return RegExp(r'^(049|043|0969)[0-9]{8}$').hasMatch(value);
   }
 }

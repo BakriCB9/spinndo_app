@@ -6,7 +6,7 @@ import 'package:app/features/service/domain/repository/service_repository.dart';
 
 import '../../../../core/error/failure.dart';
 
-@lazySingleton
+@injectable
 class GetCategories {
   final ServiceRepository _serviceRepository;
 

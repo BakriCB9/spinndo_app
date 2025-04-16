@@ -17,13 +17,13 @@ import 'box_of_from_to.dart';
 
 class CustomDayActive extends StatelessWidget {
   final int userId;
-  final int issAprrovid;
+  final bool issAprrovid;
   final List<ProviderPriofileWorkingday> listOfworkday;
   const CustomDayActive(
       {required this.listOfworkday,
-        required this.userId,
-        required this.issAprrovid,
-        super.key});
+      required this.userId,
+      required this.issAprrovid,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,101 +41,101 @@ class CustomDayActive extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             myId == userId
                 ? IconButton(
-                onPressed: issAprrovid == 1
-                    ? () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WorkingSchedulePage(
-                        listOfworkday: listOfworkday,
-                      )));
-                }
-                    : () {
-                  UIUtils.showMessage(
-                      "You Have to wait to Accept your Informations");
-                },
-                icon: Icon(
-                  Icons.edit_calendar_outlined,
-                  color: Theme.of(context).primaryColorLight,
-                ))
+                    onPressed: issAprrovid == true
+                        ? () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => WorkingSchedulePage(
+                                      listOfworkday: listOfworkday,
+                                    )));
+                          }
+                        : () {
+                            UIUtils.showMessage(
+                                "You Have to wait to Accept your Informations");
+                          },
+                    icon: Icon(
+                      Icons.edit_calendar_outlined,
+                      color: Theme.of(context).primaryColorLight,
+                    ))
                 : const SizedBox()
           ],
         ),
         Column(
           children: listOfworkday
               .map((e) => Padding(
-              padding: EdgeInsets.only(top: 10.h),
-              child: drawerCubit.languageCode == 'en'
-                  ? Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(e.day!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                      flex: 4,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: BoxFromDateToDate(
-                                time: 'From ${e.start} Am',
-                                type: 1,
-                              )),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Expanded(
-                              child: BoxFromDateToDate(
-                                time: 'To ${e.end} Pm',
-                                type: 2,
-                              ))
-                        ],
-                      ))
-                ],
-              )
-                  : Row(
-                children: [
-                  Expanded(
-                      flex: 4,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: BoxFromDateToDate(
-                                time: 'To ${e.end} Pm',
-                                type: 2,
-                              )),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Expanded(
-                              child: BoxFromDateToDate(
-                                time: 'From ${e.start} Am',
-                                type: 1,
-                              )),
-                        ],
-                      )),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(e.day!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium),
-                      ),
-                    ),
-                  ),
-                ],
-              )))
+                  padding: EdgeInsets.only(top: 10.h),
+                  child: drawerCubit.languageCode == 'en'
+                      ? Row(
+                          children: [
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(e.day!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10.w),
+                            Expanded(
+                                flex: 4,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: BoxFromDateToDate(
+                                      time: 'From ${e.start} Am',
+                                      type: 1,
+                                    )),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Expanded(
+                                        child: BoxFromDateToDate(
+                                      time: 'To ${e.end} Pm',
+                                      type: 2,
+                                    ))
+                                  ],
+                                ))
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Expanded(
+                                flex: 4,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: BoxFromDateToDate(
+                                      time: 'To ${e.end} Pm',
+                                      type: 2,
+                                    )),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Expanded(
+                                        child: BoxFromDateToDate(
+                                      time: 'From ${e.start} Am',
+                                      type: 1,
+                                    )),
+                                  ],
+                                )),
+                            SizedBox(width: 10.w),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(e.day!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )))
               .toList(),
         ),
         //    days

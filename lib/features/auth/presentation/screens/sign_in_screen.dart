@@ -33,7 +33,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final style = Theme.of(context).elevatedButtonTheme.style!;
+    //final style = Theme.of(context).elevatedButtonTheme.style!;
     return CustomAuthForm(
       canBack: false,
       isGuest: true,
@@ -57,9 +57,7 @@ class SignInScreen extends StatelessWidget {
                     icon: Icons.email,
                     labelText: localization.email,
                   ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
+                  SizedBox(height: 30.h),
                   CustomTextFormField(
                     validator: (value) {
                       if (!Validator.isPassword(value)) {
@@ -74,9 +72,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ],
               )),
-          SizedBox(
-            height: 20.h,
-          ),
+          SizedBox(height: 20.h),
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Padding(

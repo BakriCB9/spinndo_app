@@ -4,7 +4,7 @@ import 'package:app/features/service/domain/repository/service_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-@lazySingleton
+@injectable
 class GetNotifications {
   final ServiceRepository _serviceRepository;
 

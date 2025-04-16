@@ -1,3 +1,4 @@
+import 'package:app/features/profile/domain/entities/add_or_update_soical_entity/add_or_update_social_entity.dart';
 import 'package:app/features/profile/domain/entities/client_profile.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 
@@ -94,4 +95,29 @@ class LoadImagePhotoError extends ProfileStates {
 class LoadImagePhotoSuccess extends ProfileStates {
   final String message;
   LoadImagePhotoSuccess(this.message);
+}
+
+class AddorUpdateSoicalLinksLoading extends ProfileStates {}
+
+class AddorUpdateSoicalLinksError extends ProfileStates {
+  String message;
+  AddorUpdateSoicalLinksError(this.message); 
+}
+
+class AddorUpdateSoicalLinksSuccess extends ProfileStates {
+  AddOrUpdateSocialEntity addOrUpdateSocialEntity;
+  AddorUpdateSoicalLinksSuccess(this.addOrUpdateSocialEntity);
+}
+
+class DeleteSocialLinkLoading extends ProfileStates{
+
+}
+class DeleteSocialLinkError extends ProfileStates{
+ String message;
+ DeleteSocialLinkError(this.message);
+}
+
+class DeleteSocialLinkSuccess extends ProfileStates{
+String message;
+DeleteSocialLinkSuccess(this.message);
 }

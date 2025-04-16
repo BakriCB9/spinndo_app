@@ -1,5 +1,6 @@
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/service/domain/entities/main_category/all_category_main_entity.dart';
 import 'package:app/features/service/domain/entities/notifications.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -15,7 +16,7 @@ import '../../../../core/error/app_exception.dart';
 
 import '../../domain/repository/service_repository.dart';
 
-@LazySingleton(as: ServiceRepository)
+@Injectable(as: ServiceRepository)
 class ServiceRepositoryImpl implements ServiceRepository {
   final ServiceDataSource _serviceDataSource;
 
@@ -64,12 +65,24 @@ class ServiceRepositoryImpl implements ServiceRepository {
   }
 
   @override
-  Future<Either<Failure, List<Notifications>>> getAllNotification()async {
+  Future<Either<Failure, List<Notifications>>> getAllNotification() async {
     try {
       final response = await _serviceDataSource.getAllNotification();
       return Right(response.data!);
     } on AppException catch (exception) {
       return left(Failure(exception.message));
     }
+  }
+
+  @override
+  Future<Either<Failure, GetAllCategoryMainEntity>> getAllMainCategory() async{
+   try{
+     final response=await _serviceDataSource.getAllMainCategory();
+     final ans=response.toGetAllMainCategory();
+     return Right(ans);
+   }on AppException catch(exception){
+     return left(Failure(exception.message));
+   }
+    
   }
 }

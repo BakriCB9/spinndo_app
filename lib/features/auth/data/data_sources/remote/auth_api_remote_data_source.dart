@@ -105,7 +105,7 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       var message = 'Failed to register';
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
-
+        print('ther exception is $errorMessage');
         if (errorMessage != null) message = errorMessage;
       }
 

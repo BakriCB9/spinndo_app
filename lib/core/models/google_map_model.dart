@@ -6,5 +6,6 @@ class GoogleMapModel {
   final LatLng latLng;
   final dynamic color;
 
-  GoogleMapModel(this.color, {required this.id, required this.name, required this.latLng});
+  GoogleMapModel(this.color,
+      {required this.id, required this.name, required this.latLng});
 }

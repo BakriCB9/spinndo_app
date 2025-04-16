@@ -6,6 +6,8 @@ import 'package:app/features/profile/data/models/image_profile_photo/image_profi
 import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_response.dart';
 
 import '../../models/client_update/update_account_profile.dart';
 import '../../models/client_update/update_client_response.dart';
@@ -21,5 +23,9 @@ abstract class ProfileRemoteDataSource {
   Future<UpdateProviderResponse> updateProviderProfile(
       UpdateProviderRequest updateRequest, int typeEdit);
   Future<ImageProfileResponse> addImagePhoto(File image);
-  Future<DeleteImageResponse>deleteImage();
+  Future<DeleteImageResponse> deleteImage();
+
+  Future<SocialMediaLinksResponse> addOrupdateLinkSocial(
+      SocialMediaLinksRequest socialMediaLinksRequest);
+  Future<String> deleteSocialLinks(int idOfSocial);
 }

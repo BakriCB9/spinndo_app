@@ -8,11 +8,8 @@ class GetAllFavUsecase {
   FavRepositry favRepositry;
   GetAllFavUsecase(this.favRepositry);
   Future<ApiResult<List<Data?>>> call() async {
-    
-    ApiResult<List<Data?>> ans =await  favRepositry.getAllFav();
-    print('');
-    print('the ans from usecase is ${ans}');
-    print('');
+    ApiResult<List<Data?>> ans = await favRepositry.getAllFav();
+
     return ans;
-    }
+  }
 }

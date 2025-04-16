@@ -86,11 +86,6 @@
 //   }
 // }
 
-
-
-
-
-
 import 'package:app/core/const_variable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -100,7 +95,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print("Handling a background message: ${message.messageId}");
-  
+
   // Add logic to navigate to the specific screen using the payload
   // if (message.data['route'] != null) {
   //   // Use global navigation key to navigate to the route
@@ -108,7 +103,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // }
 }
 
-final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> globalNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 class Fcm {
   static final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -172,7 +168,8 @@ class Fcm {
               icon: 'ic_launcher',
             ),
           ),
-          payload: message.data['route'] ?? 'default_screen', // Pass dynamic route
+          payload:
+              message.data['route'] ?? 'default_screen', // Pass dynamic route
         );
       }
     });
@@ -184,14 +181,14 @@ class Fcm {
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
-     await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) async {
-      if (response.payload != null) {
-        // Navigate to the specific screen based on payload
-        globalNavigatorKey.currentState?.pushNamed('/${response.payload}');
-      }
-    },
-  );
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        if (response.payload != null) {
+          // Navigate to the specific screen based on payload
+          globalNavigatorKey.currentState?.pushNamed('/${response.payload}');
+        }
+      },
+    );
   }
 }

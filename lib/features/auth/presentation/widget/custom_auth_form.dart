@@ -41,8 +41,8 @@ class CustomAuthForm extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
         body: Padding(
@@ -55,34 +55,34 @@ class CustomAuthForm extends StatelessWidget {
                     children: [
                       canBack
                           ? InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(
-                            Icons.arrow_back_sharp,
-                            color: Theme.of(context).primaryColorLight,
-                            size: 45.sp,
-                          ))
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Icon(
+                                Icons.arrow_back_sharp,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 45.sp,
+                              ))
                           : const SizedBox(),
                       Spacer(),
                       isGuest
                           ? InkWell(
-                        onTap: () {
-                          _authCubit.emailController.clear();
-                          _authCubit.passwordController.clear();
-                          _authCubit.firstNameContoller.clear();
-                          _authCubit.lastNameContoller.clear();
-                          _authCubit.passwordController.clear();
-                          _authCubit.confirmPasswordController.clear();
+                              onTap: () {
+                                _authCubit.emailController.clear();
+                                _authCubit.passwordController.clear();
+                                _authCubit.firstNameContoller.clear();
+                                _authCubit.lastNameContoller.clear();
+                                _authCubit.passwordController.clear();
+                                _authCubit.confirmPasswordController.clear();
 
-                          Navigator.of(context).pushNamed(
-                            ServiceScreen.routeName,
-                          );
-                        },
-                        child: Text(localization.guest,
-                            style:
-                            Theme.of(context).textTheme.titleSmall),
-                      )
+                                Navigator.of(context).pushNamed(
+                                  ServiceScreen.routeName,
+                                );
+                              },
+                              child: Text(localization.guest,
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                            )
                           : const SizedBox(),
                     ],
                   ),
@@ -91,17 +91,17 @@ class CustomAuthForm extends StatelessWidget {
                   ),
                   hasAvatar
                       ? CircleAvatar(
-                      radius: 170.r,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(200.r),
-                          child: SvgPicture.asset("asset/images/logo.svg"))
-                    // Icon(
-                    //   Icons.person,
-                    //   size: 246.sp,
-                    //   color: ColorManager.white,
-                    // ),
-                  )
+                          radius: 170.r,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(200.r),
+                              child: SvgPicture.asset("asset/images/logo.svg"))
+                          // Icon(
+                          //   Icons.person,
+                          //   size: 246.sp,
+                          //   color: ColorManager.white,
+                          // ),
+                          )
                       : const SizedBox(),
                   child
                 ],

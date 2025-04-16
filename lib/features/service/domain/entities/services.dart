@@ -10,8 +10,10 @@ class Services {
   final String? providerName;
   final dynamic providerImage;
   final double? distance;
+  final int? numberOfvisitors;
 
   Services({
+    required this.numberOfvisitors,
     required this.id,
     required this.providerId,
     required this.name,

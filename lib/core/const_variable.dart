@@ -1,7 +1,3 @@
-  import 'package:app/core/di/service_locator.dart';
-import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
-
-
 List<String> Englishdays = [
   'Saturday',
   'Sunday',

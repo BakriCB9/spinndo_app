@@ -1,8 +1,11 @@
 import 'package:app/core/utils/fcm.dart';
 import 'package:app/default_firebase_options.dart';
+import 'package:app/features/discount/presentation/view/add_discount_screen.dart';
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
 import 'package:app/features/favorite/presentation/view/favorite_screen.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
+import 'package:app/features/service_requist/presentation/view/add_service_request_screen.dart';
+import 'package:app/features/service_requist/presentation/view/get_service_request_screen.dart';
 import 'package:app/splash_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,9 +45,9 @@ Future<void> main() async {
   Fcm.init();
   sharedPref = await SharedPreferences.getInstance();
   await ScreenUtil.ensureScreenSize();
-final _drawerCubit=serviceLocator.get<DrawerCubit>();
-await _drawerCubit.loadLanguage();
-await _drawerCubit.loadThemeData();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  await _drawerCubit.loadLanguage();
+  await _drawerCubit.loadThemeData();
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: false,
@@ -63,7 +66,6 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => serviceLocator.get<ProfileCubit>(),
           ),
-
           BlocProvider(
             create: (context) => serviceLocator.get<DrawerCubit>(),
           )
@@ -86,22 +88,29 @@ class MyApp extends StatelessWidget {
                       locale: Locale(
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       //home: HomeScreen(),
-                      initialRoute:
-                      SplashScreen.routeName,
-                          // sharedPref.getString(CacheConstant.tokenKey) == null
-                          //     ? (sharedPref.getString(CacheConstant.emailKey) ==
-                          //             null
-                          //         ? SignUpScreen.routeName
-                          //         : SignInScreen.routeName)
-                          //     : ServiceScreen.routeName,
+                      initialRoute: SplashScreen.routeName,
+                      // sharedPref.getString(CacheConstant.tokenKey) == null
+                      //     ? (sharedPref.getString(CacheConstant.emailKey) ==
+                      //             null
+                      //         ? SignUpScreen.routeName
+                      //         : SignInScreen.routeName)
+                      //     : ServiceScreen.routeName,
                       routes: {
-                        FavoriteScreen.routeName:(context)=>FavoriteScreen(),
+                        DiscountScreen.routeName: (context) => DiscountScreen(),
+                        AddServiceRequestScreen.routeName: (context) =>
+                            const AddServiceRequestScreen(),
+                        GetServiceRequestScreen.routeName: (context) =>
+                            const GetServiceRequestScreen(),
+                        FavoriteScreen.routeName: (context) =>
+                            const FavoriteScreen(),
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
-                        SettingScreen.routeName:(context)=>SettingScreen(),
-                         NotificationScreen.routeName:(context)=>const  NotificationScreen(),
-                        ServiceScreen.routeName: (context) =>  ServiceScreen(),
-                        SplashScreen.routeName: (context) =>SplashScreen(),
+                        SettingScreen.routeName: (context) =>
+                            const SettingScreen(),
+                        NotificationScreen.routeName: (context) =>
+                            const NotificationScreen(),
+                        ServiceScreen.routeName: (context) => ServiceScreen(),
+                        SplashScreen.routeName: (context) => SplashScreen(),
                         ServiceMapScreen.routeName: (context) =>
                             ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),
@@ -118,7 +127,6 @@ class MyApp extends StatelessWidget {
                             const Profile_Screen(),
                       },
                       debugShowCheckedModeBanner: false,
-
                     );
                   },
                 );

@@ -15,21 +15,23 @@ class CustomContainer extends StatelessWidget {
   final String? initialImage;
   final double? width;
   final BoxShape shape;
-final int theId;
+  final int theId;
   const CustomContainer({
     required this.shape,
     this.width,
     required this.initialImage,
-    super.key, required this.theId,
+    super.key,
+    required this.theId,
   });
 
   // String? _currentImage;
   @override
   Widget build(BuildContext context) {
+    print('the initial image now is bakkkkar $initialImage');
     final imagePhotoLogin =
-    sharedPref.getString(CacheConstant.imagePhotoFromLogin);
+        sharedPref.getString(CacheConstant.imagePhotoFromLogin);
     final imagePhotoGallery = sharedPref.getString(CacheConstant.imagePhoto);
-final myId=sharedPref.getInt(CacheConstant.userId);
+    final myId = sharedPref.getInt(CacheConstant.userId);
     return Stack(
       // fit: StackFit.expand,
       children: [
@@ -39,65 +41,77 @@ final myId=sharedPref.getInt(CacheConstant.userId);
           decoration: BoxDecoration(
             shape: shape,
           ),
-          clipBehavior: Clip.antiAlias,
-          child:
-          theId!=myId?initialImage!=null? CashImage(path: initialImage!):Image.asset(
-            'asset/images/aaaa.png',
-            fit: BoxFit.cover,
-          ):
-          BlocConsumer<ProfileCubit, ProfileStates>(
+          //clipBehavior: Clip.antiAlias,
+          child: theId != myId
+              ? initialImage != null
+                  ? CashImage(path: initialImage!)
+                  :
+                  // const  SizedBox()
+                  // SizedBox(
+                  //     height: width ?? 100,
+                  //     width: double.infinity,
+                  //     child: Image.asset(
+                  //       'asset/images/aaaa.png',
+                  //       fit: BoxFit.cover,
+                  //     ),
+                  //   )
+                  Image(
+                      //height: width ?? 100,
+                      //width: double.infinity,
+                      image: AssetImage('asset/images/aaaa.png'),
+                      fit: BoxFit.cover,
+                    )
+              : BlocConsumer<ProfileCubit, ProfileStates>(
+                  listener: (context, state) {
+                    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    print(initialImage);
+                    if (state is LoadImagePhotoError) {
+                      UIUtils.showMessage(state.message);
+                    }
+                  },
+                  buildWhen: (pre, cur) {
+                    if (cur is LoadImagePhotoLoading ||
+                        cur is LoadImagePhotoError ||
+                        cur is LoadImagePhotoSuccess) {
+                      return true;
+                    }
+                    return false;
+                  },
+                  bloc: serviceLocator.get<ProfileCubit>(),
+                  builder: (context, state) {
+                    final ans = sharedPref.getString('imageFile');
 
-              listener: (context, state) {
-                print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                print(initialImage);
-                if (state is LoadImagePhotoError) {
-                  UIUtils.showMessage(state.message);
-                }
-              },
-              buildWhen: (pre, cur) {
-                if (cur is LoadImagePhotoLoading
-             ||   cur is LoadImagePhotoError
-               || cur is LoadImagePhotoSuccess) {
-                  return true;
-                }
-                return false;
-              },
-              bloc: serviceLocator.get<ProfileCubit>(),
-              builder: (context, state) {
-                final ans = sharedPref.getString('imageFile');
-
-                if (state is LoadImagePhotoLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: ColorManager.white,
-                    ),
-                  );
-                }
-                return imagePhotoGallery == null
-                    ? imagePhotoLogin == null
-                    ? Image.asset(
-                  'asset/images/aaaa.png',
-                  fit: BoxFit.cover,
-                )
-                    : CashImage(path: imagePhotoLogin)
-                    : ans != null && imagePhotoGallery.isNotEmpty
-                    ? Builder(builder: (context) {
-                  print('');
-                  print(
-                      ' builderbuilder bulder builder builder builder builder  ');
-                  print('');
-                  return Image.file(
-                    File(ans),
-                    fit: BoxFit.cover,
-                  );
-                })
-                    : const Image(
-                  image: AssetImage('asset/images/aaaa.png'),
-                  fit: BoxFit.cover,
-                );
-              }),
+                    if (state is LoadImagePhotoLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: ColorManager.white,
+                        ),
+                      );
+                    }
+                    return imagePhotoGallery == null
+                        ? imagePhotoLogin == null
+                            ? Image.asset(
+                                'asset/images/aaaa.png',
+                                fit: BoxFit.cover,
+                              )
+                            : CashImage(path: imagePhotoLogin)
+                        : ans != null && imagePhotoGallery.isNotEmpty
+                            ? Builder(builder: (context) {
+                                print('');
+                                print(
+                                    ' builderbuilder bulder builder builder builder builder  ');
+                                print('');
+                                return Image.file(
+                                  File(ans),
+                                  fit: BoxFit.cover,
+                                );
+                              })
+                            : const Image(
+                                image: AssetImage('asset/images/aaaa.png'),
+                                fit: BoxFit.cover,
+                              );
+                  }),
         ),
-
       ],
     );
   }

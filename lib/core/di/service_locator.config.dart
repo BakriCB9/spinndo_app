@@ -32,6 +32,22 @@ import 'package:app/features/auth/domain/use_cases/reset_password.dart'
     as _i801;
 import 'package:app/features/auth/domain/use_cases/verify_code.dart' as _i833;
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart' as _i580;
+import 'package:app/features/discount/data/dataSource/remote/remote_dataSource.dart'
+    as _i678;
+import 'package:app/features/discount/data/dataSource/remote/remote_dataSource_impl.dart'
+    as _i145;
+import 'package:app/features/discount/data/repositry/discount_repo_impl.dart'
+    as _i206;
+import 'package:app/features/discount/domain/repositry/discount_repo.dart'
+    as _i292;
+import 'package:app/features/discount/domain/useCase/add_discount.dart'
+    as _i449;
+import 'package:app/features/discount/domain/useCase/delete_discount.dart'
+    as _i595;
+import 'package:app/features/discount/domain/useCase/get_discount.dart'
+    as _i762;
+import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart'
+    as _i967;
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart'
     as _i649;
 import 'package:app/features/favorite/data/dataSource/remote/remote_datasource.dart'
@@ -64,8 +80,12 @@ import 'package:app/features/profile/domain/repository/profile_repository.dart'
     as _i734;
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart'
     as _i814;
+import 'package:app/features/profile/domain/use_cases/add_or_update_social.dart'
+    as _i83;
 import 'package:app/features/profile/domain/use_cases/delete_image.dart'
     as _i628;
+import 'package:app/features/profile/domain/use_cases/delete_social_links.dart'
+    as _i54;
 import 'package:app/features/profile/domain/use_cases/get_client_profile.dart'
     as _i916;
 import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart'
@@ -92,12 +112,32 @@ import 'package:app/features/service/domain/use_cases/get_countries.dart'
     as _i538;
 import 'package:app/features/service/domain/use_cases/get_details.dart'
     as _i904;
+import 'package:app/features/service/domain/use_cases/get_main_category.dart'
+    as _i785;
 import 'package:app/features/service/domain/use_cases/get_notifications.dart'
     as _i302;
 import 'package:app/features/service/domain/use_cases/get_services.dart'
     as _i590;
 import 'package:app/features/service/presentation/cubit/service_cubit.dart'
     as _i254;
+import 'package:app/features/service_requist/data/dataSource/remote/service_request_remote_dataSouce_impl.dart'
+    as _i290;
+import 'package:app/features/service_requist/data/dataSource/remote/service_requist_remote_dataSource.dart'
+    as _i278;
+import 'package:app/features/service_requist/data/respositry/service_request_impl.dart'
+    as _i195;
+import 'package:app/features/service_requist/doamin/repositry/service_request_repo.dart'
+    as _i461;
+import 'package:app/features/service_requist/doamin/useCase/add_service_request.dart'
+    as _i35;
+import 'package:app/features/service_requist/doamin/useCase/delete_service_request.dart'
+    as _i600;
+import 'package:app/features/service_requist/doamin/useCase/get_service_request.dart'
+    as _i881;
+import 'package:app/features/service_requist/doamin/useCase/update_service_request.dart'
+    as _i457;
+import 'package:app/features/service_requist/presentation/view-model/cubit/service_request_cubit.dart'
+    as _i840;
 import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
@@ -120,27 +160,50 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
-    gh.lazySingleton<_i328.ServiceDataSource>(() => _i445.ServiceApiDataSource(
+    gh.factory<_i437.ProfileRemoteDataSource>(
+        () => _i1045.ProfileApiRemoteDataSource(
+              gh<_i361.Dio>(),
+              gh<_i460.SharedPreferences>(),
+            ));
+    gh.factory<_i678.DiscountRemoteDataSource>(
+        () => _i145.DiscountRemoteDatasourceImpl(
+              gh<_i361.Dio>(),
+              gh<_i460.SharedPreferences>(),
+            ));
+    gh.factory<_i328.ServiceDataSource>(() => _i445.ServiceApiDataSource(
           gh<_i361.Dio>(),
           gh<_i460.SharedPreferences>(),
         ));
-    gh.lazySingleton<_i1054.ServiceRepository>(
+    gh.factory<_i1054.ServiceRepository>(
         () => _i1038.ServiceRepositoryImpl(gh<_i328.ServiceDataSource>()));
-    gh.lazySingleton<_i437.ProfileRemoteDataSource>(
-        () => _i1045.ProfileApiRemoteDataSource(gh<_i361.Dio>()));
+    gh.factory<_i278.ServiceRequistRemoteDatasource>(
+        () => _i290.ServiceRequestRemoteDatasouceImpl(
+              gh<_i361.Dio>(),
+              gh<_i460.SharedPreferences>(),
+            ));
     gh.factory<_i306.RemoteDatasource>(
         () => _i685.RemoteDatasourceImpl(dio: gh<_i361.Dio>()));
     gh.singleton<_i597.ProfileLocalDataSource>(() =>
         _i373.ProfileSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.factory<_i461.ServiceRequestRepo>(() =>
+        _i195.ServiceRequestImpl(gh<_i278.ServiceRequistRemoteDatasource>()));
     gh.lazySingleton<_i649.DrawerCubit>(() =>
         _i649.DrawerCubit(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.singleton<_i856.AuthRemoteDataSource>(
         () => _i27.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
+    gh.factory<_i292.DiscountRepo>(
+        () => _i206.DiscountRepoImpl(gh<_i678.DiscountRemoteDataSource>()));
     gh.factory<_i258.FavRepositry>(() => _i983.FavRepositryImpl(
           gh<_i306.RemoteDatasource>(),
           gh<_i460.SharedPreferences>(),
         ));
+    gh.factory<_i449.AddDiscountUseCase>(
+        () => _i449.AddDiscountUseCase(gh<_i292.DiscountRepo>()));
+    gh.factory<_i595.DeleteDiscountUseCase>(
+        () => _i595.DeleteDiscountUseCase(gh<_i292.DiscountRepo>()));
+    gh.factory<_i762.GetAllDiscountUseCase>(
+        () => _i762.GetAllDiscountUseCase(gh<_i292.DiscountRepo>()));
     gh.singleton<_i456.AuthLocalDataSource>(() =>
         _i545.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -148,20 +211,39 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
         ));
-    gh.lazySingleton<_i779.GetCategories>(
+    gh.factory<_i967.DiscountViewModelCubit>(() => _i967.DiscountViewModelCubit(
+          gh<_i449.AddDiscountUseCase>(),
+          gh<_i595.DeleteDiscountUseCase>(),
+          gh<_i762.GetAllDiscountUseCase>(),
+        ));
+    gh.factory<_i779.GetCategories>(
         () => _i779.GetCategories(gh<_i1054.ServiceRepository>()));
-    gh.lazySingleton<_i538.GetCountries>(
+    gh.factory<_i538.GetCountries>(
         () => _i538.GetCountries(gh<_i1054.ServiceRepository>()));
-    gh.lazySingleton<_i904.GetServiceProfile>(
+    gh.factory<_i904.GetServiceProfile>(
         () => _i904.GetServiceProfile(gh<_i1054.ServiceRepository>()));
-    gh.lazySingleton<_i302.GetNotifications>(
+    gh.factory<_i302.GetNotifications>(
         () => _i302.GetNotifications(gh<_i1054.ServiceRepository>()));
-    gh.lazySingleton<_i590.GetServices>(
+    gh.factory<_i590.GetServices>(
         () => _i590.GetServices(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i785.GetMainCategory>(
+        () => _i785.GetMainCategory(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i881.GetServiceRequestUseCase>(
+        () => _i881.GetServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
+    gh.factory<_i457.UpdateServiceRequestUseCase>(() =>
+        _i457.UpdateServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
+    gh.factory<_i35.AddServiceRequestUseCase>(
+        () => _i35.AddServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
+    gh.factory<_i600.DeleteServiceRequestUseCase>(() =>
+        _i600.DeleteServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
     gh.singleton<_i651.AuthRepository>(() => _i201.AuthRepositoryImpl(
           gh<_i856.AuthRemoteDataSource>(),
           gh<_i456.AuthLocalDataSource>(),
         ));
+    gh.factory<_i83.AddOrUpdateSocialUseCase>(
+        () => _i83.AddOrUpdateSocialUseCase(gh<_i734.ProfileRepository>()));
+    gh.factory<_i54.DeleteSocialLinksUseCase>(
+        () => _i54.DeleteSocialLinksUseCase(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i814.AddImagePhoto>(
         () => _i814.AddImagePhoto(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i628.DeleteImage>(
@@ -176,13 +258,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i284.UpdateProviderProfile>(
         () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
-    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
-          gh<_i590.GetServices>(),
-          gh<_i538.GetCountries>(),
-          gh<_i779.GetCategories>(),
-          gh<_i904.GetServiceProfile>(),
-          gh<_i302.GetNotifications>(),
-        ));
     gh.factory<_i619.AddFavUseCase>(
         () => _i619.AddFavUseCase(gh<_i258.FavRepositry>()));
     gh.factory<_i614.GetAllFavUsecase>(
@@ -202,6 +277,34 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i801.ResetPassword(gh<_i651.AuthRepository>()));
     gh.singleton<_i833.VerifyCode>(
         () => _i833.VerifyCode(gh<_i651.AuthRepository>()));
+    gh.factory<_i840.ServiceRequestCubit>(() => _i840.ServiceRequestCubit(
+          gh<_i881.GetServiceRequestUseCase>(),
+          gh<_i35.AddServiceRequestUseCase>(),
+          gh<_i457.UpdateServiceRequestUseCase>(),
+          gh<_i600.DeleteServiceRequestUseCase>(),
+        ));
+    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
+          gh<_i590.GetServices>(),
+          gh<_i538.GetCountries>(),
+          gh<_i779.GetCategories>(),
+          gh<_i904.GetServiceProfile>(),
+          gh<_i302.GetNotifications>(),
+          gh<_i762.GetAllDiscountUseCase>(),
+          gh<_i785.GetMainCategory>(),
+        ));
+    gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
+          gh<_i916.GetClientProfile>(),
+          gh<_i140.GetProviderProfile>(),
+          gh<_i849.GetUserRole>(),
+          gh<_i837.UpdateClientProfile>(),
+          gh<_i284.UpdateProviderProfile>(),
+          gh<_i779.GetCategories>(),
+          gh<_i728.Getcountryname>(),
+          gh<_i814.AddImagePhoto>(),
+          gh<_i628.DeleteImage>(),
+          gh<_i83.AddOrUpdateSocialUseCase>(),
+          gh<_i54.DeleteSocialLinksUseCase>(),
+        ));
     gh.singleton<_i580.AuthCubit>(() => _i580.AuthCubit(
           gh<_i293.Login>(),
           gh<_i374.Register>(),
@@ -216,17 +319,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i619.AddFavUseCase>(),
           gh<_i614.GetAllFavUsecase>(),
           gh<_i654.RemoveFromFavUsecase>(),
-        ));
-    gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
-          gh<_i916.GetClientProfile>(),
-          gh<_i140.GetProviderProfile>(),
-          gh<_i849.GetUserRole>(),
-          gh<_i837.UpdateClientProfile>(),
-          gh<_i284.UpdateProviderProfile>(),
-          gh<_i779.GetCategories>(),
-          gh<_i728.Getcountryname>(),
-          gh<_i814.AddImagePhoto>(),
-          gh<_i628.DeleteImage>(),
         ));
     return this;
   }

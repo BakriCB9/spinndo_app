@@ -13,9 +13,12 @@ class LogOutErrorr extends DrawerStates {
 
   LogOutErrorr(this.message);
 }
-class DeleteAccountLoading extends DrawerStates{}
-class DeleteAccountError extends DrawerStates{
- final String message;
- DeleteAccountError(this.message);
+
+class DeleteAccountLoading extends DrawerStates {}
+
+class DeleteAccountError extends DrawerStates {
+  final String message;
+  DeleteAccountError(this.message);
 }
-class DeleteAccountSuccess extends DrawerStates{}
+
+class DeleteAccountSuccess extends DrawerStates {}

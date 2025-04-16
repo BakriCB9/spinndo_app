@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class DeleteImage {
   final ProfileRepository _profileRepository;
-
+  
   DeleteImage(this._profileRepository);
 
   Future<Either<Failure, DeleteImageResponse>> call() =>

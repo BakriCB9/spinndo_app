@@ -6,8 +6,13 @@ class GoogleMapMarker {
   final LatLng latLng;
   final int? providerId;
   final dynamic color;
-  GoogleMapMarker(this.color,
-      {required this.id, required this.name, required this.latLng , this.providerId,});
+  GoogleMapMarker(
+    this.color, {
+    required this.id,
+    required this.name,
+    required this.latLng,
+    this.providerId,
+  });
 }
 
 List<GoogleMapMarker> markerLocationData = [];

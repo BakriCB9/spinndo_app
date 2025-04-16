@@ -18,7 +18,7 @@ class CustomDescription extends StatelessWidget {
   final String lat;
   final String lng;
   final int userId;
-  final int? isApprovid;
+  final bool? isApprovid;
   final String cityName;
   const CustomDescription(
       {required this.categoryName,
@@ -48,7 +48,7 @@ class CustomDescription extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             userId == myId
                 ? IconButton(
-                    onPressed: isApprovid == 1
+                    onPressed: isApprovid == true
                         ? () {
                             _profileCubit.selectedSubCategory = null;
                             _profileCubit.selectedCategory = null;
@@ -69,7 +69,7 @@ class CustomDescription extends StatelessWidget {
                           },
                     icon: Icon(
                       Icons.edit,
-                      color: isApprovid == 1 ? Colors.yellow : Colors.grey,
+                      color: isApprovid == true ? Colors.yellow : Colors.grey,
                     ))
                 : const SizedBox()
           ],

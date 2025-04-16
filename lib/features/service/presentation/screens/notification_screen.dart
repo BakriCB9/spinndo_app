@@ -57,11 +57,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     SizedBox(
                       width: 40.w,
                     ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        localization.notifications,
-                        style: Theme.of(context).textTheme.titleLarge,
+                    Expanded(
+                      child: FittedBox(
+                        // alignment: Alignment.centerLeft,
+                        alignment:
+                            Directionality.of(context) == TextDirection.rtl
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          localization.notifications,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                       ),
                     ),
                   ],

@@ -143,6 +143,7 @@ class GeocodingService {
       print('Error: $e');
     }
   }
+
   static Future<LatLngBounds> getCurrentLocationBounds(
       double lat, double long) async {
     final String url =
@@ -155,7 +156,6 @@ class GeocodingService {
         final data = response.data;
 
         if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-
           final geometry = data['results'][5]['geometry'];
           final northLat = geometry['bounds']['northeast']['lat'];
           final northLng = geometry['bounds']['northeast']['lng'];
@@ -175,5 +175,4 @@ class GeocodingService {
       throw Exception('Error fetching address: $e');
     }
   }
-
 }

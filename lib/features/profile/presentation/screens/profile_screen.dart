@@ -56,6 +56,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           if (state is GetProfileLoading) {
             return LoadingIndicator(Theme.of(context).primaryColor);
           } else if (state is GetProfileErrorr) {
+            
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +70,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   //       fontWeight: FontWeight.w500),
                   // ),
                   SizedBox(height: 20.h),
-                  Icon(
+                  const Icon(
                     Icons.replay_outlined,
                     color: ColorManager.primary,
                   ),
@@ -103,6 +104,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               ),
             );
           } else if (state is GetProviderSuccess) {
+            
             return ProviderProfileScreen(providerProfile: state.provider);
           } else if (state is GetClientSuccess) {
             return ClientProfileScreen(clientProfile: state.client);

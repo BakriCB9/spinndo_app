@@ -49,10 +49,7 @@ class GetNotificationError extends ServiceStates {
   GetNotificationError(this.message);
 }
 
-class GetNotificationSuccess extends ServiceStates {
-  
-  
-}
+class GetNotificationSuccess extends ServiceStates {}
 
 class SelectedCategoryServiceState extends ServiceStates {}
 
@@ -75,3 +72,21 @@ class DistanceSelectUpdate extends ServiceStates {}
 class IsCurrentLocation extends ServiceStates {}
 
 class ResetSettingsState extends ServiceStates {}
+
+class GetDiscountLoadingState extends ServiceStates {}
+
+class GetDiscountSuccessState<T> extends ServiceStates {
+  T data;
+  GetDiscountSuccessState(this.data);
+}
+
+class GetDiscountFailState extends ServiceStates {}
+
+class GetMainCategorySuccess extends ServiceStates{
+
+}
+class GetMainCategoryError extends ServiceStates{
+  String message;
+  GetMainCategoryError(this.message);
+}
+class GetMainCategoryLoading extends ServiceStates{}

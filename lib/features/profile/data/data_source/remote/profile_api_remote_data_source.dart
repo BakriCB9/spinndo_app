@@ -7,6 +7,8 @@ import 'package:app/features/profile/data/models/image_profile_photo/image_profi
 import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_response.dart';
 import 'package:app/main.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -14,12 +16,14 @@ import 'package:app/core/constant.dart';
 import 'package:app/core/error/app_exception.dart';
 import 'package:app/features/profile/data/data_source/remote/profile_remote_data_source.dart';
 import 'package:app/features/profile/data/models/client_profile_respoonse/client_profile_respoonse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-@LazySingleton(as: ProfileRemoteDataSource)
+@Injectable(as: ProfileRemoteDataSource)
 class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   final Dio _dio;
+  SharedPreferences _sharedPreferences;
 
-  ProfileApiRemoteDataSource(this._dio);
+  ProfileApiRemoteDataSource(this._dio, this._sharedPreferences);
 
   @override
   Future<ClientProfileRespoonse> getClientProfile(
@@ -51,15 +55,14 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
       // print('the token is from api is ${user_token}');
       // print('the user id is now ${user_id}');
 
+      final lang = _sharedPreferences.getString('language');
       final response = await _dio.get(
           '${ApiConstant.profileServiceProviderEndPoint}/$user_id',
           options: Options(headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer $user_token"
+            "Authorization": "Bearer $user_token",
+            "Accept-Language": '$lang'
           }));
-      // print(
-      //     'th eresponse is WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWwQQQQQQQQQQQQQQ ${response.data}');
-      //
 
       return ProviderProfileResponse.fromJson(response.data);
     } catch (exciption) {
@@ -78,7 +81,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
             "Content-Type": "application/json",
             "Authorization": "Bearer $userToken"
           }));
-      print('ther token is for update profile client  $userToken');
+
       return UpdateClientResponse.fromJson(response.data);
     } catch (e) {
       throw RemoteAppException('Failed to update info');
@@ -122,14 +125,12 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
             "Authorization": "Bearer $userToken"
           }));
 
-      print(
-          'we Do it  now yessssssssssssssssssssssssssssssssssssssssssssssssss yesssssssssssssss');
       return ImageProfileResponse.fromJson(response.data);
     } catch (e) {
       throw RemoteAppException('Failed to add Image');
     }
   }
-  
+
   @override
   Future<DeleteImageResponse> deleteImage() async {
     try {
@@ -143,6 +144,44 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
       return DeleteImageResponse.fromJson(response.data);
     } catch (e) {
       throw RemoteAppException('Failed to delete image,try again');
+    }
+  }
+
+  @override
+  Future<SocialMediaLinksResponse> addOrupdateLinkSocial(
+      SocialMediaLinksRequest socialMediaLinksRequest) async {
+    try {
+      final userToken = sharedPref.getString(CacheConstant.tokenKey);
+      final userid = sharedPref.getInt(CacheConstant.userId);
+
+      final response = await _dio.post(
+          '${ApiConstant.addOrupdateLinkSocial}/$userid',
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $userToken"
+          }),
+          data: socialMediaLinksRequest.toJson());
+      return SocialMediaLinksResponse.fromJson(response.data);
+    } catch (e) {
+      throw RemoteAppException('Failed to add link of social');
+    }
+  }
+
+  @override
+  Future<String> deleteSocialLinks(int idOfSocial) async {
+    try {
+      final userToken = sharedPref.getString(CacheConstant.tokenKey);
+
+      final response = await _dio.delete(
+        '${ApiConstant.deleteSocialLinks}/$idOfSocial',
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $userToken"
+        }),
+      );
+      return response.data["message"];
+    } catch (e) {
+      throw RemoteAppException('Failed to add link of social');
     }
   }
 }

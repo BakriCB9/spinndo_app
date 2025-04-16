@@ -6,11 +6,14 @@ import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_porfile_category.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile_city.dart';
 import 'package:app/features/profile/domain/use_cases/add_image_photo.dart';
+import 'package:app/features/profile/domain/use_cases/add_or_update_social.dart';
 import 'package:app/features/profile/domain/use_cases/delete_image.dart';
+import 'package:app/features/profile/domain/use_cases/delete_social_links.dart';
 import 'package:app/features/profile/domain/use_cases/update_client_profile.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 
@@ -38,7 +41,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
       this._updateProviderProfile,
       this._getCategories,
       this._getCountryCityName,
-      this._addImagePhoto,this._deleteImage)
+      this._addImagePhoto,
+      this._deleteImage,
+      this._addOrUpdateSocialUseCase,
+      this._deleteSocialLinksUseCase)
       : super(ProfileInitial());
   final GetClientProfile _getClientProfile;
   final GetProviderProfile _getProviderProfile;
@@ -48,6 +54,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final GetCategories _getCategories;
   final AddImagePhoto _addImagePhoto;
   final DeleteImage _deleteImage;
+  final AddOrUpdateSocialUseCase _addOrUpdateSocialUseCase;
+  final DeleteSocialLinksUseCase _deleteSocialLinksUseCase;
 
   //variable
   // Categories? parent;
@@ -64,9 +72,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
   Categories? selectedSubCategory;
   final Getcountryname _getCountryCityName;
   ProviderProfile? providerProfile;
-   String? latitu;
+  String? latitu;
 
-   String? longti;
+  String? longti;
   List<DateSelect> dateSelect = [
     DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
     DateSelect(day: "Monday", start: "08:00", end: "15:00"),
@@ -80,11 +88,11 @@ class ProfileCubit extends Cubit<ProfileStates> {
   LatLng? currentLocation;
   String? cityName;
   LatLng? myLocation;
-  LatLng?oldLocation;
+  LatLng? oldLocation;
   Country? country;
   List<Categories?> chosenCategories = [];
 
-  ProviderProfileCity ?city;
+  ProviderProfileCity? city;
 //   void extractCategoryNames(ProviderProfileCategory? category,List<Categories>? categoriesListll) {
 //     List<Categories?> names = [];
 // Categories ?name;
@@ -106,7 +114,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
 //     chosenCategories =names.reversed.toList();
 //   }
 
-  void extractCategoryNames(ProviderProfileCategory? category, List<Categories>? categoriesList) {
+  void extractCategoryNames(
+      ProviderProfileCategory? category, List<Categories>? categoriesList) {
     List<Categories?> names = [];
     Categories? name;
     // Helper function to find a category by name recursively
@@ -139,72 +148,82 @@ class ProfileCubit extends Cubit<ProfileStates> {
     // Reverse the list to start with the root category
     chosenCategories = names.reversed.toList();
   }
-void slesctedProfileCat(){
+
+  void slesctedProfileCat() {
     print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     print(selectedCategory?.id);
     print(providerProfile?.details?.category?.id);
     print("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
-  selectedCategory?.id!=
-      providerProfile?.details?.category?.id?
-
-  emit(IsUpdated()):emit(IsNotUpdated());
+    selectedCategory?.id != providerProfile?.details?.category?.id
+        ? emit(IsUpdated())
+        : emit(IsNotUpdated());
 
     emit(SelectedCategoryState());
+  }
 
-
-}
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
 
     final result = await _getCategories();
     result.fold((failure) {
-
       emit(GetCategoryError(failure.message));
     }, (categories) {
       categoriesList = categories;
-      extractCategoryNames(      providerProfile?.details?.category,categoriesList
-      );
-
-
+      extractCategoryNames(providerProfile?.details?.category, categoriesList);
 
       emit(GetCategorySuccess());
       slesctedProfileCat();
-
     });
   }
+
   Future<void> getProviderProfile() async {
     emit(GetProfileLoading());
-    final result = await _getProviderProfile();
-    result.fold(
-            (failure) => emit(
-          GetProfileErrorr(failure.message),
-        ),
-            (data) {
-          providerProfile=ProviderProfile(id: data.id,email: data.email,firstName: data.firstName,imagePath: data.imagePath,lastName: data.lastName,details: data.details);
 
-          emit(
-            GetProviderSuccess(data),
-          );}
-    );
+    final result = await _getProviderProfile();
+    result.fold((failure) {
+      print(
+          'we emit error state in getProviderProfile now wwwwwwwwwwwwwwwwwwwwwwwwwwww');
+      emit(
+        GetProfileErrorr(failure.message),
+      );
+    }, (data) {
+      print('now i currently get provider profile');
+      providerProfile = ProviderProfile(
+          id: data.id,
+          email: data.email,
+          firstName: data.firstName,
+          imagePath: data.imagePath,
+          lastName: data.lastName,
+          details: data.details);
+
+      emit(
+        GetProviderSuccess(data),
+      );
+    });
   }
+
   void updateProviderProfile(
       UpdateProviderRequest updateRequest, int typeEdit) async {
     emit(UpdateLoading());
     final result = await _updateProviderProfile(updateRequest, typeEdit);
     result.fold((failure) => emit(UpdateError(failure.message)),
-            (updateRequest) {
-          emit(UpdateSuccess());
-        });
+        (updateRequest) {
+      emit(UpdateSuccess());
+    });
   }
+
   void getUserRole() {
+    print('the user role is now bakkkkar aweja ');
     emit(GetProfileLoading());
 
     final result = _getUserRole();
+    print('the result of role is ${result}');
     result.fold(
-            (failure) => emit(
-          GetUserRoleErrorr(failure.message),
-        ), (role) {
+        (failure) => emit(
+              GetUserRoleErrorr(failure.message),
+            ), (role) {
       if (role == "ServiceProvider") {
+        print('we stand in userProvider role now');
         getProviderProfile();
       } else if (role == "Client") {
         getClientProfile();
@@ -213,15 +232,15 @@ void slesctedProfileCat(){
       }
     });
   }
+
   Future<void> getClientProfile() async {
     emit(GetProfileLoading());
     final result = await _getClientProfile();
     result.fold(
-          (failure) => emit(
+      (failure) => emit(
         GetProfileErrorr(failure.message),
-
       ),
-          (client) => emit(
+      (client) => emit(
         GetClientSuccess(client),
       ),
     );
@@ -270,12 +289,9 @@ void slesctedProfileCat(){
 
   updateJobDetails(
       {required String curServiceName,
-
       required String newServiceName,
       required String curDescription,
-      required String newDescription
-
-      }) {
+      required String newDescription}) {
     if (curServiceName == newServiceName && curDescription == newDescription) {
       emit(IsNotUpdated());
     } else {
@@ -312,10 +328,6 @@ void slesctedProfileCat(){
     return false;
   }
 
-
-
-
-
   bool isCurrent = true;
 
   String? mapStyle;
@@ -332,7 +344,6 @@ void slesctedProfileCat(){
           (e) => Marker(
             position: e.latLng,
             icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-
             infoWindow: InfoWindow(title: e.name),
             markerId: MarkerId(
               e.id.toString(),
@@ -345,17 +356,12 @@ void slesctedProfileCat(){
   }
 
   void initCurrentLocation() {
-    CameraPosition newLocation = CameraPosition(
-        target: myLocation!, zoom: 15);
+    CameraPosition newLocation = CameraPosition(target: myLocation!, zoom: 15);
     googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(newLocation));
 
-    markerLocationData.add(GoogleMapModel(
-        BitmapDescriptor.hueGreen,
-        id: 1,
-
-        name: "your location",
-        latLng: myLocation!));
+    markerLocationData.add(GoogleMapModel(BitmapDescriptor.hueGreen,
+        id: 1, name: "your location", latLng: myLocation!));
     emit(SelectedLocationUpdatedState());
   }
 
@@ -379,13 +385,11 @@ void slesctedProfileCat(){
       latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
     ));
 
-
     emit(SelectedLocationUpdatedState());
   }
 
   void getCountryAndCityNameFromCrocd(double lat, double long) async {
-
-   lat!=latitu&&long!=longti? emit(IsUpdated()):emit(IsNotUpdated());
+    lat != latitu && long != longti ? emit(IsUpdated()) : emit(IsNotUpdated());
 
     emit(GetLocationCountryLoading());
     isCountySuccess = false;
@@ -412,18 +416,15 @@ void slesctedProfileCat(){
   }
 
   void addImagePhoto(File image) async {
-    print(
-        'the image work and this is Image  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ${image}');
     emit(LoadImagePhotoLoading());
     final result = await _addImagePhoto(image);
     result.fold((failure) {
-      print(
-          'There are Error bakkkkkkkkkkkkkkar here now #########################################');
       emit(LoadImagePhotoError(failure.message));
     }, (response) {
       emit(LoadImagePhotoSuccess(response.data!));
     });
   }
+
   void deleteImage() async {
     emit(LoadImagePhotoLoading());
     final result = await _deleteImage();
@@ -431,6 +432,26 @@ void slesctedProfileCat(){
       emit(LoadImagePhotoError(failure.message));
     }, (response) {
       emit(LoadImagePhotoSuccess(response.data!));
+    });
+  }
+
+  addOrupdateSoical(SocialMediaLinksRequest socialMediaLinksRequest) async {
+    emit(AddorUpdateSoicalLinksLoading());
+    final result = await _addOrUpdateSocialUseCase(socialMediaLinksRequest);
+    result.fold((failure) {
+      emit(AddorUpdateSoicalLinksError(failure.message));
+    }, (response) {
+      emit(AddorUpdateSoicalLinksSuccess(response));
+    });
+  }
+
+  deleteSocialLinks(int idOfSocial) async {
+    emit(DeleteSocialLinkLoading());
+    final result = await _deleteSocialLinksUseCase(idOfSocial);
+    result.fold((failure) {
+      emit(DeleteSocialLinkError(failure.message));
+    }, (response) {
+      emit(DeleteSocialLinkSuccess(response));
     });
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,8 +39,8 @@ class _DeplomaProtofileImageScreenState
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: CustomAuthForm(
         hasAvatar: false, hasTitle: false,
@@ -69,7 +68,7 @@ class _DeplomaProtofileImageScreenState
                 child: BlocBuilder<AuthCubit, AuthState>(
                   bloc: _authCubit,
                   buildWhen: (previous, current) =>
-                  current is CertificateImageUpdated,
+                      current is CertificateImageUpdated,
                   builder: (context, state) {
                     final certificateImage = _authCubit.certificateImage;
                     return Container(
@@ -81,32 +80,32 @@ class _DeplomaProtofileImageScreenState
                       ),
                       child: certificateImage == null
                           ? Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(localization.uploadYourCertificate,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            Icon(
-                              Icons.upload,
-                              size: 45.sp,
-                            ),
-                          ],
-                        ),
-                      )
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(localization.uploadYourCertificate,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  Icon(
+                                    Icons.upload,
+                                    size: 45.sp,
+                                  ),
+                                ],
+                              ),
+                            )
                           : ClipRRect(
-                        borderRadius: BorderRadius.circular(30.r),
-                        child: SingleChildScrollView(
-                          child: Image.file(
-                            certificateImage,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+                              borderRadius: BorderRadius.circular(30.r),
+                              child: SingleChildScrollView(
+                                child: Image.file(
+                                  certificateImage,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
                     );
                   },
                 ),
@@ -114,35 +113,35 @@ class _DeplomaProtofileImageScreenState
               BlocBuilder<AuthCubit, AuthState>(
                 bloc: _authCubit,
                 buildWhen: (previous, current) =>
-                current is CertificateImageUpdated,
+                    current is CertificateImageUpdated,
                 builder: (context, state) {
                   return _authCubit.certificateImage == null
                       ? SizedBox()
                       : Column(
-                    children: [
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "try scroll",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Icon(
-                            Icons.touch_app,
-                            size: 35.sp,
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
+                          children: [
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "try scroll",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Icon(
+                                  Icons.touch_app,
+                                  size: 35.sp,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
                 },
               ),
               SizedBox(height: 50.h),
@@ -243,107 +242,107 @@ class _DeplomaProtofileImageScreenState
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: _authCubit.listOfFileImagesProtofile.length,
                         gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 3 / 4,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3 / 4,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20),
                         itemBuilder: (context, index) {
                           return index ==
-                              _authCubit.listOfFileImagesProtofile.length -
-                                  1
+                                  _authCubit.listOfFileImagesProtofile.length -
+                                      1
                               ? SizedBox(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () => singleDialog(2, false),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(25.r),
-                                          color: Colors.grey
-                                              .withOpacity(0.1),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () => singleDialog(2, false),
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(25.r),
+                                                color: Colors.grey
+                                                    .withOpacity(0.1),
+                                              ),
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                        localization
+                                                            .clickToUpload,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodySmall),
+                                                    SizedBox(
+                                                      width: 20.w,
+                                                    ),
+                                                    Icon(
+                                                      Icons.upload,
+                                                      size: 45.sp,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
                                         ),
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  localization
-                                                      .clickToUpload,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall),
-                                              SizedBox(
-                                                width: 20.w,
-                                              ),
-                                              Icon(
-                                                Icons.upload,
-                                                size: 45.sp,
-                                              ),
-                                            ],
-                                          ),
-                                        )),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                              : Stack(
-                            // fit: StackFit.passthrough,
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.circular(25.r),
-                                  color: Colors.grey.withOpacity(0.1),
-                                ),
-                                child: AspectRatio(
-                                  aspectRatio: 3 / 4,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(25.r)),
-                                    child: Image(
-                                      image: FileImage(
-                                        _authCubit
-                                            .listOfFileImagesProtofile[
-                                        index]!,
                                       ),
-                                      fit: BoxFit.cover,
-                                    ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                              Container(
-                                  width: 50.w,
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.grey, width: 2)),
-                                  child: Center(
-                                      child: InkWell(
-                                        onTap: () {
-                                          //listOfFileImage.removeAt(index);
-                                          _authCubit.deleteImageProtofile(
+                                )
+                              : Stack(
+                                  // fit: StackFit.passthrough,
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(25.r),
+                                        color: Colors.grey.withOpacity(0.1),
+                                      ),
+                                      child: AspectRatio(
+                                        aspectRatio: 3 / 4,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25.r)),
+                                          child: Image(
+                                            image: FileImage(
                                               _authCubit
-                                                  .listOfFileImagesProtofile[
-                                              index],
-                                              index);
-
-                                          // setState(() {});
-                                        },
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: Colors.red,
-                                          size: 30.sp,
+                                                      .listOfFileImagesProtofile[
+                                                  index]!,
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                      )))
-                            ],
-                          );
+                                      ),
+                                    ),
+                                    Container(
+                                        width: 50.w,
+                                        height: 50.h,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.grey, width: 2)),
+                                        child: Center(
+                                            child: InkWell(
+                                          onTap: () {
+                                            //listOfFileImage.removeAt(index);
+                                            _authCubit.deleteImageProtofile(
+                                                _authCubit
+                                                        .listOfFileImagesProtofile[
+                                                    index],
+                                                index);
+
+                                            // setState(() {});
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                            size: 30.sp,
+                                          ),
+                                        )))
+                                  ],
+                                );
                         });
                   }),
 
@@ -376,6 +375,10 @@ class _DeplomaProtofileImageScreenState
                   child: ElevatedButton(
                     onPressed: () {
                       print(
+                          'the value of phone number is ${_authCubit.phoneNumberController.text}');
+                      print(
+                          'the value of website is ${_authCubit.websiteController.text.isEmpty}');
+                      print(
                           'the lenght of image is now ${_authCubit.listOfFileImagesProtofile.length} bakkkkkkkkkar ');
                       if (_authCubit.certificateImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -390,6 +393,13 @@ class _DeplomaProtofileImageScreenState
                       }
                       _authCubit.listOfFileImagesProtofile.removeLast();
                       _authCubit.registerService(RegisterServiceProviderRequest(
+                          websiteService:
+                              _authCubit.websiteController.text.isEmpty
+                                  ? null
+                                  : _authCubit.websiteController.text,
+                          phoneNumber: _authCubit.phoneNumberController.text,
+                          firstNameAr: _authCubit.firstNameArcontroller.text,
+                          lastNameAr: _authCubit.lastNameArCOntroller.text,
                           firstName: _authCubit.firstNameContoller.text,
                           lastName: _authCubit.lastNameContoller.text,
                           email: _authCubit.emailController.text,
@@ -397,20 +407,23 @@ class _DeplomaProtofileImageScreenState
                           password: _authCubit.passwordController.text,
                           nameService: _authCubit.serviceNameController.text,
                           descriptionService:
-                          _authCubit.serviceDescriptionController.text,
+                              _authCubit.serviceDescriptionController.text,
                           categoryIdService:
-                          _authCubit.selectedCategory!.id.toString(),
+                              _authCubit.selectedCategory!.id.toString(),
                           cityNameService: _authCubit.cityName!,
-                          websiteService: _authCubit.website,
+                          // websiteService:
+                          //     _authCubit.websiteController.text.isEmpty
+                          //         ? null
+                          //         : _authCubit.websiteController.text,
                           certificate: _authCubit.certificateImage!,
                           latitudeService: _authCubit.isCurrent
                               ? _authCubit.currentLocation!.latitude.toString()
                               : _authCubit.selectedLocation!.latitude
-                              .toString(),
+                                  .toString(),
                           longitudeService: _authCubit.isCurrent
                               ? _authCubit.currentLocation!.longitude.toString()
                               : _authCubit.selectedLocation!.longitude
-                              .toString(),
+                                  .toString(),
                           images: _authCubit.listOfFileImagesProtofile));
                     },
                     child: Text(localization.signUp,
@@ -437,7 +450,7 @@ class _DeplomaProtofileImageScreenState
               _imagePickerOption(
                 icon: Icons.camera_alt_outlined,
                 label:
-                _drawerCubit.languageCode == "en" ? "Camera" : "الكاميرا",
+                    _drawerCubit.languageCode == "en" ? "Camera" : "الكاميرا",
                 onTap: () async {
                   final image = await ImageFunctions.CameraPicker(false);
                   if (image != null) {

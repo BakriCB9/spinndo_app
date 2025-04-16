@@ -5,7 +5,7 @@ import 'package:app/features/profile/domain/entities/provider_profile/provider_p
 import 'package:app/features/profile/domain/repository/profile_repository.dart';
 import 'package:app/features/service/domain/repository/service_repository.dart';
 
-@lazySingleton
+@injectable
 class GetServiceProfile {
   final ServiceRepository _serviceRepository;
 

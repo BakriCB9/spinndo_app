@@ -15,8 +15,8 @@ class CascadingDropdowns extends StatefulWidget {
   final bool isProfile;
   CascadingDropdowns(
       {required this.categories,
-        this.isService = false,
-        this.isProfile = false});
+      this.isService = false,
+      this.isProfile = false});
 
   @override
   _CascadingDropdownsState createState() => _CascadingDropdownsState();
@@ -61,23 +61,23 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
         widget.isProfile
             ? _profileCubit.selectedCategory = selectedCategories[level - 1]
             : widget.isService
-            ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
-            : _authCubit.selectedCategory = selectedCategories[level - 1];
+                ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
+                : _authCubit.selectedCategory = selectedCategories[level - 1];
       } else {
         // Save the current category's ID
         widget.isProfile
             ? _profileCubit.selectedCategory = selected
             : widget.isService
-            ? _serviceCubit.selectedCategory = selected
-            : _authCubit.selectedCategory = selected;
+                ? _serviceCubit.selectedCategory = selected
+                : _authCubit.selectedCategory = selected;
       }
     } else if (level > 0) {
       // No selection, fallback to the parent category
       widget.isProfile
           ? _profileCubit.selectedCategory = selectedCategories[level - 1]
           : widget.isService
-          ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
-          : _authCubit.selectedCategory = selectedCategories[level - 1];
+              ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
+              : _authCubit.selectedCategory = selectedCategories[level - 1];
     }
     // Ensure no dropdowns are shown for empty children
     while (selected != null &&
@@ -131,8 +131,9 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
       // print("xxxxxxxxxxxxxxxxxxxx");
       //   print(!currentList.contains(addAllCategory));
       // };
-     if (      _serviceCubit.isReset==true){
-selectedCategories.clear();      }
+      if (_serviceCubit.isReset == true) {
+        selectedCategories.clear();
+      }
 
       dropdowns.add(Column(
         children: [
@@ -140,7 +141,6 @@ selectedCategories.clear();      }
             dropdownColor: Theme.of(context).primaryColorDark,
             menuMaxHeight: 200,
             isExpanded: false,
-
             value: i < selectedCategories.length ? selectedCategories[i] : null,
             hint: Padding(
               padding: EdgeInsets.only(left: 12.w),
@@ -161,18 +161,18 @@ selectedCategories.clear();      }
             decoration: const InputDecoration(errorBorder: InputBorder.none),
             items: currentList
                 .map((category) => DropdownMenuItem(
-              value: category,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                child: Text(
-                  category.name,
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-              ),
-            ))
+                      value: category,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                        child: Text(
+                          category.name,
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      ),
+                    ))
                 .toList(),
             onChanged: (value) {
-              _serviceCubit.isReset=false;
+              _serviceCubit.isReset = false;
               updateSelectedCategory(i, value);
             },
           ),

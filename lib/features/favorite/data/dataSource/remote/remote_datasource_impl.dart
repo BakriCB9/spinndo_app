@@ -19,7 +19,6 @@ class RemoteDatasourceImpl extends RemoteDatasource {
           "Authorization": "Bearer $userToken"
         }));
 
-    print('the ans is $ans');
     return AddFavResponse.fromJson(ans.data).status;
   }
 
@@ -42,6 +41,7 @@ class RemoteDatasourceImpl extends RemoteDatasource {
           "Content-Type": "application/json",
           "Authorization": "Bearer $userToken"
         }));
+
     return GetServicesResponse.fromJson(ans.data);
   }
 }

@@ -2,7 +2,8 @@ import 'package:app/features/service/domain/entities/countries.dart';
 import 'city.dart';
 
 class DataCountries extends Countries {
-  DataCountries({required super.name, required super.cities, required super.id});
+  DataCountries(
+      {required super.name, required super.cities, required super.id});
 
   factory DataCountries.fromJson(Map<String, dynamic> json) => DataCountries(
         id: json['id'] as int,

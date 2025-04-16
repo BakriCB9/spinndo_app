@@ -34,9 +34,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         controller: _control,
         slivers: [
           SliverPersistentHeader(
-            delegate:
-                SliverPersistentDelegate(widget.clientProfile.id,size, widget.clientProfile.imagePath),
-                
+            delegate: SliverPersistentDelegate(
+                widget.clientProfile.id, size, widget.clientProfile.imagePath),
             pinned: true,
           ),
           SliverFillRemaining(

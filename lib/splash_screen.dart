@@ -19,11 +19,12 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late AnimationController _logoController;
   late Animation<double> _logoFadeAnimation;
   late Animation<double> _logoScaleAnimation;
-final _authCubit = serviceLocator.get<AuthCubit>();
+  final _authCubit = serviceLocator.get<AuthCubit>();
   late AnimationController _textController;
   late Animation<double> _textFadeAnimation;
   late Animation<Offset> _textSlideAnimation;
@@ -41,7 +42,8 @@ final _authCubit = serviceLocator.get<AuthCubit>();
       parent: _logoController,
       curve: Curves.easeIn,
     );
-    _logoScaleAnimation = Tween<double>(begin: 0.6,end:  1.0).animate(CurvedAnimation(
+    _logoScaleAnimation =
+        Tween<double>(begin: 0.6, end: 1.0).animate(CurvedAnimation(
       parent: _logoController,
       curve: Curves.easeOutBack,
     ));
@@ -57,7 +59,7 @@ final _authCubit = serviceLocator.get<AuthCubit>();
     );
     _textSlideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.5), // Start below the center
-      end: Offset.zero,            // End at original position
+      end: Offset.zero, // End at original position
     ).animate(CurvedAnimation(
       parent: _textController,
       curve: Curves.easeOut,
@@ -70,15 +72,14 @@ final _authCubit = serviceLocator.get<AuthCubit>();
     });
 
     // Navigate to the next screen
-    Future.delayed(const Duration(seconds: 4), () async{
+    Future.delayed(const Duration(seconds: 4), () async {
       //await _authCubit.getCategories();
-      Navigator.pushReplacementNamed(context,
-
+      Navigator.pushReplacementNamed(
+        context,
         sharedPref.getString(CacheConstant.tokenKey) == null
-            ? (sharedPref.getString(CacheConstant.emailKey) ==
-            null
-            ? SignUpScreen.routeName
-            : SignInScreen.routeName)
+            ? (sharedPref.getString(CacheConstant.emailKey) == null
+                ? SignUpScreen.routeName
+                : SignInScreen.routeName)
             : ServiceScreen.routeName,
       );
     });
@@ -99,65 +100,67 @@ final _authCubit = serviceLocator.get<AuthCubit>();
     return Container(
       decoration: isDarkMode
           ? BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
-      body: Container(
-      decoration: BoxDecoration(
-      gradient: LinearGradient(
-    colors: isDarkMode
-    ? [Colors.transparent,Colors.transparent]
-      : [Colors.white, Colors.grey.shade200],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-    ),
-    ),
-    child: Center(
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    Spacer(flex: 3),
-      // Logo with fade + scale animation
-      ScaleTransition(
-        scale: _logoScaleAnimation,
-        child: FadeTransition(
-          opacity: _logoFadeAnimation,
-          child: CircleAvatar(
-            radius: 200.r,
-            backgroundColor: Colors.transparent,
-            child: ClipOval(
-              child: SvgPicture.asset(
-                'asset/images/logo.svg',
-                height: 400.h,
-              ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isDarkMode
+                  ? [Colors.transparent, Colors.transparent]
+                  : [Colors.white, Colors.grey.shade200],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Spacer(flex: 3),
+                // Logo with fade + scale animation
+                ScaleTransition(
+                  scale: _logoScaleAnimation,
+                  child: FadeTransition(
+                    opacity: _logoFadeAnimation,
+                    child: CircleAvatar(
+                      radius: 200.r,
+                      backgroundColor: Colors.transparent,
+                      child: ClipOval(
+                        child: SvgPicture.asset(
+                          'asset/images/logo.svg',
+                          height: 400.h,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                // Text with fade + slide animation
+                SlideTransition(
+                  position: _textSlideAnimation,
+                  child: FadeTransition(
+                    opacity: _textFadeAnimation,
+                    child: Text(
+                      'SPINNDO',
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                        fontSize: 52.sp,
+                        fontFamily: 'Raleway', // Elegant font
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 8,
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(
+                  flex: 6,
+                )
+              ],
             ),
           ),
         ),
-      ),
-      Spacer(),
-      // Text with fade + slide animation
-      SlideTransition(
-        position: _textSlideAnimation,
-        child: FadeTransition(
-          opacity: _textFadeAnimation,
-          child: Text(
-            'SPINNDO',
-            style: TextStyle(
-              color: isDarkMode ? Colors.white70 : Colors.black87,
-              fontSize: 52.sp,
-              fontFamily: 'Raleway', // Elegant font
-              fontWeight: FontWeight.bold,
-              letterSpacing: 8,
-            ),
-          ),
-        ),
-      ),
-      Spacer(flex: 6,)
-    ],
-    ),
-    ),
-      ),
       ),
     );
   }

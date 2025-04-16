@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:app/core/resources/assets_manager.dart';
 import 'package:app/core/widgets/cash_network.dart';
+import 'package:app/features/discount/presentation/view/add_discount_screen.dart';
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
 import 'package:app/features/favorite/presentation/view/favorite_screen.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
+import 'package:app/features/service_requist/presentation/view/get_service_request_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -204,12 +205,111 @@ class CustomDrawer extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [],
-                    ),
+                    // child: Column(
+                    //   children: [],
+                    // ),
                   ),
                   SizedBox(
                     height: 20.h,
+                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Scaffold.of(context).closeDrawer();
+                  //     Navigator.of(context).pushNamed(SettingScreen.routeName);
+                  //   },
+                  //   child: ListTile(
+                  //     leading: const Icon(
+                  //       Icons.settings,
+                  //       color: ColorManager.primary,
+                  //     ),
+                  //     title: Text(
+                  //       localization.setting,
+                  //       style: Theme.of(context)
+                  //           .textTheme
+                  //           .titleLarge!
+                  //           .copyWith(fontSize: 32.sp),
+                  //     ),
+                  //   ),
+                  // ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Profile_Screen.routeName);
+                      Scaffold.of(context).closeDrawer();
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.person,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(localization.profile,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(fontSize: 32.sp)),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context)
+                          .pushNamed(GetServiceRequestScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.emoji_people,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        localization.request,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
+                  ),
+                  getUserRole() != null
+                      ? getUserRole() == 'Client'
+                          ? SizedBox()
+                          : InkWell(
+                              onTap: () {
+                                Scaffold.of(context).closeDrawer();
+                                Navigator.of(context)
+                                    .pushNamed(DiscountScreen.routeName);
+                              },
+                              child: ListTile(
+                                leading: const Icon(
+                                  Icons.discount,
+                                  color: ColorManager.primary,
+                                ),
+                                title: Text(
+                                  localization.disco,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(fontSize: 32.sp),
+                                ),
+                              ),
+                            )
+                      : const SizedBox(),
+                  InkWell(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context).pushNamed(FavoriteScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.favorite,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        localization.fav,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
                   ),
                   InkWell(
                     onTap: () {
@@ -223,41 +323,6 @@ class CustomDrawer extends StatelessWidget {
                       ),
                       title: Text(
                         localization.setting,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(fontSize: 32.sp),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(Profile_Screen.routeName);
-                      Scaffold.of(context).closeDrawer();
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.person,
-                        color: ColorManager.primary,
-                      ),
-                      title: Text(localization.profile,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(fontSize: 32.sp)),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: (){
-                      Scaffold.of(context).closeDrawer();
-                      Navigator.of(context).pushNamed(FavoriteScreen.routeName);
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.favorite,
-                      ),
-                      title: Text(
-                        'Favorite',
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
@@ -303,4 +368,8 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+String? getUserRole() {
+  return sharedPref.getString(CacheConstant.userRole);
 }

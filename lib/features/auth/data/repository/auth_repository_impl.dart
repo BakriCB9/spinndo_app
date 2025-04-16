@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:app/core/constant.dart';
 import 'package:app/core/error/app_exception.dart';
 import 'package:app/core/error/failure.dart';
 import 'package:app/features/auth/data/data_sources/local/auth_local_data_source.dart';

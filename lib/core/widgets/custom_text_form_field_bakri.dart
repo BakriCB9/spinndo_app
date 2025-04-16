@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFromFieldBakri extends StatefulWidget {
   final String label;
@@ -35,11 +34,11 @@ class _CustomTextFromFieldBakriState extends State<CustomTextFromFieldBakri> {
             widget.icon,
             color: Theme.of(context).primaryColorLight,
           ),
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey)),
           enabled: true,
-          enabledBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+          enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey))),
     );
   }
 }

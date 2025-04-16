@@ -59,7 +59,7 @@ class AuthCubit extends Cubit<AuthState> {
     DateSelect(day: "Friday", start: "08:00", end: "15:00"),
     DateSelect(day: "Saturday", start: "08:00", end: "15:00"),
   ];
-  String website = '';
+  // String website = '';
   final emailController = TextEditingController();
 
   String locationName = "enter your location";
@@ -69,7 +69,9 @@ class AuthCubit extends Cubit<AuthState> {
   GoogleMapController? googleMapController;
 
   final firstNameContoller = TextEditingController();
-
+  final firstNameArcontroller = TextEditingController();
+  final lastNameArCOntroller = TextEditingController();
+  final phoneNumberController = TextEditingController();
   final lastNameContoller = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -78,10 +80,10 @@ class AuthCubit extends Cubit<AuthState> {
   final confirmPasswordController = TextEditingController();
   final serviceNameController = TextEditingController();
   final addressController = TextEditingController();
+  final websiteController = TextEditingController();
   final serviceDescriptionController = TextEditingController();
-  List<File?> listOfFileImagesProtofile = [
-    File("")
-  ];
+  bool isAgree = false;
+  List<File?> listOfFileImagesProtofile = [File("")];
   bool isClient = true;
   int resendCodeTime = 60;
   Timer? timer;
@@ -115,10 +117,10 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _login(requestData);
     print('the result is bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkar ${result}');
     result.fold(
-      (failure) 
-       {
+      (failure) {
         print('here is big errrorr rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-        emit(LoginError(failure.message));},
+        emit(LoginError(failure.message));
+      },
       (response) => emit(LoginSuccess()),
     );
   }
@@ -221,7 +223,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
-
+    print('we get category now bakri aweja');
     final result = await _getCategories();
     result.fold((failure) {
       // failureMessegae=failure.message;
@@ -230,15 +232,12 @@ class AuthCubit extends Cubit<AuthState> {
       categoriesList = categories;
       emit(GetCategorySuccess());
       selectedAuthCat();
-
     });
   }
-  void selectedAuthCat(){
+
+  void selectedAuthCat() {
     emit(SelectedCategoryState());
-
   }
-
-
 
   void initMarkerAddress() {
     markers.clear();
@@ -314,14 +313,17 @@ class AuthCubit extends Cubit<AuthState> {
     emit(CertificateImageUpdated(image));
   }
 
-  void addImagetoProtofile(File? image,) {
+  void addImagetoProtofile(
+    File? image,
+  ) {
     //firstImage = image;
     listOfFileImagesProtofile.removeLast();
     listOfFileImagesProtofile.add(image);
     listOfFileImagesProtofile.add(File(""));
     emit(UpdateImageProtofile());
   }
-  void deleteImageProtofile(File?imgae ,int index){
+
+  void deleteImageProtofile(File? imgae, int index) {
     listOfFileImagesProtofile.removeAt(index);
     emit(UpdateImageProtofile());
   }

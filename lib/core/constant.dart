@@ -24,6 +24,14 @@ class ApiConstant {
   static const String addTofavorite = '/profile/addToFavorite';
   static const String removeFromFavorite = '/profile/removeFromFavorite';
   static const String getAllFavorite = '/profile/favorites';
+  static const String SericeRequestOrder = '/service_request';
+  static const String addDiscount = '/service/add-discount';
+  static const String deleteDiscount = '/service/delete-discount';
+  static const String getAllDiscount = '/services/get-discount';
+  static const String getAllMainCategory='/categories/getMain';
+  static const String getDataAutoComplete='/services/getData';
+  static const String addOrupdateLinkSocial='/profile/social_link';
+  static const String deleteSocialLinks='/profile/social_link';
 }
 
 class CacheConstant {

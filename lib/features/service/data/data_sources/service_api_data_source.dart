@@ -1,4 +1,5 @@
 import 'package:app/features/profile/data/models/provider_modle/provider_profile_modle.dart';
+import 'package:app/features/service/data/models/get_category_main/get_category_main.dart';
 import 'package:app/features/service/data/models/notification/notification_model/notification_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -13,13 +14,13 @@ import 'package:app/features/service/data/models/get_services_response/get_servi
 
 import 'service_data_source.dart';
 
-@LazySingleton(as: ServiceDataSource)
+@Injectable(as: ServiceDataSource)
 class ServiceApiDataSource implements ServiceDataSource {
   final Dio _dio;
   final SharedPreferences _sharedPreferences;
 
   ServiceApiDataSource(this._dio, this._sharedPreferences);
-
+  
   Future<GetServicesResponse> getServices(
       GetServicesRequest requestBody) async {
     try {
@@ -27,12 +28,14 @@ class ServiceApiDataSource implements ServiceDataSource {
       //   // data: requestBody.toJson(),
       //   ApiConstant.getServices,
       // );
+      final lang = _sharedPreferences.getString('language');
       final response = await _dio.request(
         ApiConstant.getServices,
         data: requestBody.toJson(), // Include the body here
         options: Options(
           method: 'GET', // Specify GET explicitly
           headers: {
+            "Accept-Language": '$lang',
             'Content-Type':
                 'application/json', // Optional: Set headers if needed
           },
@@ -48,9 +51,15 @@ class ServiceApiDataSource implements ServiceDataSource {
   @override
   Future<GetAllCategoryResponse> getAllCategory() async {
     try {
-      final response = await _dio.get(
-        ApiConstant.getAllCategory,
-      );
+      final lang = _sharedPreferences.getString('language');
+      final response = await _dio.get(ApiConstant.getAllCategory,
+          options: Options(
+            headers: {
+              "Accept-Language": '$lang',
+              'Content-Type':
+                  'application/json', // Optional: Set headers if needed
+            },
+          ));
 
       return GetAllCategoryResponse.fromJson(response.data);
     } catch (exciption) {
@@ -61,9 +70,15 @@ class ServiceApiDataSource implements ServiceDataSource {
   @override
   Future<GetAllCountriesResponse> getAllCountries() async {
     try {
-      final response = await _dio.get(
-        ApiConstant.getAllCountries,
-      );
+      final lang = _sharedPreferences.getString('language');
+      final response = await _dio.get(ApiConstant.getAllCountries,
+          options: Options(
+            headers: {
+              "Accept-Language": '$lang',
+              'Content-Type':
+                  'application/json', // Optional: Set headers if needed
+            },
+          ));
 
       return GetAllCountriesResponse.fromJson(response.data);
     } catch (exciption) {
@@ -73,13 +88,15 @@ class ServiceApiDataSource implements ServiceDataSource {
 
   Future<ProviderProfileResponse> getProviderService(int id) async {
     try {
+      final lang = _sharedPreferences.getString('language');
       String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-      final response = await _dio.get(
-          '${ApiConstant.profileServiceProviderEndPoint}/$id',
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $user_token"
-          }));
+      final response =
+          await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$id',
+              options: Options(headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $user_token",
+                "Accept-Language": '$lang',
+              }));
 
       return ProviderProfileResponse.fromJson(response.data);
     } catch (exciption) {
@@ -88,15 +105,15 @@ class ServiceApiDataSource implements ServiceDataSource {
   }
 
   @override
-  Future<NotificationModel> getAllNotification() async{
-   
+  Future<NotificationModel> getAllNotification() async {
     try {
+      final lang = _sharedPreferences.getString('language');
       String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-      final response = await _dio.get(
-          ApiConstant.getAllNotification,
+      final response = await _dio.get(ApiConstant.getAllNotification,
           options: Options(headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer $user_token"
+            "Authorization": "Bearer $user_token",
+            "Accept-Language": '$lang',
           }));
 
       return NotificationModel.fromJson(response.data);
@@ -104,4 +121,28 @@ class ServiceApiDataSource implements ServiceDataSource {
       throw RemoteAppException("Failed to get Notification");
     }
   }
-}
+
+  @override
+  Future<GetCategoryMain> getAllMainCategory() async{
+    
+    // final ans=await  _dio.get(ApiConstant.getAllMainCategory);
+   try {
+      //final lang = _sharedPreferences.getString('language');
+      //String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
+      final response = await _dio.get(ApiConstant.getAllMainCategory,
+          // options: Options(headers: {
+          //   "Content-Type": "application/json",
+          //   "Authorization": "Bearer $user_token",
+          //   "Accept-Language": '$lang',
+          // })
+          
+          );
+
+      return GetCategoryMain.fromJson(response.data); 
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get data");
+    }
+  } 
+  }
+
+

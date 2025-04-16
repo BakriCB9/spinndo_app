@@ -2,9 +2,6 @@ import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app/core/resources/font_manager.dart';
-import 'package:app/core/resources/styles_manager.dart';
-import 'package:app/core/resources/theme_manager.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String? hintText;
@@ -39,7 +36,7 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormField extends State<CustomTextFormField> {
-  bool isObsecure =  false;
+  bool isObsecure = false;
   late FocusNode _focus;
 
   @override
@@ -58,7 +55,6 @@ class _CustomTextFormField extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       //initialValue:null ,
-
       focusNode: _focus,
       onTapOutside: (_) {
         _focus.unfocus();
@@ -79,21 +75,22 @@ class _CustomTextFormField extends State<CustomTextFormField> {
               : null,
           suffixIcon: widget.controller.text.isNotEmpty
               ? widget.isPassword
-                  ? IconButton(splashColor: Colors.transparent,
-                     highlightColor:Colors.transparent ,
+                  ? IconButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                       onPressed: () {
                         isObsecure = !isObsecure;
                         setState(() {});
                       },
                       icon: isObsecure
-
                           ? Icon(
                               Icons.visibility_outlined,
                               size: 40.sp,
-                            ): Icon(
-            Icons.visibility_off_outlined,
-            size: 40.sp,
-          ))
+                            )
+                          : Icon(
+                              Icons.visibility_off_outlined,
+                              size: 40.sp,
+                            ))
                   : null
               : null,
           prefixIcon: widget.icon == null
@@ -112,7 +109,7 @@ class _CustomTextFormField extends State<CustomTextFormField> {
             }
           : null,
       cursorColor: ColorManager.primary,
-      obscureText: widget.isPassword? !isObsecure:isObsecure,
+      obscureText: widget.isPassword ? !isObsecure : isObsecure,
       controller: widget.controller,
       maxLines: widget.maxLines,
       minLines: widget.minLines,

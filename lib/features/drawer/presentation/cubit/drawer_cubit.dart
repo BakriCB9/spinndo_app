@@ -12,7 +12,7 @@ import 'package:app/main.dart';
 @lazySingleton
 class DrawerCubit extends Cubit<DrawerStates> {
   DrawerCubit({required this.sharedPreferences}) : super(DrawerInitial());
-   SharedPreferences sharedPreferences;
+  SharedPreferences sharedPreferences;
   ThemeMode themeMode = ThemeMode.light;
   String languageCode = 'en';
   Color get backgroundColor => themeMode == ThemeMode.light
@@ -59,7 +59,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
   }
 
   Future<void> loadLanguage() async {
-   sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences = await SharedPreferences.getInstance();
 
     String? language = getLanguage();
     if (language != null) {
@@ -113,17 +113,16 @@ class DrawerCubit extends Cubit<DrawerStates> {
     }
   }
 
-Future<void>deleteAccount()async{
-Dio _dio = Dio(BaseOptions(
+  Future<void> deleteAccount() async {
+    Dio _dio = Dio(BaseOptions(
       baseUrl: ApiConstant.baseUrl,
       receiveDataWhenStatusError: true,
-      
     ));
-  try{
+    try {
       final token = sharedPref.getString(CacheConstant.tokenKey);
-      final userId=sharedPref.getInt(CacheConstant.userId);
+      final userId = sharedPref.getInt(CacheConstant.userId);
       emit(DeleteAccountLoading());
-       final response = await _dio.delete(
+      final response = await _dio.delete(
         '${ApiConstant.deleteMyAccount}/$userId',
         options: Options(
           headers: {
@@ -132,9 +131,9 @@ Dio _dio = Dio(BaseOptions(
           },
         ),
       );
-       if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         // Clear user session
-        
+
         await sharedPref.remove(CacheConstant.tokenKey);
         await sharedPref.remove(CacheConstant.emailKey);
         await sharedPref.remove(CacheConstant.imagePhoto);
@@ -144,11 +143,9 @@ Dio _dio = Dio(BaseOptions(
         await sharedPreferences.remove(CacheConstant.semailKey);
         emit(DeleteAccountSuccess());
       }
-
-  }catch(e){
-    print('the error is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ${e}');
+    } catch (e) {
+      print('the error is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ${e}');
       emit(DeleteAccountError("An error occurred. Please try again."));
+    }
   }
-}
-
 }

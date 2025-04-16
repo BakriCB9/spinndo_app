@@ -112,7 +112,34 @@
   "noNotificationRecived":"Keine Benachrichtigung erhalten",
   "serviceOrProviderName":"Name des Dienstes oder Anbieters",
   "filterOnlocationOrCategory":"Filtern nach Standort oder Kategorie",
-  "categoryRequired":"Kategorie erforderlich"
-
-
+  "categoryRequired":"Kategorie erforderlich",
+    "request": "Anfrage",
+    "fav": "Favorit",
+    "disco": "Rabatt",
+    "myServiceRequest": "Meine Anfrage",
+    "allServiceRequest": "Alle Anfragen",
+    "requiredTitle": "Sie müssen den Titel eingeben",
+    "requiredDescrip": "Sie müssen die Beschreibung eingeben",
+    "requiredPrice": "Sie müssen den Preis eingeben",
+    "requirdDuration": "Sie müssen die Dauer eingeben",
+    "title": "Titel",
+    "price": "Preis",
+    "duration": "Dauer",
+    "enterTheTitle": "Geben Sie den Titel ein",
+    "enterTheDescrip": "Geben Sie die Beschreibung ein",
+    "entertheprice": "Geben Sie den Preis ein",
+    "entertheDuration": "Geben Sie die Dauer ein",
+    "noitemAddYet": "Noch keine Artikel hinzugefügt!",
+    "addRequest": "Anfrage hinzufügen",
+    "saveEdit": "Speichern",
+    "editReqest": "Anfrage bearbeiten",
+    "discountLabel": "Rabatt",
+    "codeLabel": "Code",
+    "discountRequired": "Geben Sie den Rabatt ein",
+    "codeRequired": "Geben Sie den Code ein",
+    "addDiscount": "Rabatt hinzufügen",
+    "areYouSureToDelete": "Sind Sie sicher, dass Sie den Artikel löschen möchten"
 }
+
+
+

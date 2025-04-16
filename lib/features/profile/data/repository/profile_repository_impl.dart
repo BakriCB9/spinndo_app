@@ -9,7 +9,11 @@ import 'package:app/features/profile/data/models/image_profile_photo/image_profi
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_response.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_response.dart';
+import 'package:app/features/profile/domain/entities/add_or_update_soical_entity/add_or_update_social_entity.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+
 import 'package:app/main.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -44,8 +48,6 @@ class ProfileRepositoryImpl extends ProfileRepository {
   }
 
   @override
-
-
   @override
   Either<Failure, String> getUserRole() {
     try {
@@ -99,8 +101,8 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final directory = await getApplicationDocumentsDirectory();
       final filePath = '${directory.path}/bb';
       final file = File(filePath);
-      final ans= await file.writeAsBytes(bytes, flush: true);
-      await  sharedPref.setString('imageFile',ans.path);
+      final ans = await file.writeAsBytes(bytes, flush: true);
+      await sharedPref.setString('imageFile', ans.path);
 
       // return filePath;
       return Right(response);
@@ -109,7 +111,8 @@ class ProfileRepositoryImpl extends ProfileRepository {
     }
   }
 
-  Future<Either<Failure, Data>> getServiceProvider() async {
+  @override
+  Future<Either<Failure, ProviderProfile>> getServiceProvider() async {
     try {
       // print('we start now');
       final user_id = _profileLocalDataSource.getUserId();
@@ -124,7 +127,8 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return Left(Failure(exception.message));
     }
   }
-@override
+
+  @override
   Future<Either<Failure, DeleteImageResponse>> deleteImage() async {
     try {
       final response = await _profileRemoteDataSource.deleteImage();
@@ -137,4 +141,28 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return Left(Failure(exception.message));
     }
   }
+
+   @override
+     Future<Either<Failure, AddOrUpdateSocialEntity>> addOrupdateLinkSocial(
+      SocialMediaLinksRequest socialMediaLinksRequest) async {
+    try {
+      final response = await _profileRemoteDataSource
+          .addOrupdateLinkSocial(socialMediaLinksRequest);
+
+      return Right(response.data!.toAddOrUpdateSocialEntity());
+    } on AppException catch (exception) {
+      return Left(Failure(exception.message));
+    }
+  }
+
+     Future<Either<Failure, String>> deleteSocialLinks(int idOfSocial)async{
+           try {
+      final response = await _profileRemoteDataSource
+          .deleteSocialLinks(idOfSocial);
+
+      return Right(response);
+    } on AppException catch (exception) {
+      return Left(Failure(exception.message));
+    }
+     }
 }

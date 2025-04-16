@@ -3,7 +3,8 @@ import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 
 class DataCategory extends Categories {
-  DataCategory({required super.id, required super.name, required super.children});
+  DataCategory(
+      {required super.id, required super.name, required super.children});
 
   factory DataCategory.fromJson(Map<String, dynamic> json) => DataCategory(
         id: json['id'] as int,

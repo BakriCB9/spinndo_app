@@ -3,16 +3,22 @@ class RegisterRequest {
   final String last_name;
   final String email;
   final String password;
+  final String first_name_ar;
+  final String last_name_ar;
 
   RegisterRequest(
       {required this.first_name,
       required this.last_name,
       required this.email,
+      required this.first_name_ar,
+      required this.last_name_ar,
       required this.password});
   Map<String, dynamic> toJson() => {
         "first_name": first_name,
         "last_name": last_name,
         "email": email,
         "password": password,
+        "first_name_ar": first_name_ar,
+        "last_name_ar": last_name_ar
       };
 }
