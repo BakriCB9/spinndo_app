@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/di/service_locator.dart';
@@ -24,7 +23,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? BoxDecoration(
+          ?const  BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : BoxDecoration(
@@ -52,6 +51,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     lastName: widget.clientProfile.lastName,
                     email: widget.clientProfile.email,
                   ),
+                 const  SizedBox(height:20),
+                 //TextButton(onPressed: (){}, child:const  Text('Updgrade To provide account'))
                 ],
               ),
             ),

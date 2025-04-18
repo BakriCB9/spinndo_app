@@ -129,9 +129,7 @@ class EditJobDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: 100.h),
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    SizedBox(height: 30.h),
                     TextFormField(
                       controller: _profileCubit.serviceNameController,
                       onChanged: (value) {
@@ -292,9 +290,7 @@ class EditJobDetails extends StatelessWidget {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
+                    SizedBox(height: 40.h),
                     BlocBuilder<ProfileCubit, ProfileStates>(
                         buildWhen: (pre, cur) {
                       if (cur is IsUpdated || cur is IsNotUpdated) return true;

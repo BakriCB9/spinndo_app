@@ -38,6 +38,7 @@ final _drawerCubit = serviceLocator.get<DrawerCubit>();
 final _authCubit = serviceLocator.get<AuthCubit>();
 bool sortByName = false;
 bool sortByDistance = false;
+bool sortByNumberOfvisitor = false;
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
   late Size size;
@@ -222,7 +223,50 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                     sortByDistance = true;
                                     setState(() {});
                                   },
-                                )
+                                ),
+                                PopupMenuItem(
+                                  height: 60.h,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'sort by visitor',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                                fontSize: 22.sp),
+                                      ),
+                                      sortByNumberOfvisitor
+                                          ? Container(
+                                              width: 20.w,
+                                              height: 20.h,
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: ColorManager.primary),
+                                            )
+                                          : const SizedBox()
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    widget.services.sort(
+                                      (a, b) => a.numberOfvisitors == null
+                                          ? 0
+                                          : a.numberOfvisitors!.compareTo(
+                                              b.numberOfvisitors == null
+                                                  ? 0
+                                                  : b.numberOfvisitors!),
+                                    );
+                                    sortByName = false;
+                                    sortByDistance = false;
+                                    sortByNumberOfvisitor = true;
+
+                                    setState(() {});
+                                  },
+                                ),
                               ])
                       : const SizedBox(),
                 ],
@@ -230,31 +274,28 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               // SizedBox(
               //   height: 20.h,
               // ),
-              Expanded(child: ShowDiscount()),
+              ShowDiscount(),
 
               widget.services.length == 0
-                  ? Expanded(
-                      flex: 3,
-                      child: Center(
-                        child: Column(
-                          children: [
-                            const Spacer(),
-                            SizedBox(
-                              height: size.height / 3.5,
-                              child: Lottie.asset(
-                                'asset/animation/empty.json',
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              localization.noServicesFoundedinlocation,
-                              style: TextStyle(fontSize: 30.sp),
-                            ),
-                            const Spacer(flex: 2)
-                          ],
+                  ? Center(
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        SizedBox(
+                          height: size.height / 3.5,
+                          child: Lottie.asset(
+                            'asset/animation/empty.json',
+                          ),
                         ),
-                      ),
-                    )
+                        const SizedBox(height: 20),
+                        Text(
+                          localization.noServicesFoundedinlocation,
+                          style: TextStyle(fontSize: 30.sp),
+                        ),
+                        const Spacer(flex: 2)
+                      ],
+                    ),
+                  )
                   : Expanded(
                       child: AnimationLimiter(
                         child: ListView.builder(
@@ -474,7 +515,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                                                   fit: BoxFit
                                                                       .scaleDown,
                                                                   child: Text(
-                                                                      '${service.numberOfvisitors}',
+                                                                      '${service.numberOfvisitors == null ? "0" : service.numberOfvisitors}',
                                                                       style: theme
                                                                           .labelMedium!
                                                                           .copyWith(
