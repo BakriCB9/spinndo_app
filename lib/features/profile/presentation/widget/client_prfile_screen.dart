@@ -23,7 +23,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ?const  BoxDecoration(
+          ? const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : BoxDecoration(
@@ -51,8 +51,10 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     lastName: widget.clientProfile.lastName,
                     email: widget.clientProfile.email,
                   ),
-                 const  SizedBox(height:20),
-                 //TextButton(onPressed: (){}, child:const  Text('Updgrade To provide account'))
+                  const SizedBox(height: 20),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text('Updgrade To provide account'))
                 ],
               ),
             ),

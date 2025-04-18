@@ -316,6 +316,7 @@ class SignUpScreen extends StatelessWidget {
     if (_authCubit.isClient) {
       if (formKey.currentState!.validate()) {
         _authCubit.register(RegisterRequest(
+            phoneNumber: _authCubit.phoneNumberController.text,
             first_name_ar: _authCubit.firstNameArcontroller.text,
             last_name_ar: _authCubit.lastNameArCOntroller.text,
             first_name: _authCubit.firstNameContoller.text,
