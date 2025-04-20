@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
                             ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>
-                            const DeplomaProtofileImageScreen(),
+                             DeplomaProtofileImageScreen(),
                         ForgotPasswordScreen.routeName: (context) =>
                             ForgotPasswordScreen(),
                         SignUpScreen.routeName: (context) => SignUpScreen(),

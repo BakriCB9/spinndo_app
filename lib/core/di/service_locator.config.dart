@@ -30,6 +30,8 @@ import 'package:app/features/auth/domain/use_cases/register_service.dart'
 import 'package:app/features/auth/domain/use_cases/resend_code.dart' as _i128;
 import 'package:app/features/auth/domain/use_cases/reset_password.dart'
     as _i801;
+import 'package:app/features/auth/domain/use_cases/upgrade_account_use_case.dart'
+    as _i1020;
 import 'package:app/features/auth/domain/use_cases/verify_code.dart' as _i833;
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart' as _i580;
 import 'package:app/features/discount/data/dataSource/remote/remote_dataSource.dart'
@@ -264,6 +266,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i614.GetAllFavUsecase(gh<_i258.FavRepositry>()));
     gh.factory<_i654.RemoveFromFavUsecase>(
         () => _i654.RemoveFromFavUsecase(gh<_i258.FavRepositry>()));
+    gh.factory<_i1020.UpgradeAccountUseCase>(
+        () => _i1020.UpgradeAccountUseCase(gh<_i651.AuthRepository>()));
     gh.singleton<_i728.Getcountryname>(
         () => _i728.Getcountryname(gh<_i651.AuthRepository>()));
     gh.singleton<_i293.Login>(() => _i293.Login(gh<_i651.AuthRepository>()));
@@ -305,7 +309,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i83.AddOrUpdateSocialUseCase>(),
           gh<_i54.DeleteSocialLinksUseCase>(),
         ));
-    gh.singleton<_i580.AuthCubit>(() => _i580.AuthCubit(
+    gh.factory<_i364.FavoriteCubit>(() => _i364.FavoriteCubit(
+          gh<_i619.AddFavUseCase>(),
+          gh<_i614.GetAllFavUsecase>(),
+          gh<_i654.RemoveFromFavUsecase>(),
+        ));
+    gh.factory<_i580.AuthCubit>(() => _i580.AuthCubit(
           gh<_i293.Login>(),
           gh<_i374.Register>(),
           gh<_i833.VerifyCode>(),
@@ -314,11 +323,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i801.ResetPassword>(),
           gh<_i779.GetCategories>(),
           gh<_i728.Getcountryname>(),
-        ));
-    gh.factory<_i364.FavoriteCubit>(() => _i364.FavoriteCubit(
-          gh<_i619.AddFavUseCase>(),
-          gh<_i614.GetAllFavUsecase>(),
-          gh<_i654.RemoveFromFavUsecase>(),
+          gh<_i1020.UpgradeAccountUseCase>(),
         ));
     return this;
   }

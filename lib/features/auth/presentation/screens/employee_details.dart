@@ -47,20 +47,22 @@ class EmployeeDetails extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  final _authCubit = serviceLocator.get<AuthCubit>();
-  List<Categories> parentCategories = []; // Replace with actual data
-  List<ChildCategory> subcategories = []; // Replace with actual data
+  // final _authCubit = serviceLocator.get<AuthCubit>();
+  // List<Categories> parentCategories = []; // Replace with actual data
+  // List<ChildCategory> subcategories = []; // Replace with actual data
 
   @override
   Widget build(BuildContext context) {
+    final _authCubit = BlocProvider.of<AuthCubit>(context);
     // print(_authCubit.selectedCategoryId);
+    //  final ans= BlocProvider.of<AuthCubit>(context);
+    // print(
+    //     'the value of auth cubit location is ${_authCubit.country?.address ?? 'No address added yet'}');
     final localization = AppLocalizations.of(context)!;
     return CustomAuthForm(
       child: Column(
         children: [
-          SizedBox(
-            height: 60.h,
-          ),
+          SizedBox(height: 60.h),
           Form(
             key: formKey,
             child: Column(
@@ -70,6 +72,7 @@ class EmployeeDetails extends StatelessWidget {
                   bloc: _authCubit,
                   builder: (context, state) {
                     return CascadingDropdowns(
+                        authCubit: _authCubit,
                         categories: _authCubit.categoriesList);
                   },
                 ),
@@ -119,7 +122,14 @@ class EmployeeDetails extends StatelessWidget {
                             _drawerCubit.themeMode == ThemeMode.dark
                                 ? true
                                 : false);
-                        Navigator.of(context).pushNamed(MapScreen.routeName);
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return BlocProvider.value(
+                            value: _authCubit,
+                            child: const MapScreen(),
+                          );
+                        }));
+                        // Navigator.of(context).pushNamed(MapScreen.routeName);
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -132,12 +142,8 @@ class EmployeeDetails extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                            ),
-                            SizedBox(
-                              width: 24.w,
-                            ),
+                            const Icon(Icons.location_on_outlined),
+                            SizedBox(width: 24.w),
                             BlocBuilder<AuthCubit, AuthState>(
                               bloc: _authCubit,
                               buildWhen: (previous, current) {
@@ -331,7 +337,16 @@ class EmployeeDetails extends StatelessWidget {
                         final ans = _authCubit.isAnotherDaySelected();
                         if (ans && _authCubit.isCountySuccess) {
                           Navigator.of(context)
-                              .pushNamed(DeplomaProtofileImageScreen.routeName);
+                              .push(MaterialPageRoute(builder: (context) {
+                            return BlocProvider.value(
+                              value: _authCubit,
+                              child: DeplomaProtofileImageScreen(
+                                authCubit: _authCubit,
+                              ),
+                            );
+                          }));
+                          // Navigator.of(context)
+                          //     .pushNamed(DeplomaProtofileImageScreen.routeName);
                           return;
                         } else {
                           if (_authCubit.selectedCategory == null) {

@@ -16,6 +16,7 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _authCubit=BlocProvider.of<AuthCubit>(context);
     final localization = AppLocalizations.of(context)!;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -114,4 +115,4 @@ class MapScreen extends StatelessWidget {
   }
 }
 
-final _authCubit = serviceLocator.get<AuthCubit>();
+// final _authCubit = serviceLocator.get<AuthCubit>();

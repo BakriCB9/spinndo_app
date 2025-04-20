@@ -1,3 +1,5 @@
+import 'package:app/core/constant.dart';
+import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/app_exception.dart';
@@ -61,7 +63,8 @@ class AuthRepositoryImpl implements AuthRepository {
         requestData.email,
       );
       _authLocalDataSource.saveUserEmail(requestData.email);
-      _authLocalDataSource.saveUserName(requestData.first_name);
+      _authLocalDataSource
+          .saveUserName(requestData.first_name + requestData.last_name);
       return Right(response);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));
@@ -92,7 +95,8 @@ class AuthRepositoryImpl implements AuthRepository {
         requestData.email,
       );
       _authLocalDataSource.saveUserEmail(requestData.email);
-      _authLocalDataSource.saveUserName(requestData.firstName);
+      _authLocalDataSource
+          .saveUserName(requestData.firstName + requestData.lastName);
       return Right(response);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));
@@ -142,6 +146,20 @@ class AuthRepositoryImpl implements AuthRepository {
           await _authRemoteDataSource.getAddressFromCoordinates(lat, long);
       final country = Country(cityName: response[0], address: response[1]);
       return Right(country);
+    } on AppException catch (exception) {
+      return Left(Failure(exception.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> upgradeAccount(
+      UpgradeRegiestServiceProviderRequest upgradeRequest) async {
+    try {
+      final response =
+          await _authRemoteDataSource.updgradeAccount(upgradeRequest);
+
+      _authLocalDataSource.saveUserRole("ServiceProvider");
+      return Right(response);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));
     }

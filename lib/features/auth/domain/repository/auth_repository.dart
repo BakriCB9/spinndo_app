@@ -1,3 +1,4 @@
+import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app/core/error/failure.dart';
 import 'package:app/features/auth/data/models/data.dart';
@@ -35,4 +36,5 @@ abstract class AuthRepository {
 
   Future<Either<Failure, Country>> getAddressFromCoordinates(
       double lat, double long);
+ Future<Either<Failure,String>>upgradeAccount(UpgradeRegiestServiceProviderRequest upgradeRequest);
 }

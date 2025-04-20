@@ -19,18 +19,21 @@ import '../../../drawer/presentation/cubit/drawer_cubit.dart';
 
 class VerficationCodeScreen extends StatelessWidget {
   static const String routeName = '/verfication';
+  AuthCubit? authCubit;
 
-  VerficationCodeScreen({super.key});
+  VerficationCodeScreen({this.authCubit, super.key});
 
   final formKey = GlobalKey<FormState>();
 
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
-  final _authCubit = serviceLocator.get<AuthCubit>()
-    ..timer?.cancel()
-    ..verifyCodeTime();
+  // final authCubit! = serviceLocator.get<AuthCubit>()
+  //   ..timer?.cancel()
+  //   ..verifyCodeTime();
   @override
   Widget build(BuildContext context) {
+    authCubit?.timer?.cancel();
+    authCubit?.verifyCodeTime();
     final localization = AppLocalizations.of(context)!;
     final style = Theme.of(context).elevatedButtonTheme.style!;
     return CustomAuthForm(
@@ -56,7 +59,7 @@ class VerficationCodeScreen extends StatelessWidget {
           ),
           SizedBox(height: 40.h),
           Text(
-            '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey) ?? _authCubit.emailController.text}',
+            '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey) ?? authCubit!.emailController.text}',
             style: Theme.of(context)
                 .textTheme
                 .bodySmall!
@@ -73,7 +76,7 @@ class VerficationCodeScreen extends StatelessWidget {
                 }
                 return null;
               },
-              controller: _authCubit.codeController,
+              controller: authCubit!.codeController,
               maxLength: 6,
               maxLines: 1,
               textAlign: TextAlign.center,
@@ -88,7 +91,7 @@ class VerficationCodeScreen extends StatelessWidget {
             ),
           ),
           BlocConsumer<AuthCubit, AuthState>(
-            bloc: _authCubit,
+            bloc: authCubit!,
             buildWhen: (previous, current) {
               if (current is CanResendState) return true;
               return false;
@@ -100,25 +103,25 @@ class VerficationCodeScreen extends StatelessWidget {
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                        _authCubit.canResend
+                        authCubit!.canResend
                             ? localization.didntReciveCode
-                            : '${localization.resendCodeIn} ${_authCubit.resendCodeTime} ${localization.seconds}',
+                            : '${localization.resendCodeIn} ${authCubit!.resendCodeTime} ${localization.seconds}',
                         style: Theme.of(context).textTheme.titleMedium!),
                   ),
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: TextButton(
-                      onPressed: _authCubit.canResend
+                      onPressed: authCubit!.canResend
                           ? () {
-                              _authCubit.resendCode(ResendCodeRequest(
-                                  email: _authCubit.emailController.text));
+                              authCubit!.resendCode(ResendCodeRequest(
+                                  email: authCubit!.emailController.text));
                             }
                           : null,
                       child: Text(localization.resendCode,
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     fontSize: 25.sp,
-                                    color: _authCubit.canResend
+                                    color: authCubit!.canResend
                                         ? ColorManager.primary
                                         : ColorManager.grey,
                                   )),
@@ -135,7 +138,7 @@ class VerficationCodeScreen extends StatelessWidget {
                 UIUtils.showMessage(state.message);
               } else if (state is ResendCodeSuccess) {
                 UIUtils.hideLoading(context);
-                _authCubit.verifyCodeTime();
+                authCubit!.verifyCodeTime();
               }
             },
           ),
@@ -143,7 +146,7 @@ class VerficationCodeScreen extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: BlocListener<AuthCubit, AuthState>(
-              bloc: _authCubit,
+              bloc: authCubit!,
               listener: (contexxt, state) {
                 if (state is VerifyCodeLoading) {
                   UIUtils.showLoading(context);
@@ -155,15 +158,15 @@ class VerficationCodeScreen extends StatelessWidget {
                   //   Navigator.of(context).pushNamed(
                   //     SignUpScreen.routeName,
                   //   );
-                  //   _authCubit.resendCode(ResendCodeRequest(
-                  //       email: _authCubit.emailController.text));
+                  //   authCubit!.resendCode(ResendCodeRequest(
+                  //       email: authCubit!.emailController.text));
                   // }
                 } else if (state is VerifyCodeSuccess) {
                   UIUtils.hideLoading(context);
 
                   Navigator.of(context)
                       .pushReplacementNamed(ServiceScreen.routeName);
-                  //  _authCubit.close();
+                  //  authCubit!.close();
                 }
               },
               child: ElevatedButton(
@@ -180,10 +183,10 @@ class VerficationCodeScreen extends StatelessWidget {
 
   _verifyCode() {
     if (formKey.currentState?.validate() == true) {
-      _authCubit.verifyCode(VerifyCodeRequest(
+      authCubit!.verifyCode(VerifyCodeRequest(
           fcmToken: fcmToken!,
-          email: _authCubit.emailController.text,
-          code: _authCubit.codeController.text));
+          email: authCubit!.emailController.text,
+          code: authCubit!.codeController.text));
     }
   }
 }

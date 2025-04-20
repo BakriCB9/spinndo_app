@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:app/features/auth/domain/entities/country.dart';
+import 'package:app/features/auth/domain/use_cases/upgrade_account_use_case.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ import 'package:app/features/service/domain/use_cases/get_categories.dart';
 import '../../../../core/models/google_map_model.dart';
 import '../../domain/use_cases/getCountryName.dart';
 
-@singleton
+@injectable
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
       this._login,
@@ -41,7 +43,7 @@ class AuthCubit extends Cubit<AuthState> {
       this._resendCode,
       this._resetPassword,
       this._getCategories,
-      this._getCountryCityName)
+      this._getCountryCityName,this._upgradeAccountUseCase)
       : super(AuthInitial());
   final Login _login;
   final Register _register;
@@ -50,6 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ResetPassword _resetPassword;
   final RegisterService _registerService;
   final Getcountryname _getCountryCityName;
+  final UpgradeAccountUseCase _upgradeAccountUseCase;
   List<DateSelect> dateSelect = [
     DateSelect(day: "Sunday", start: "08:00", end: "15:00"),
     DateSelect(day: "Monday", start: "08:00", end: "15:00"),
@@ -141,6 +144,19 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _registerService(requestData);
 
+    result.fold(
+      (failure) => emit(RegisterServiceError(failure.message)),
+      (response) => emit(RegisterServiceSuccess()),
+    );
+  }
+   
+
+Future<void> upgradeAccount(
+      UpgradeRegiestServiceProviderRequest requestData) async {
+    emit(RegisterServiceLoading());
+
+    final result = await _upgradeAccountUseCase(requestData);
+    print('the result from cubit is $result');
     result.fold(
       (failure) => emit(RegisterServiceError(failure.message)),
       (response) => emit(RegisterServiceSuccess()),

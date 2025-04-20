@@ -34,115 +34,119 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     //final style = Theme.of(context).elevatedButtonTheme.style!;
-    return CustomAuthForm(
-      canBack: false,
-      isGuest: true,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 60.h,
-          ),
-          Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  CustomTextFormField(
-                    validator: (value) {
-                      if (!Validator.isEmail(value)) {
-                        return localization.validEmail;
-                      }
-                      return null;
-                    },
-                    controller: _authCubit.emailController,
-                    icon: Icons.email,
-                    labelText: localization.email,
-                  ),
-                  SizedBox(height: 30.h),
-                  CustomTextFormField(
-                    validator: (value) {
-                      if (!Validator.isPassword(value)) {
-                        return localization.passwordLessThanSix;
-                      }
-                      return null;
-                    },
-                    controller: _authCubit.passwordController,
-                    icon: Icons.lock,
-                    isPassword: true,
-                    labelText: localization.password,
-                  ),
-                ],
-              )),
-          SizedBox(height: 20.h),
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-              child: InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(ForgotPasswordScreen.routeName);
-                    _authCubit.passwordController.clear();
-                    _authCubit.confirmPasswordController.clear();
-                    _authCubit.emailController.clear();
-                  },
-                  child: Text(localization.forgetPassword,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: ColorManager.primary))),
+    return BlocProvider(
+      create: (context) => _authCubit,
+      child: CustomAuthForm(
+        canBack: false,
+        isGuest: true,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 60.h,
             ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          BlocListener(
-            bloc: _authCubit,
-            listener: (_, state) {
-              if (state is LoginLoading) {
-                UIUtils.showLoading(context);
-              } else if (state is LoginSuccess) {
-                UIUtils.hideLoading(context);
-
-                //  _authCubit.close();
-                _authCubit.emailController.clear();
-                _authCubit.passwordController.clear();
-                Navigator.of(context)
-                    .pushReplacementNamed(ServiceScreen.routeName);
-              } else if (state is LoginError) {
-                UIUtils.hideLoading(context);
-                UIUtils.showMessage(state.message);
-                if (state.message ==
-                    "This accouct is Inactive.You must insert verification code from your email.") {
-                  Navigator.of(context)
-                      .pushNamed(VerficationCodeScreen.routeName);
-                }
-              }
-            },
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _login,
-                child: Text(localization.login,
-                    style: Theme.of(context).textTheme.bodyLarge),
+            Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    CustomTextFormField(
+                      validator: (value) {
+                        if (!Validator.isEmail(value)) {
+                          return localization.validEmail;
+                        }
+                        return null;
+                      },
+                      controller: _authCubit.emailController,
+                      icon: Icons.email,
+                      labelText: localization.email,
+                    ),
+                    SizedBox(height: 30.h),
+                    CustomTextFormField(
+                      validator: (value) {
+                        if (!Validator.isPassword(value)) {
+                          return localization.passwordLessThanSix;
+                        }
+                        return null;
+                      },
+                      controller: _authCubit.passwordController,
+                      icon: Icons.lock,
+                      isPassword: true,
+                      labelText: localization.password,
+                    ),
+                  ],
+                )),
+            SizedBox(height: 20.h),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(ForgotPasswordScreen.routeName);
+                      _authCubit.passwordController.clear();
+                      _authCubit.confirmPasswordController.clear();
+                      _authCubit.emailController.clear();
+                    },
+                    child: Text(localization.forgetPassword,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(color: ColorManager.primary))),
               ),
             ),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Center(
-            child: InkWell(
-              onTap: () {
-                _authCubit.emailController.clear();
-                _authCubit.passwordController.clear();
-                Navigator.of(context)
-                    .pushReplacementNamed(SignUpScreen.routeName);
-              },
-              child: Text(localization.createNewAccount,
-                  style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(
+              height: 10.h,
             ),
-          ),
-        ],
+            BlocListener(
+              bloc: _authCubit,
+              listener: (_, state) {
+                if (state is LoginLoading) {
+                  UIUtils.showLoading(context);
+                } else if (state is LoginSuccess) {
+                  UIUtils.hideLoading(context);
+
+                  //  _authCubit.close();
+                  _authCubit.emailController.clear();
+                  _authCubit.passwordController.clear();
+                  Navigator.of(context)
+                      .pushReplacementNamed(ServiceScreen.routeName);
+                } else if (state is LoginError) {
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(state.message);
+                  if (state.message ==
+                      "This accouct is Inactive.You must insert verification code from your email.") {
+                    // Navigator.of(context)
+                    //     .pushNamed(VerficationCodeScreen.routeName);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (conetxt){return VerficationCodeScreen(authCubit: _authCubit,);}));
+                  }
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _login,
+                  child: Text(localization.login,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            Center(
+              child: InkWell(
+                onTap: () {
+                  _authCubit.emailController.clear();
+                  _authCubit.passwordController.clear();
+                  Navigator.of(context)
+                      .pushReplacementNamed(SignUpScreen.routeName);
+                },
+                child: Text(localization.createNewAccount,
+                    style: Theme.of(context).textTheme.titleMedium),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

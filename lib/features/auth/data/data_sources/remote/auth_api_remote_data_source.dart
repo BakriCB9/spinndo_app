@@ -1,3 +1,5 @@
+import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
+import 'package:app/main.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
@@ -106,6 +108,58 @@ class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
       if (exception is DioException) {
         final errorMessage = exception.response?.data['message'];
         print('ther exception is $errorMessage');
+        if (errorMessage != null) message = errorMessage;
+      }
+
+      throw RemoteAppException(message);
+    }
+  }
+
+  @override
+  Future<String> updgradeAccount(
+      UpgradeRegiestServiceProviderRequest requestBody) async {
+    try {
+      print(requestBody.categoryIdService);
+      print(requestBody.nameService);
+      print(requestBody.descriptionService);
+      print(requestBody.longitudeService);
+      print(requestBody.latitudeService);
+      print(requestBody.listOfDay);
+      print(requestBody.certificate);
+      print(requestBody.cityNameService);
+      print(requestBody.userId);
+      print('UUUUUUUUUUUUUUU');
+      var requestSend = await requestBody.toFormData();
+
+      for (int i = 0; i < requestBody.images.length; i++) {
+        requestSend.files.add(
+          MapEntry(
+            'service[images][$i]', // Field name expected by the server
+            await MultipartFile.fromFile(
+              requestBody.images[i]!.path,
+              filename: requestBody.images[i]!.path.split('/').last,
+            ),
+          ),
+        );
+      }
+
+      final lang = sharedPref.getString('language');
+      final userToken = sharedPref.getString(CacheConstant.tokenKey);
+      final response = await _dio.post(ApiConstant.upgradeAccount,
+          data: requestSend,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $userToken",
+            "Accept-Language": '$lang'
+          }));
+
+      return response.data['status'];
+    } catch (exception) {
+      var message = 'Failed to upgrade';
+
+      if (exception is DioException) {
+        final errorMessage = exception.response?.data['message'];
+
         if (errorMessage != null) message = errorMessage;
       }
 

@@ -1,6 +1,11 @@
 import 'dart:io';
 
+import 'package:app/core/constant.dart';
+import 'package:app/core/utils/image_functions.dart';
+import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
+import 'package:app/features/service/presentation/screens/service_screen.dart';
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,8 +18,6 @@ import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../../../core/utils/image_functions.dart';
 
 class DeplomaProtofileImageScreen extends StatefulWidget {
   DeplomaProtofileImageScreen({this.authCubit, super.key});
@@ -34,12 +37,8 @@ class _DeplomaProtofileImageScreenState
   @override
   initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   widget.authCubit! = BlocProvider.of<AuthCubit>(context);
-    // });
   }
 
-  // List<File?> listOfFileImagesProtofile = [];
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
@@ -159,82 +158,6 @@ class _DeplomaProtofileImageScreenState
                       .titleLarge!
                       .copyWith(fontSize: 40.sp)),
               SizedBox(height: 50.h),
-              // SizedBox(
-              //   height: 350.h,
-              //   child: Row(
-              //     children: [
-              //       Expanded(
-              //         child: GestureDetector(
-              //           onTap: () =>
-              //               singleDialog(2, widget.authCubit!.firstImage != null),
-              //           child: BlocBuilder<AuthCubit, AuthState>(
-              //             bloc: widget.authCubit!,
-              //             buildWhen: (previous, current) =>
-              //                 current is FirstImageUpdated,
-              //             builder: (context, state) {
-              //               final firstImage = widget.authCubit!.firstImage;
-              //               return Container(
-              //                 decoration: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(25.r),
-              //                   color: Colors.grey.withOpacity(0.1),
-              //                 ),
-              //                 child: firstImage == null
-              //                     ? Center(
-              //                         child: Text(localization.clickToUpload,
-              //                             style: Theme.of(context)
-              //                                 .textTheme
-              //                                 .bodySmall),
-              //                       )
-              //                     : ClipRRect(
-              //                         borderRadius: BorderRadius.circular(25.r),
-              //                         child: Image.file(
-              //                           firstImage,
-              //                           fit: BoxFit.cover,
-              //                         ),
-              //                       ),
-              //               );
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(width: 20.w),
-              //       Expanded(
-              //         child: GestureDetector(
-              //           onTap: () =>
-              //               singleDialog(3, widget.authCubit!.secondImage != null),
-              //           child: BlocBuilder<AuthCubit, AuthState>(
-              //             bloc: widget.authCubit!,
-              //             buildWhen: (previous, current) =>
-              //                 current is SecondImageUpdated,
-              //             builder: (context, state) {
-              //               final secondImage = widget.authCubit!.secondImage;
-              //               return Container(
-              //                 decoration: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(25.r),
-              //                   color: Colors.grey.withOpacity(0.1),
-              //                 ),
-              //                 child: secondImage == null
-              //                     ? Center(
-              //                         child: Text(localization.clickToUpload,
-              //                             style: Theme.of(context)
-              //                                 .textTheme
-              //                                 .bodySmall),
-              //                       )
-              //                     : ClipRRect(
-              //                         borderRadius: BorderRadius.circular(25.r),
-              //                         child: Image.file(
-              //                           secondImage,
-              //                           fit: BoxFit.cover,
-              //                         ),
-              //                       ),
-              //               );
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
 
               BlocBuilder<AuthCubit, AuthState>(
                   bloc: widget.authCubit,
@@ -375,14 +298,10 @@ class _DeplomaProtofileImageScreenState
                     UIUtils.showMessage(state.message);
                   } else if (state is RegisterServiceSuccess) {
                     UIUtils.hideLoading(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                     Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return VerficationCodeScreen(
-                        authCubit: widget.authCubit,
-                      );
-                    }));
-                    // Navigator.of(context)
-                    //     .pushNamed(VerficationCodeScreen.routeName);
+                        .pushReplacementNamed(ServiceScreen.routeName);
                   }
                 },
                 child: Container(
@@ -390,12 +309,8 @@ class _DeplomaProtofileImageScreenState
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // print(
-                      //     'the value of phone number is ${widget.authCubit!.phoneNumberController.text}');
-                      // print(
-                      //     'the value of website is ${widget.authCubit!.websiteController.text.isEmpty}');
-                      // print(
-                      //     'the lenght of image is now ${widget.authCubit!.listOfFileImagesProtofile.length} bakkkkkkkkkar ');
+                      final userId = sharedPref.getInt(CacheConstant.userId);
+
                       if (widget.authCubit!.certificateImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -408,40 +323,25 @@ class _DeplomaProtofileImageScreenState
                         return;
                       }
                       widget.authCubit!.listOfFileImagesProtofile.removeLast();
-                      widget.authCubit!.registerService(
-                          RegisterServiceProviderRequest(
-                              websiteService: widget
-                                      .authCubit!.websiteController.text.isEmpty
+                      widget.authCubit!.upgradeAccount(
+                          UpgradeRegiestServiceProviderRequest(
+                              userId: userId.toString(),
+                              websiteService: widget.authCubit!.websiteController
+                                      .text.isEmpty
                                   ? null
                                   : widget.authCubit!.websiteController.text,
-                              phoneNumber:
-                                  widget.authCubit!.phoneNumberController.text,
-                              firstNameAr:
-                                  widget.authCubit!.firstNameArcontroller.text,
-                              lastNameAr:
-                                  widget.authCubit!.lastNameArCOntroller.text,
-                              firstName:
-                                  widget.authCubit!.firstNameContoller.text,
-                              lastName:
-                                  widget.authCubit!.lastNameContoller.text,
-                              email: widget.authCubit!.emailController.text,
                               listOfDay: widget.authCubit!.dateSelect,
-                              password:
-                                  widget.authCubit!.passwordController.text,
-                              nameService:
-                                  widget.authCubit!.serviceNameController.text,
+                              nameService: widget
+                                  .authCubit!.serviceNameController.text,
                               descriptionService: widget
                                   .authCubit!.serviceDescriptionController.text,
                               categoryIdService: widget
                                   .authCubit!.selectedCategory!.id
                                   .toString(),
                               cityNameService: widget.authCubit!.cityName!,
-                              // websiteService:
-                              //     widget.authCubit!.websiteController.text.isEmpty
-                              //         ? null
-                              //         : widget.authCubit!.websiteController.text,
                               certificate: widget.authCubit!.certificateImage!,
-                              latitudeService: widget.authCubit!.isCurrent
+                              latitudeService: widget
+                                      .authCubit!.isCurrent
                                   ? widget.authCubit!.currentLocation!.latitude
                                       .toString()
                                   : widget.authCubit!.selectedLocation!.latitude
@@ -449,11 +349,42 @@ class _DeplomaProtofileImageScreenState
                               longitudeService: widget.authCubit!.isCurrent
                                   ? widget.authCubit!.currentLocation!.longitude
                                       .toString()
-                                  : widget
-                                      .authCubit!.selectedLocation!.longitude
+                                  : widget.authCubit!.selectedLocation!.longitude
                                       .toString(),
                               images:
                                   widget.authCubit!.listOfFileImagesProtofile));
+                      // widget.authCubit!.registerService(
+                      //     RegisterServiceProviderRequest(
+                      //         websiteService: widget
+                      //                 .authCubit!.websiteController.text.isEmpty
+                      //             ? null
+                      //             : widget.authCubit!.websiteController.text,
+
+                      //         listOfDay: widget.authCubit!.dateSelect,
+
+                      //         nameService:
+                      //             widget.authCubit!.serviceNameController.text,
+                      //         descriptionService: widget
+                      //             .authCubit!.serviceDescriptionController.text,
+                      //         categoryIdService: widget
+                      //             .authCubit!.selectedCategory!.id
+                      //             .toString(),
+                      //         cityNameService: widget.authCubit!.cityName!,
+
+                      //         certificate: widget.authCubit!.certificateImage!,
+                      //         latitudeService: widget.authCubit!.isCurrent
+                      //             ? widget.authCubit!.currentLocation!.latitude
+                      //                 .toString()
+                      //             : widget.authCubit!.selectedLocation!.latitude
+                      //                 .toString(),
+                      //         longitudeService: widget.authCubit!.isCurrent
+                      //             ? widget.authCubit!.currentLocation!.longitude
+                      //                 .toString()
+                      //             : widget
+                      //                 .authCubit!.selectedLocation!.longitude
+                      //                 .toString(),
+                      //         images:
+                      //             widget.authCubit!.listOfFileImagesProtofile));
                     },
                     child: Text(localization.signUp,
                         style: Theme.of(context).textTheme.bodyLarge),

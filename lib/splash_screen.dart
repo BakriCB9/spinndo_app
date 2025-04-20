@@ -74,14 +74,22 @@ class _SplashScreenState extends State<SplashScreen>
     // Navigate to the next screen
     Future.delayed(const Duration(seconds: 4), () async {
       //await _authCubit.getCategories();
-      Navigator.pushReplacementNamed(
-        context,
-        sharedPref.getString(CacheConstant.tokenKey) == null
-            ? (sharedPref.getString(CacheConstant.emailKey) == null
-                ? SignUpScreen.routeName
-                : SignInScreen.routeName)
-            : ServiceScreen.routeName,
-      );
+
+      if (sharedPref.getString(CacheConstant.tokenKey) == null) {
+        return Navigator.of(context)
+            .pushReplacementNamed(SignInScreen.routeName);
+      } else {
+        return Navigator.of(context)
+            .pushReplacementNamed(ServiceScreen.routeName);
+      }
+      // Navigator.pushReplacementNamed(
+      //   context,
+      //   sharedPref.getString(CacheConstant.tokenKey) == null
+      //       ? (sharedPref.getString(CacheConstant.emailKey) == null
+      //           ? SignUpScreen.routeName
+      //           : SignInScreen.routeName)
+      //       : ServiceScreen.routeName,
+      // );
     });
   }
 

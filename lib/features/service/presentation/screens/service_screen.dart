@@ -763,10 +763,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                       search: _serviceCubit.searchController.text.isEmpty
                                                           ? null
                                                           : _serviceCubit.searchController.text));
-                                                  print(
-                                                      'the id of selected category is ${_serviceCubit.selectedCategory!.id}');
-                                                  print(
-                                                      'the value of distance is ${_serviceCubit.searchController.text}');
+                                                  // print(
+                                                  //     'the id of selected category is ${_serviceCubit.selectedCategory!.id}');
+                                                  // print(
+                                                  //     'the value of distance is ${_serviceCubit.searchController.text}');
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
