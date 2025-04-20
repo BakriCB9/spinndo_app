@@ -32,6 +32,8 @@ import 'package:app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:app/features/service/presentation/screens/service_map_screen.dart';
 import 'package:app/features/service/presentation/screens/service_screen.dart';
 
+import 'features/packages/presentation/view/packages_screen.dart';
+
 late final SharedPreferences sharedPref;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -125,6 +127,8 @@ class MyApp extends StatelessWidget {
                             VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
+                        PackagesScreen.routeName: (context) =>
+                        const PackagesScreen(),
                       },
                       debugShowCheckedModeBanner: false,
                     );

@@ -1,6 +1,7 @@
 import 'package:app/features/packages/presentation/view/package_details.dart';
-import 'package:app/features/service/data/models/get_package_reponse/get_package_reponse.dart';
 import 'package:flutter/material.dart';
+
+import '../../../service/data/models/get_package_reponse/get_package_reponse.dart';
 
 class PackagesScreen extends StatefulWidget {
   const PackagesScreen({super.key});

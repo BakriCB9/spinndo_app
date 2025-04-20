@@ -2,12 +2,12 @@ import 'package:app/core/constant.dart';
 import 'package:app/features/favorite/data/dataSource/remote/remote_datasource.dart';
 import 'package:app/features/favorite/data/model/add_fav_response.dart';
 import 'package:app/features/packages/data/dataSource/remote/packages_remote_datasource.dart';
+import 'package:app/features/service/data/models/get_package_reponse/get_package_reponse.dart';
 import 'package:app/features/service/data/models/get_services_response/get_services_response.dart';
 import 'package:dio/dio.dart';
 
 import 'package:injectable/injectable.dart';
 
-import '../../../../service/data/models/get_package_reponse/get_package_reponse.dart';
 
 @Injectable(as: PackagesRemoteDataSource)
 class PackagesRemoteDataSourceImpl extends PackagesRemoteDataSource {

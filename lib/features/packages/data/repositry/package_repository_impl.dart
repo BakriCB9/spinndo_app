@@ -3,7 +3,6 @@ import 'package:app/core/error/apiResult.dart';
 import 'package:app/features/service/data/models/get_services_response/data.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../service/data/models/get_package_reponse/get_package_reponse.dart';
 import '../../domain/repositry/package_repository.dart';
 import '../dataSource/remote/packages_remote_datasource.dart';
