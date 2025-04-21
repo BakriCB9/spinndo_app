@@ -3,14 +3,14 @@ class PackageModel {
   final String name;
   final double price;
   final int durationDays;
-  final String description;
+  final bool is_subscribed;
 
   PackageModel({
     required this.id,
     required this.name,
     required this.price,
     required this.durationDays,
-    required this.description,
+    required this.is_subscribed,
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +19,7 @@ class PackageModel {
       name: json['name'],
       price: json['price'],
       durationDays: json['durationDays'],
-      description: json['description'],
+      is_subscribed: json['is_subscribed'],
     );
   }
 
@@ -28,7 +28,7 @@ class PackageModel {
     'name': name,
     'price': price,
     'durationDays': durationDays,
-    'description': description,
+    'is_subscribed': is_subscribed,
   };
 
 }

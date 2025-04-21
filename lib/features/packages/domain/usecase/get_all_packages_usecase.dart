@@ -14,5 +14,4 @@ class GetAllPackagesUseCase {
      ApiResult<List<PackageData>> ans = await repository.getAllPackages();
      return ans;
    }
-
 }

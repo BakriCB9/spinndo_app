@@ -23,6 +23,8 @@ import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
 import 'package:app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:app/main.dart';
 
+import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../packages/presentation/view/packages_screen.dart';
 import '../../data/model/languages.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -40,6 +42,8 @@ class CustomDrawer extends StatelessWidget {
     Languages(name: 'العربية', code: 'ar'),
   ];
   Uint8List? bytes;
+  final _authCubit = serviceLocator.get<AuthCubit>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -268,10 +272,57 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                  _authCubit.isClient
+                      ? InkWell(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context)
+                          .pushNamed(PackagesScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.inventory_2_rounded,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        "Packages",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
+                  )
+                      : SizedBox(),
+                  getUserRole() != null
+                      ? getUserRole() == 'Client'
+                      ? SizedBox()
+                      : InkWell(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context)
+                          .pushNamed(DiscountScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.discount,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        localization.disco,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
                   getUserRole() != null
                       ? getUserRole() == 'Client'
                           ? SizedBox()
-                          : InkWell(
+                          :
+                  InkWell(
                               onTap: () {
                                 Scaffold.of(context).closeDrawer();
                                 Navigator.of(context)

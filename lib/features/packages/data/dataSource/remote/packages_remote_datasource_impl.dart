@@ -18,7 +18,6 @@ class PackagesRemoteDataSourceImpl extends PackagesRemoteDataSource {
   Future<GetPackagesResponse> getAllPackages(String userToken) async {
     final ans = await _dio.get(ApiConstant.getAllPackages,
         options: Options(headers: {
-          "Content-Type": "application/json",
           "Authorization": userToken
         }));
 
