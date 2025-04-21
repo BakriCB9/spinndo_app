@@ -24,6 +24,7 @@ import 'package:app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:app/main.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../packages/presentation/view/package_screen_back.dart';
 import '../../../packages/presentation/view/packages_screen.dart';
 import '../../data/model/languages.dart';
 
