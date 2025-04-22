@@ -1,5 +1,6 @@
 import 'package:app/core/constant.dart';
 import 'package:app/core/error/apiResult.dart';
+import 'package:app/features/service/data/models/get_package_reponse/data.dart';
 import 'package:app/features/service/data/models/get_services_response/data.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,16 +15,16 @@ class PackageRepositoryImpl extends PackageRepository {
   PackageRepositoryImpl(this.packagesRemoteDataSource, this.sharedPreferences);
 
   @override
-  Future<ApiResult<List<PackageData>>> getAllPackages() async {
+  Future<ApiResult<List<PackagesData?>>> getAllPackages() async {
       try {
         final userToken = sharedPreferences.getString(CacheConstant.tokenKey);
         final ans = await packagesRemoteDataSource.getAllPackages(userToken!);
         print('');
         print('the value of package in respositry is ${ans.data}');
         print('');
-        return ApiResultSuccess<List<PackageData>>(ans.data);
+        return ApiResultSuccess<List<PackagesData?>>(ans.data ?? []);
       } catch (e) {
-        return ApiresultError<List<PackageData>>('Failed to get Favorite items');
+        return ApiresultError<List<PackagesData?>>('Failed to get Favorite items');
       }
   }
 }

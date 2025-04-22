@@ -1,11 +1,14 @@
-import 'package:app/features/packages/presentation/view/package_details.dart';
-import 'package:app/features/service/data/models/get_package_reponse/get_package_reponse.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../view_model/packages_cubit.dart';
+import '../view_model/packages_state.dart';
 
 class PackagesScreen extends StatefulWidget {
-  const PackagesScreen({super.key});
+  final String token;
+  static const String routeName = '/packages';
 
-  static const String routeName = 'packages';
+
+  const PackagesScreen({Key? key, required this.token}) : super(key: key);
 
   @override
   State<PackagesScreen> createState() => _PackagesScreenState();
@@ -13,138 +16,40 @@ class PackagesScreen extends StatefulWidget {
 
 class _PackagesScreenState extends State<PackagesScreen> {
   @override
-  bool select1=false;
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Package Details'),
-        centerTitle: true,
-        backgroundColor: Colors.yellow[700],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 24.0),
-        child: _buildPackageDetails(),
-      ),
-    );
+  void initState() {
+    super.initState();
+    context.read<PackagesCubit>().getAllPackages();
   }
 
-  Widget _buildPackageDetails() {
-    // بيانات الباقة الثابتة
-    final package = PackageData(
-      id: '1',
-      name: 'Basic Plan',
-      price: 9,
-      duration: 3,
-      is_subscribed: true,
-    );
-
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PackageDetails(), // قم بتحديد الصفحة التي تريد الانتقال إليها
-              ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Packages")),
+      body: BlocBuilder<PackagesCubit, PackagesState>(
+        builder: (context, state) {
+          if (state is PackagesLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is PackagesLoaded) {
+            return ListView.builder(
+              itemCount: state.packages.length,
+              itemBuilder: (context, index) {
+                final package = state.packages[index];
+                return ListTile(
+                  title: Text(package?.name ?? ''),
+                  subtitle: Text("€${package?.price ?? 0} for ${package?.duration?? 3} days"),
+                  trailing: Icon(
+                    (package?.is_subscribed??false) ? Icons.check_circle : Icons.cancel,
+                    color: (package?.is_subscribed??false) ? Colors.green : Colors.red,
+                  ),
+                );
+              },
             );
-          },
-          child: Card(
-            color: Colors.yellow[50],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.only(bottom: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    package.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.black),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(package.name),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Price: \$${package.price.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text(
-                        'Duration: ${package.duration} days',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                ],
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PackageDetails(), // قم بتحديد الصفحة التي تريد الانتقال إليها
-              ),
-            );
-          },
-          child: Card(
-            elevation: 4,
-            color: Colors.yellow[50],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.only(bottom: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Premium Plan",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.black),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(package.name),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Price: \$10',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text(
-                        'Duration: 5 days',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                    ],
-                  ),
-
-                ],
-              ),
-            ),
-          ),
-        )
-      ],
+          } else if (state is PackagesError) {
+            return Center(child: Text(state.message));
+          }
+          return Container();
+        },
+      ),
     );
   }
 }

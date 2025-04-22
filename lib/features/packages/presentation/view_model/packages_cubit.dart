@@ -1,3 +1,4 @@
+import 'package:app/features/service/data/models/get_package_reponse/data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/apiResult.dart';
@@ -6,15 +7,16 @@ import '../../../service/data/models/get_package_reponse/get_package_reponse.dar
 import '../../domain/usecase/get_all_packages_usecase.dart';
 import 'packages_state.dart';
 
-@lazySingleton
+@injectable
 class PackagesCubit extends Cubit<PackagesState> {
-  final GetAllPackagesUseCase _getAllPackagesUseCase;
+  PackagesCubit(this.getAllPackagesUseCase) : super(PackagesInitial());
 
-  PackagesCubit(this._getAllPackagesUseCase) : super(PackagesInitial());
+  final GetAllPackagesUseCase getAllPackagesUseCase;
+
 
   Future<void> getAllPackages() async {
     emit(PackagesLoading());
-    ApiResult<List<PackageData>> result = await _getAllPackagesUseCase();
+    ApiResult<List<PackagesData?>> result = await getAllPackagesUseCase();
     switch (result) {
       case ApiResultSuccess():
         {

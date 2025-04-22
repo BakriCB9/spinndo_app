@@ -3,6 +3,7 @@ import 'package:app/default_firebase_options.dart';
 import 'package:app/features/discount/presentation/view/add_discount_screen.dart';
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
 import 'package:app/features/favorite/presentation/view/favorite_screen.dart';
+import 'package:app/features/packages/presentation/view_model/packages_cubit.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/features/service_requist/presentation/view/add_service_request_screen.dart';
 import 'package:app/features/service_requist/presentation/view/get_service_request_screen.dart';
@@ -32,6 +33,7 @@ import 'package:app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:app/features/service/presentation/screens/service_map_screen.dart';
 import 'package:app/features/service/presentation/screens/service_screen.dart';
 
+import 'core/constant.dart';
 import 'features/packages/presentation/view/package_screen_back.dart';
 import 'features/packages/presentation/view/packages_screen.dart';
 
@@ -51,16 +53,19 @@ Future<void> main() async {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   await _drawerCubit.loadLanguage();
   await _drawerCubit.loadThemeData();
+
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(
       enabled: false,
       builder: (_) {
-        return const MyApp();
+        return  MyApp();
       }));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final userToken = sharedPref.getString(CacheConstant.tokenKey);
+
+   MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +76,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => serviceLocator.get<DrawerCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => serviceLocator.get<PackagesCubit>(),
           )
         ],
         child: ScreenUtilInit(
@@ -129,7 +137,7 @@ class MyApp extends StatelessWidget {
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
                         PackagesScreen.routeName: (context) =>
-                        const PackagesScreen(),
+                        PackagesScreen(token: userToken??'',),
                       },
                       debugShowCheckedModeBanner: false,
                     );

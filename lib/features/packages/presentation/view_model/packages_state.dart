@@ -1,23 +1,4 @@
-import '../../../auth/data/models/category_response/datum.dart';
-import '../../../service/data/models/get_package_reponse/get_package_reponse.dart';
-import '../../domain/package_intity.dart';
-
-// abstract class PackagesState {}
-//
-// class PackagesInitial extends PackagesState {}
-//
-// class PackagesLoading extends PackagesState {}
-//
-// class PackagesError extends PackagesState {
-//   String message = "";
-//   PackagesError(this.message);
-// }
-//
-// class PackagesSuccess extends PackagesState {
-//   final List<PackageData> listOffPackages;
-//   PackagesSuccess(this.listOffPackages);
-// }
-
+import 'package:app/features/service/data/models/get_package_reponse/data.dart';
 abstract class PackagesState {}
 
 class PackagesInitial extends PackagesState {}
@@ -25,7 +6,7 @@ class PackagesInitial extends PackagesState {}
 class PackagesLoading extends PackagesState {}
 
 class PackagesSuccess extends PackagesState {
-  final List<PackageData> packages;
+  final List<PackagesData?> packages;
 
   PackagesSuccess(this.packages);
 }
@@ -34,4 +15,10 @@ class PackagesError extends PackagesState {
   final String message;
 
   PackagesError(this.message);
+}
+
+class PackagesLoaded extends PackagesState {
+  final List<PackagesData?> packages;
+
+  PackagesLoaded(this.packages);
 }

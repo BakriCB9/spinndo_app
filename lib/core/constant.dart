@@ -33,7 +33,7 @@ class ApiConstant {
   static const String addOrupdateLinkSocial='/profile/social_link';
   static const String deleteSocialLinks='/profile/social_link';
   static const String upgradeAccount='/profile/upgrade';
-  static const String getAllPackages='/packages';
+  static const String getAllPackages='/packages/getAll';
 }
 
 class CacheConstant {

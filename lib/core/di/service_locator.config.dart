@@ -145,6 +145,8 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../features/packages/presentation/view_model/packages_cubit.dart';
+
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
@@ -325,6 +327,9 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i728.Getcountryname>(),
           gh<_i1020.UpgradeAccountUseCase>(),
         ));
+    gh.factory<_i364.FavoriteCubit>(() => _i364.PackagesCubit(
+      gh<_i614.GetAllFavUsecase>(),
+    ));
     return this;
   }
 }

@@ -2,14 +2,14 @@ class PackageModel {
   final int id;
   final String name;
   final double price;
-  final int durationDays;
+  final int duration;
   final bool is_subscribed;
 
   PackageModel({
     required this.id,
     required this.name,
     required this.price,
-    required this.durationDays,
+    required this.duration,
     required this.is_subscribed,
   });
 
@@ -17,18 +17,17 @@ class PackageModel {
     return PackageModel(
       id: json['id'],
       name: json['name'],
-      price: json['price'],
-      durationDays: json['durationDays'],
+      price: (json['price'] as num).toDouble(),
+      duration: json['duration'],
       is_subscribed: json['is_subscribed'],
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'price': price,
-    'durationDays': durationDays,
-    'is_subscribed': is_subscribed,
-  };
-
+  PackageModel toEntity() => PackageModel(
+    id: id,
+    name: name,
+    price: price,
+    duration: duration,
+    is_subscribed: is_subscribed,
+  );
 }

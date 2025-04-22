@@ -90,3 +90,13 @@ class GetMainCategoryError extends ServiceStates{
   GetMainCategoryError(this.message);
 }
 class GetMainCategoryLoading extends ServiceStates{}
+
+
+class GetPackagesLoading extends ServiceStates {}
+
+class GetPackagesError extends ServiceStates {
+  String message;
+  GetPackagesError(this.message);
+}
+
+class GetPackagesSuccess extends ServiceStates {}

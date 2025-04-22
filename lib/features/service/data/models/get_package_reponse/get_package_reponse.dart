@@ -1,38 +1,46 @@
 // lib/features/package/data/model/get_packages_response.dart
-class GetPackagesResponse {
-  List<PackageData> data;
+import 'data.dart';
 
-  GetPackagesResponse({required this.data});
+class GetPackagesResponse {
+
+  String? status;
+  String? message;
+  List<PackagesData>? data;
+
+  GetPackagesResponse({this.status, this.message,this.data});
 
   factory GetPackagesResponse.fromJson(Map<String, dynamic> json) {
     return GetPackagesResponse(
-      data: (json['data'] as List).map((item) => PackageData.fromJson(item)).toList(),
+      status: json['status'] as String?,
+      message: json['message'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => PackagesData.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 }
 
-class PackageData {
-  String id;
-  String name;
-  int price;
-  int duration;
-  bool is_subscribed;
+class GetPackagesResponse {
+  String? status;
+  String? message;
+  List<ItemOfMain>? data;
 
-  PackageData({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.duration,
-    required this.is_subscribed
-  });
+  GetCategoryMain({this.status, this.message, this.data});
 
-  factory PackageData.fromJson(Map<String, dynamic> json) {
-    return PackageData(
-      id: json['id'],
-      name: json['name'],
-      price: json['price'],
-      duration: json['duration'],
-      is_subscribed: json['is_subscribed'],
+  factory GetCategoryMain.fromJson(Map<String, dynamic> json) {
+    return GetCategoryMain(
+      status: json['status'] as String?,
+      message: json['message'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => ItemOfMain.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
+  GetAllCategoryMainEntity toGetAllMainCategory() {
+    return GetAllCategoryMainEntity(data!.map((e) {
+      return e.toDataOfItemMainCategory();
+    }).toList());
+  }
 }
+
+
