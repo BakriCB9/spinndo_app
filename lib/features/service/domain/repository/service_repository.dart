@@ -18,5 +18,4 @@ abstract class ServiceRepository {
   Future<Either<Failure, ProviderProfile>> showDetails(int id);
   Future<Either<Failure, List<Notifications>>> getAllNotification();
   Future<Either<Failure,GetAllCategoryMainEntity>>getAllMainCategory();
-  Future<Either<Failure,List<Packages>>>getAllPackages();
 }

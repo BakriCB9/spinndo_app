@@ -138,7 +138,8 @@
     "discountRequired": "Geben Sie den Rabatt ein",
     "codeRequired": "Geben Sie den Code ein",
     "addDiscount": "Rabatt hinzufügen",
-    "areYouSureToDelete": "Sind Sie sicher, dass Sie den Artikel löschen möchten"
+    "areYouSureToDelete": "Sind Sie sicher, dass Sie den Artikel löschen möchten",
+    "packages": "Pakete"
 }
 
 

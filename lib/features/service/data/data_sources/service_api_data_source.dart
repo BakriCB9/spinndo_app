@@ -12,7 +12,6 @@ import 'package:app/features/service/data/models/get_all_countries_response/get_
 import 'package:app/features/service/data/models/get_services_request.dart';
 import 'package:app/features/service/data/models/get_services_response/get_services_response.dart';
 
-import '../models/get_package_reponse/get_package_reponse.dart';
 import 'service_data_source.dart';
 
 @Injectable(as: ServiceDataSource)
@@ -120,25 +119,6 @@ class ServiceApiDataSource implements ServiceDataSource {
       return NotificationModel.fromJson(response.data);
     } catch (exciption) {
       throw RemoteAppException("Failed to get Notification");
-    }
-  }
-
-  @override
-  Future<GetPackagesResponse> getPackagesResponse() async {
-    try {
-      final lang = _sharedPreferences.getString('language');
-      String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-      final response =
-      await _dio.get('${ApiConstant.getAllPackages}',
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $user_token",
-            "Accept-Language": '$lang',
-          }));
-
-      return GetPackagesResponse.fromJson(response.data);
-    } catch (exciption) {
-      throw RemoteAppException("Failed to get Details");
     }
   }
 

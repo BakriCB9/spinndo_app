@@ -139,7 +139,8 @@
      "codeRequired":"يرجى ادخال الكود",
      "addDiscount":"اضافة التخفيض",
      "areYouSureToDelete":"هل انت متاكد من حذف هذا العنصر",
-     "areYouSureToDeleteAccount":"هل انت متاكد من حذف حسابك"
+     "areYouSureToDeleteAccount":"هل انت متاكد من حذف حسابك",
+     "packages": "الباقات"
 
 
 

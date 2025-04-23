@@ -27,8 +27,6 @@ import 'package:app/features/service/domain/use_cases/get_details.dart';
 import 'package:app/features/service/domain/use_cases/get_services.dart';
 import 'package:app/features/service/presentation/cubit/service_states.dart';
 
-import '../../data/models/get_package_reponse/data.dart';
-
 @singleton
 class ServiceCubit extends Cubit<ServiceStates> {
   ServiceCubit(
@@ -39,7 +37,6 @@ class ServiceCubit extends Cubit<ServiceStates> {
       this._getNotifications,
       this._getAllDiscountUseCase,
       this._getMainCategory,
-      this._getAllPackages
       )
       : super(ServiceInitial());
   final GetCountries _getCountries;
@@ -49,7 +46,6 @@ class ServiceCubit extends Cubit<ServiceStates> {
   final GetNotifications _getNotifications;
   final GetAllDiscountUseCase _getAllDiscountUseCase;
   final GetMainCategory _getMainCategory;
-  final GetAllPackages _getMainCategory;
   List<AllDiscountEntity> listAllDiscount = [];
   List<Countries>? countriesList;
   Categories? selectedCategory;
@@ -82,9 +78,6 @@ class ServiceCubit extends Cubit<ServiceStates> {
   ChildCategory addAllChildCategories =
       ChildCategory(id: -1, name: "All Sub Categories");
   TextEditingController searchController = TextEditingController();
-
-  PackagesData addAllPackages =
-  PackagesData(id: -1, name: "All Packages", price: null, duration: 1, is_subscribed: null);
 
   getServiceAndDiscount(GetServicesRequest requestData) {
     Future.wait([_getAllServices(requestData), _getAllDiscount()]);

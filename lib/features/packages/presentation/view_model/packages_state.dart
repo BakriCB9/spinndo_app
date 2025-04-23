@@ -1,4 +1,4 @@
-import 'package:app/features/service/data/models/get_package_reponse/data.dart';
+import 'package:app/features/packages/data/model/package_model.dart';
 abstract class PackagesState {}
 
 class PackagesInitial extends PackagesState {}
@@ -6,7 +6,7 @@ class PackagesInitial extends PackagesState {}
 class PackagesLoading extends PackagesState {}
 
 class PackagesSuccess extends PackagesState {
-  final List<PackagesData?> packages;
+  final List<PackageModel?> packages;
 
   PackagesSuccess(this.packages);
 }
@@ -18,7 +18,7 @@ class PackagesError extends PackagesState {
 }
 
 class PackagesLoaded extends PackagesState {
-  final List<PackagesData?> packages;
+  final List<PackageModel?> packages;
 
   PackagesLoaded(this.packages);
 }

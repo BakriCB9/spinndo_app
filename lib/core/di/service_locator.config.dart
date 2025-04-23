@@ -68,6 +68,30 @@ import 'package:app/features/favorite/domain/usecase/remove_from_fav_useCase.dar
     as _i654;
 import 'package:app/features/favorite/presentation/view_model/cubit/favorite_cubit_cubit.dart'
     as _i364;
+import 'package:app/features/packages/data/data_source/remote/packages_remote_datasource.dart'
+    as _i529;
+import 'package:app/features/packages/data/data_source/remote/packages_remote_datasource_impl.dart'
+    as _i988;
+import 'package:app/features/packages/data/repositry/package_repository_impl.dart'
+    as _i216;
+import 'package:app/features/packages/domain/repositry/package_repository.dart'
+    as _i673;
+import 'package:app/features/packages/domain/usecase/get_all_packages_usecase.dart'
+    as _i392;
+import 'package:app/features/packages/presentation/view_model/packages_cubit.dart'
+    as _i594;
+import 'package:app/features/payment/data/data_source/remote/payements_remote_datasource.dart'
+    as _i124;
+import 'package:app/features/payment/data/data_source/remote/payements_remote_datasource_impl.dart'
+    as _i40;
+import 'package:app/features/payment/data/repositry/payements_repository_impl.dart'
+    as _i246;
+import 'package:app/features/payment/domain/repositry/payments_repository.dart'
+    as _i757;
+import 'package:app/features/payment/domain/usecase/get_all_payments_usecase.dart'
+    as _i496;
+import 'package:app/features/payment/presentation/view_model/payments_cubit.dart'
+    as _i251;
 import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart'
     as _i597;
 import 'package:app/features/profile/data/data_source/local/profile_shared_pref_local_data_source.dart'
@@ -145,8 +169,6 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-import '../../features/packages/presentation/view_model/packages_cubit.dart';
-
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
@@ -196,6 +218,10 @@ extension GetItInjectableX on _i174.GetIt {
         _i649.DrawerCubit(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.singleton<_i856.AuthRemoteDataSource>(
         () => _i27.AuthAPIRemoteDataSource(dio: gh<_i361.Dio>()));
+    gh.factory<_i529.PackagesRemoteDataSource>(
+        () => _i988.PackagesRemoteDatasourceImpl(dio: gh<_i361.Dio>()));
+    gh.factory<_i124.PaymentsRemoteDatasource>(
+        () => _i40.PaymentsRemoteDatasourceImpl(dio: gh<_i361.Dio>()));
     gh.factory<_i292.DiscountRepo>(
         () => _i206.DiscountRepoImpl(gh<_i678.DiscountRemoteDataSource>()));
     gh.factory<_i258.FavRepositry>(() => _i983.FavRepositryImpl(
@@ -211,6 +237,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i456.AuthLocalDataSource>(() =>
         _i545.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.factory<_i757.PaymentsRepository>(() => _i246.PaymentsMethodImpl(
+          gh<_i124.PaymentsRemoteDatasource>(),
+          gh<_i460.SharedPreferences>(),
+        ));
     gh.lazySingleton<_i734.ProfileRepository>(() => _i649.ProfileRepositoryImpl(
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
@@ -220,22 +250,28 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i595.DeleteDiscountUseCase>(),
           gh<_i762.GetAllDiscountUseCase>(),
         ));
+    gh.factory<_i673.PackageRepository>(() => _i216.PackageRepositoryImpl(
+          gh<_i529.PackagesRemoteDataSource>(),
+          gh<_i460.SharedPreferences>(),
+        ));
     gh.factory<_i779.GetCategories>(
         () => _i779.GetCategories(gh<_i1054.ServiceRepository>()));
     gh.factory<_i538.GetCountries>(
         () => _i538.GetCountries(gh<_i1054.ServiceRepository>()));
     gh.factory<_i904.GetServiceProfile>(
         () => _i904.GetServiceProfile(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i785.GetMainCategory>(
+        () => _i785.GetMainCategory(gh<_i1054.ServiceRepository>()));
     gh.factory<_i302.GetNotifications>(
         () => _i302.GetNotifications(gh<_i1054.ServiceRepository>()));
     gh.factory<_i590.GetServices>(
         () => _i590.GetServices(gh<_i1054.ServiceRepository>()));
-    gh.factory<_i785.GetMainCategory>(
-        () => _i785.GetMainCategory(gh<_i1054.ServiceRepository>()));
     gh.factory<_i881.GetServiceRequestUseCase>(
         () => _i881.GetServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
     gh.factory<_i457.UpdateServiceRequestUseCase>(() =>
         _i457.UpdateServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
+    gh.lazySingleton<_i496.GetAllPaymentsUseCase>(
+        () => _i496.GetAllPaymentsUseCase(gh<_i757.PaymentsRepository>()));
     gh.factory<_i35.AddServiceRequestUseCase>(
         () => _i35.AddServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
     gh.factory<_i600.DeleteServiceRequestUseCase>(() =>
@@ -262,6 +298,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i284.UpdateProviderProfile>(
         () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
+    gh.factory<_i251.PaymentsCubit>(
+        () => _i251.PaymentsCubit(gh<_i496.GetAllPaymentsUseCase>()));
     gh.factory<_i619.AddFavUseCase>(
         () => _i619.AddFavUseCase(gh<_i258.FavRepositry>()));
     gh.factory<_i614.GetAllFavUsecase>(
@@ -298,6 +336,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i762.GetAllDiscountUseCase>(),
           gh<_i785.GetMainCategory>(),
         ));
+    gh.lazySingleton<_i392.GetAllPackagesUseCase>(
+        () => _i392.GetAllPackagesUseCase(gh<_i673.PackageRepository>()));
     gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
           gh<_i916.GetClientProfile>(),
           gh<_i140.GetProviderProfile>(),
@@ -316,6 +356,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i614.GetAllFavUsecase>(),
           gh<_i654.RemoveFromFavUsecase>(),
         ));
+    gh.factory<_i594.PackagesCubit>(
+        () => _i594.PackagesCubit(gh<_i392.GetAllPackagesUseCase>()));
     gh.factory<_i580.AuthCubit>(() => _i580.AuthCubit(
           gh<_i293.Login>(),
           gh<_i374.Register>(),
@@ -327,9 +369,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i728.Getcountryname>(),
           gh<_i1020.UpgradeAccountUseCase>(),
         ));
-    gh.factory<_i364.FavoriteCubit>(() => _i364.PackagesCubit(
-      gh<_i614.GetAllFavUsecase>(),
-    ));
     return this;
   }
 }

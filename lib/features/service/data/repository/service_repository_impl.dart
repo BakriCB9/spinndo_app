@@ -1,9 +1,7 @@
-import 'package:app/features/packages/domain/usecase/get_all_packages_usecase.dart';
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/service/domain/entities/main_category/all_category_main_entity.dart';
 import 'package:app/features/service/domain/entities/notifications.dart';
-import 'package:app/features/service/domain/entities/package.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/failure.dart';
@@ -86,17 +84,5 @@ class ServiceRepositoryImpl implements ServiceRepository {
      return left(Failure(exception.message));
    }
     
-  }
-
-  @override
-  Future<Either<Failure, List<Packages>>> getAllPackages() async{
-    try{
-      final response=await _serviceDataSource.getPackagesResponse();
-      final ans=response.();
-      return Right(ans);
-    }on AppException catch(exception){
-      return left(Failure(exception.message));
-    }
-
   }
 }

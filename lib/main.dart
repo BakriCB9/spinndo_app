@@ -4,6 +4,8 @@ import 'package:app/features/discount/presentation/view/add_discount_screen.dart
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
 import 'package:app/features/favorite/presentation/view/favorite_screen.dart';
 import 'package:app/features/packages/presentation/view_model/packages_cubit.dart';
+import 'package:app/features/payment/presentation/view/payment_screen.dart';
+import 'package:app/features/payment/presentation/view_model/payments_cubit.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/features/service_requist/presentation/view/add_service_request_screen.dart';
 import 'package:app/features/service_requist/presentation/view/get_service_request_screen.dart';
@@ -34,7 +36,6 @@ import 'package:app/features/service/presentation/screens/service_map_screen.dar
 import 'package:app/features/service/presentation/screens/service_screen.dart';
 
 import 'core/constant.dart';
-import 'features/packages/presentation/view/package_screen_back.dart';
 import 'features/packages/presentation/view/packages_screen.dart';
 
 late final SharedPreferences sharedPref;
@@ -79,6 +80,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => serviceLocator.get<PackagesCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => serviceLocator.get<PaymentsCubit>(),
           )
         ],
         child: ScreenUtilInit(
@@ -137,7 +141,9 @@ class MyApp extends StatelessWidget {
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
                         PackagesScreen.routeName: (context) =>
-                        PackagesScreen(token: userToken??'',),
+                            const PackagesScreen(),
+                        PaymentsScreen.routeName: (context) =>
+                        const PaymentsScreen(),
                       },
                       debugShowCheckedModeBanner: false,
                     );
