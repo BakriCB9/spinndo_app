@@ -1,4 +1,6 @@
 import 'package:app/features/packages/data/model/package_model.dart';
+import 'package:app/features/packages/data/model/subscription/subscribe_response.dart';
+
 abstract class PackagesState {}
 
 class PackagesInitial extends PackagesState {}
@@ -13,12 +15,20 @@ class PackagesSuccess extends PackagesState {
 
 class PackagesError extends PackagesState {
   final String message;
+  final Object? error;
 
-  PackagesError(this.message);
+  PackagesError(this.message, [this.error]);
 }
 
-class PackagesLoaded extends PackagesState {
-  final List<PackageModel?> packages;
+class SubscriptionSuccess extends PackagesState {
+  final SubscribeResponse response;
 
-  PackagesLoaded(this.packages);
+  SubscriptionSuccess(this.response);
+}
+
+class SubscriptionError extends PackagesState {
+  final String message;
+  final Object? error;
+
+  SubscriptionError(this.message, [this.error]);
 }

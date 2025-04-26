@@ -1,3 +1,5 @@
+import 'package:app/features/payment/presentation/view/payment_screen.dart';
+import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../view_model/packages_cubit.dart';
@@ -23,7 +25,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Packages"),
+        title: const Text("Packages"),
         backgroundColor: Colors.yellow[700],
       ),
       body: BlocBuilder<PackagesCubit, PackagesState>(
@@ -37,10 +39,9 @@ class _PackagesScreenState extends State<PackagesScreen> {
               itemBuilder: (context, index) {
                 final package = state.packages[index];
                 final isSubscribed = package?.is_subscribed ?? false;
+
                 return InkWell(
-                  onTap: (){
-                    //
-                  },
+                  onTap: () {},
                   child: Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
@@ -56,39 +57,136 @@ class _PackagesScreenState extends State<PackagesScreen> {
                         ),
                       ),
                       padding: const EdgeInsets.all(26),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            isSubscribed ? Icons.check_circle : Icons.cancel,
-                            size: 40,
-                            color: isSubscribed ? Colors.green : Colors.red,
+                          Row(
+                            children: [
+                              Icon(
+                                isSubscribed ? Icons.check_circle : Icons
+                                    .cancel,
+                                size: 40,
+                                color: isSubscribed ? Colors.green : Colors.red,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      package?.name ?? '',
+                                      style: const TextStyle(fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      "Price: ${package?.price ?? 0}€",
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      "Duration: ${package?.duration ??
+                                          3} month",
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  package?.name ?? '',
-                                  style: const TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.bold),
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (package == null) return;
+
+                                if (isSubscribed) {
+                                  final result = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) =>
+                                        AlertDialog(
+                                          title: const Text(
+                                              'Cancel Subscription'),
+                                          content: const Text(
+                                              'Do you want to unsubscribe from this package?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(
+                                                      false),
+                                              child: const Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(
+                                                      true),
+                                              child: const Text('Yes'),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+
+                                  if (result == true) {
+                                    final cubit = context.read<PackagesCubit>();
+                                    final int userId = cubit.getUserId();
+                                    await cubit.cancelSubscription(userId);
+                                    cubit
+                                        .getAllPackages();
+                                  }
+                                } else {
+                                  final result = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) =>
+                                        AlertDialog(
+                                          title: const Text(
+                                              'Confirm Subscription'),
+                                          content: const Text(
+                                              'Do you want to subscribe to this package?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(
+                                                      false),
+                                              child: const Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(
+                                                      true),
+                                              child: const Text('Yes'),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+
+                                  if (result == true) {
+                                    final cubit = context.read<PackagesCubit>();
+                                    final int userId = cubit.getUserId();
+                                    final subscribeModel = cubit
+                                        .createSubscribeModel(package, userId);
+                                    await cubit.addSubscription(subscribeModel);
+                                    cubit.getAllPackages();
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (conetxt) {
+                                          return PaymentsScreen();
+                                        })
+                                    );
+                              }
+                              }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isSubscribed
+                                    ? Colors.grey
+                                    : Colors.yellow[700],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  isSubscribed ? 'Subscribed ✅' : 'Subscribe',
+                                  style: const TextStyle(color: Colors.black),
                                 ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  " Price: ${package?.price ?? 0}€",
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  "Duration: ${package?.duration ?? 3} month",
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  "Subscribed: ${package?.is_subscribed ?? 3}",
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ],

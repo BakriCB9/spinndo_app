@@ -35,6 +35,7 @@ class ApiConstant {
   static const String upgradeAccount='/profile/upgrade';
   static const String getAllPackages='/packages/getAll';
   static const String getAllPaymentsMethod='/payment_method/getAll';
+  static const String addSubscribe ='/subscriptions/subscribe';
 
 }
 

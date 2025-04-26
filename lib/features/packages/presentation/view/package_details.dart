@@ -1,4 +1,4 @@
-import 'package:app/features/packages/presentation/view/payment_method.dart';
+import 'package:app/features/payment/presentation/view/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -72,22 +72,22 @@ class _PackageDetailsState extends State<PackageDetails> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        select1 = !select1; // عكس الحالة عند الضغط
+                        select1 = !select1;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PaymentMethodScreen(), // قم بتحديد الصفحة التي تريد الانتقال إليها
+                            builder: (context) => PaymentsScreen(),
                           ),
                         );
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellow[700], // اللون الأصفر
+                      backgroundColor: Colors.yellow[700],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(select1 ? 'Unselect' : 'Select'), // تغيير النص بناءً على القيمة
+                    child: Text(select1 ? 'Unselect' : 'Select'),
                   ),
                 ),
               ],

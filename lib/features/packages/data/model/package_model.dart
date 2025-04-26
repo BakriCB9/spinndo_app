@@ -14,6 +14,7 @@ class PackageModel {
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> json) {
+    print("iiiiii${json['is_subscribed']}");
     return PackageModel(
       id: json['id'],
       name: json['name'],
@@ -23,6 +24,7 @@ class PackageModel {
     );
   }
 
+
   PackageModel toEntity() => PackageModel(
     id: id,
     name: name,
@@ -30,4 +32,14 @@ class PackageModel {
     duration: duration,
     is_subscribed: is_subscribed,
   );
+
+  PackageModel copyWith({
+    bool? is_subscribed,
+  }) {
+    return PackageModel(
+      is_subscribed: is_subscribed ?? this.is_subscribed, price: 0, duration: 0, id: 0, name: '',
+    );
+  }
 }
+
+

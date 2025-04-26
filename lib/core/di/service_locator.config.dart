@@ -78,6 +78,10 @@ import 'package:app/features/packages/domain/repositry/package_repository.dart'
     as _i673;
 import 'package:app/features/packages/domain/usecase/get_all_packages_usecase.dart'
     as _i392;
+import 'package:app/features/packages/domain/usecase/subscription/add_subscribe.dart'
+    as _i23;
+import 'package:app/features/packages/domain/usecase/subscription/add_unsubscribe.dart'
+    as _i898;
 import 'package:app/features/packages/presentation/view_model/packages_cubit.dart'
     as _i594;
 import 'package:app/features/payment/data/data_source/remote/payements_remote_datasource.dart'
@@ -253,6 +257,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i673.PackageRepository>(() => _i216.PackageRepositoryImpl(
           gh<_i529.PackagesRemoteDataSource>(),
           gh<_i460.SharedPreferences>(),
+          gh<_i597.ProfileLocalDataSource>(),
         ));
     gh.factory<_i779.GetCategories>(
         () => _i779.GetCategories(gh<_i1054.ServiceRepository>()));
@@ -280,6 +285,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i856.AuthRemoteDataSource>(),
           gh<_i456.AuthLocalDataSource>(),
         ));
+    gh.factory<_i23.AddSubscribeUseCase>(
+        () => _i23.AddSubscribeUseCase(gh<_i673.PackageRepository>()));
     gh.factory<_i83.AddOrUpdateSocialUseCase>(
         () => _i83.AddOrUpdateSocialUseCase(gh<_i734.ProfileRepository>()));
     gh.factory<_i54.DeleteSocialLinksUseCase>(
@@ -306,6 +313,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i614.GetAllFavUsecase(gh<_i258.FavRepositry>()));
     gh.factory<_i654.RemoveFromFavUsecase>(
         () => _i654.RemoveFromFavUsecase(gh<_i258.FavRepositry>()));
+    gh.factory<_i898.AddUnsubscribeUseCase>(
+        () => _i898.AddUnsubscribeUseCase(gh<_i673.PackageRepository>()));
     gh.factory<_i1020.UpgradeAccountUseCase>(
         () => _i1020.UpgradeAccountUseCase(gh<_i651.AuthRepository>()));
     gh.singleton<_i728.Getcountryname>(
@@ -338,6 +347,12 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i392.GetAllPackagesUseCase>(
         () => _i392.GetAllPackagesUseCase(gh<_i673.PackageRepository>()));
+    gh.factory<_i594.PackagesCubit>(() => _i594.PackagesCubit(
+          gh<_i392.GetAllPackagesUseCase>(),
+          gh<_i23.AddSubscribeUseCase>(),
+          gh<_i898.AddUnsubscribeUseCase>(),
+          gh<_i597.ProfileLocalDataSource>(),
+        ));
     gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
           gh<_i916.GetClientProfile>(),
           gh<_i140.GetProviderProfile>(),
@@ -356,8 +371,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i614.GetAllFavUsecase>(),
           gh<_i654.RemoveFromFavUsecase>(),
         ));
-    gh.factory<_i594.PackagesCubit>(
-        () => _i594.PackagesCubit(gh<_i392.GetAllPackagesUseCase>()));
     gh.factory<_i580.AuthCubit>(() => _i580.AuthCubit(
           gh<_i293.Login>(),
           gh<_i374.Register>(),
