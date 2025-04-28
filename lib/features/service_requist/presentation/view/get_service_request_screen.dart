@@ -29,11 +29,6 @@ class _GetServiceRequestScreenState extends State<GetServiceRequestScreen> {
   }
 
   @override
-  void deactivate() {
-    print('we deactive no rohiiiii');
-    super.deactivate();
-  }
-
   @override
   Widget build(BuildContext context) {
     final myId = sharedPref.getInt(CacheConstant.userId);

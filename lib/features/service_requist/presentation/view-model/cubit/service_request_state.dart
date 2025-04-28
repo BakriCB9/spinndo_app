@@ -15,12 +15,12 @@ class BaseErrorState extends BaseState {
     this.error,
   );
 }
-// abstract class ServiceRequestState{}
 
-// class ServiceRequestStateInit extends ServiceRequestState{}
-// class
-// class getServiceLoadingState extends
 
+
+
+
+// ignore: must_be_immutable
 class ServiceRequestState extends Equatable {
   BaseState? getServiceState;
   BaseState? updateServiceState;

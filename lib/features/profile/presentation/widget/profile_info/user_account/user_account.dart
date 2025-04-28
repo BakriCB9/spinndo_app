@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/utils/ui_utils.dart';
 
@@ -9,6 +8,8 @@ import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserAccount extends StatelessWidget {
+  final String firstNameAr;
+  final String lastNameAr;
   final String firstName;
   final String lastName;
   final String email;
@@ -17,6 +18,8 @@ class UserAccount extends StatelessWidget {
   final int? userId;
   const UserAccount({
     this.userId,
+    required this.firstNameAr,
+    required this.lastNameAr,
     required this.typeAccount,
     this.isApprovid,
     required this.firstName,
@@ -42,6 +45,8 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => EditUserAccountScreen(
+                                firstNameAr: firstNameAr,
+                                lastNameAr: lastNameAr,
                                 typeAccount: 'Client',
                                 firstName: firstName,
                                 lastName: lastName,
@@ -58,6 +63,8 @@ class UserAccount extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
                                         typeAccount: 'Provider',
+                                        firstNameAr: firstNameAr,
+                                        lastNameAr: lastNameAr,
                                         firstName: firstName,
                                         lastName: lastName)));
                               }
@@ -73,6 +80,14 @@ class UserAccount extends StatelessWidget {
                     : const SizedBox()
           ],
         ),
+        InfoDetails(
+            icon: Icons.person_2_outlined,
+            title: "First Name Ar",
+            content: firstNameAr),
+        InfoDetails(
+            icon: Icons.person_2_outlined,
+            title: "Last Name Ar",
+            content: lastNameAr),
         InfoDetails(
             icon: Icons.person_2_outlined,
             title: localization.firstName,

@@ -22,3 +22,15 @@ class DeleteAccountError extends DrawerStates {
 }
 
 class DeleteAccountSuccess extends DrawerStates {}
+
+class ChangePasswordLoadingState extends DrawerStates {}
+
+class ChangePasswordSuccessState extends DrawerStates {
+  String data;
+  ChangePasswordSuccessState(this.data);
+}
+
+class ChangePasswordErrorState extends DrawerStates {
+  String message;
+  ChangePasswordErrorState(this.message);
+}

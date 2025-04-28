@@ -2,6 +2,8 @@
   "guest": "sign in as guest",
   "firstName": "First name",
   "lastName": "Last name",
+  "firstNameAr":"First name Ar",
+  "lastNameAr":"Last Name Ar",
   "email": "Email",
   "password": "Password",
   "confirmPassword": "Confirm Password",

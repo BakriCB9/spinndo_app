@@ -23,10 +23,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EditUserAccountScreen extends StatelessWidget {
   final String firstName;
   final String lastName;
+  final String firstNameAr;
+  final String lastNameAr;
   final String typeAccount;
 
   const EditUserAccountScreen(
       {required this.firstName,
+      required this.firstNameAr,
+      required this.lastNameAr,
       required this.lastName,
       required this.typeAccount,
       super.key});
@@ -38,6 +42,8 @@ class EditUserAccountScreen extends StatelessWidget {
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     _profileCubit.firstNameEditController.text = firstName;
     _profileCubit.lastNameEditController.text = lastName;
+    _profileCubit.firstNameArEditController.text = firstNameAr;
+    _profileCubit.lastNameArEditController.text = lastNameAr;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
     //  final base64String =sharedPref.getString(CacheConstant.imagePhoto);
@@ -64,260 +70,260 @@ class EditUserAccountScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 15.h),
-                Align(
-                  alignment: Alignment.center,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        child: Container(
-                            //radius: 150.r,
-                            //backgroundColor: Colors.grey,
-                            width: 300.w,
-                            height: 300.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey,
-                            ),
-                            child: BlocConsumer<ProfileCubit, ProfileStates>(
-                                listener: (context, state) {
-                                  if (state is LoadImagePhotoError) {
-                                    UIUtils.showMessage(state.message);
-                                  }
-                                  if (state is LoadImagePhotoSuccess) {
-                                    UIUtils.showMessage(state.message);
-                                    _profileCubit.getUserRole();
-                                  }
-                                },
-                                buildWhen: (pre, cur) {
-                                  if (cur is LoadImagePhotoLoading ||
-                                      cur is LoadImagePhotoSuccess ||
-                                      cur is LoadImagePhotoError) {
-                                    return true;
-                                  }
-                                  return false;
-                                },
-                                bloc: _profileCubit,
-                                builder: (context, state) {
-                                  if (state is LoadImagePhotoLoading) {
-                                    return LoadingIndicator(Colors.yellow);
-                                  } else if (state is LoadImagePhotoError) {
-                                    return imagePhoto == null
-                                        ? Icon(
-                                            Icons.person,
-                                            size: 150.r,
-                                            color: Colors.white,
-                                          )
-                                        : ClipRRect(
-                                            child: CashImage(path: imagePhoto),
-                                          );
-                                  } else if (state is LoadImagePhotoSuccess) {
-                                    Uint8List? bytes;
-                                    final base64String = sharedPref
-                                        .getString(CacheConstant.imagePhoto);
+                // Align(
+                //   alignment: Alignment.center,
+                //   child: Stack(
+                //     alignment: Alignment.center,
+                //     children: [
+                //       Positioned(
+                //         child: Container(
+                //             //radius: 150.r,
+                //             //backgroundColor: Colors.grey,
+                //             width: 300.w,
+                //             height: 300.h,
+                //             decoration: BoxDecoration(
+                //               shape: BoxShape.circle,
+                //               color: Colors.grey,
+                //             ),
+                //             child: BlocConsumer<ProfileCubit, ProfileStates>(
+                //                 listener: (context, state) {
+                //                   if (state is LoadImagePhotoError) {
+                //                     UIUtils.showMessage(state.message);
+                //                   }
+                //                   if (state is LoadImagePhotoSuccess) {
+                //                     UIUtils.showMessage(state.message);
+                //                     _profileCubit.getUserRole();
+                //                   }
+                //                 },
+                //                 buildWhen: (pre, cur) {
+                //                   if (cur is LoadImagePhotoLoading ||
+                //                       cur is LoadImagePhotoSuccess ||
+                //                       cur is LoadImagePhotoError) {
+                //                     return true;
+                //                   }
+                //                   return false;
+                //                 },
+                //                 bloc: _profileCubit,
+                //                 builder: (context, state) {
+                //                   if (state is LoadImagePhotoLoading) {
+                //                     return LoadingIndicator(Colors.yellow);
+                //                   } else if (state is LoadImagePhotoError) {
+                //                     return imagePhoto == null
+                //                         ? Icon(
+                //                             Icons.person,
+                //                             size: 150.r,
+                //                             color: Colors.white,
+                //                           )
+                //                         : ClipRRect(
+                //                             child: CashImage(path: imagePhoto),
+                //                           );
+                //                   } else if (state is LoadImagePhotoSuccess) {
+                //                     Uint8List? bytes;
+                //                     final base64String = sharedPref
+                //                         .getString(CacheConstant.imagePhoto);
 
-                                    if (base64String != null &&
-                                        base64String.isNotEmpty) {
-                                      bytes = base64Decode(base64String);
-                                      print(
-                                          'the image is ##############################################  $bytes');
-                                    }
-                                    return base64String == null
-                                        ? Icon(
-                                            Icons.person,
-                                            size: 150.r,
-                                            color: Colors.white,
-                                          )
-                                        : ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(150.r),
-                                            child: Image.memory(
-                                              bytes!,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          );
-                                  } else {
-                                    Uint8List? bytes;
-                                    final base64String = sharedPref
-                                        .getString(CacheConstant.imagePhoto);
-                                    if (base64String != null &&
-                                        base64String.isNotEmpty) {
-                                      bytes = base64Decode(base64String);
-                                      print(
-                                          'the image is ##############################################  $bytes');
-                                    }
-                                    return base64String == null
-                                        ? (imagePhoto == null
-                                            ? Icon(
-                                                Icons.person,
-                                                size: 150.r,
-                                                color: Colors.white,
-                                              )
-                                            : ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        300.r),
-                                                child: CashImage(
-                                                    path: imagePhoto)))
-                                        : ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(150.r),
-                                            child: Image.memory(
-                                              bytes!,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          );
-                                  }
-                                })),
-                      ),
-                      Positioned(
-                        bottom: 10,
-                        right: 10.w,
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                                backgroundColor:
-                                    Theme.of(context).primaryColorDark,
-                                context: context,
-                                builder: (context) {
-                                  return SafeArea(
-                                      child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 30.w),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                    localization.profilePhoto),
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(Icons.delete),
-                                              onPressed: () {},
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 30.h,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Column(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    Navigator.of(context).pop();
-                                                    final image =
-                                                        await ImageFunctions
-                                                            .CameraPicker(true);
-                                                    if (image == null) {
-                                                      return;
-                                                    }
-                                                    _profileCubit
-                                                        .addImagePhoto(image);
-                                                  },
-                                                  child: Container(
-                                                    width: 100.w,
-                                                    height: 100.h,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.grey)),
-                                                    child: Icon(
-                                                      Icons.camera_alt_outlined,
-                                                      color:
-                                                          ColorManager.primary,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 15.h),
-                                                Text(
-                                                  'Camera',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge!
-                                                      .copyWith(
-                                                          fontSize: 25.sp),
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: 35.w,
-                                            ),
-                                            Column(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    Navigator.of(context).pop();
-                                                    final image =
-                                                        await ImageFunctions
-                                                            .galleryPicker(
-                                                                true);
-                                                    if (image == null) {
-                                                      return;
-                                                    }
-                                                    _profileCubit
-                                                        .addImagePhoto(image);
-                                                  },
-                                                  child: Container(
-                                                    width: 100.w,
-                                                    height: 100.h,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.grey)),
-                                                    child: Icon(
-                                                      Icons.image_outlined,
-                                                      color:
-                                                          ColorManager.primary,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 15.h),
-                                                Text(
-                                                  'Gallery',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge!
-                                                      .copyWith(
-                                                          fontSize: 25.sp),
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 50.h,
-                                        )
-                                      ],
-                                    ),
-                                  ));
-                                });
-                          },
-                          child: Container(
-                            width: 80.r,
-                            height: 80.r,
-                            decoration: const BoxDecoration(
-                              color: ColorManager.primary,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Theme.of(context).primaryColorLight,
-                              size: 50.r,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //                     if (base64String != null &&
+                //                         base64String.isNotEmpty) {
+                //                       bytes = base64Decode(base64String);
+                //                       print(
+                //                           'the image is ##############################################  $bytes');
+                //                     }
+                //                     return base64String == null
+                //                         ? Icon(
+                //                             Icons.person,
+                //                             size: 150.r,
+                //                             color: Colors.white,
+                //                           )
+                //                         : ClipRRect(
+                //                             borderRadius:
+                //                                 BorderRadius.circular(150.r),
+                //                             child: Image.memory(
+                //                               bytes!,
+                //                               fit: BoxFit.cover,
+                //                             ),
+                //                           );
+                //                   } else {
+                //                     Uint8List? bytes;
+                //                     final base64String = sharedPref
+                //                         .getString(CacheConstant.imagePhoto);
+                //                     if (base64String != null &&
+                //                         base64String.isNotEmpty) {
+                //                       bytes = base64Decode(base64String);
+                //                       print(
+                //                           'the image is ##############################################  $bytes');
+                //                     }
+                //                     return base64String == null
+                //                         ? (imagePhoto == null
+                //                             ? Icon(
+                //                                 Icons.person,
+                //                                 size: 150.r,
+                //                                 color: Colors.white,
+                //                               )
+                //                             : ClipRRect(
+                //                                 borderRadius:
+                //                                     BorderRadius.circular(
+                //                                         300.r),
+                //                                 child: CashImage(
+                //                                     path: imagePhoto)))
+                //                         : ClipRRect(
+                //                             borderRadius:
+                //                                 BorderRadius.circular(150.r),
+                //                             child: Image.memory(
+                //                               bytes!,
+                //                               fit: BoxFit.cover,
+                //                             ),
+                //                           );
+                //                   }
+                //                 })),
+                //       ),
+                //       Positioned(
+                //         bottom: 10,
+                //         right: 10.w,
+                //         child: GestureDetector(
+                //           onTap: () {
+                //             showModalBottomSheet(
+                //                 backgroundColor:
+                //                     Theme.of(context).primaryColorDark,
+                //                 context: context,
+                //                 builder: (context) {
+                //                   return SafeArea(
+                //                       child: Padding(
+                //                     padding:
+                //                         EdgeInsets.symmetric(horizontal: 30.w),
+                //                     child: Column(
+                //                       mainAxisSize: MainAxisSize.min,
+                //                       children: [
+                //                         Row(
+                //                           children: [
+                //                             Expanded(
+                //                               child: Center(
+                //                                 child: Text(
+                //                                     localization.profilePhoto),
+                //                               ),
+                //                             ),
+                //                             IconButton(
+                //                               icon: Icon(Icons.delete),
+                //                               onPressed: () {},
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         SizedBox(
+                //                           height: 30.h,
+                //                         ),
+                //                         Row(
+                //                           children: [
+                //                             Column(
+                //                               children: [
+                //                                 GestureDetector(
+                //                                   onTap: () async {
+                //                                     Navigator.of(context).pop();
+                //                                     final image =
+                //                                         await ImageFunctions
+                //                                             .CameraPicker(true);
+                //                                     if (image == null) {
+                //                                       return;
+                //                                     }
+                //                                     _profileCubit
+                //                                         .addImagePhoto(image);
+                //                                   },
+                //                                   child: Container(
+                //                                     width: 100.w,
+                //                                     height: 100.h,
+                //                                     decoration: BoxDecoration(
+                //                                         shape: BoxShape.circle,
+                //                                         border: Border.all(
+                //                                             color:
+                //                                                 Colors.grey)),
+                //                                     child: Icon(
+                //                                       Icons.camera_alt_outlined,
+                //                                       color:
+                //                                           ColorManager.primary,
+                //                                     ),
+                //                                   ),
+                //                                 ),
+                //                                 SizedBox(height: 15.h),
+                //                                 Text(
+                //                                   'Camera',
+                //                                   style: Theme.of(context)
+                //                                       .textTheme
+                //                                       .titleLarge!
+                //                                       .copyWith(
+                //                                           fontSize: 25.sp),
+                //                                 )
+                //                               ],
+                //                             ),
+                //                             SizedBox(
+                //                               width: 35.w,
+                //                             ),
+                //                             Column(
+                //                               children: [
+                //                                 GestureDetector(
+                //                                   onTap: () async {
+                //                                     Navigator.of(context).pop();
+                //                                     final image =
+                //                                         await ImageFunctions
+                //                                             .galleryPicker(
+                //                                                 true);
+                //                                     if (image == null) {
+                //                                       return;
+                //                                     }
+                //                                     _profileCubit
+                //                                         .addImagePhoto(image);
+                //                                   },
+                //                                   child: Container(
+                //                                     width: 100.w,
+                //                                     height: 100.h,
+                //                                     decoration: BoxDecoration(
+                //                                         shape: BoxShape.circle,
+                //                                         border: Border.all(
+                //                                             color:
+                //                                                 Colors.grey)),
+                //                                     child: Icon(
+                //                                       Icons.image_outlined,
+                //                                       color:
+                //                                           ColorManager.primary,
+                //                                     ),
+                //                                   ),
+                //                                 ),
+                //                                 SizedBox(height: 15.h),
+                //                                 Text(
+                //                                   'Gallery',
+                //                                   style: Theme.of(context)
+                //                                       .textTheme
+                //                                       .titleLarge!
+                //                                       .copyWith(
+                //                                           fontSize: 25.sp),
+                //                                 )
+                //                               ],
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         SizedBox(
+                //                           height: 50.h,
+                //                         )
+                //                       ],
+                //                     ),
+                //                   ));
+                //                 });
+                //           },
+                //           child: Container(
+                //             width: 80.r,
+                //             height: 80.r,
+                //             decoration: const BoxDecoration(
+                //               color: ColorManager.primary,
+                //               shape: BoxShape.circle,
+                //             ),
+                //             child: Icon(
+                //               Icons.camera_alt,
+                //               color: Theme.of(context).primaryColorLight,
+                //               size: 50.r,
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
 
                 // CustomTextFromFieldBakri(
                 //   icon: Icons.person_2_outlined,
@@ -351,7 +357,86 @@ class EditUserAccountScreen extends StatelessWidget {
                 SizedBox(
                   height: 70.h,
                 ),
-
+                TextFormField(
+                  controller: _profileCubit.firstNameArEditController,
+                  style: TextStyle(
+                      color: _drawerCubit.themeMode == ThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
+                      fontSize: 25.sp),
+                  cursorColor: ColorManager.primary,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(200),
+                  ],
+                  decoration: InputDecoration(
+                    label: Text(
+                      localization.firstNameAr,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.person,
+                      size: 45.sp,
+                    ),
+                    // counter: SizedBox()
+                  ),
+                  onChanged: (value) {
+                    print('');
+                    _profileCubit.updateInfo(
+                        curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text);
+                  },
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
+                TextFormField(
+                  controller: _profileCubit.lastNameArEditController,
+                  style: TextStyle(
+                      color: _drawerCubit.themeMode == ThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
+                      fontSize: 25.sp),
+                  cursorColor: ColorManager.primary,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(200),
+                  ],
+                  decoration: InputDecoration(
+                    label: Text(
+                      localization.lastNameAr,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.person,
+                      size: 45.sp,
+                    ),
+                    // counter: SizedBox()
+                  ),
+                  onChanged: (value) {
+                    print('');
+                    _profileCubit.updateInfo(
+                        curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text);
+                  },
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
                 TextFormField(
                   controller: _profileCubit.firstNameEditController,
                   style: TextStyle(
@@ -379,6 +464,11 @@ class EditUserAccountScreen extends StatelessWidget {
                     print('');
                     _profileCubit.updateInfo(
                         curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
                         newFirst: _profileCubit.firstNameEditController.text,
                         curLast: lastName,
                         newLast: _profileCubit.lastNameEditController.text);
@@ -392,6 +482,11 @@ class EditUserAccountScreen extends StatelessWidget {
                   onChanged: (value) {
                     _profileCubit.updateInfo(
                         curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
                         newFirst: _profileCubit.firstNameEditController.text,
                         curLast: lastName,
                         newLast: _profileCubit.lastNameEditController.text);
@@ -452,6 +547,10 @@ class EditUserAccountScreen extends StatelessWidget {
                             if (_profileCubit
                                     .firstNameEditController.text.isEmpty ||
                                 _profileCubit
+                                    .firstNameArEditController.text.isEmpty ||
+                                _profileCubit
+                                    .lastNameArEditController.text.isEmpty ||
+                                _profileCubit
                                     .lastNameEditController.text.isEmpty) {
                               return UIUtils.showMessage(
                                   'Enter the name the field is Empty');
@@ -459,6 +558,10 @@ class EditUserAccountScreen extends StatelessWidget {
                             if (typeAccount == 'Client') {
                               _profileCubit.updateClientProfile(
                                   UpdateAccountProfile(
+                                      firstNameAr: _profileCubit
+                                          .firstNameArEditController.text,
+                                      lastNameAr: _profileCubit
+                                          .lastNameArEditController.text,
                                       firstName: _profileCubit
                                           .firstNameEditController.text,
                                       lastName: _profileCubit
