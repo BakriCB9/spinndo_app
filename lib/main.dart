@@ -43,7 +43,7 @@ import 'features/payment/keys.dart';
 late final SharedPreferences sharedPref;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
- Stripe.publishableKey = PublishableKey;
+  Stripe.publishableKey = PublishableKey;
   await Stripe.instance.applySettings();
 
   await configureDependencies();
@@ -148,7 +148,7 @@ class MyApp extends StatelessWidget {
                         PackagesScreen.routeName: (context) =>
                             const PackagesScreen(),
                         PaymentsScreen.routeName: (context) =>
-                        const PaymentsScreen(),
+                            PaymentsScreen(),
                       },
                       debugShowCheckedModeBanner: false,
                     );

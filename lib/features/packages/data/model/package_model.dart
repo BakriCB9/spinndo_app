@@ -14,7 +14,6 @@ class PackageModel {
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> json) {
-    print("iiiiii${json['is_subscribed']}");
     return PackageModel(
       id: json['id'],
       name: json['name'],

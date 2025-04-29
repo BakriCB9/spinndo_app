@@ -139,7 +139,26 @@
     "codeRequired": "Geben Sie den Code ein",
     "addDiscount": "Rabatt hinzufügen",
     "areYouSureToDelete": "Sind Sie sicher, dass Sie den Artikel löschen möchten",
-    "packages": "Pakete"
+    "packages": "Pakete",
+  "cancelSubscription": "Abonnement kündigen",
+  "subscribed": "Abonniert",
+  "no": "Nein",
+  "yes": "Ja",
+  "youCannotSubscribeToMoreThanOnePackageAtATime": "Sie können nicht mehr als ein Paket gleichzeitig abonnieren",
+  "confirmSubscription": "Abonnement bestätigen",
+  "doYouWantToSubscribeToThisPackage": "Möchten Sie dieses Paket abonnieren",
+  "subscribe": "Abonnieren",
+  "chooseAPaymentMethod": "Wählen Sie eine Zahlungsmethode",
+  "selectedPaymentMethodType": "Ausgewählter Zahlungsmethodentyp",
+  "theOperationHasBeenCancelled": "Der Vorgang wurde abgebrochen",
+  "paymentConfirmation": "Zahlungsbestätigung",
+  "areYouSureYouWantToProceedWithThePayment": "Sind Sie sicher, dass Sie die Zahlung durchführen möchten",
+  "paymentSuccessful": "Zahlung erfolgreic",
+  "errorStripe": "Fehler von Stripe",
+  "anUnexpectedErrorOccurred": "Ein unerwarteter Fehler ist aufgetreten",
+  "paymentDetails": "Zahlungsdetails",
+  "addPaymentMethods": "Zahlungsmethoden hinzufügen"
+
 }
 
 

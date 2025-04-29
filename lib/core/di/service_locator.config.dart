@@ -92,8 +92,12 @@ import 'package:app/features/payment/data/repositry/payements_repository_impl.da
     as _i246;
 import 'package:app/features/payment/domain/repositry/payments_repository.dart'
     as _i757;
+import 'package:app/features/payment/domain/usecase/add_payment_method_usecase.dart'
+    as _i456;
 import 'package:app/features/payment/domain/usecase/get_all_payments_usecase.dart'
     as _i496;
+import 'package:app/features/payment/domain/usecase/refund_payment_usecase.dart'
+    as _i846;
 import 'package:app/features/payment/presentation/view_model/payments_cubit.dart'
     as _i251;
 import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart'
@@ -241,13 +245,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i456.AuthLocalDataSource>(() =>
         _i545.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
-    gh.factory<_i757.PaymentsRepository>(() => _i246.PaymentsMethodImpl(
-          gh<_i124.PaymentsRemoteDatasource>(),
-          gh<_i460.SharedPreferences>(),
-        ));
     gh.lazySingleton<_i734.ProfileRepository>(() => _i649.ProfileRepositoryImpl(
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
+        ));
+    gh.factory<_i757.PaymentsRepository>(() => _i246.PaymentsMethodImpl(
+          gh<_i124.PaymentsRemoteDatasource>(),
+          gh<_i460.SharedPreferences>(),
+          gh<_i124.PaymentsRemoteDatasource>(),
+          gh<_i124.PaymentsRemoteDatasource>(),
         ));
     gh.factory<_i967.DiscountViewModelCubit>(() => _i967.DiscountViewModelCubit(
           gh<_i449.AddDiscountUseCase>(),
@@ -285,6 +291,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i856.AuthRemoteDataSource>(),
           gh<_i456.AuthLocalDataSource>(),
         ));
+    gh.factory<_i456.AddPaymentMethodUseCase>(
+        () => _i456.AddPaymentMethodUseCase(gh<_i757.PaymentsRepository>()));
     gh.factory<_i23.AddSubscribeUseCase>(
         () => _i23.AddSubscribeUseCase(gh<_i673.PackageRepository>()));
     gh.factory<_i83.AddOrUpdateSocialUseCase>(
@@ -305,14 +313,19 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i837.UpdateClientProfile(gh<_i734.ProfileRepository>()));
     gh.lazySingleton<_i284.UpdateProviderProfile>(
         () => _i284.UpdateProviderProfile(gh<_i734.ProfileRepository>()));
-    gh.factory<_i251.PaymentsCubit>(
-        () => _i251.PaymentsCubit(gh<_i496.GetAllPaymentsUseCase>()));
+    gh.factory<_i846.RefundPaymentMethodUseCase>(
+        () => _i846.RefundPaymentMethodUseCase(gh<_i757.PaymentsRepository>()));
     gh.factory<_i619.AddFavUseCase>(
         () => _i619.AddFavUseCase(gh<_i258.FavRepositry>()));
     gh.factory<_i614.GetAllFavUsecase>(
         () => _i614.GetAllFavUsecase(gh<_i258.FavRepositry>()));
     gh.factory<_i654.RemoveFromFavUsecase>(
         () => _i654.RemoveFromFavUsecase(gh<_i258.FavRepositry>()));
+    gh.factory<_i251.PaymentsCubit>(() => _i251.PaymentsCubit(
+          gh<_i496.GetAllPaymentsUseCase>(),
+          gh<_i456.AddPaymentMethodUseCase>(),
+          gh<_i846.RefundPaymentMethodUseCase>(),
+        ));
     gh.factory<_i898.AddUnsubscribeUseCase>(
         () => _i898.AddUnsubscribeUseCase(gh<_i673.PackageRepository>()));
     gh.factory<_i1020.UpgradeAccountUseCase>(

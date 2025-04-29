@@ -142,5 +142,26 @@
   "addDiscount": "Add Discount",
   "areYouSureToDelete": "Are you sure that you want to delete item",
   "areYouSureToDeleteAccount": "Are you sure that you want to delete your Account",
-  "packages": "Packages"
+  "packages": "Packages",
+  "cancelSubscription": "Cancel Subscription",
+  "subscriptionError": "Subscription Error",
+  "subscribed": "Subscribed",
+  "doYouWantToUnsubscribeFromThisPackage": "Do you want to unsubscribe from this package",
+  "no": "No",
+  "yes": "Yes",
+  "youCannotSubscribeToMoreThanOnePackageAtATime": "You cannot subscribe to more than one package at a time",
+  "confirmSubscription":"Confirm Subscription",
+  "doYouWantToSubscribeToThisPackage": "Do you want to subscribe to this package",
+  "subscribe": "Subscribe",
+  "chooseAPaymentMethod": "Choose a payment method",
+  "selectedPaymentMethodType": "Selected Payment Method Type",
+  "theOperationHasBeenCancelled": "The operation has been cancelled",
+  "paymentConfirmation": "Payment Confirmation",
+  "areYouSureYouWantToProceedWithThePayment": "Are you sure you want to proceed with the payment",
+  "paymentSuccessful": "Payment successful",
+  "errorStripe": "Error from Stripe",
+  "anUnexpectedErrorOccurred": "An unexpected error occurred",
+  "paymentDetails": "Payment Details",
+  "addPaymentMethods": "Add payment methods"
+
 }

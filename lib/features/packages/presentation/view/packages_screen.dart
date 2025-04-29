@@ -1,9 +1,9 @@
 import 'package:app/features/payment/presentation/view/payment_screen.dart';
-import 'package:app/features/profile/data/data_source/local/profile_local_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../view_model/packages_cubit.dart';
 import '../view_model/packages_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PackagesScreen extends StatefulWidget {
   static const String routeName = '/packages';
@@ -15,6 +15,7 @@ class PackagesScreen extends StatefulWidget {
 }
 
 class _PackagesScreenState extends State<PackagesScreen> {
+
   @override
   void initState() {
     super.initState();
@@ -23,18 +24,20 @@ class _PackagesScreenState extends State<PackagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Packages"),
+        title: Text(localization.packages),
         backgroundColor: Colors.yellow[700],
       ),
       body: BlocBuilder<PackagesCubit, PackagesState>(
         builder: (context, state) {
           if (state is PackagesLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: CircularProgressIndicator());
           } else if (state is PackagesSuccess) {
             return ListView.builder(
-              padding: const EdgeInsets.all(12),
+              padding:  EdgeInsets.all(12),
               itemCount: state.packages.length,
               itemBuilder: (context, index) {
                 final package = state.packages[index];
@@ -46,7 +49,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16)),
-                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    margin:  EdgeInsets.symmetric(vertical: 8),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.yellow[50],
@@ -56,7 +59,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                           width: 1.5,
                         ),
                       ),
-                      padding: const EdgeInsets.all(26),
+                      padding:  EdgeInsets.all(26),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -80,13 +83,12 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      "Price: ${package?.price ?? 0}€",
+                                      "${localization.price} ${package?.price ?? 0}€",
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      "Duration: ${package?.duration ??
-                                          3} month",
+                                      "${localization.duration} ${package?.duration ?? 0}month",
                                       style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
@@ -94,7 +96,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           Align(
                             alignment: Alignment.centerRight,
                             child: ElevatedButton(
@@ -106,22 +108,20 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                     context: context,
                                     builder: (context) =>
                                         AlertDialog(
-                                          title: const Text(
-                                              'Cancel Subscription'),
-                                          content: const Text(
-                                              'Do you want to unsubscribe from this package?'),
+                                          title:  Text("${localization.cancelSubscription}"),
+                                          content:  Text("${localization.doYouWantToUnsubscribeFromThisPackage}?"),
                                           actions: [
                                             TextButton(
                                               onPressed: () =>
                                                   Navigator.of(context).pop(
                                                       false),
-                                              child: const Text('No'),
+                                              child:  Text(localization.no),
                                             ),
                                             TextButton(
                                               onPressed: () =>
                                                   Navigator.of(context).pop(
                                                       true),
-                                              child: const Text('Yes'),
+                                              child:  Text(localization.yes),
                                             ),
                                           ],
                                         ),
@@ -131,49 +131,66 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                     final cubit = context.read<PackagesCubit>();
                                     final int userId = cubit.getUserId();
                                     await cubit.cancelSubscription(userId);
-                                    cubit
-                                        .getAllPackages();
+                                    cubit.getAllPackages();
                                   }
                                 } else {
-                                  final result = await showDialog<bool>(
-                                    context: context,
-                                    builder: (context) =>
-                                        AlertDialog(
-                                          title: const Text(
-                                              'Confirm Subscription'),
-                                          content: const Text(
-                                              'Do you want to subscribe to this package?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(
-                                                      false),
-                                              child: const Text('No'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(
-                                                      true),
-                                              child: const Text('Yes'),
-                                            ),
-                                          ],
-                                        ),
-                                  );
-
-                                  if (result == true) {
-                                    final cubit = context.read<PackagesCubit>();
-                                    final int userId = cubit.getUserId();
-                                    final subscribeModel = cubit
-                                        .createSubscribeModel(package, userId);
-                                    await cubit.addSubscription(subscribeModel);
-                                    cubit.getAllPackages();
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (conetxt) {
-                                          return PaymentsScreen();
-                                        })
+                                  bool hasActiveSubscription = state.packages.any((package) => package?.is_subscribed == true);
+                                  if (hasActiveSubscription) {
+                                    // عنده اشتراك آخر → نظهر رسالة منع
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title:  Text(localization.subscriptionError),
+                                        content:  Text("${localization.youCannotSubscribeToMoreThanOnePackageAtATime}."),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.of(context).pop(),
+                                            child: Text(localization.ok),
+                                          ),
+                                        ],
+                                      ),
                                     );
-                              }
-                              }
+                                  }
+                                  else{
+                                    final result = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) =>
+                                          AlertDialog(
+                                            title:  Text(
+                                                localization.confirmSubscription),
+                                            content:  Text("${localization.doYouWantToSubscribeToThisPackage}?"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(
+                                                        false),
+                                                child:  Text(localization.no),
+                                              ),
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(
+                                                        true),
+                                                child:  Text(localization.yes),
+                                              ),
+                                            ],
+                                          ),
+                                    );
+                                    if (result == true) {
+                                      final cubit = context.read<PackagesCubit>();
+                                      final int userId = cubit.getUserId();
+                                      final subscribeModel = cubit
+                                          .createSubscribeModel(package, userId);
+                                      await cubit.addSubscription(subscribeModel);
+                                      cubit.getAllPackages();
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (conetxt) {
+                                            return PaymentsScreen();
+                                          })
+                                      );
+                                    }
+                                  }
+
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: isSubscribed
@@ -183,7 +200,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  isSubscribed ? 'Subscribed ✅' : 'Subscribe',
+                                  isSubscribed ? '${localization.subscribed} ✅' : '${localization.subscribe}',
                                   style: const TextStyle(color: Colors.black),
                                 ),
                               ),
