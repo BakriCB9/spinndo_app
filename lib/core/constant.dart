@@ -36,11 +36,8 @@ class ApiConstant {
   static const String getAllPackages='/packages/getAll';
   static const String getAllPaymentsMethod='/payment_method/getAll';
   static const String addSubscribe ='/subscriptions/subscribe';
-<<<<<<< HEAD
   static const String addPaymentMethod ='/payment_method/add';
-=======
   static const String changePassword='/changePassword';
->>>>>>> 809f75ea6310dc762ada2b57d40aada1b487d627
 
 }
 

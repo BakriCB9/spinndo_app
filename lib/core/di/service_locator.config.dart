@@ -257,15 +257,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i456.AuthLocalDataSource>(() =>
         _i545.AuthSharedPrefLocalDataSource(
             sharedPreferences: gh<_i460.SharedPreferences>()));
-<<<<<<< HEAD
-=======
-    gh.factory<_i757.PaymentsRepository>(() => _i246.PaymentsMethodImpl(
-          gh<_i124.PaymentsRemoteDatasource>(),
-          gh<_i460.SharedPreferences>(),
-        ));
     gh.factory<_i35.ChangePasswordUseCase>(
         () => _i35.ChangePasswordUseCase(gh<_i193.DrawerRepository>()));
->>>>>>> 809f75ea6310dc762ada2b57d40aada1b487d627
     gh.lazySingleton<_i734.ProfileRepository>(() => _i649.ProfileRepositoryImpl(
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
