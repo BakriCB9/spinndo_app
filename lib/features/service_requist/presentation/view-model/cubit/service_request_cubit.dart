@@ -29,6 +29,8 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
   List<ServiceRequestEntity> listOfAllService = [];
+
+  
   getServiceRequest(int? userId) async {
     emit(state.copyWith(
         updateServiceState: null,
@@ -156,9 +158,6 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
         }
       case ApiresultError():
         {
-          print('');
-          print('the mesaage is now of delete is ${ans.message}');
-          print('');
           emit(state.copyWith(
               updateServiceState: null,
               getServiceState: null,

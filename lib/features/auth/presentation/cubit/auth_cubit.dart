@@ -75,6 +75,7 @@ class AuthCubit extends Cubit<AuthState> {
   final firstNameArcontroller = TextEditingController();
   final lastNameArCOntroller = TextEditingController();
   final phoneNumberController = TextEditingController();
+  String countryCode='+93';
   final lastNameContoller = TextEditingController();
 
   final passwordController = TextEditingController();

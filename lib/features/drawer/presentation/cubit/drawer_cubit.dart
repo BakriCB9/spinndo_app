@@ -1,3 +1,6 @@
+import 'package:app/core/error/apiResult.dart';
+import 'package:app/features/drawer/data/model/change_password_request.dart';
+import 'package:app/features/drawer/domain/use_cases/change_password_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +14,13 @@ import 'package:app/main.dart';
 
 @lazySingleton
 class DrawerCubit extends Cubit<DrawerStates> {
-  DrawerCubit({required this.sharedPreferences}) : super(DrawerInitial());
+  DrawerCubit(
+      {required this.sharedPreferences, required this.changePasswordUseCase})
+      : super(DrawerInitial());
+  ChangePasswordUseCase changePasswordUseCase;
   SharedPreferences sharedPreferences;
   ThemeMode themeMode = ThemeMode.light;
+
   String languageCode = 'en';
   Color get backgroundColor => themeMode == ThemeMode.light
       ? ColorManager.backgroundColor
@@ -40,6 +47,17 @@ class DrawerCubit extends Cubit<DrawerStates> {
     String? oldTheme = getTheme();
     if (oldTheme != null) {
       themeMode = oldTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
+    }
+  }
+
+  changePassword(ChangePasswordRequest request) async {
+    emit(ChangePasswordLoadingState());
+    final ans = await changePasswordUseCase(request);
+    switch (ans) {
+      case ApiResultSuccess():
+        emit(ChangePasswordSuccessState(ans.data));
+      case ApiresultError():
+        emit(ChangePasswordErrorState(ans.message));
     }
   }
 

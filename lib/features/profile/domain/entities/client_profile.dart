@@ -1,4 +1,6 @@
 class ClientProfile {
+  final String firstNameAr;
+  final String lastNameAr;
   final String firstName;
   final String lastName;
   final String email;
@@ -7,6 +9,8 @@ class ClientProfile {
 
   const ClientProfile({
     required this.id,
+    required this.firstNameAr,
+    required this.lastNameAr,
     required this.firstName,
     required this.lastName,
     required this.email,

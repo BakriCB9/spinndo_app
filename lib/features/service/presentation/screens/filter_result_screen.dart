@@ -50,6 +50,14 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('the location of country is ${_serviceCubit.selectedCountryId}');
+    print('the selected country name ${_serviceCubit.selectedCountryName}');
+    print('the selected city name  is ${_serviceCubit.selectedCityName}');
+    if (_serviceCubit.selectedCityName == 'All Cities') {
+      _serviceCubit.selectedCityName = null;
+      _serviceCubit.isCity = false;
+    }
+
     final theme = Theme.of(context).textTheme;
     markerLocationData.clear();
     final localization = AppLocalizations.of(context)!;
@@ -100,10 +108,11 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                       ),
                     ),
                   ),
+                  //google map
                   IconButton(
                     onPressed: () async {
                       _serviceCubit.filterLocation =
-                          await (_serviceCubit.selectedCountryName != null
+                          await (_serviceCubit.selectedCountryId != -1
                               ? GeocodingService.getCountryLatLng(
                                   _serviceCubit.selectedCityName ??
                                       _serviceCubit.selectedCountryName!)
@@ -113,14 +122,20 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                                       .getCurrentLocation!.longitude!));
 
                       _serviceCubit.filterBounds =
-                          await (_serviceCubit.selectedCountryName != null
-                              ? GeocodingService.getCountryBounds(
+                          _serviceCubit.selectedCountryId != -1
+                              ? await (GeocodingService.getCountryBounds(
                                   _serviceCubit.selectedCityName ??
-                                      _serviceCubit.selectedCountryName!)
-                              : GeocodingService.getCurrentLocationBounds(
-                                  _serviceCubit.getCurrentLocation!.latitude!,
-                                  _serviceCubit
-                                      .getCurrentLocation!.longitude!));
+                                      _serviceCubit.selectedCountryName!))
+                              : null;
+
+                      // await (_serviceCubit.selectedCountryId != -1
+                      //     ? GeocodingService.getCountryBounds(
+                      //         _serviceCubit.selectedCityName ??
+                      //             _serviceCubit.selectedCountryName!)
+                      //     : GeocodingService.getCurrentLocationBounds(
+                      //         _serviceCubit.getCurrentLocation!.latitude!,
+                      //         _serviceCubit
+                      //             .getCurrentLocation!.longitude!));
 
                       _authCubit.loadMapStyle(
                           _drawerCubit.themeMode == ThemeMode.dark
@@ -128,7 +143,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                               : false);
 
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ServiceMapScreen(),
+                        builder: (context) => const ServiceMapScreen(),
                       ));
                     },
                     icon: Icon(
@@ -274,28 +289,30 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               // SizedBox(
               //   height: 20.h,
               // ),
-              ShowDiscount(),
+              // ShowDiscount(),
 
               widget.services.length == 0
-                  ? Center(
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        SizedBox(
-                          height: size.height / 3.5,
-                          child: Lottie.asset(
-                            'asset/animation/empty.json',
+                  ? Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: size.height / 3.5,
+                            child: Lottie.asset(
+                              'asset/animation/empty.json',
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          localization.noServicesFoundedinlocation,
-                          style: TextStyle(fontSize: 30.sp),
-                        ),
-                        const Spacer(flex: 2)
-                      ],
-                    ),
-                  )
+                          const SizedBox(height: 20),
+                          Text(
+                            localization.noServicesFoundedinlocation,
+                            style: TextStyle(fontSize: 30.sp),
+                          ),
+                          const Spacer(flex: 2)
+                        ],
+                      ),
+                    )
                   : Expanded(
                       child: AnimationLimiter(
                         child: ListView.builder(

@@ -5,6 +5,7 @@ import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/drawer/data/model/languages.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
+import 'package:app/features/drawer/presentation/screens/change_password_screen.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,7 @@ class SettingScreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: 50.h,
@@ -111,7 +113,6 @@ class SettingScreen extends StatelessWidget {
                                   _drawerCubit
                                       .changeLanguage(selectedLanguage.code);
 
-                                  ///bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
                                   _serviceCubit.getCountriesAndCategories();
                                 }
                               },
@@ -123,6 +124,22 @@ class SettingScreen extends StatelessWidget {
                     ),
                   )
                 ],
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ChangePasswordScreen()));
+                },
+                child: Text(
+                  'Change Password',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontSize: 30.sp),
+                ),
               ),
               SizedBox(
                 height: 60.h,
@@ -163,7 +180,7 @@ class SettingScreen extends StatelessWidget {
                                             shape: BoxShape.circle,
                                             border:
                                                 Border.all(color: Colors.grey)),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.facebook,
                                           color: ColorManager.primary,
                                         ),

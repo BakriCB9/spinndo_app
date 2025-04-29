@@ -1,5 +1,7 @@
 import 'package:app/features/auth/presentation/widget/section_remember_me.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/di/service_locator.dart';
@@ -26,6 +28,7 @@ class SignUpScreen extends StatelessWidget {
 
   final _authCubit = serviceLocator.get<AuthCubit>();
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  String countryCode = '+93';
 
   @override
   Widget build(BuildContext context) {
@@ -133,23 +136,51 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(
                       height: 30.h,
                     ),
-                    CustomTextFormField(
-                      controller: _authCubit.phoneNumberController,
-                      labelText: 'Phone Number',
-                      icon: Icons.phone,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return localization.validEmail;
-                        }
-                        if (!Validator.isEGPhoneNumber(value)) {
-                          return localization.valideCorrectPhoneNumber;
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    Row(children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.r),
+                            color: ColorManager.white,
+                          ),
+                          child: CountryCodePicker(
+                            flagWidth: 25,
+                            textStyle: Theme.of(context).textTheme.bodyMedium,
+                            padding: EdgeInsets.zero,
+                            backgroundColor: Colors.white,
+                            searchStyle: Theme.of(context).textTheme.bodyMedium,
+                            onChanged: (value) {
+                              _authCubit.countryCode = value.dialCode!;
+                            },
+                            showCountryOnly: true,
+                            showOnlyCountryWhenClosed: false,
+                            alignLeft: true,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: CustomTextFormField(
+                          keyboardType: TextInputType.phone,
+                          controller: _authCubit.phoneNumberController,
+                          labelText: 'Phone Number',
+                          icon: Icons.phone,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return localization.validePhoneNumber;
+                            }
+
+                            return null;
+                          },
+                        ),
+                      )
+                    ]),
+                    SizedBox(height: 30.h),
                     CustomTextFormField(
                       validator: (value) {
                         if (!Validator.isPassword(value)) {
@@ -333,7 +364,8 @@ class SignUpScreen extends StatelessWidget {
     if (_authCubit.isClient) {
       if (formKey.currentState!.validate()) {
         _authCubit.register(RegisterRequest(
-            phoneNumber: _authCubit.phoneNumberController.text,
+            phoneNumber:
+                _authCubit.countryCode + _authCubit.phoneNumberController.text,
             first_name_ar: _authCubit.firstNameArcontroller.text,
             last_name_ar: _authCubit.lastNameArCOntroller.text,
             first_name: _authCubit.firstNameContoller.text,
