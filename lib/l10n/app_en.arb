@@ -60,7 +60,7 @@
   "themeMood": "Theme Mood",
   "language": "Language",
   "profile": "Profile",
-  "setting": "Setting",
+  "setting": "Settings",
   "connectwith": "Connect with us",
   "ourlinks": "Our links",
   "facebook": "Facebook",
@@ -164,6 +164,7 @@
   "errorStripe": "Error from Stripe",
   "anUnexpectedErrorOccurred": "An unexpected error occurred",
   "paymentDetails": "Payment Details",
-  "addPaymentMethods": "Add payment methods"
+  "addPaymentMethods": "Add payment methods",
+  "packages": "Packages"
 
 }

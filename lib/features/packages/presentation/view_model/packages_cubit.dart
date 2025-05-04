@@ -48,7 +48,7 @@ class PackagesCubit extends Cubit<PackagesState> {
 
     if (result is ApiResultSuccess<SubscribeResponse>) {
       print('the result is ${result.data}');
-      _updatePackageSubscriptionStatus(subscription.packageId, true);
+      _updatePackageSubscriptionStatus(subscription.packageId??0, true);
     } else if (result is ApiresultError<SubscribeResponse>) {
       print('the fail result is ${result.message}');
     }

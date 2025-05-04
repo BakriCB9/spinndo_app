@@ -1,18 +1,18 @@
 class SubscribeModel {
-  final int id;
-  final int userId;
-  final int packageId;
-  final String startDate;
-  final String endDate;
-  final String status;
+   int? id;
+   int? userId;
+   int? packageId;
+   String? startDate;
+   String? endDate;
+   String? status;
 
   SubscribeModel({
-    required this.id,
-    required this.userId,
-    required this.packageId,
-    required this.startDate,
-    required this.endDate,
-    required this.status,
+     this.id,
+     this.userId,
+     this.packageId,
+     this.startDate,
+     this.endDate,
+     this.status,
   });
 
   factory SubscribeModel.fromJson(Map<String, dynamic> json) {

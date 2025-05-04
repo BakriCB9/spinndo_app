@@ -285,7 +285,7 @@ class CustomDrawer extends StatelessWidget {
                         color: ColorManager.primary,
                       ),
                       title: Text(
-                        "Packages",
+                        localization.packages,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!

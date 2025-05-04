@@ -25,35 +25,44 @@ class PaymentsRemoteDatasourceImpl extends PaymentsRemoteDatasource {
   }
 
   @override
-  Future<PaymentResponse?> createPaymentMethod(PaymentMethodModel payment, String userToken) async{
-    final ans = await _dio.post(
-      ApiConstant.addPaymentMethod,
-      data: payment.toJson(),
-      options: Options(headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $userToken",
-      }),
-    );
+  Future<PaymentResponse?> createPaymentMethod(PaymentMethodModel payment, String userToken) async {
+    try {
+      print("Data sent to API: ${payment.toJson()}");
 
-    if (ans.statusCode == 200) {
-      print('تمت إضافة طريقة الدفع بنجاح');
-    } else {
-      print('فشل إضافة طريقة الدفع: ${ans.statusCode}');
+      final ans = await _dio.post(
+        ApiConstant.addPaymentMethod,
+        data: payment.toJson(),
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $userToken",
+        }),
+      );
+
+      print("Raw response from server: ${ans.data}");
+
+      if (ans.statusCode == 200 && ans.data['status'] == 'success') {
+        return PaymentResponse.fromJson(ans.data);
+      } else {
+        print("Failed to add payment method: ${ans.data}");
+        return null;
+      }
+    } catch (e) {
+      if (e is DioException) {
+        print("DioException data: ${e.response?.data}");
+        print("Status code: ${e.response?.statusCode}");
+      }
+      return null;
     }
-
-    print("Raw response: ${ans.data}");
-
-    final parsed = PaymentResponse.fromJson(ans.data);
-    return parsed;
   }
 
   @override
-  Future<RefundResponse?> refund(String payment_intent_id, String userToken) async{
+  Future<RefundResponse?> refund(String paymentIntentId, String userToken) async{
     try {
       final response = await _dio.post(
-        '/subscriptions/refund/$payment_intent_id',
+        '/subscriptions/refund/$paymentIntentId',
         options: Options(
           headers: {
+            "Content-Type": "application/json",
             'Authorization': 'Bearer $userToken',
           },
         ),

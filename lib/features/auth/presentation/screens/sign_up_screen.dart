@@ -1,3 +1,4 @@
+import 'package:app/core/resources/theme_manager.dart';
 import 'package:app/features/auth/presentation/widget/section_remember_me.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class SignUpScreen extends StatelessWidget {
   final _authCubit = serviceLocator.get<AuthCubit>();
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   String countryCode = '+93';
+
 
   @override
   Widget build(BuildContext context) {
@@ -143,13 +145,14 @@ class SignUpScreen extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25.r),
-                            color: ColorManager.white,
+                            color: _drawerCubit.themeMode == ThemeMode.dark?ColorManager.darkBlue:Colors.white,
                           ),
                           child: CountryCodePicker(
+                            dialogBackgroundColor: _drawerCubit.themeMode == ThemeMode.dark?ColorManager.darkBlue:Colors.white,
                             flagWidth: 25,
                             textStyle: Theme.of(context).textTheme.bodyMedium,
                             padding: EdgeInsets.zero,
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.black,
                             searchStyle: Theme.of(context).textTheme.bodyMedium,
                             onChanged: (value) {
                               _authCubit.countryCode = value.dialCode!;
@@ -161,7 +164,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: 5.w,
+                        width: 25.w,
                       ),
                       Expanded(
                         flex: 3,

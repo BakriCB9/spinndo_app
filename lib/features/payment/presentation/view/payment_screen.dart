@@ -98,6 +98,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
         },
       );
       paymentIntentData = jsonDecode(responseFromStripeAPI!.body);
+      print("pppi${paymentIntentData}");
       return paymentIntentData;
     } catch (errorMsg) {
       if (kDebugMode) {
@@ -151,8 +152,10 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
             customFlow: true,
+            customerId: intentPaymentData!['id'],
             allowsDelayedPaymentMethods: true,
             paymentIntentClientSecret: intentPaymentData!['client_secret'],
+            customerEphemeralKeySecret: intentPaymentData!['ephermal_key'],
             style: ThemeMode.light,
             merchantDisplayName: "merchantDisplayName",
           ),
@@ -202,29 +205,45 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
       },
     );
 
-    if (result == true && paymentIntentData != null) {
-      final cubit = context.read<PackagesCubit>();
-      final int userId = cubit.getUserId();
+    if (result == true) {
+      await confirmPayment(); // أكّد الدفع فقط إذا نجحت الإضافة
 
-      final methodType = paymentIntentData?['payment_method_types']?[0];
-      final intentId = paymentIntentData?['id']?.toString();
-
-      print('${methodType}pppp${intentId}');
-
-      if (methodType != null && intentId != null) {
-        PaymentMethodModel method = PaymentMethodModel(
-          userId: userId,
-          methodType: methodType,
-          stripePaymentMethodId: intentId,
-        );
-
-        await context.read<PaymentsCubit>().addPayment(method);
-        await confirmPayment();
-        context.read<PaymentsCubit>().getAllPayments();
-      } else {
-        print("خطأ: البيانات غير كاملة من Stripe");
-      }
+      // final cubit = context.read<PackagesCubit>();
+      // final int userId = cubit.getUserId();
+      //
+      // final List<dynamic>? paymentTypes = paymentIntentData?['payment_method_types'];
+      // final String? methodType = (paymentTypes != null && paymentTypes.isNotEmpty)
+      //     ? paymentTypes[0]
+      //     : null;
+      //
+      //
+      // final String? intentId = paymentIntentData?['id']?.toString();
+      //
+      // if (methodType != null && intentId != null) {
+      //   print('نوع الدفع: $methodType - Stripe ID: $intentId');
+      //
+      //   final method = PaymentMethodModel(
+      //     id:0,
+      //     userId: userId,
+      //     methodType: methodType,
+      //     stripePaymentMethodId: intentId,
+      //   );
+      //
+      //   //final result = await context.read<PaymentsCubit>().addPayment(method);
+      //
+      //   // نتحقق إذا تمت إضافة طريقة الدفع بنجاح
+      //   if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
+      //     await confirmPayment(); // أكّد الدفع فقط إذا نجحت الإضافة
+      //     await context.read<PaymentsCubit>().getAllPayments();
+      //   } else if (context.read<PaymentsCubit>().state is PaymentAddError) {
+      //     final errorState = context.read<PaymentsCubit>().state as PaymentAddError;
+      //     print("فشل إضافة وسيلة الدفع: ${errorState.message}");
+      //   }
+      // } else {
+      //   print("خطأ: البيانات غير كاملة من Stripe");
+      // }
     }
+
     else if (result == false && paymentIntentData != null) {
       String? id = paymentIntentData!['id']?.toString();
       if (id != null && id.isNotEmpty) {
@@ -233,10 +252,49 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     }
   }
 
+  void showPreviouslyUsedPaymentMethods(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
+    final state = context.read<PaymentsCubit>().state;
+    if (state is! PaymentsSuccess) return;
+
+    final usedMethods = state.payments
+        .where((p) => p?.methodType != null)
+        .map((p) => p!.methodType!)
+        .toSet()
+        .toList(); // إزالة التكرارات
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('ss'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: usedMethods.map((method) {
+                return ListTile(
+                  leading: Icon(getIconForPlan(method)),
+                  title: Text(method.toUpperCase()),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    String paymentType = ['klarna', 'paypal'].contains(method.toLowerCase()) ? method.toLowerCase() : 'card';
+                    paymentSheetInitialization(amount, "eur", paymentType);
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
   Future<void> confirmPayment() async {
     final localization = AppLocalizations.of(context)!;
     try {
       await Stripe.instance.confirmPaymentSheetPayment();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${localization.paymentSuccessful}🎉')),
       );
@@ -254,7 +312,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<PaymentsCubit>().getAllPayments();
+    // context.read<PaymentsCubit>().getAllPayments();
+    // showPreviouslyUsedPaymentMethods();
+
   }
 
   @override
