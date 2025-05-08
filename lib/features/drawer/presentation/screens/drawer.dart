@@ -272,7 +272,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _authCubit.isClient
+                  !_authCubit.isClient
                       ? InkWell(
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
