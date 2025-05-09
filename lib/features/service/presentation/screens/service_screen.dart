@@ -1,4 +1,7 @@
+import 'package:app/core/routes/routes.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
+import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:app/features/service/domain/entities/main_category/all_category_main_entity.dart';
 import 'package:app/features/service/presentation/screens/get_main_category_screen.dart';
@@ -132,7 +135,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           TextButton(
                                               onPressed: () {
                                                 Navigator.of(context).pop();
-                                                Navigator.of(context).pop();
+
+                                                Navigator.of(context).pushNamed(
+                                                    Routes.loginRoute);
                                               },
                                               child: Text(
                                                 localization.ok,

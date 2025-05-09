@@ -50,8 +50,7 @@ class ServiceApiDataSource implements ServiceDataSource {
 
   @override
   Future<GetAllCategoryResponse> getAllCategory() async {
-    try {
-      final lang = _sharedPreferences.getString('language');
+    final lang = _sharedPreferences.getString('language');
       final response = await _dio.get(ApiConstant.getAllCategory,
           options: Options(
             headers: {
@@ -62,9 +61,11 @@ class ServiceApiDataSource implements ServiceDataSource {
           ));
 
       return GetAllCategoryResponse.fromJson(response.data);
-    } catch (exciption) {
-      throw RemoteAppException("Failed to get categories");
-    }
+    // try {
+      
+    // } catch (exciption) {
+    //   throw RemoteAppException("Failed to get categories");
+    // }
   }
 
   @override

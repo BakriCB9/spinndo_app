@@ -26,7 +26,7 @@ class DiscountViewModelCubit extends Cubit<DiscountViewModelState> {
         {
           print('yes it successs now bakkkkarrr');
           emit(state.copyWith(
-              addDiscountState: BaseSuccessState<String>(ans.data)));
+              addDiscountState: BaseSuccessState<String>(data:  ans.data)));
         }
       case ApiresultError():
         {
@@ -42,7 +42,7 @@ class DiscountViewModelCubit extends Cubit<DiscountViewModelState> {
     switch (ans) {
       case ApiResultSuccess():
         {
-          emit(state.copyWith(deleteDiscountState: BaseSuccessState(ans.data)));
+          emit(state.copyWith(deleteDiscountState: BaseSuccessState(data:ans.data)));
         }
       case ApiresultError():
         {

@@ -8,10 +8,26 @@ import 'package:app/features/auth/data/data_sources/local/auth_local_data_source
 class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
   final SharedPreferences _sharedPreferences;
 
-  AuthSharedPrefLocalDataSource({required SharedPreferences sharedPreferences})
-      : _sharedPreferences = sharedPreferences;
+  AuthSharedPrefLocalDataSource( this._sharedPreferences);
+      // : _sharedPreferences = sharedPreferences;
 
   @override
+  // Future<void> saveData({required String key, required dynamic data}) async {
+  //   try {
+  //     await _sharedPreferences.saveData(key: key, value: data);
+  //   } catch (e) {
+  //     throw LocalAppException('Failed to save data');
+  //   }
+  // }
+
+  // Object? getData(String key){
+  //   try{
+  //    await 
+  //   }catch(e){
+
+  //   }
+  // }
+
   Future<void> saveToken(String token) async {
     try {
       await _sharedPreferences.setString(CacheConstant.tokenKey, token);

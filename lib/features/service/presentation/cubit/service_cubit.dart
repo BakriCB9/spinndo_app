@@ -40,7 +40,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
       )
       : super(ServiceInitial());
   final GetCountries _getCountries;
-  final GetCategories _getCategories;
+  final GetCategoriesUseCase _getCategories;
   final GetServices _getServices;
   final GetServiceProfile _getServiceProfile;
   final GetNotifications _getNotifications;
@@ -220,16 +220,23 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
   bool isUpdat = false;
   Future<void> getCurrentLocationFilter() async {
-    try {
       emit(GetCurrentLocationFilterLoading());
-      LocationData getCurrentLocationData =
-          await LocationService.getLocationData();
-      getCurrentLocation = getCurrentLocationData;
-      isUpdat = true;
-      emit(GetCurrentLocationFilterSuccess());
-    } catch (e) {
-      emit(GetCurrentLocationFilterErrorr("Couldn't get your location"));
-    }
+    final result=await LocationService.getLocationData();
+    result.fold((failure)=>emit(GetCurrentLocationFilterErrorr("Couldn't get your location")), (location){
+         getCurrentLocation =location;
+          isUpdat=true;
+          emit(GetCurrentLocationFilterSuccess());
+    });
+    // try {
+    //   emit(GetCurrentLocationFilterLoading());
+    //   LocationData getCurrentLocationData =
+    //       await LocationService.getLocationData();
+    //   getCurrentLocation = getCurrentLocationData;
+    //   isUpdat = true;
+    //   emit(GetCurrentLocationFilterSuccess());
+    // } catch (e) {
+    //   emit(GetCurrentLocationFilterErrorr("Couldn't get your location"));
+    // }
   }
 
   void distanceSelect(double value) {

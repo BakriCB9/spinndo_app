@@ -4,7 +4,7 @@ sealed class BaseState {}
 
 class BaseSuccessState<T> extends BaseState {
   T? data;
-  BaseSuccessState(this.data);
+  BaseSuccessState({this.data});
 }
 
 class BaseLoadingState extends BaseState {}

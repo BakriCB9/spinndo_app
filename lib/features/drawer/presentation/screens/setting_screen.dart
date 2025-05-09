@@ -1,5 +1,6 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/drawer/data/model/languages.dart';
@@ -262,7 +263,7 @@ class SettingScreen extends StatelessWidget {
                     UIUtils.hideLoading(context);
                     Navigator.of(context).pop();
                     Navigator.of(context)
-                        .pushReplacementNamed(SignInScreen.routeName);
+                        .pushReplacementNamed(Routes.loginRoute);
                   }
                 },
                 child: InkWell(

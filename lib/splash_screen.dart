@@ -1,5 +1,6 @@
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
@@ -74,10 +75,18 @@ class _SplashScreenState extends State<SplashScreen>
     // Navigate to the next screen
     Future.delayed(const Duration(seconds: 4), () async {
       //await _authCubit.getCategories();
-
+  // Navigator.of(context).pushNamedAndRemoveUntil(SignInScreen.routeName, (p){
+  //   return p.settings.name == SignInScreen.routeName;
+  // });
       if (sharedPref.getString(CacheConstant.tokenKey) == null) {
-        return Navigator.of(context)
-            .pushReplacementNamed(SignInScreen.routeName);
+        Navigator.of(context).pushNamedAndRemoveUntil(Routes.loginRoute, (p){
+    return p.settings.name == Routes.loginRoute;
+  
+  });
+  print('the current size is nowwwwwwwwwwwwwwwwwwwwwwwwwwwww ${navObserver.stackSize}');
+  navObserver.printRouts();
+        // return Navigator.of(context)
+        //     .pushReplacementNamed(SignInScreen.routeName);
       } else {
         return Navigator.of(context)
             .pushReplacementNamed(ServiceScreen.routeName);

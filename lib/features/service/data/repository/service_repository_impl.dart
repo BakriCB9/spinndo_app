@@ -1,3 +1,4 @@
+import 'package:app/core/network/remote/handle_dio_exception.dart';
 import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/service/domain/entities/main_category/all_category_main_entity.dart';
@@ -27,8 +28,9 @@ class ServiceRepositoryImpl implements ServiceRepository {
     try {
       final getCategoriesResponse = await _serviceDataSource.getAllCategory();
       return Right(getCategoriesResponse.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    }  catch (e) {
+      final exception =HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 

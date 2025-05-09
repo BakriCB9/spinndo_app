@@ -51,7 +51,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final GetUserRole _getUserRole;
   final UpdateClientProfile _updateClientProfile;
   final UpdateProviderProfile _updateProviderProfile;
-  final GetCategories _getCategories;
+  final GetCategoriesUseCase _getCategories;
   final AddImagePhoto _addImagePhoto;
   final DeleteImage _deleteImage;
   final AddOrUpdateSocialUseCase _addOrUpdateSocialUseCase;
@@ -372,15 +372,23 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   Future<void> getCurrentLocation() async {
-    try {
-      emit(GetUpdatedLocationLoading());
-      LocationData getCurrentLocation = await LocationService.getLocationData();
-      currentLocation =
-          LatLng(getCurrentLocation.latitude!, getCurrentLocation.longitude!);
-      emit(GetUpdatedLocationSuccess());
-    } catch (e) {
-      emit(GetUpdatedLocationErrorr("Couldn't get your location"));
-    }
+    
+    // try {
+    //   emit(GetUpdatedLocationLoading());
+    //   LocationData getCurrentLocation = await LocationService.getLocationData();
+    //   currentLocation =
+    //       LatLng(getCurrentLocation.latitude!, getCurrentLocation.longitude!);
+    //   emit(GetUpdatedLocationSuccess());
+    // } catch (e) {
+    //   emit(GetUpdatedLocationErrorr("Couldn't get your location"));
+    // }
+    emit(GetUpdatedLocationLoading());
+    final result=await LocationService.getLocationData();
+    result.fold((failure)=>emit(GetUpdatedLocationErrorr("Couldn't get your location")), (location){
+         currentLocation =
+          LatLng(location.latitude!, location.longitude!);
+             emit(GetUpdatedLocationSuccess());
+    });
   }
 
   void selectLocation(LatLng onSelectedLocation) {

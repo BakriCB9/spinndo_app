@@ -48,6 +48,14 @@ class ThemeManager {
     dialogBackgroundColor: ColorManager.white,
     checkboxTheme: const CheckboxThemeData(
         checkColor: WidgetStatePropertyAll(ColorManager.white)),
+    filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSize.s28.r),
+                side: BorderSide(color: ColorManager.primary))),
+            padding:
+                WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h)),
+            backgroundColor: WidgetStatePropertyAll(ColorManager.white))),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
           foregroundColor: WidgetStatePropertyAll(ColorManager.black),
@@ -170,6 +178,16 @@ class ThemeManager {
     /// Main Colors
     ///
     ///
+    ///
+    
+    filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSize.s28.r),
+                side: BorderSide(color: ColorManager.primary))),
+            padding:
+                WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h)),
+            backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue))),
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
             textStyle: WidgetStatePropertyAll(
@@ -302,7 +320,7 @@ class ThemeManager {
 
     // bottomSheetTheme: BottomSheetThemeData(
     //   backgroundColor: ColorManager.primary.withOpacity(0.6),
-    //   elevation: 10,
+    //   Eation: 10,
     //   clipBehavior: Clip.antiAlias,
     //   shape: const RoundedRectangleBorder(
     //     borderRadius: BorderRadius.vertical(
