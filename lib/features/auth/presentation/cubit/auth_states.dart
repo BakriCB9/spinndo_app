@@ -6,15 +6,6 @@ abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
-class LoginLoading extends AuthState {}
-
-class LoginSuccess extends AuthState {}
-
-class LoginError extends AuthState {
-  final String message;
-
-  LoginError(this.message);
-}
 
 class RegisterSuccess extends AuthState {}
 
@@ -55,19 +46,6 @@ class ResendCodeError extends AuthState {
 
   ResendCodeError(this.message);
 }
-
-class ResetPasswordSuccess extends AuthState {}
-
-class ResetPasswordLoading extends AuthState {}
-
-class ResetPasswordError extends AuthState {
-  final String message;
-
-  ResetPasswordError(this.message);
-}
-
-class ChooseAccountState extends AuthState {}
-
 class CardState extends AuthState {}
 
 class CanResendState extends AuthState {}
@@ -82,7 +60,7 @@ class GetCategoryError extends AuthState {
   GetCategoryError(this.message);
 }
 
-class SelectedCategoryState extends AuthState {}
+// class SelectedCategoryState extends AuthState {}
 
 class SelectedSubCategoryState extends AuthState {}
 
@@ -91,11 +69,11 @@ class SelectedLocationState extends AuthState {}
 class GetCurrentLocationLoading extends AuthState {}
 
 class GetCurrentLocationSuccess extends AuthState {}
-
+  
 class GetCurrentLocationErrorr extends AuthState {
-  final String message;
+   String? message;
 
-  GetCurrentLocationErrorr(this.message);
+  GetCurrentLocationErrorr({this.message});
 }
 
 class GetLocationCountryLoading extends AuthState {}

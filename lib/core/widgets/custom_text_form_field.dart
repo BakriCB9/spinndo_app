@@ -56,9 +56,9 @@ class _CustomTextFormField extends State<CustomTextFormField> {
     return TextFormField(
       //initialValue:null ,
       focusNode: _focus,
-      onTapOutside: (_) {
-        _focus.unfocus();
-      },
+      // onTapOutside: (_) {
+      //   _focus.unfocus();
+      // },
       onFieldSubmitted: (_) {
         _focus.unfocus();
       },
@@ -68,31 +68,42 @@ class _CustomTextFormField extends State<CustomTextFormField> {
           hintText: widget.hintText,
           hintStyle:
               Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 30.sp),
+          labelStyle:
+              Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 27.sp),
           label: widget.labelText != null
               ? Text(
                   widget.labelText!,
                 )
               : null,
-          suffixIcon: widget.controller.text.isNotEmpty
-              ? widget.isPassword
-                  ? IconButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onPressed: () {
-                        isObsecure = !isObsecure;
-                        setState(() {});
-                      },
-                      icon: isObsecure
-                          ? Icon(
-                              Icons.visibility_outlined,
-                              size: 40.sp,
-                            )
-                          : Icon(
-                              Icons.visibility_off_outlined,
-                              size: 40.sp,
-                            ))
-                  : null
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  onPressed: () {
+                    isObsecure = !isObsecure;
+                    setState(() {});
+                  },
+                  icon: Icon(
+                      isObsecure ? Icons.visibility : Icons.visibility_off))
               : null,
+          // suffixIcon: widget.controller.text.isNotEmpty
+          //     ? widget.isPassword
+          //         ? IconButton(
+          //             splashColor: Colors.transparent,
+          //             highlightColor: Colors.transparent,
+          //             onPressed: () {
+          //               isObsecure = !isObsecure;
+          //               setState(() {});
+          //             },
+          //             icon: isObsecure
+          //                 ? Icon(
+          //                     Icons.visibility_outlined,
+          //                     size: 40.sp,
+          //                   )
+          //                 : Icon(
+          //                     Icons.visibility_off_outlined,
+          //                     size: 40.sp,
+          //                   ))
+          //         : null
+          //     : null,
           prefixIcon: widget.icon == null
               ? null
               : Icon(
@@ -103,13 +114,13 @@ class _CustomTextFormField extends State<CustomTextFormField> {
           contentPadding: EdgeInsets.only(left: 50.w)
           // counter: SizedBox()
           ),
-      onChanged: widget.isPassword
-          ? (value) {
-              setState(() {});
-            }
-          : null,
+      // onChanged: widget.isPassword
+      //     ? (value) {
+      //         setState(() {});
+      //       }
+      //     : null,
       cursorColor: ColorManager.primary,
-      obscureText: widget.isPassword ? !isObsecure : isObsecure,
+      obscureText: widget.isPassword ? !isObsecure : false,
       controller: widget.controller,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
@@ -120,7 +131,6 @@ class _CustomTextFormField extends State<CustomTextFormField> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(200),
       ],
-      // maxLength: 10,
     );
   }
 }

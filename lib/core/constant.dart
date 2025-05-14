@@ -28,17 +28,16 @@ class ApiConstant {
   static const String addDiscount = '/service/add-discount';
   static const String deleteDiscount = '/service/delete-discount';
   static const String getAllDiscount = '/services/get-discount';
-  static const String getAllMainCategory='/categories/getMain';
-  static const String getDataAutoComplete='/services/getData';
-  static const String addOrupdateLinkSocial='/profile/social_link';
-  static const String deleteSocialLinks='/profile/social_link';
-  static const String upgradeAccount='/profile/upgrade';
-  static const String getAllPackages='/packages/getAll';
-  static const String getAllPaymentsMethod='/payment_method/getAll';
-  static const String addSubscribe ='/subscriptions/subscribe';
-  static const String addPaymentMethod ='/payment_method/add';
-  static const String changePassword='/changePassword';
-
+  static const String getAllMainCategory = '/categories/getMain';
+  static const String getDataAutoComplete = '/services/getData';
+  static const String addOrupdateLinkSocial = '/profile/social_link';
+  static const String deleteSocialLinks = '/profile/social_link';
+  static const String upgradeAccount = '/profile/upgrade';
+  static const String getAllPackages = '/packages/getAll';
+  static const String getAllPaymentsMethod = '/payment_method/getAll';
+  static const String addSubscribe = '/subscriptions/subscribe';
+  static const String addPaymentMethod = '/payment_method/add';
+  static const String changePassword = '/changePassword';
 }
 
 class CacheConstant {
@@ -50,4 +49,6 @@ class CacheConstant {
   static const String userRole = 'user_role';
   static const String imagePhoto = 'Image_photo';
   static const String imagePhotoFromLogin = 'image_phot';
+  static const String userAccountStatus = 'account_status';
+  static const String  googleMapKey = 'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
 }

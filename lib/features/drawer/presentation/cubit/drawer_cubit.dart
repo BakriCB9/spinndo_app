@@ -162,7 +162,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
         emit(DeleteAccountSuccess());
       }
     } catch (e) {
-      print('the error is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ${e}');
+     
       emit(DeleteAccountError("An error occurred. Please try again."));
     }
   }

@@ -479,7 +479,7 @@ class EmployeeDetails extends StatelessWidget {
                   bloc: _authCubit,
                   builder: (context, state) {
                     return CascadingDropdowns(
-                        authCubit: _authCubit,
+                        //authCubit: _authCubit,
                         categories: _authCubit.categoriesList);
                   },
                 ),
@@ -533,7 +533,7 @@ class EmployeeDetails extends StatelessWidget {
                             .push(MaterialPageRoute(builder: (context) {
                           return BlocProvider.value(
                             value: _authCubit,
-                            child: const MapScreen(),
+                            child:  MapScreen(),
                           );
                         }));
                         // Navigator.of(context).pushNamed(MapScreen.routeName);

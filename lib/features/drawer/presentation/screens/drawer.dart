@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/core/routes/routes.dart';
 import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/discount/presentation/view/add_discount_screen.dart';
 import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
@@ -391,7 +392,7 @@ class CustomDrawer extends StatelessWidget {
                       } else if (state is LogOutSuccess) {
                         UIUtils.hideLoading(context);
                         Navigator.of(context)
-                            .pushReplacementNamed(SignInScreen.routeName);
+                            .pushReplacementNamed(Routes.loginRoute);
                         //  _disposeResources();
                         _serviceCubit.resetSetting();
                       }

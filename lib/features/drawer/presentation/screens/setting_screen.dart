@@ -1,5 +1,6 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/drawer/data/model/languages.dart';
@@ -7,6 +8,7 @@ import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
 import 'package:app/features/drawer/presentation/screens/change_password_screen.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
+import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +23,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
-    final _serviceCubit = serviceLocator.get<ServiceCubit>();
+    final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
     List<Languages> languages = [
       Languages(name: 'English', code: 'en'),
       Languages(name: 'Deutsch', code: 'de'),
@@ -134,7 +136,7 @@ class SettingScreen extends StatelessWidget {
                       builder: (context) => ChangePasswordScreen()));
                 },
                 child: Text(
-                  'Change Password',
+                  localization.changePassword,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -209,7 +211,7 @@ class SettingScreen extends StatelessWidget {
                                             shape: BoxShape.circle,
                                             border:
                                                 Border.all(color: Colors.grey)),
-                                        child: Icon(
+                                        child:const  Icon(
                                           Icons.message,
                                           color: ColorManager.primary,
                                         ),
@@ -262,7 +264,7 @@ class SettingScreen extends StatelessWidget {
                     UIUtils.hideLoading(context);
                     Navigator.of(context).pop();
                     Navigator.of(context)
-                        .pushReplacementNamed(SignInScreen.routeName);
+                        .pushReplacementNamed(Routes.loginRoute);
                   }
                 },
                 child: InkWell(

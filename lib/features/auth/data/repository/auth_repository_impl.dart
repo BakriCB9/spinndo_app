@@ -1,4 +1,6 @@
 import 'package:app/core/constant.dart';
+import 'package:app/core/network/remote/handle_dio_exception.dart';
+import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -21,34 +23,25 @@ import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/domain/repository/auth_repository.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 
-@Singleton(as: AuthRepository)
+@Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _authRemoteDataSource;
   final AuthLocalDataSource _authLocalDataSource;
+  final SharedPreferencesUtils _sharedPreferencesUtils;
 
-  AuthRepositoryImpl(this._authRemoteDataSource, this._authLocalDataSource);
+  AuthRepositoryImpl(this._authRemoteDataSource, this._sharedPreferencesUtils,
+      this._authLocalDataSource);
 
   @override
   Future<Either<Failure, Data>> login(LoginRequest requestData) async {
     try {
       final response = await _authRemoteDataSource.login(requestData);
-
-      await _authLocalDataSource.saveToken(response.data!.token);
-      await _authLocalDataSource.saveUserId(response.data!.id);
-      await _authLocalDataSource.saveUserRole(response.data!.role);
-      await _authLocalDataSource.savePhoto(response.data!.imagePath);
-      await _authLocalDataSource.saveUserEmail(requestData.email);
-      await _authLocalDataSource.saveUserName(
-          "${response.data!.firstName} ${response.data!.lastName}");
-
-      await _authLocalDataSource.saveUserUnCompliteAccount(
-        requestData.email,
-      );
+      await _saveInfoUser(response);
 
       return Right(response.data!);
-    } on AppException catch (exception) {
-      print('the data from right is resposirty  ${exception.message}');
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -57,17 +50,11 @@ class AuthRepositoryImpl implements AuthRepository {
       RegisterRequest requestData) async {
     try {
       final response = await _authRemoteDataSource.register(requestData);
-      // await _authLocalDataSource.saveToken(response.data!);
 
-      await _authLocalDataSource.saveUserUnCompliteAccount(
-        requestData.email,
-      );
-      _authLocalDataSource.saveUserEmail(requestData.email);
-      _authLocalDataSource
-          .saveUserName(requestData.first_name + requestData.last_name);
       return Right(response);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -76,13 +63,12 @@ class AuthRepositoryImpl implements AuthRepository {
       VerifyCodeRequest requestData) async {
     try {
       final response = await _authRemoteDataSource.verifyCode(requestData);
-      await _authLocalDataSource.saveToken(response.data!.token);
-      await _authLocalDataSource.saveUserId(response.data!.id);
-      await _authLocalDataSource.saveUserRole(response.data!.role);
-      await _authLocalDataSource.deleteEmail();
+      await _saveInfoUser(response);
+
       return Right(response.data!);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -94,12 +80,11 @@ class AuthRepositoryImpl implements AuthRepository {
       await _authLocalDataSource.saveUserUnCompliteAccount(
         requestData.email,
       );
-      _authLocalDataSource.saveUserEmail(requestData.email);
-      _authLocalDataSource
-          .saveUserName(requestData.firstName + requestData.lastName);
+
       return Right(response);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -110,8 +95,9 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _authRemoteDataSource.resendCode(requestData);
 
       return Right(response);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -122,8 +108,9 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _authRemoteDataSource.resetPassword(requestData);
 
       return Right(response);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -133,8 +120,9 @@ class AuthRepositoryImpl implements AuthRepository {
       final getCategoriesResponse =
           await _authRemoteDataSource.getAllCategory();
       return Right(getCategoriesResponse.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -144,10 +132,12 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await _authRemoteDataSource.getAddressFromCoordinates(lat, long);
-      final country = Country(cityName: response[0], address: response[1]);
-      return Right(country);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+      return response.isEmpty
+          ? Right(Country(cityName: 'unKnown city', address: 'unknow address'))
+          : Right(Country(cityName: response[0], address: response[1]));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -157,11 +147,28 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response =
           await _authRemoteDataSource.updgradeAccount(upgradeRequest);
-
-      _authLocalDataSource.saveUserRole("ServiceProvider");
+      _sharedPreferencesUtils.saveData(
+          key: CacheConstant.userRole, value: "ServiceProvider");
+      // _authLocalDataSource.saveUserRole("ServiceProvider");
       return Right(response);
     } on AppException catch (exception) {
       return Left(Failure(exception.message));
     }
+  }
+
+  Future<void> _saveInfoUser(dynamic response) async {
+    await _sharedPreferencesUtils.saveData(
+        key: CacheConstant.tokenKey, value: response.data!.token);
+    await _sharedPreferencesUtils.saveData(
+        key: CacheConstant.userId, value: response.data!.id);
+    await _sharedPreferencesUtils.saveData(
+        key: CacheConstant.userRole, value: response.data!.role);
+    await _sharedPreferencesUtils.saveData(
+        key: CacheConstant.imagePhoto, value: response.data!.imagePath);
+    await _sharedPreferencesUtils.saveData(
+        key: CacheConstant.emailKey, value: response.data!.email);
+    await _sharedPreferencesUtils.saveData(
+        key: CacheConstant.nameKey,
+        value: response.data!.firstName! + " " + response.data!.lastName!);
   }
 }

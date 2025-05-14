@@ -1,411 +1,276 @@
-import 'package:app/core/resources/theme_manager.dart';
+import 'package:app/core/routes/routes.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/register_state.dart';
+import 'package:app/features/auth/presentation/widget/section_account_type.dart';
 import 'package:app/features/auth/presentation/widget/section_remember_me.dart';
+import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/di/service_locator.dart';
-import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/auth/data/models/register_request.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/auth/presentation/screens/employee_details.dart';
 import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import '../../../../core/utils/ui_utils.dart';
 import '../../../../core/utils/validator.dart';
-import 'sign_in_screen.dart';
-import 'verfication_code_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
 
-  static const String routeName = '/signup';
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
 
+class _SignUpScreenState extends State<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
 
   final _authCubit = serviceLocator.get<AuthCubit>();
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
-  String countryCode = '+93';
 
+  final _registerCubit = serviceLocator.get<RegisterCubit>();
+
+  RegisterState? previousState;
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
-    return BlocProvider(
-      create: (context) => _authCubit,
-      child: Builder(builder: (context) {
-        return CustomAuthForm(
-            canBack: false,
-            isGuest: true,
-            child: Column(children: [
-              SizedBox(height: 60.h),
-              Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.enterName;
-                        } else if (!Validator.hasMinLength(
-                          value,
-                          minLength: 2,
-                        )) {
-                          return localization.nameLessThanTwo;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.firstNameArcontroller,
-                      icon: Icons.person,
-                      labelText: 'First name ar',
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.enterName;
-                        } else if (!Validator.hasMinLength(
-                          value,
-                          minLength: 2,
-                        )) {
-                          return localization.nameLessThanTwo;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.lastNameArCOntroller,
-                      icon: Icons.person,
-                      labelText: 'Last name ar',
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.enterName;
-                        } else if (!Validator.hasMinLength(
-                          value,
-                          minLength: 2,
-                        )) {
-                          return localization.nameLessThanTwo;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.firstNameContoller,
-                      icon: Icons.person,
-                      labelText: localization.firstName,
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.enterName;
-                        } else if (!Validator.hasMinLength(
-                          value,
-                          minLength: 2,
-                        )) {
-                          return localization.nameLessThanTwo;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.lastNameContoller,
-                      icon: Icons.person,
-                      labelText: localization.lastName,
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (!Validator.isEmail(value)) {
-                          return localization.validEmail;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.emailController,
-                      icon: Icons.email,
-                      labelText: localization.email,
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    Row(children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
+    return CustomAuthForm(
+        canBack: false,
+        child: Column(children: [
+          SizedBox(height: 60.h),
+          Form(
+            key: formKey,
+            child: Column(
+              children: [
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(
+                      value,
+                      minLength: 2,
+                    )) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.firstNameArcontroller,
+                  icon: Icons.person,
+                  labelText: localization.firstNameAr,
+                ),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(value, minLength: 2)) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.lastNameArCOntroller,
+                  icon: Icons.person,
+                  labelText: localization.lastNameAr,
+                ),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(value, minLength: 2)) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.firstNameContoller,
+                  icon: Icons.person,
+                  labelText: localization.firstName,
+                ),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return localization.enterName;
+                      } else if (!Validator.hasMinLength(value, minLength: 2)) {
+                        return localization.nameLessThanTwo;
+                      }
+                      return null;
+                    },
+                    controller: _registerCubit.lastNameContoller,
+                    icon: Icons.person,
+                    labelText: localization.lastName),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isEmail(value)) {
+                        return localization.validEmail;
+                      }
+                      return null;
+                    },
+                    controller: _registerCubit.emailController,
+                    icon: Icons.email,
+                    labelText: localization.email),
+                SizedBox(height: 30.h),
+                Row(children: [
+                  Expanded(
+                      flex: 2,
+                      child: CountryCodePicker(
+                          barrierColor: Colors.grey.withOpacity(0.2),
+                          dialogBackgroundColor:
+                              Theme.of(context).primaryColorDark,
+                          flagWidth: 25,
+                          textStyle: Theme.of(context).textTheme.bodyMedium,
                           padding: EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.r),
-                            color: _drawerCubit.themeMode == ThemeMode.dark?ColorManager.darkBlue:Colors.white,
-                          ),
-                          child: CountryCodePicker(
-                            dialogBackgroundColor: _drawerCubit.themeMode == ThemeMode.dark?ColorManager.darkBlue:Colors.white,
-                            flagWidth: 25,
-                            textStyle: Theme.of(context).textTheme.bodyMedium,
-                            padding: EdgeInsets.zero,
-                            backgroundColor: Colors.black,
-                            searchStyle: Theme.of(context).textTheme.bodyMedium,
-                            onChanged: (value) {
-                              _authCubit.countryCode = value.dialCode!;
-                            },
-                            showCountryOnly: true,
-                            showOnlyCountryWhenClosed: false,
-                            alignLeft: true,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 25.w,
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: CustomTextFormField(
+                          backgroundColor: Theme.of(context).primaryColorDark,
+                          searchStyle: Theme.of(context).textTheme.bodyMedium,
+                          onChanged: (value) {
+                            _registerCubit.countryCode = value.dialCode!;
+                          },
+                          showCountryOnly: true,
+                          showOnlyCountryWhenClosed: false,
+                          alignLeft: true)),
+                  SizedBox(width: 5.w),
+                  Expanded(
+                      flex: 3,
+                      child: CustomTextFormField(
                           keyboardType: TextInputType.phone,
-                          controller: _authCubit.phoneNumberController,
-                          labelText: 'Phone Number',
+                          controller: _registerCubit.phoneNumberController,
+                          labelText: localization.phoneNumber,
                           icon: Icons.phone,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return localization.validePhoneNumber;
                             }
-
                             return null;
-                          },
-                        ),
-                      )
-                    ]),
-                    SizedBox(height: 30.h),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (!Validator.isPassword(value)) {
-                          return localization.passwordLessThanSix;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.passwordController,
-                      icon: Icons.lock,
-                      isPassword: true,
-                      labelText: localization.password,
-                    ),
-                    SizedBox(height: 30.h),
-                    CustomTextFormField(
-                      validator: (value) {
-                        if (!Validator.isPassword(value)) {
-                          return localization.passwordLessThanSix;
-                        } else if (_authCubit.passwordController.text !=
-                            _authCubit.confirmPasswordController.text) {
-                          return localization.passwordNotMatched;
-                        }
-                        return null;
-                      },
-                      controller: _authCubit.confirmPasswordController,
-                      icon: Icons.lock,
-                      isPassword: true,
-                      labelText: localization.confirmPassword,
-                    ),
-                  ],
+                          }))
+                ]),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isPassword(value)) {
+                        return localization.passwordLessThanSix;
+                      }
+                      return null;
+                    },
+                    controller: _registerCubit.passwordController,
+                    icon: Icons.lock,
+                    isPassword: true,
+                    labelText: localization.password),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (!Validator.isPassword(value)) {
+                      return localization.passwordLessThanSix;
+                    } else if (_registerCubit.passwordController.text !=
+                        _registerCubit.confirmPasswordController.text) {
+                      return localization.passwordNotMatched;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.confirmPasswordController,
+                  icon: Icons.lock,
+                  isPassword: true,
+                  labelText: localization.confirmPassword,
                 ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              SectionRememberMe(
-                authCubit: _authCubit,
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              BlocBuilder<AuthCubit, AuthState>(
-                bloc: _authCubit,
-                buildWhen: (previous, current) {
-                  if (current is ChooseAccountState) {
-                    return true;
-                  }
-                  return false;
-                },
-                builder: (context, state) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Radio<bool>(
-                              value: true,
-                              activeColor: ColorManager.primary,
-                              hoverColor: ColorManager.primary,
-                              groupValue: _authCubit.isClient,
-                              onChanged: (value) {
-                                _authCubit.onChooseAccountType(value!);
-                              },
-                            ),
-                            Text(localization.client,
-                                style: Theme.of(context).textTheme.bodyMedium)
-                          ],
-                        ),
-                        SizedBox(width: 16.w),
-                        Row(
-                          children: [
-                            Radio<bool>(
-                              activeColor: ColorManager.primary,
-                              hoverColor: ColorManager.primary,
-                              value: false,
-                              groupValue: _authCubit.isClient,
-                              onChanged: (value) {
-                                _authCubit.onChooseAccountType(value!);
-                              },
-                            ),
-                            Text(localization.employee,
-                                style: Theme.of(context).textTheme.bodyMedium),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              BlocConsumer<AuthCubit, AuthState>(
-                  bloc: _authCubit,
-                  listener: (_, state) {
-                    if (state is RegisterLoading) {
-                      UIUtils.showLoading(
-                          context, 'asset/animation/loading.json');
-                    } else if (state is RegisterSuccess) {
-                      UIUtils.hideLoading(context);
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return VerficationCodeScreen(
-                          authCubit: _authCubit,
-                        );
-                      }));
-                      // Navigator.of(context).pushNamed(
-                      //   VerficationCodeScreen.routeName,
-                      // );
-                    } else if (state is RegisterError) {
-                      UIUtils.hideLoading(context);
-                      UIUtils.showMessage(state.message);
-                    }
-                    if (state is GetCategoryLoading) {
-                      UIUtils.showLoading(
-                          context, 'asset/animation/loading.json');
-                    } else if (state is GetCategorySuccess) {
-                      UIUtils.hideLoading(context);
-
-                      ///it me
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return BlocProvider.value(
-                          value: _authCubit,
-                          child: EmployeeDetails(),
-                        );
-                      }));
-                      //Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-                    } else if (state is GetCategoryError) {
-                      UIUtils.hideLoading(context);
-                      UIUtils.showMessage(state.message);
-                    }
+              ],
+            ),
+          ),
+          SizedBox(height: 20.h),
+          SectionRememberMe(authCubit: _registerCubit),
+          SizedBox(height: 20.h),
+          SectionAccountType(authcubit: _registerCubit),
+          BlocListener<RegisterCubit, RegisterState>(
+              bloc: _registerCubit,
+              listenWhen: (pre, cur) {
+                if (pre.registerClientState != cur.registerClientState ||
+                    pre.getCategoryState != cur.getCategoryState) {
+                  previousState = pre;
+                  return true;
+                }
+                return false;
+              },
+              listener: (_, state) {
+                if (state.registerClientState is BaseLoadingState ||
+                    state.getCategoryState is BaseLoadingState) {
+                  UIUtils.showLoadingDialog(context);
+                } else if (state.registerClientState is BaseSuccessState) {
+                  UIUtils.hideLoading(context);
+                  Navigator.of(context).pushNamed(Routes.verificationRoutes,
+                      arguments: _registerCubit.emailController.text);
+                } else if (state.registerClientState is BaseErrorState &&
+                    previousState?.registerClientState !=
+                        state.registerClientState) {
+                  final result = state.registerClientState as BaseErrorState;
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(result.error!);
+                } else if (state.getCategoryState is BaseSuccessState &&
+                    previousState?.getCategoryState != state.getCategoryState) {
+                  UIUtils.hideLoading(context);
+                  Navigator.of(context).pushNamed(Routes.employeDetails,
+                      arguments: _registerCubit);
+                  
+                } else if (state.getCategoryState is BaseErrorState &&
+                    previousState?.getCategoryState != state.getCategoryState) {
+                  final result = state.getCategoryState as BaseErrorState;
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(result.error!);
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _register(context);
                   },
-                  buildWhen: (previous, current) {
-                    if (
-                    //(previous is AuthInitial || previous is ChooseAccountState) &&
-                    current is ChooseAccountState) {
-                      return true;
-                    }
-                    return false;
+                  child: Text(
+                      _registerCubit.isClient
+                          ? localization.signUp
+                          : localization.next,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
+              )),
+          SizedBox(height: 30.h),
+          Center(
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.loginRoute);
                   },
-                  builder: (context, state) {
-                    return SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _register(context);
-                        },
-                        child: Text(
-                            _authCubit.isClient
-                                ? localization.signUp
-                                : localization.next,
-                            style: Theme.of(context).textTheme.bodyLarge),
-                      ),
-                    );
-                  }),
-              SizedBox(height: 30.h),
-              Center(
-                  child: InkWell(
-                      onTap: () {
-                        _authCubit.emailController.clear();
-                        _authCubit.passwordController.clear();
-                        _authCubit.confirmPasswordController.clear();
-                        _authCubit.firstNameContoller.clear();
-                        _authCubit.lastNameContoller.clear();
-                        _authCubit.firstNameArcontroller.clear();
-                        _authCubit.lastNameArCOntroller.clear();
-                        _authCubit.phoneNumberController.clear();
-                        Navigator.of(context)
-                            .pushReplacementNamed(SignInScreen.routeName);
-                      },
-                      child: Text(localization.alreadyHaveAccount,
-                          style: Theme.of(context).textTheme.titleMedium))),
-              SizedBox(
-                height: 100.h,
-              )
-            ]));
-      }),
-    );
+                  child: Text(localization.alreadyHaveAccount,
+                      style: Theme.of(context).textTheme.titleMedium))),
+          SizedBox(height: 100.h)
+        ]));
   }
 
   _register(BuildContext context) {
-    if (_authCubit.isClient) {
-      if (formKey.currentState!.validate()) {
-        _authCubit.register(RegisterRequest(
-            phoneNumber:
-            _authCubit.countryCode + _authCubit.phoneNumberController.text,
-            first_name_ar: _authCubit.firstNameArcontroller.text,
-            last_name_ar: _authCubit.lastNameArCOntroller.text,
-            first_name: _authCubit.firstNameContoller.text,
-            last_name: _authCubit.lastNameContoller.text,
-            email: _authCubit.emailController.text,
-            password: _authCubit.passwordController.text));
+    if (formKey.currentState!.validate()) {
+      if (_registerCubit.isClient) {
+        _registerCubit.register(RegisterRequest(
+            phoneNumber: _registerCubit.countryCode +
+                _registerCubit.phoneNumberController.text,
+            first_name_ar: _registerCubit.firstNameArcontroller.text,
+            last_name_ar: _registerCubit.lastNameArCOntroller.text,
+            first_name: _registerCubit.firstNameContoller.text,
+            last_name: _registerCubit.lastNameContoller.text,
+            email: _registerCubit.emailController.text,
+            password: _registerCubit.passwordController.text));
       } else {
-        return;
-      }
-    } else {
-      if (formKey.currentState!.validate()) {
-        if (_authCubit.selectedCategory == null) {
-          _authCubit.getCategories();
+        if (_registerCubit.selectedCategory == null) {
+          _registerCubit.getCategories();
         } else {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return BlocProvider.value(
-              value: _authCubit,
+              value: _registerCubit,
               child: EmployeeDetails(),
             );
           }));
-          //Navigator.of(context).pushNamed(EmployeeDetails.routeName);
         }
-      } else {
-        return;
       }
-      // print('yes it else now RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
-      // print(
-      //     'the value of validate is now  ${formKey.currentState!.validate()}');
-      // if (formKey.currentState!.validate() &&
-      //     _authCubit.selectedCategory == null) {
-      //   print('********************************');
-      //   _authCubit.getCategories();
-      //   print('we get the element nnow bakri');
-      // } else {
-      //   //_authCubit.getCategories();
-      //   Navigator.of(context).pushNamed(EmployeeDetails.routeName);
-      // }
     }
+    return;
   }
 }
