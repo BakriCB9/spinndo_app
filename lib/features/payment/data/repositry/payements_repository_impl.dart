@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/core/constant.dart';
 import 'package:app/core/error/apiResult.dart';
 import 'package:app/features/payment/data/data_source/remote/payements_remote_datasource.dart';
@@ -79,14 +76,14 @@ class PaymentsMethodImpl extends PaymentsRepository {
   }
 
   @override
-  Future<ApiResult<RefundResponse>> refundResponse(String payment_intent_id) async {
+  Future<ApiResult<RefundResponse>> refundResponse(String paymentIntentId) async {
     try {
       final userToken = sharedPreferences.getString(CacheConstant.tokenKey);
       if (userToken == null) {
         return ApiresultError<RefundResponse>("User token is missing");
       }
 
-      final response = await returnPaymentsRemoteDatasource.refund(payment_intent_id, userToken);
+      final response = await returnPaymentsRemoteDatasource.refund(paymentIntentId, userToken);
 
       if (response == null) {
         return ApiresultError<RefundResponse>('Unsubscription failed: No response data');

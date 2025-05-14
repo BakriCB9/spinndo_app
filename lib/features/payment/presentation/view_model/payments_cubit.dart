@@ -1,4 +1,3 @@
-import 'package:app/features/packages/data/model/package_model.dart';
 import 'package:app/features/payment/data/model/payments_model.dart';
 import 'package:app/features/payment/data/model/subscription/payment_response.dart';
 import 'package:app/features/payment/data/model/subscription/refund_response.dart';
@@ -9,7 +8,6 @@ import 'package:app/features/payment/presentation/view_model/payments_state.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/apiResult.dart';
-import '../../../auth/data/models/category_response/datum.dart';
 
 @injectable
 class PaymentsCubit extends Cubit<PaymentsState> {
@@ -20,14 +18,20 @@ class PaymentsCubit extends Cubit<PaymentsState> {
   final RefundPaymentMethodUseCase cancelSubscriptionUseCase;
 
   Future<void> addPayment(PaymentMethodModel method) async {
-    ApiResult<PaymentResponse?> result = await addPaymentMethodUseCase(method);
+    emit(PaymentsLoading()); // حالة تحميل
 
-    if (result is ApiResultSuccess<PaymentResponse>) {
-      print('the result is ${result.data}');
-    } else if (result is ApiresultError<PaymentResponse>) {
-      print('the fail result is ${result.message}');
+    final result = await addPaymentMethodUseCase(method);
+
+    if (result is ApiResultSuccess<PaymentResponse?> && result.data != null) {
+      emit(PaymentAddSuccess(result.data!)); // نجاح العملية
+      print('تمت إضافة طريقة الدفع بنجاح: ${result.data}');
+    } else if (result is ApiresultError<PaymentResponse?>) {
+      emit(PaymentAddError(result.message)); // فشل العملية
+      print('فشل إضافة وسيلة الدفع: ${result.message}');
     }
   }
+
+
 
   Future<void> addRefund(String? paymentIntentId) async {
     if (paymentIntentId == null) return;

@@ -8,6 +8,8 @@ import 'color_manager.dart';
 import 'font_manager.dart';
 
 class ThemeManager {
+  static const Color primary = Color(0xFF123456); // أي لون تريديه
+
   static ThemeData lightTheme = ThemeData(
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
@@ -174,6 +176,7 @@ class ThemeManager {
     //   color: Colors.white70,
     // ),
   );
+
   static ThemeData darkTheme = ThemeData(
     /// Main Colors
     ///
@@ -188,11 +191,25 @@ class ThemeManager {
             padding:
                 WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h)),
             backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue))),
+    ///
+    ///
+    cardColor: Colors.grey[900], // أو اللون الذي تريده في الوضع الداكن
+    listTileTheme: ListTileThemeData(titleTextStyle: TextStyle(color: Colors.white),iconColor: Colors.white),
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
             textStyle: WidgetStatePropertyAll(
                 TextStyle(fontSize: 30.sp, color: ColorManager.white)),
             foregroundColor: WidgetStatePropertyAll(ColorManager.white))),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        textStyle:
+            WidgetStateProperty.all(TextStyle(color: ColorManager.primary)),
+        foregroundColor: WidgetStateProperty.all(ColorManager.primary),
+      ),
+    ),
+    dialogTheme: DialogTheme(
+      titleTextStyle: TextStyle(color: ColorManager.white, fontSize: 28.sp),
+    ),
     dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
             backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue)),
@@ -215,7 +232,6 @@ class ThemeManager {
         backgroundColor: Colors.transparent,
         foregroundColor: ColorManager.white,
         elevation: 0),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
           foregroundColor: WidgetStatePropertyAll(ColorManager.white),
@@ -225,7 +241,6 @@ class ThemeManager {
           padding:
               WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
     ),
-    textButtonTheme: TextButtonThemeData(),
     buttonTheme: ButtonThemeData(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s28.r)),

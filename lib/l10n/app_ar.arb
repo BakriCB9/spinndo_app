@@ -25,6 +25,7 @@
   "youCannotSubscribeToMoreThanOnePackageAtATime": "لا تستطيع الاشتراك بنفس الباقة بنفس الوقت",
   "confirmSubscription": "إلغاء الاشتراك",
   "doYouWantToSubscribeToThisPackage": "هل تريد الاشتراك في هذه الباقة",
+  "doYouWantToUnsubscribeFromThisPackage": "هل تريد إلغاء الاشتراك من هذه الباقة",
   "subscribe": "اشترك",
   "chooseAPaymentMethod": "اختر طريقة للدفع",
   "selectedPaymentMethodType": "نوع وسيلة الدفع المحددة",

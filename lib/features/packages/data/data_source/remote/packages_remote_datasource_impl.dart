@@ -27,6 +27,8 @@ class PackagesRemoteDatasourceImpl extends PackagesRemoteDataSource {
 
   @override
   Future<SubscribeResponse?> subscribe(SubscribeModel subscribe, String userToken) async {
+    print("Data sent to API: ${subscribe.toJson()}");
+
     final ans = await _dio.post(
       ApiConstant.addSubscribe,
       data: subscribe.toJson(),

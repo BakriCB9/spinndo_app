@@ -142,6 +142,7 @@
     "packages": "Pakete",
   "cancelSubscription": "Abonnement kündigen",
   "subscribed": "Abonniert",
+  "doYouWantToUnsubscribeFromThisPackage": "Möchtest du dieses Paket abbestellen",
   "no": "Nein",
   "yes": "Ja",
   "youCannotSubscribeToMoreThanOnePackageAtATime": "Sie können nicht mehr als ein Paket gleichzeitig abonnieren",
@@ -157,7 +158,8 @@
   "errorStripe": "Fehler von Stripe",
   "anUnexpectedErrorOccurred": "Ein unerwarteter Fehler ist aufgetreten",
   "paymentDetails": "Zahlungsdetails",
-  "addPaymentMethods": "Zahlungsmethoden hinzufügen"
+  "addPaymentMethods": "Zahlungsmethoden hinzufügen",
+  "packages": "Pakete"
 
 }
 

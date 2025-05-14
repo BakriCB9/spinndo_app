@@ -22,10 +22,19 @@ class PaymentMethodModel {
 
   Map<String, dynamic> toJson() {
     return {
+      "user_id": userId,
+      "method_type": methodType,
+      "stripe_payment_method_id": stripePaymentMethodId,
+    };
+  }
+
+  Map<String, dynamic> toJsonWithId() {
+    return {
       "id": id,
       "user_id": userId,
       "method_type": methodType,
       "stripe_payment_method_id": stripePaymentMethodId,
     };
   }
+
 }
