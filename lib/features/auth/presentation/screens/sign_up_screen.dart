@@ -212,15 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   UIUtils.hideLoading(context);
                   Navigator.of(context).pushNamed(Routes.employeDetails,
                       arguments: _registerCubit);
-                  // Navigator.of(context)
-                  //     .push(MaterialPageRoute(builder: (context) {
-                  //   return BlocProvider.value(
-                  //     value: _authCubit,
-                  //     child: EmployeeDetails(
-                  //       registerCubit: _registerCubit,
-                  //     ),
-                  //   );
-                  // }));
+                  
                 } else if (state.getCategoryState is BaseErrorState &&
                     previousState?.getCategoryState != state.getCategoryState) {
                   final result = state.getCategoryState as BaseErrorState;

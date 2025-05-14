@@ -27,7 +27,7 @@
   "password": "Password",
   "confirmPassword": "Confirm Password",
   "client": "Client",
-  "employee": "Employee",
+  "employee": "Service provider",
   "signUp": "Sign Up",
   "login": "Log in",
   "next": "Next",
@@ -77,6 +77,7 @@
   "googleMap": "Google Map",
   "user": "User",
   "themeMood": "Theme Mood",
+  "changePassword":"Change password",
   "language": "Language",
   "profile": "Profile",
   "setting": "Setting",
@@ -88,6 +89,7 @@
   "filterResults": "Filter Results",
   "sortByName": "Sort by name",
   "sortByDistance": "Sort by distance",
+  "sortByVisitor":"Sort by visitor",
   "noServicesFoundedinlocation": "No Services Founded in location",
   "km": "km",
   "provider": "Provider",
@@ -185,6 +187,11 @@
   "paymentDetails": "Payment Details",
   "addPaymentMethods": "Add payment methods",
   "tryagain":"Try again",
-  "giveAccessPersmissionLocation":"you have to give access permission to your location"
+  "giveAccessPersmissionLocation":"you have to give access permission to your location",
+  "allCountries":"All Countries",
+     "allCities":"All Cities",
+     "allCategory":"All Categories",
+     "allSubCategory":"All Sub Categories"
+     
 
 }

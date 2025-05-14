@@ -4,10 +4,10 @@ import 'package:app/features/service/domain/repository/service_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 @injectable
-class GetMainCategory {
+class GetMainCategoryUseCase {
   final ServiceRepository _serviceRepository;
 
-  GetMainCategory(this._serviceRepository);
+  GetMainCategoryUseCase(this._serviceRepository);
 
   Future<Either<Failure,GetAllCategoryMainEntity >> call() =>
       _serviceRepository.getAllMainCategory();

@@ -94,6 +94,7 @@
     "googleMap":"خرائط غوغل",
     "user":"مستخدم",
     "themeMood":"نمط الثيم",
+    "changePassword":"تغير كلمة السر",
     "language":"اللغة",
     "profile":"الملف الشخصي",
     "setting":"الاعدادات",
@@ -105,6 +106,7 @@
     "filterResults":"نتائج البحث",
     "sortByName":"الفرز حسب الاسم",
     "sortByDistance":"الفرز حسب المسافة",
+    "sortByVisitor":"ترتيب حسب الزوار",
     "noServicesFoundedinlocation":"لا يوجد خدمات في هذا الموقع",
     "km":"كم",
     "provider":"صاحب الخدمة",
@@ -181,7 +183,12 @@
      "areYouSureToDeleteAccount":"هل انت متاكد من حذف حسابك",
      "packages": "الباقات",
      "tryagain":"اعادة المحاولة",
-     "giveAccessPersmissionLocation":"يجب عليك ان تمنح الاذن للوصول الى موقعك"
+     "giveAccessPersmissionLocation":"يجب عليك ان تمنح الاذن للوصول الى موقعك",
+     "allCountries":"كل الدول",
+     "allCities":"كل المدن",
+     "allCategory":"كل الاصناف",
+     "allSubCategory":"كل الاصناف الفرعية"
+
 
 
 

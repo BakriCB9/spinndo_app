@@ -88,8 +88,7 @@ class _SplashScreenState extends State<SplashScreen>
         // return Navigator.of(context)
         //     .pushReplacementNamed(SignInScreen.routeName);
       } else {
-        return Navigator.of(context)
-            .pushReplacementNamed(ServiceScreen.routeName);
+        return Navigator.of(context).pushNamedAndRemoveUntil(ServiceScreen.routeName,(p){return false;});
       }
       // Navigator.pushReplacementNamed(
       //   context,

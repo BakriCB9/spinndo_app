@@ -1,11 +1,10 @@
 import 'package:app/core/di/service_locator.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 import 'package:app/features/service/data/models/get_all_category_response/data.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
+import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,10 +24,8 @@ class CascadingDropdowns extends StatefulWidget {
   _CascadingDropdownsState createState() => _CascadingDropdownsState();
 }
 
-class _CascadingDropdownsState extends State<CascadingDropdowns>
-    with AutomaticKeepAliveClientMixin {
-  //final widget.authCubit! = serviceLocator.get<AuthCubit>();
-  final _serviceCubit = serviceLocator.get<ServiceCubit>();
+class _CascadingDropdownsState extends State<CascadingDropdowns> {
+  final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
   final _profileCubit = serviceLocator.get<ProfileCubit>();
   List<Categories?> selectedCategories = [];
   @override
@@ -44,18 +41,14 @@ class _CascadingDropdownsState extends State<CascadingDropdowns>
   void updateSelectedCategory(int level, Categories? selected) {
     // Update the selected category at the current level
     if (selectedCategories.length > level) {
-      final currentSelection = selectedCategories[level];
+      // final currentSelection = selectedCategories[level];
 
       // If the new selection is different, update it and reset deeper levels
 
       selectedCategories[level] = selected;
       selectedCategories = selectedCategories.sublist(0, level + 1);
-
-      //
-      // selectedCategories[level] = selected;
-      //
       // // Remove any deeper selections
-      // selectedCategories = selectedCategories.sublist(0, level + 1);
+      
     } else {
       selectedCategories.add(selected);
     }
@@ -68,7 +61,6 @@ class _CascadingDropdownsState extends State<CascadingDropdowns>
                 ? _serviceCubit.selectedCategory = selectedCategories[level - 1]
                 : widget.authCubit!.selectedCategory =
                     selectedCategories[level - 1];
-
       } else {
         // Save the current category's ID
         widget.isProfile
@@ -88,7 +80,7 @@ class _CascadingDropdownsState extends State<CascadingDropdowns>
     }
     // Ensure no dropdowns are shown for empty children
     while (selected != null &&
-        (selected!.children.isEmpty || selected.children == null) &&
+        (selected.children.isEmpty || selected.children == null) &&
         level + 1 >= selectedCategories.length) {
       selected = null;
       break;
@@ -100,16 +92,17 @@ class _CascadingDropdownsState extends State<CascadingDropdowns>
     if (widget.isProfile) {
       _profileCubit.slesctedProfileCat();
     } else if (widget.isService) {
-      _serviceCubit.selectedServiceCat();
+      setState(() {});
+      // _serviceCubit.selectedServiceCat();
     } else {
-      // 
-
+      //
       setState(() {});
     }
     if (widget.isProfile) {
       _profileCubit.slesctedProfileCat();
     } else if (widget.isService) {
-      _serviceCubit.selectedServiceCat();
+      setState(() {});
+      // _serviceCubit.selectedServiceCat();
     } else {
       // widget.authCubit!.selectedAuthCat();
       setState(() {});
@@ -124,23 +117,13 @@ class _CascadingDropdownsState extends State<CascadingDropdowns>
     for (int i = 0; i <= selectedCategories.length; i++) {
       // Skip this level if there are no children to select
       if (currentList == null || currentList.isEmpty) break;
-      // Add the "Select All Categories" option
-      // final selectAllOption = Categories(
-      //   name: i == 0
-      //       ? "All Categories"
-      //       : "All Sub Categories",
-      //   id: -1,
-      //   children: [],
-      // );
+
       DataCategory addAllCategory = DataCategory(
-        name: "All Sub Categories",
+        name: localization.allSubCategory,
         id: -1,
         children: [],
       );
-      // if(currentList.contains(addAllCategory)==false) {currentList.add(addAllCategory);
-      // print("xxxxxxxxxxxxxxxxxxxx");
-      //   print(!currentList.contains(addAllCategory));
-      // };
+
       if (_serviceCubit.isReset == true) {
         selectedCategories.clear();
       }
@@ -204,18 +187,12 @@ class _CascadingDropdownsState extends State<CascadingDropdowns>
         break;
       }
     }
-
     return dropdowns;
   }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: buildDropdowns(context),
     );
   }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }

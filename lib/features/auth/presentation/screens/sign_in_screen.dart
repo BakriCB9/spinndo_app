@@ -99,7 +99,9 @@ class SignInScreen extends StatelessWidget {
           SizedBox(
               width: double.infinity,
               child: FilledButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(ServiceScreen.routeName);
+                  },
                   child: Text(
                     localization.guest,
                     style: theme.bodyLarge!

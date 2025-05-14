@@ -12,6 +12,9 @@ import 'package:app/features/auth/presentation/screens/verfication_code_screen.d
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/google_map/presentation/view/google_map_screen.dart';
 import 'package:app/features/google_map/presentation/view_model/cubit/google_map_cubit.dart';
+import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
+import 'package:app/features/service/presentation/screens/filter_result_screen.dart';
+import 'package:app/features/service/presentation/screens/get_main_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +35,7 @@ class RoutesGenerator {
 
       case Routes.registerRoute:
         return AnimationRoute(page: SignUpScreen());
-      //return MaterialPageRoute(builder: (_) => SignUpScreen());
+
       case Routes.employeDetails:
         return AnimationRoute(
             page: BlocProvider.value(
@@ -46,15 +49,23 @@ class RoutesGenerator {
                 )));
 
       case Routes.googleMapSccren:
-        return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  create: (_) => serviceLocator.get<GoogleMapCubit>()
-                    ..getCurrentLocation()
-                    ..loadMapStyle(
-                        drawerCubit.themeMode == ThemeMode.dark ? true : false),
-                  child: const GoogleMapScreen(),
-                ));
+        return MaterialPageRoute(builder: (_) {
+          final data = args as Map<String, dynamic>;
+          return GoogleMapScreen(
+            nameOfCountry: data['countryName'],
+            currentLocation: data['latlng'],
+            mapType: data['type'],
+          );
+        });
+      case Routes.serviceFilterScreen:
+        return AnimationRoute(
+            page: BlocProvider.value(
+          value: args as ServiceSettingCubit,
+          child: FilterResultScreen(),
+        ));
 
+      case Routes.getMainCategoryScreen:
+        return MaterialPageRoute(builder: (_) => const GetMainCategoryScreen());
       default:
         return _undefinedRoute();
     }

@@ -3,7 +3,10 @@ import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/core/widgets/cash_network.dart';
+import 'package:app/features/discount/domain/entity/all_discount_entity.dart';
+import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
+import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:app/features/service/presentation/screens/show_details.dart';
 import 'package:app/main.dart';
@@ -17,217 +20,118 @@ class ShowDiscount extends StatefulWidget {
 }
 
 class _ShowDiscountState extends State<ShowDiscount> {
-  final serviceCubit = serviceLocator.get<ServiceCubit>();
+  final serviceCubit = serviceLocator.get<ServiceSettingCubit>();
   @override
-  void initState() {
-    super.initState();
-
-    // context.read<DiscountCubit>().fetchDiscounts();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
-    return
-
-        // appBar: AppBar(
-        //   title: Text("Discount Offers", style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        //   centerTitle: true,
-        //   backgroundColor: Colors.deepPurple.shade400,
-        // ),
-        BlocBuilder<ServiceCubit, ServiceStates>(
+    return BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
       buildWhen: (cur, pre) {
-        if (cur is GetDiscountSuccessState ||
-            cur is ServiceSuccess ||
-            cur is GetDiscountFailState ||
-            cur is GetDiscountLoadingState) {
+        if (pre.getAllDiscountState != cur.getAllDiscountState) {
           return true;
         }
         return false;
       },
       bloc: serviceCubit,
       builder: (context, state) {
-        if (state is GetDiscountLoadingState) {
+        if (state.getAllDiscountState is BaseLoadingState) {
           return const Center(
               child: CircularProgressIndicator(color: ColorManager.primary));
-        } else if (state is GetDiscountFailState) {
+        } else if (state.getAllDiscountState is BaseErrorState) {
           return const SizedBox();
           //return Center(child: Text(state.message, style: GoogleFonts.poppins(color: Colors.red)));
-        } else {
-          return serviceCubit.listAllDiscount.isEmpty
+        } else if (state.getAllDiscountState is BaseSuccessState) {
+          final listAllDiscount = (state.getAllDiscountState
+                  as BaseSuccessState<List<AllDiscountEntity>>)
+              .data;
+          return listAllDiscount!.isEmpty
               ? const SizedBox()
               : SizedBox(
                   height: 300.h,
                   child: PageView.builder(
-                      itemCount: serviceCubit.listAllDiscount.length,
+                      itemCount: listAllDiscount.length,
                       controller: PageController(viewportFraction: 0.8),
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (sharedPref.getString(CacheConstant.tokenKey) ==
-                                null) {
-                              UIUtils.showMessage("You have to Sign in first");
-                              return;
-                            }
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ShowDetails(
-                                    id: serviceCubit
-                                        .listAllDiscount[index].providerId!),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            color: ColorManager.primary,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 10.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      serviceCubit.listAllDiscount[index]
-                                                  .image !=
-                                              null
-                                          ? CircleAvatar(
-                                              radius: 60.r,
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          60.r),
-                                                  child: CashImage(
-                                                      path: serviceCubit
-                                                          .listAllDiscount[
-                                                              index]
-                                                          .image!)),
-                                            )
-                                          : CircleAvatar(
-                                              radius: 60.r,
-                                              backgroundColor:
-                                                  ColorManager.primary,
-                                              child: Icon(Icons.person,
-                                                  size: 60.r,
-                                                  color: ColorManager.white),
-                                            ),
-                                      SizedBox(width: 10.h),
-                                      Text(
-                                        serviceCubit.listAllDiscount[index]
-                                                .providerName ??
-                                            '',
-                                        style: theme.labelMedium,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  Text(
-                                    'discount code: ${serviceCubit.listAllDiscount[index].discountCode ?? ''}',
-                                    style: theme.labelMedium,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  Text(
-                                    'discount value: ${serviceCubit.listAllDiscount[index].discount}',
-                                    style: theme.labelMedium,
-                                  )
-                                ],
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (sharedPref
+                                      .getString(CacheConstant.tokenKey) ==
+                                  null) {
+                                UIUtils.showMessage(
+                                    "You have to Sign in first");
+                                return;
+                              }
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ShowDetails(
+                                      id: listAllDiscount[index].providerId!),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              color: ColorManager.primary,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 10.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        listAllDiscount[index].image != null
+                                            ? CircleAvatar(
+                                                radius: 60.r,
+                                                child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            60.r),
+                                                    child: CashImage(
+                                                        path: listAllDiscount[
+                                                                index]
+                                                            .image!)),
+                                              )
+                                            : CircleAvatar(
+                                                radius: 60.r,
+                                                backgroundColor:
+                                                    ColorManager.primary,
+                                                child: Icon(Icons.person,
+                                                    size: 60.r,
+                                                    color: ColorManager.white),
+                                              ),
+                                        SizedBox(width: 10.h),
+                                        Text(
+                                          listAllDiscount[index].providerName ??
+                                              '',
+                                          style: theme.labelMedium,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    Text(
+                                      'discount code: ${listAllDiscount[index].discountCode ?? ''}',
+                                      style: theme.labelMedium,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    Text(
+                                      'discount value: ${listAllDiscount[index].discount}',
+                                      style: theme.labelMedium,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         );
                       }),
                 );
-
-          // ListView.builder(
-          //     scrollDirection: Axis.horizontal,
-          //     itemCount: serviceCubit.listAllDiscount.length,
-          //     itemBuilder: (context, index) {
-          //       return SizedBox(
-          //         width: 300,
-          //         child: Card(
-          //           color: ColorManager.primary,
-          //           child: Padding(
-          //             padding:
-          //                 EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          //             child: Column(
-          //               children: [
-          //                 Row(
-          //                   children: [
-          //                     serviceCubit.listAllDiscount[index].image != null
-          //                         ? CircleAvatar(
-          //                             radius: 60.r,
-          //                             child: ClipRRect(
-          //                                 borderRadius:
-          //                                     BorderRadius.circular(60.r),
-          //                                 child: CashImage(
-          //                                     path: serviceCubit
-          //                                         .listAllDiscount[index]
-          //                                         .image!)),
-          //                           )
-          //                         : CircleAvatar(
-          //                             radius: 60.r,
-          //                             backgroundColor: ColorManager.primary,
-          //                             child: Icon(Icons.person,
-          //                                 size: 60.r,
-          //                                 color: ColorManager.white),
-          //                           ),
-          //                     Text(
-          //                       serviceCubit
-          //                               .listAllDiscount[index].providerName ??
-          //                           '',
-          //                       style: theme.labelMedium,
-          //                     ),
-          //                   ],
-          //                 ),
-          //                 SizedBox(height: 5),
-          //                 Text(
-          //                   'discount code: ${serviceCubit.listAllDiscount[index].discountCode ?? ''}',
-          //                   style: theme.labelMedium,
-          //                 ),
-          //                 SizedBox(height: 5),
-          //                 Text(
-          //                   '${serviceCubit.listAllDiscount[index].discount}',
-          //                   style: theme.labelSmall,
-          //                 )
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     });
+        } else {
+          return const SizedBox();
         }
       },
     );
   }
-
-//   Widget _buildMarquee(List<Map<String, dynamic>> discounts) {
-//     String marqueeText = discounts.map((discount) {
-//       return "🔥 ${discount['provider_name']} - ${discount['discount']}% Off! Use Code: ${discount['discount_code']} ";
-//     }).join("   |   ");
-
-//     return Container(
-//       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-//       height: 50,
-//       decoration: BoxDecoration(
-//         color: Colors.deepPurple.shade100,
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Marquee(
-//         text: marqueeText,
-//         style: ,
-//         // style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-//         scrollAxis: Axis.horizontal,
-//         blankSpace: 30.0,
-//         velocity: 50.0,
-//         pauseAfterRound: Duration(seconds: 1),
-//         startPadding: 10.0,
-//         accelerationDuration: Duration(seconds: 1),
-//         accelerationCurve: Curves.linear,
-//         decelerationDuration: Duration(seconds: 1),
-//         decelerationCurve: Curves.easeOut,
-//       ),
-//     );
-//   }
-// }
 }

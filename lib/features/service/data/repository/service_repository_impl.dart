@@ -1,5 +1,4 @@
 import 'package:app/core/network/remote/handle_dio_exception.dart';
-import 'package:app/features/profile/data/models/provider_modle/data.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
 import 'package:app/features/service/domain/entities/main_category/all_category_main_entity.dart';
 import 'package:app/features/service/domain/entities/notifications.dart';
@@ -12,8 +11,6 @@ import 'package:app/features/service/data/models/get_services_request.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/entities/countries.dart';
 import 'package:app/features/service/domain/entities/services.dart';
-
-import '../../../../core/error/app_exception.dart';
 
 import '../../domain/repository/service_repository.dart';
 
@@ -28,8 +25,8 @@ class ServiceRepositoryImpl implements ServiceRepository {
     try {
       final getCategoriesResponse = await _serviceDataSource.getAllCategory();
       return Right(getCategoriesResponse.data!);
-    }  catch (e) {
-      final exception =HandleException.exceptionType(e);
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
       return left(Failure(exception));
     }
   }
@@ -39,8 +36,9 @@ class ServiceRepositoryImpl implements ServiceRepository {
     try {
       final getCountriesResponse = await _serviceDataSource.getAllCountries();
       return Right(getCountriesResponse.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -51,8 +49,9 @@ class ServiceRepositoryImpl implements ServiceRepository {
       final getServicesResponse =
           await _serviceDataSource.getServices(requestData);
       return Right(getServicesResponse.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -61,8 +60,9 @@ class ServiceRepositoryImpl implements ServiceRepository {
     try {
       final poviderService = await _serviceDataSource.getProviderService(id);
       return Right(poviderService.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -71,20 +71,21 @@ class ServiceRepositoryImpl implements ServiceRepository {
     try {
       final response = await _serviceDataSource.getAllNotification();
       return Right(response.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
   @override
-  Future<Either<Failure, GetAllCategoryMainEntity>> getAllMainCategory() async{
-   try{
-     final response=await _serviceDataSource.getAllMainCategory();
-     final ans=response.toGetAllMainCategory();
-     return Right(ans);
-   }on AppException catch(exception){
-     return left(Failure(exception.message));
-   }
-    
+  Future<Either<Failure, GetAllCategoryMainEntity>> getAllMainCategory() async {
+    try {
+      final response = await _serviceDataSource.getAllMainCategory();
+      final ans = response.toGetAllMainCategory();
+      return Right(ans);
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
+    }
   }
 }

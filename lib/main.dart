@@ -97,6 +97,8 @@ class MyApp extends StatelessWidget {
               return Builder(builder: (context) {
                 return BlocBuilder<DrawerCubit, DrawerStates>(
                   builder: (context, state) {
+                    // serviceLocator.registerSingleton(AppLocalizations.of(context)!);
+
                     return MaterialApp(
                       navigatorObservers: [navObserver],
                       navigatorKey: navigatorKey,
@@ -111,8 +113,8 @@ class MyApp extends StatelessWidget {
                           BlocProvider.of<DrawerCubit>(context).languageCode),
                       onGenerateRoute: RoutesGenerator.getRoute,
                       //home: HomeScreen(),
-                     // initialRoute: Routes.verificationRoutes,
-                       initialRoute: SplashScreen.routeName,
+                      // initialRoute: Routes.verificationRoutes,
+                      initialRoute: SplashScreen.routeName,
                       // sharedPref.getString(CacheConstant.tokenKey) == null
                       //     ? (sharedPref.getString(CacheConstant.emailKey) ==
                       //             null
@@ -135,8 +137,8 @@ class MyApp extends StatelessWidget {
                             const NotificationScreen(),
                         ServiceScreen.routeName: (context) => ServiceScreen(),
                         SplashScreen.routeName: (context) => SplashScreen(),
-                        ServiceMapScreen.routeName: (context) =>
-                            ServiceMapScreen(),
+                        // ServiceMapScreen.routeName: (context) =>
+                        //     ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>
                             DeplomaProtofileImageScreen(),
