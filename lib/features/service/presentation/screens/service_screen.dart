@@ -174,7 +174,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .titleMedium!
-                                                    .copyWith(fontSize: 36.sp),
+                                                    .copyWith(fontSize: 32.sp,color: ColorManager.textColor),
                                               ),
                                               SizedBox(height: 8.h),
                                               CascadingDropdowns(
@@ -241,9 +241,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                   }
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  minimumSize: const Size(
-                                                      double.infinity, 48),
+                                                  minimumSize: const Size(double.infinity, 48),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(36),
+                                                  ),
                                                 ),
+
                                                 child: Text(
                                                     localization.startSearch,
                                                     style: Theme.of(context)

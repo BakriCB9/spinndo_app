@@ -8,13 +8,15 @@ import 'color_manager.dart';
 import 'font_manager.dart';
 
 class ThemeManager {
-  static const Color primary = Color(0xFF123456); // أي لون تريديه
-
   static ThemeData lightTheme = ThemeData(
+    fontFamily: 'Lato',
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
-            textStyle: WidgetStatePropertyAll(
-                TextStyle(fontSize: 30.sp, color: ColorManager.black)),
+            textStyle: WidgetStatePropertyAll(TextStyle(
+              fontSize: 30.sp,
+              color: ColorManager.black,
+              fontFamily: "Lato",
+            )),
             foregroundColor: WidgetStatePropertyAll(ColorManager.black))),
     dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
@@ -33,7 +35,7 @@ class ThemeManager {
     ),
     primaryColorLight: ColorManager.black,
     primaryColorDark: Colors.white,
-    scaffoldBackgroundColor: Colors.white.withOpacity(0.95),
+    scaffoldBackgroundColor: Colors.white.withOpacity(0.97),
     appBarTheme: AppBarTheme(
       titleTextStyle: TextStyle(
           fontSize: 45.sp,
@@ -50,22 +52,19 @@ class ThemeManager {
     dialogBackgroundColor: ColorManager.white,
     checkboxTheme: const CheckboxThemeData(
         checkColor: WidgetStatePropertyAll(ColorManager.white)),
-    filledButtonTheme: FilledButtonThemeData(
-        style: ButtonStyle(
-            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSize.s28.r),
-                side: BorderSide(color: ColorManager.primary))),
-            padding:
-                WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h)),
-            backgroundColor: WidgetStatePropertyAll(ColorManager.white))),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
+          textStyle: WidgetStatePropertyAll(
+            TextStyle(
+              fontFamily: "Lato",
+            ),
+          ),
           foregroundColor: WidgetStatePropertyAll(ColorManager.black),
           backgroundColor: const WidgetStatePropertyAll(ColorManager.primary),
           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s28.r))),
           padding:
-              WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
+          WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
     ),
     textButtonTheme: TextButtonThemeData(),
     buttonTheme: ButtonThemeData(
@@ -73,6 +72,7 @@ class ThemeManager {
           borderRadius: BorderRadius.circular(AppSize.s28.r)),
       disabledColor: ColorManager.grey,
       buttonColor: ColorManager.primary,
+
       // splashColor: ColorManager.lightPrimary,
     ),
 
@@ -87,23 +87,29 @@ class ThemeManager {
 
     textTheme: TextTheme(
       labelLarge: getSemiBoldStyle(
-          color: ColorManager.primary, fontSize: FontSize.s32.sp),
+          color: ColorManager.primary,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
       labelMedium: getSemiBoldStyle(
-          color: ColorManager.black, fontSize: FontSize.s30.sp),
-      labelSmall:
-          getSemiBoldStyle(color: ColorManager.grey, fontSize: FontSize.s28.sp),
+          color: ColorManager.black,
+          fontSize: FontSize.s30.sp,
+          fontFamily: "Lato"),
+      labelSmall: getSemiBoldStyle(
+          color: ColorManager.grey,
+          fontSize: FontSize.s28.sp,
+          fontFamily: "Lato"),
 
       //drop down
       displayMedium:
-          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
       //guest
       titleSmall:
-          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s24.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s24.sp),
       //text butt
       titleMedium: getMediumStyle(
           color: ColorManager.black,
           fontSize: FontSize.s28.sp,
-          fontFamily: "WorkSans",
+          fontFamily: "Lato",
           fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
@@ -112,7 +118,7 @@ class ThemeManager {
       ),
       //text in body
       bodySmall:
-          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s32.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s32.sp),
       //client word
       bodyMedium: getMediumStyle(
         color: ColorManager.black,
@@ -137,9 +143,9 @@ class ThemeManager {
       //   fontSize: FontSize.s13,
       // ),
       labelStyle:
-          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
       hintStyle:
-          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
       errorStyle: getRegularStyle(color: Colors.red, fontSize: FontSize.s20.sp),
       filled: true,
 
@@ -176,46 +182,25 @@ class ThemeManager {
     //   color: Colors.white70,
     // ),
   );
-
   static ThemeData darkTheme = ThemeData(
     /// Main Colors
     ///
     ///
-    ///
-    
-    filledButtonTheme: FilledButtonThemeData(
-        style: ButtonStyle(
-            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSize.s28.r),
-                side: BorderSide(color: ColorManager.primary))),
-            padding:
-                WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h)),
-            backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue))),
-    ///
-    ///
-    cardColor: Colors.grey[900], // أو اللون الذي تريده في الوضع الداكن
-    listTileTheme: ListTileThemeData(titleTextStyle: TextStyle(color: Colors.white),iconColor: Colors.white),
+    fontFamily: 'Lato',
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
-            textStyle: WidgetStatePropertyAll(
-                TextStyle(fontSize: 30.sp, color: ColorManager.white)),
+            textStyle: WidgetStatePropertyAll(TextStyle(
+              fontSize: 30.sp,
+              color: ColorManager.white,
+              fontFamily: "Lato",
+            )),
             foregroundColor: WidgetStatePropertyAll(ColorManager.white))),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        textStyle:
-            WidgetStateProperty.all(TextStyle(color: ColorManager.primary)),
-        foregroundColor: WidgetStateProperty.all(ColorManager.primary),
-      ),
-    ),
-    dialogTheme: DialogTheme(
-      titleTextStyle: TextStyle(color: ColorManager.white, fontSize: 28.sp),
-    ),
     dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
             backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue)),
         textStyle: TextStyle(fontSize: 30.sp, color: Colors.white)),
     bottomSheetTheme:
-        BottomSheetThemeData(backgroundColor: ColorManager.darkBlue),
+    BottomSheetThemeData(backgroundColor: ColorManager.darkBlue),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: ColorManager.darkBlue,
         foregroundColor: ColorManager.white),
@@ -232,15 +217,22 @@ class ThemeManager {
         backgroundColor: Colors.transparent,
         foregroundColor: ColorManager.white,
         elevation: 0),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
+          textStyle: WidgetStatePropertyAll(
+            TextStyle(
+              fontFamily: "Lato",
+            ),
+          ),
           foregroundColor: WidgetStatePropertyAll(ColorManager.white),
           backgroundColor: const WidgetStatePropertyAll(ColorManager.primary),
           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s28.r))),
           padding:
-              WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
+          WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
     ),
+    textButtonTheme: TextButtonThemeData(),
     buttonTheme: ButtonThemeData(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s28.r)),
@@ -264,19 +256,25 @@ class ThemeManager {
           color: ColorManager.primary, fontSize: FontSize.s32.sp),
       labelMedium: getSemiBoldStyle(
           color: ColorManager.white, fontSize: FontSize.s30.sp),
-      labelSmall:
-          getSemiBoldStyle(color: ColorManager.grey, fontSize: FontSize.s28.sp),
+      labelSmall: getSemiBoldStyle(
+          color: ColorManager.grey,
+          fontSize: FontSize.s28.sp,
+          fontFamily: "Lato"),
       //drop down
-      displayMedium:
-          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+      displayMedium: getRegularStyle(
+          color: ColorManager.white,
+          fontSize: FontSize.s30.sp,
+          fontFamily: "Lato"),
       //guest
-      titleSmall:
-          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s24.sp),
+      titleSmall: getRegularStyle(
+          color: ColorManager.white,
+          fontSize: FontSize.s24.sp,
+          fontFamily: "Lato"),
       //text butt
       titleMedium: getMediumStyle(
           color: ColorManager.white,
           fontSize: FontSize.s28.sp,
-          fontFamily: "WorkSans",
+          fontFamily: "Lato",
           fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
@@ -285,7 +283,7 @@ class ThemeManager {
       ),
       //text in body
       bodySmall:
-          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s32.sp),
+      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s32.sp),
       //client word
       bodyMedium: getMediumStyle(
         color: ColorManager.white,
@@ -309,9 +307,9 @@ class ThemeManager {
       //   fontSize: FontSize.s13,
       // ),
       labelStyle:
-          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
       hintStyle:
-          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
       errorStyle: getRegularStyle(
           color: Colors.red.shade400, fontSize: FontSize.s20.sp),
       filled: true,
@@ -335,7 +333,7 @@ class ThemeManager {
 
     // bottomSheetTheme: BottomSheetThemeData(
     //   backgroundColor: ColorManager.primary.withOpacity(0.6),
-    //   Eation: 10,
+    //   elevation: 10,
     //   clipBehavior: Clip.antiAlias,
     //   shape: const RoundedRectangleBorder(
     //     borderRadius: BorderRadius.vertical(

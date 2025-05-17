@@ -98,6 +98,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     firstName: widget.providerProfile.firstName!,
                     lastName: widget.providerProfile.lastName!,
                     email: widget.providerProfile.email!,
+                    phone: widget.providerProfile.phone??'',
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(

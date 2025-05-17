@@ -88,6 +88,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => serviceLocator.get<PaymentsCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => serviceLocator.get<PaymentsCubit>(),
           )
         ],
         child: ScreenUtilInit(

@@ -1,4 +1,5 @@
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/service/data/models/get_all_countries_response/city.dart';
 import 'package:app/features/service/domain/entities/cities.dart';
@@ -8,6 +9,7 @@ import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SectionSelectCountry extends StatefulWidget {
   final ServiceSettingCubit serviceCubit;
@@ -27,38 +29,73 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 30.h),
         Text(
           localization.chooseCountry,
-          style: theme.textTheme.titleMedium!.copyWith(fontSize: 36.sp),
+          style: theme.textTheme.titleMedium!.copyWith(fontSize: 32.sp,color: ColorManager.textColor),
         ),
         SizedBox(height: 8.h),
         Row(
           children: [
             Expanded(
-              child: DropdownButtonFormField<Countries>(
-                dropdownColor: theme.primaryColorDark,
-                hint: Text(localization.country,
-                    style: theme.textTheme.displayMedium),
-                menuMaxHeight: 200,
-                decoration:
-                    const InputDecoration(errorBorder: InputBorder.none),
-                value: widget.serviceCubit.selectedCountry,
-                items: widget.serviceCubit.countriesList!
-                    .map((e) => DropdownMenuItem<Countries>(
-                          value: e,
-                          child: Text(
-                            e.name,
-                            style: theme.textTheme.displayMedium,
-                          ),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  selectedCountryService(value!); // Update with the new country
-                },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1), // لون الظل
+                      blurRadius: 8, // مدى ضبابية الظل
+                      offset: Offset(0, 4), // اتجاه الظل
+                    ),
+                  ],
+                ),
+                child: DropdownButtonFormField<Countries>(
+                  icon: SvgPicture.asset(
+                    'asset/icons/drop_down.svg',
+                    width: 24,
+                    height: 24,
+                    colorFilter: ColorFilter.mode(
+                      widget.serviceCubit.selectedCountry == null
+                          ? Colors.black
+                          :ColorManager.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  dropdownColor: theme.primaryColorDark,
+                  hint: Text(
+                    localization.country,
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  menuMaxHeight: 200,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  value: widget.serviceCubit.selectedCountry,
+                  items: widget.serviceCubit.countriesList!
+                      .map((e) => DropdownMenuItem<Countries>(
+                    value: e,
+                    child: Text(
+                      e.name,
+                      style: theme.textTheme.displayMedium?.copyWith(
+                        color:Colors.black
+                      ),
+                    ),
+                  ))
+                      .toList(),
+                  onChanged: (value) {
+                    selectedCountryService(value!);
+                  },
+                ),
               ),
             ),
           ],
         ),
+
+
         widget.serviceCubit.selectedCountry != null &&
                 widget.serviceCubit.selectedCountry?.id != -1
             ? Column(
@@ -69,54 +106,116 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
                     localization.chooseCity,
                     textAlign: TextAlign.start,
                     style:
-                        theme.textTheme.titleMedium!.copyWith(fontSize: 36.sp),
+                    theme.textTheme.titleMedium!.copyWith(fontSize: 32.sp,color: ColorManager.textColor),
                   ),
                   SizedBox(height: 8.h),
                   Row(
                     children: [
                       Expanded(
-                        child: DropdownButtonFormField<Cities>(
-                          dropdownColor: theme.primaryColorDark,
-                          hint: Text(localization.city,
-                              style: theme.textTheme.displayMedium),
-                          value: widget.serviceCubit.selectedCity,
-                          menuMaxHeight: 200,
-                          decoration: const InputDecoration(
-                              errorBorder: InputBorder.none),
-                          items: widget.serviceCubit.citiesList
-                              ?.map((e) => DropdownMenuItem<Cities>(
-                                    value: e,
-                                    child: Text(
-                                      e.name,
-                                      style: theme.textTheme.displayMedium,
-                                    ),
-                                  ))
-                              .toList(),
-                          onChanged: (value) {
-                            selectedCityService(value!);
-                          },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: DropdownButtonFormField<Cities>(
+                            dropdownColor: theme.primaryColorDark,
+                            hint: Text(
+                              localization.city,
+                              style: theme.textTheme.displayMedium?.copyWith(
+                                color: Colors.grey,  // لون النص قبل الاختيار (فضي)
+                              ),
+                            ),
+                            icon: SvgPicture.asset(
+                              'asset/icons/drop_down.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                widget.serviceCubit.selectedCity == null
+                                    ? Colors.black
+                                    : ColorManager.primary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            value: widget.serviceCubit.selectedCity,
+                            menuMaxHeight: 200,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            ),
+                            items: widget.serviceCubit.citiesList
+                                ?.map((e) => DropdownMenuItem<Cities>(
+                              value: e,
+                              child: Text(
+                                e.name,
+                                style: theme.textTheme.displayMedium?.copyWith(
+                                  color: Colors.black
+
+                                ),
+                              ),
+                            ))
+                                .toList(),
+                            onChanged: (value) {
+                              selectedCityService(value!);
+                            },
+                          ),
                         ),
                       ),
                     ],
-                  ),
+                  )
+
+
                 ],
               )
             : const SizedBox(),
         SizedBox(height: 30.h),
-        Row(
-          children: [
-            Checkbox(
-                activeColor: theme.primaryColor,
-                value: widget.serviceCubit.isCurrent,
-                onChanged: (value) {
-                  chooseCurrentLocation(value!);
-                }),
-            SizedBox(width: 20.w),
-            Text(
-              localization.currentLocation,
-              style: theme.textTheme.displayMedium,
-            )
-          ],
+        GestureDetector(
+          onTap: () {
+            chooseCurrentLocation(!widget.serviceCubit.isCurrent);
+          },
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: widget.serviceCubit.isCurrent ? Colors.amber.shade100 : Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: widget.serviceCubit.isCurrent ? Colors.amber : Colors.grey.shade300,
+                width: 1.5,
+              ),
+              boxShadow: widget.serviceCubit.isCurrent
+                  ? [
+                BoxShadow(
+                  color: Colors.amber.withOpacity(0.3),
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                )
+              ]
+                  : [],
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  widget.serviceCubit.isCurrent ? Icons.check_circle : Icons.location_on_outlined,
+                  color: widget.serviceCubit.isCurrent ? Colors.amber : Colors.grey,
+                ),
+                SizedBox(width: 12),
+                Text(
+                  localization.currentLocation,
+                  style: theme.textTheme.displayMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: widget.serviceCubit.isCurrent ? Colors.black87 : Colors.black54,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         SizedBox(height: 30.h),
         AnimatedSize(

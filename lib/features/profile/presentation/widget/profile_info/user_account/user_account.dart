@@ -13,9 +13,11 @@ class UserAccount extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String email;
+  final String phone;
   final bool? isApprovid;
   final String typeAccount;
   final int? userId;
+
   const UserAccount({
     this.userId,
     required this.firstNameAr,
@@ -25,6 +27,7 @@ class UserAccount extends StatelessWidget {
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.phone,
     super.key,
   });
 
@@ -50,7 +53,9 @@ class UserAccount extends StatelessWidget {
                                 typeAccount: 'Client',
                                 firstName: firstName,
                                 lastName: lastName,
+                                email: email,
                               )));
+
                     },
                     icon: const Icon(
                       Icons.edit,
@@ -62,11 +67,13 @@ class UserAccount extends StatelessWidget {
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
-                                        typeAccount: 'Provider',
-                                        firstNameAr: firstNameAr,
-                                        lastNameAr: lastNameAr,
-                                        firstName: firstName,
-                                        lastName: lastName)));
+                                          typeAccount: 'Provider',
+                                          firstNameAr: firstNameAr,
+                                          lastNameAr: lastNameAr,
+                                          firstName: firstName,
+                                          lastName: lastName,
+                                          email: email,
+                                        )));
                               }
                             : () {
                                 UIUtils.showMessage(
@@ -100,6 +107,10 @@ class UserAccount extends StatelessWidget {
             icon: Icons.email_outlined,
             title: localization.email,
             content: email),
+        // InfoDetails(
+        //     icon: Icons.phone,
+        //     title: localization.phone,
+        //     content: phone),
       ],
     );
   }

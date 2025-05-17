@@ -1,7 +1,10 @@
 class UpdateProviderRequest {
   final String? firstName;
   final String? lastName;
+  final String? firstNameAr;
+  final String? lastNameAr;
   final String? email;
+  final String? phone;
   final String? password;
   final String? nameService;
   final String? descriptionService;
@@ -12,16 +15,20 @@ class UpdateProviderRequest {
   final String? latitudeService;
 
   List<DateSelect>? listOfDay;
+
   // final File certificate;
   // final List<File> images;
 
   UpdateProviderRequest(
       {this.firstName,
       this.lastName,
+        this.firstNameAr,
+        this.lastNameAr,
       //  this.certificate,
       // this.images,
       this.listOfDay,
       this.email,
+      this.phone,
       this.password,
       this.nameService,
       this.descriptionService,
@@ -30,8 +37,16 @@ class UpdateProviderRequest {
       this.websiteService,
       this.longitudeService,
       this.latitudeService});
+
   Map<String, dynamic> toJsonAccount() {
-    return {'first_name': firstName, 'last_name': lastName, '_method': 'PUT'};
+    return {
+      'first_name': firstName,
+      'last_name': lastName,
+      'firstNameAr': firstNameAr,
+      'lastNameAr': lastNameAr,
+      'email': email,
+      '_method': 'PUT'
+    };
   }
 
   Map<String, dynamic> toJsonJobDetails() {
@@ -75,11 +90,13 @@ class DateSelect {
   String? start;
   String? end;
   bool arrowSelect;
+
   DateSelect(
       {required this.day,
       this.start,
       this.end,
       this.daySelect = false,
       this.arrowSelect = true});
+
   Map<String, String?> toJson() => {"day": day, "start": start, "end": end};
 }

@@ -193,6 +193,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       providerProfile = ProviderProfile(
           id: data.id,
           email: data.email,
+          phone: data.phone,
           firstName: data.firstName,
           imagePath: data.imagePath,
           lastName: data.lastName,
@@ -285,8 +286,11 @@ class ProfileCubit extends Cubit<ProfileStates> {
        required String newLastAr,
       required String newFirst,
       required String curLast,
-      required String newLast}) {
-    if (curFirst == newFirst && curFirstAr == newFirstAr&& curLast == newLast&& curLastAr == newLastAr) {
+      required String newLast,
+        required String curEmail,
+        required String newEmail,
+      }) {
+    if (curFirst == newFirst && curFirstAr == newFirstAr&& curLast == newLast&& curLastAr == newLastAr && curEmail == newEmail) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());

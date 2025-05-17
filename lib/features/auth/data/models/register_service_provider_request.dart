@@ -16,7 +16,7 @@ class RegisterServiceProviderRequest {
   final String? websiteService;
   final String longitudeService;
   final String latitudeService;
-  final String phoneNumber;
+  final String phone;
 
   final List<DateSelect> listOfDay;
   final File certificate;
@@ -39,7 +39,7 @@ class RegisterServiceProviderRequest {
     this.websiteService,
     required this.longitudeService,
     required this.latitudeService,
-    required this.phoneNumber,
+    required this.phone,
   });
 
   // Asynchronous method to create `FormData` for Dio.
@@ -68,7 +68,7 @@ class RegisterServiceProviderRequest {
       "last_name_ar": lastNameAr,
       "email": email,
       "password": password,
-      "phone": phoneNumber,
+      "phone": phone,
       "service": {
         "name": firsServiceNametLetter + remainingServiceNameText,
         "description": descriptionService,

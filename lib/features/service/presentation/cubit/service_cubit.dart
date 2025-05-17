@@ -28,14 +28,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @singleton
 class ServiceCubit extends Cubit<ServiceStates> {
   ServiceCubit(
-    this._getServices,
-    this._getCountries,
-    this._getCategories,
-    // this._getServiceProfile,
-    this._getNotifications,
-    this._getAllDiscountUseCase,
-    this._getMainCategory,
-  ) : super(ServiceInitial());
+      this._getServices,
+      this._getCountries,
+      this._getCategories,
+      // this._getServiceProfile,
+      this._getNotifications,
+      this._getAllDiscountUseCase,
+      this._getMainCategory,
+      ) : super(ServiceInitial());
   final GetCountriesUseCase _getCountries;
   final GetCategoriesUseCase _getCategories;
   final GetServicesUseCase _getServices;
@@ -54,7 +54,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
   Countries? selectedCountry;
 
   // String? selectedCountryName;
-  
+
   Cities? selectedCity;
   // String? selectedCityName;
   bool isCity = true;
@@ -62,13 +62,13 @@ class ServiceCubit extends Cubit<ServiceStates> {
   LocationData? getCurrentLocation;
 
   LatLng? filterLocation;
-  
+
   LatLngBounds? filterBounds;
   String failureMessegae = "";
   bool isCurrent = false;
-  
+
   List<Notifications> listNotification = [];
-  
+
   TextEditingController searchController = TextEditingController();
 
   getServiceAndDiscount() {
@@ -85,7 +85,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
   Future<void> _getAllServices(GetServicesRequest requestData) async {
     emit(ServiceLoading());
-    
+
     print(
         'category ${requestData.categoryId} and country ${requestData.countryId} and city ${requestData.cityId} and radius ${requestData.radius} and search ${requestData.search}');
 
@@ -121,8 +121,8 @@ class ServiceCubit extends Cubit<ServiceStates> {
 
     final result = await _getNotifications();
     result.fold(
-      (failure) => emit(GetNotificationError(failure.message)),
-      (notification) {
+          (failure) => emit(GetNotificationError(failure.message)),
+          (notification) {
         listNotification = notification;
         emit(GetNotificationSuccess());
       },
@@ -165,7 +165,7 @@ class ServiceCubit extends Cubit<ServiceStates> {
     });
   }
 
-  
+
   Future<void> getCountriesAndCategories() async {
     selectedCity = null;
     selectedCategory = null;
@@ -222,13 +222,13 @@ class ServiceCubit extends Cubit<ServiceStates> {
     emit(GetCurrentLocationFilterLoading());
     final result = await LocationService.getLocationData();
     result.fold(
-        (failure) =>
+            (failure) =>
             emit(GetCurrentLocationFilterErrorr("Couldn't get your location")),
-        (location) {
-      getCurrentLocation = location;
-      // isUpdat = true;
-      emit(GetCurrentLocationFilterSuccess());
-    });
+            (location) {
+          getCurrentLocation = location;
+          // isUpdat = true;
+          emit(GetCurrentLocationFilterSuccess());
+        });
     // try {
     //   emit(GetCurrentLocationFilterLoading());
     //   LocationData getCurrentLocationData =

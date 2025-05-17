@@ -1,4 +1,5 @@
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/service/data/models/get_all_category_response/data.dart';
@@ -8,6 +9,7 @@ import 'package:app/features/service/presentation/cubit/service_setting_cubit.da
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CascadingDropdowns extends StatefulWidget {
   final List<Categories>? categories;
@@ -130,46 +132,86 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
 
       dropdowns.add(Column(
         children: [
-          DropdownButtonFormField<Categories>(
-            dropdownColor: Theme.of(context).primaryColorDark,
-            menuMaxHeight: 200,
-            isExpanded: false,
-            value: i < selectedCategories.length ? selectedCategories[i] : null,
-            hint: Padding(
-              padding: EdgeInsets.only(left: 12.w),
-              child: Row(
-                children: [
-                  const Icon(Icons.category),
-                  SizedBox(
-                    width: 24.w,
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  Text(
-                      '${i == 0 ? "${localization.category}" : "${localization.subCategory}"}',
-                      style: Theme.of(context).textTheme.displayMedium),
-                ],
-              ),
-            ),
-            decoration: const InputDecoration(errorBorder: InputBorder.none),
-            items: currentList
-                .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                  child: DropdownButtonFormField<Categories>(
+                    icon: SvgPicture.asset(
+                      'asset/icons/drop_down.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: ColorFilter.mode(
+                        (i < selectedCategories.length && selectedCategories[i] != null)
+                            ? ColorManager.primary
+                            :Colors.black,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    dropdownColor: Theme.of(context).primaryColorDark,
+                    hint: Padding(
+                      padding: EdgeInsets.only(left: 12), // نفس الـ padding تقريبًا
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.category,
+                            color: (i < selectedCategories.length && selectedCategories[i] != null)
+                                ?ColorManager.primary
+                                : Colors.black,
+                          ),
+                          SizedBox(width: 24),
+                          Text(
+                            i == 0 ? localization.category : localization.subCategory,
+                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    menuMaxHeight: 200,
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                    value: i < selectedCategories.length ? selectedCategories[i] : null,
+                    items: currentList.map((category) {
+                      final isSelected = i < selectedCategories.length && selectedCategories[i] == category;
+                      return DropdownMenuItem<Categories>(
+                        value: category,
                         child: Text(
                           category.name,
-                          style: Theme.of(context).textTheme.displayMedium,
+                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                            color:Colors.black ,
+                          ),
                         ),
-                      ),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              _serviceCubit.isReset = false;
-              updateSelectedCategory(i, value);
-            },
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      _serviceCubit.isReset = false;
+                      updateSelectedCategory(i, value);
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 30.h),
         ],
       ));
+
 
       // If a category is selected at this level, update the current list
       if (i < selectedCategories.length &&

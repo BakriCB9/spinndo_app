@@ -250,7 +250,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (formKey.currentState!.validate()) {
       if (_registerCubit.isClient) {
         _registerCubit.register(RegisterRequest(
-            phoneNumber: _registerCubit.countryCode +
+            phone: _registerCubit.countryCode +
                 _registerCubit.phoneNumberController.text,
             first_name_ar: _registerCubit.firstNameArcontroller.text,
             last_name_ar: _registerCubit.lastNameArCOntroller.text,

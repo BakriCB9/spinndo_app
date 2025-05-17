@@ -111,7 +111,7 @@ class _DeplomaProtofileImageScreenState
                                     .websiteController.text.isEmpty
                                 ? null
                                 : widget.registerCubit!.websiteController.text,
-                            phoneNumber: widget.registerCubit!.countryCode +
+                            phone: widget.registerCubit!.countryCode +
                                 widget
                                     .registerCubit!.phoneNumberController.text,
                             firstNameAr: widget
