@@ -53,7 +53,7 @@ class UserAccount extends StatelessWidget {
                                 typeAccount: 'Client',
                                 firstName: firstName,
                                 lastName: lastName,
-                                email: email,
+                                email: email, phone: phone,
                               )));
 
                     },
@@ -72,7 +72,7 @@ class UserAccount extends StatelessWidget {
                                           lastNameAr: lastNameAr,
                                           firstName: firstName,
                                           lastName: lastName,
-                                          email: email,
+                                          email: email, phone: phone,
                                         )));
                               }
                             : () {
@@ -89,11 +89,11 @@ class UserAccount extends StatelessWidget {
         ),
         InfoDetails(
             icon: Icons.person_2_outlined,
-            title: "First Name Ar",
+            title: localization.firstNameAr,
             content: firstNameAr),
         InfoDetails(
             icon: Icons.person_2_outlined,
-            title: "Last Name Ar",
+            title: localization.lastNameAr,
             content: lastNameAr),
         InfoDetails(
             icon: Icons.person_2_outlined,
@@ -107,10 +107,10 @@ class UserAccount extends StatelessWidget {
             icon: Icons.email_outlined,
             title: localization.email,
             content: email),
-        // InfoDetails(
-        //     icon: Icons.phone,
-        //     title: localization.phone,
-        //     content: phone),
+        InfoDetails(
+            icon: Icons.phone,
+            title: localization.phoneNumber,
+            content: phone),
       ],
     );
   }

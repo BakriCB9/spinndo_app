@@ -344,6 +344,28 @@ class CustomDrawer extends StatelessWidget {
                   //             ),
                   //           )
                   //     : const SizedBox(),
+        getUserRole() != null
+            ? getUserRole() == 'Client'
+                ?
+                InkWell(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context).pushNamed(PackagesScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.all_inbox   ,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        localization.packages,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
+                  ) :SizedBox(): SizedBox(),
                   InkWell(
                     onTap: () {
                       Scaffold.of(context).closeDrawer();

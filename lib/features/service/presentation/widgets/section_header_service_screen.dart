@@ -1,6 +1,7 @@
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
@@ -8,6 +9,7 @@ import 'package:app/features/service/presentation/screens/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SectionHeaderServiceScreen extends StatefulWidget {
   const SectionHeaderServiceScreen({super.key});
@@ -34,10 +36,14 @@ class _SectionHeaderServiceScreenState
     return Row(
       children: [
         IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Theme.of(context).primaryColorLight,
-            size: 50.sp,
+          icon:SvgPicture.asset(
+            'asset/icons/menu.svg',
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              ColorManager.grey2,
+              BlendMode.srcIn,
+            ),
           ),
           onPressed: () {
             if (hasToken == null) {
@@ -111,8 +117,8 @@ class _SectionHeaderServiceScreenState
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
             fit: BoxFit.scaleDown,
-            child: Text(localization.searchSetting,
-                style: Theme.of(context).textTheme.titleLarge),
+            child: Text(localization.homePage,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600)),
           ),
         ),
         hasToken != null
@@ -120,11 +126,16 @@ class _SectionHeaderServiceScreenState
                 onPressed: () {
                   Navigator.of(context).pushNamed(NotificationScreen.routeName);
                 },
-                icon: Icon(
-                  Icons.notifications_none_outlined,
-                  color: Theme.of(context).primaryColorLight,
-                  size: 50.sp,
-                ))
+                icon: SvgPicture.asset(
+                  'asset/icons/bell.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(
+                    ColorManager.grey2,
+                    BlendMode.srcIn,
+                  ),
+                ),
+        )
             : const SizedBox(),
       ],
     );

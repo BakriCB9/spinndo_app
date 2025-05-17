@@ -28,6 +28,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   @override
   Future<ClientProfileRespoonse> getClientProfile(
       int user_id, String user_token) async {
+
     try {
       // final String userToken = _authLocalDataSource.getToken();
       // final int user_id = _authLocalDataSource.getUserId();
@@ -38,6 +39,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
             "Content-Type": "application/json",
             "Authorization": "Bearer $user_token"
           }));
+      print("RESPONSE FROM SERVER: ${response}"); // ✅ اطبع هنا
 
       return ClientProfileRespoonse.fromJson(response.data);
     } catch (exciption) {

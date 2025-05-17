@@ -181,7 +181,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                     //   ],
                     // ),
 
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 40.h),
 
                     //Discount widget
                     ShowDiscount(),

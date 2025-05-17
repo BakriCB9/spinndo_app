@@ -42,6 +42,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   ];
   @override
   initState() {
+    print('Client Profile: ${widget.providerProfile.firstNameAr}');
+    print('Phone: ${widget.providerProfile.phone}');
     super.initState();
   }
 

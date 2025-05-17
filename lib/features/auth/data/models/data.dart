@@ -2,6 +2,7 @@ class Data {
   final dynamic id;
   final String? role;
   final dynamic isApproved;
+  final String? phone;
   final String? token;
   final String? firstName;
   final String? lastName;
@@ -19,24 +20,30 @@ class Data {
       lastName: json['last_name'] as String ?? "",
       imagePath: json['image_path'] as dynamic,
       accountStatus: json['account_status'] as dynamic,
-      email:json['email'] as String?
+      email:json['email'] as String?,
+      phone:json['phone'] as String?
     );
 
     return ans;
   }
-  factory Data.fromVerfictionJson(Map<String, dynamic> json) => Data(
-        id: json['id'] as dynamic,
-        role: json['role'] as String,
-        isApproved: json['isApproved'] as dynamic,
-        token: json['token'] as String,
-        firstName: json['first_name'] as String ?? "",
-        lastName: json['last_name'] as String ?? "",
-        imagePath: json['image_path'] as dynamic,
-        accountStatus: json['account_status'] as dynamic,
-        email:json['email'] as String?  
-      );
-  Data(
-      {this.firstName,
+  factory Data.fromVerfictionJson(Map<String, dynamic> json) {
+    print('Verification JSON: $json');
+
+    return Data(
+      id: json['id'] as dynamic,
+      role: json['role'] as String,
+      isApproved: json['isApproved'] as dynamic,
+      token: json['token'] as String,
+      firstName: json['first_name'] as String? ?? "",
+      lastName: json['last_name'] as String? ?? "",
+      imagePath: json['image_path'] as dynamic,
+      accountStatus: json['account_status'] as dynamic,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+    );
+  }
+
+  Data({this.firstName,
       this.lastName,
       this.accountStatus,
        this.id,
@@ -44,6 +51,7 @@ class Data {
        this.isApproved,
        this.token,
        this.email,
+       this.phone,
       this.imagePath});
 
   Map<String, dynamic> toJson() => {

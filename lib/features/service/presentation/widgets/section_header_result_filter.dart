@@ -1,5 +1,6 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/features/google_map/presentation/view/google_map_screen.dart';
 import 'package:app/features/service/domain/entities/services.dart';
@@ -7,6 +8,7 @@ import 'package:app/features/service/presentation/cubit/service_setting_cubit.da
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SectionHeaderResultFilter extends StatefulWidget {
   final ValueNotifier<List<Services>?> services;
@@ -29,11 +31,23 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: Icon(Icons.arrow_back_sharp,
-                color: theme.primaryColorLight, size: 45.sp)),
-        SizedBox(width: 40.w),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child:
+              SvgPicture.asset(
+                'asset/icons/back.svg',
+                width: 20,
+                height: 20,
+                colorFilter: ColorFilter.mode(
+                  ColorManager.grey,
+                  BlendMode.srcIn,
+                ),
+              ),
+          ),
+        ),
+        SizedBox(width: 20.w),
         Expanded(
           child: FittedBox(
             fit: BoxFit.scaleDown,
@@ -41,28 +55,53 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
             child: Text(
-              localization.filterResults,
-              style: theme.textTheme.titleLarge,
+              localization.clients,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
             ),
           ),
         ),
         //google map
-        IconButton(
-          onPressed: () async {
-            Navigator.of(context).pushNamed(Routes.googleMapSccren, arguments: {
-              "type": MapType.showMarkers,
-              "countryName": servceSettingCubit.selectedCity?.name ??
-                  servceSettingCubit.selectedCountry?.name,
-              "latlng": servceSettingCubit.getCurrentLocation
-            });
-            //TODO
-          },
-          icon: Icon(
-            Icons.map,
-            color: Theme.of(context).primaryColorLight,
-            size: 45.sp,
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            width: 90.r,
+            height: 90.r,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: Offset(2, 4),
+                ),
+              ],
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  Routes.googleMapSccren,
+                  arguments: {
+                    "type": MapType.showMarkers,
+                    "countryName": servceSettingCubit.selectedCity?.name ??
+                        servceSettingCubit.selectedCountry?.name,
+                    "latlng": servceSettingCubit.getCurrentLocation,
+                  },
+                );
+              },
+              icon: Icon(
+                Icons.map_rounded,
+                color: Colors.amber,
+                size: 40.sp,
+              ),
+              splashRadius: 30.r,
+              tooltip: 'Show Map',
+            ),
           ),
         ),
+
+
+
         widget.services.value!.isNotEmpty
             ? PopupMenuButton(
                 icon: Icon(

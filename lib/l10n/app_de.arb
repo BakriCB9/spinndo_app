@@ -160,7 +160,11 @@
   "paymentDetails": "Zahlungsdetails",
   "addPaymentMethods": "Zahlungsmethoden hinzufügen",
   "packages": "Pakete",
-  "phone": "Telefon"
+  "phone": "Telefon",
+  "homePage": "Startseite",
+  "clients": "Kunden"
+
+
 
 
 }

@@ -67,6 +67,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TextEditingController lastNameArEditController = TextEditingController();
   TextEditingController serviceNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController phoneEditController = TextEditingController();
   Categories? selectedCategory;
   List<Categories>? categoriesList;
   List<Categories>? catChildren;

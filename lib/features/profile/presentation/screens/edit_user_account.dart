@@ -27,6 +27,7 @@ class EditUserAccountScreen extends StatelessWidget {
   final String lastNameAr;
   final String typeAccount;
   final String email;
+  final String phone;
 
   const EditUserAccountScreen({required this.firstName,
     required this.firstNameAr,
@@ -34,7 +35,8 @@ class EditUserAccountScreen extends StatelessWidget {
     required this.lastName,
     required this.typeAccount,
     required this.email,
-    super.key});
+    required this.phone,
+    super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class EditUserAccountScreen extends StatelessWidget {
     _profileCubit.firstNameArEditController.text = firstNameAr;
     _profileCubit.lastNameArEditController.text = lastNameAr;
     _profileCubit.emailEditController.text = email;
+    _profileCubit.phoneEditController.text = phone;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
     //  final base64String =sharedPref.getString(CacheConstant.imagePhoto);
