@@ -98,14 +98,14 @@ class SignInScreen extends StatelessWidget {
           SizedBox(height: 30.h),
           SizedBox(
               width: double.infinity,
-              child: FilledButton(
+              child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(ServiceScreen.routeName);
                   },
                   child: Text(
                     localization.guest,
                     style: theme.bodyLarge!
-                        .copyWith(color: ColorManager.primary, fontSize: 30.sp),
+                        .copyWith( fontSize: 30.sp),
                   ))),
           SizedBox(height: 25.h),
           Center(

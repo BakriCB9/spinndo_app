@@ -107,10 +107,10 @@ class UserAccount extends StatelessWidget {
             icon: Icons.email_outlined,
             title: localization.email,
             content: email),
-        InfoDetails(
+        typeAccount == 'Client'? InfoDetails(
             icon: Icons.phone,
             title: localization.phoneNumber,
-            content: phone),
+            content: phone):SizedBox(),
       ],
     );
   }
