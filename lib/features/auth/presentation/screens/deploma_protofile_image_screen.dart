@@ -414,7 +414,7 @@ class _DeplomaProtofileImageScreenState
                                       .authCubit!.websiteController.text.isEmpty
                                   ? null
                                   : widget.authCubit!.websiteController.text,
-                              phoneNumber: widget.authCubit!.countryCode +
+                              phone: widget.authCubit!.countryCode +
                                   widget.authCubit!.phoneNumberController.text,
                               firstNameAr:
                                   widget.authCubit!.firstNameArcontroller.text,

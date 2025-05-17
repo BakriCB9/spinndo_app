@@ -38,7 +38,6 @@ final _drawerCubit = serviceLocator.get<DrawerCubit>();
 final _authCubit = serviceLocator.get<AuthCubit>();
 bool sortByName = false;
 bool sortByDistance = false;
-bool sortByNumberOfvisitor = false;
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
   late Size size;
@@ -50,14 +49,6 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('the location of country is ${_serviceCubit.selectedCountryId}');
-    print('the selected country name ${_serviceCubit.selectedCountryName}');
-    print('the selected city name  is ${_serviceCubit.selectedCityName}');
-    if (_serviceCubit.selectedCityName == 'All Cities') {
-      _serviceCubit.selectedCityName = null;
-      _serviceCubit.isCity = false;
-    }
-
     final theme = Theme.of(context).textTheme;
     markerLocationData.clear();
     final localization = AppLocalizations.of(context)!;
@@ -72,230 +63,180 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          image: DecorationImage(
+              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
           body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              child: Column(
                 children: [
-                  InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_sharp,
-                        color: Theme.of(context).primaryColorLight,
-                        size: 45.sp,
-                      )),
-                  SizedBox(
-                    width: 40.w,
-                  ),
-                  Expanded(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Directionality.of(context) == TextDirection.rtl
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Text(
-                        localization.filterResults,
-                        style: Theme.of(context).textTheme.titleLarge,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(
+                            Icons.arrow_back_sharp,
+                            color: Theme.of(context).primaryColorLight,
+                            size: 45.sp,
+                          )),
+                      SizedBox(
+                        width: 40.w,
                       ),
-                    ),
-                  ),
-                  //google map
-                  IconButton(
-                    onPressed: () async {
-                      _serviceCubit.filterLocation =
-                          await (_serviceCubit.selectedCountryId != -1
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Directionality.of(context) == TextDirection.rtl
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Text(
+                            localization.filterResults,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          _serviceCubit.filterLocation =
+                          await (_serviceCubit.selectedCountryName != null
                               ? GeocodingService.getCountryLatLng(
-                                  _serviceCubit.selectedCityName ??
-                                      _serviceCubit.selectedCountryName!)
+                              _serviceCubit.selectedCityName ??
+                                  _serviceCubit.selectedCountryName!)
                               : LatLng(
-                                  _serviceCubit.getCurrentLocation!.latitude!,
-                                  _serviceCubit
-                                      .getCurrentLocation!.longitude!));
+                              _serviceCubit.getCurrentLocation!.latitude!,
+                              _serviceCubit
+                                  .getCurrentLocation!.longitude!));
 
-                      _serviceCubit.filterBounds =
-                          _serviceCubit.selectedCountryId != -1
-                              ? await (GeocodingService.getCountryBounds(
-                                  _serviceCubit.selectedCityName ??
-                                      _serviceCubit.selectedCountryName!))
-                              : null;
+                          _serviceCubit.filterBounds =
+                          await (_serviceCubit.selectedCountryName != null
+                              ? GeocodingService.getCountryBounds(
+                              _serviceCubit.selectedCityName ??
+                                  _serviceCubit.selectedCountryName!)
+                              : GeocodingService.getCurrentLocationBounds(
+                              _serviceCubit.getCurrentLocation!.latitude!,
+                              _serviceCubit
+                                  .getCurrentLocation!.longitude!));
 
-                      // await (_serviceCubit.selectedCountryId != -1
-                      //     ? GeocodingService.getCountryBounds(
-                      //         _serviceCubit.selectedCityName ??
-                      //             _serviceCubit.selectedCountryName!)
-                      //     : GeocodingService.getCurrentLocationBounds(
-                      //         _serviceCubit.getCurrentLocation!.latitude!,
-                      //         _serviceCubit
-                      //             .getCurrentLocation!.longitude!));
+                          _authCubit.loadMapStyle(
+                              _drawerCubit.themeMode == ThemeMode.dark
+                                  ? true
+                                  : false);
 
-                      _authCubit.loadMapStyle(
-                          _drawerCubit.themeMode == ThemeMode.dark
-                              ? true
-                              : false);
-
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ServiceMapScreen(),
-                      ));
-                    },
-                    icon: Icon(
-                      Icons.map,
-                      color: Theme.of(context).primaryColorLight,
-                      size: 45.sp,
-                    ),
-                  ),
-                  widget.services.isNotEmpty
-                      ? PopupMenuButton(
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ServiceMapScreen(),
+                          ));
+                        },
+                        icon: Icon(
+                          Icons.map,
+                          color: Theme.of(context).primaryColorLight,
+                          size: 45.sp,
+                        ),
+                      ),
+                      widget.services.isNotEmpty
+                          ? PopupMenuButton(
                           icon: Icon(
                               sortByName
                                   ? Icons.sort_by_alpha_sharp
                                   : sortByDistance
-                                      ? Icons.social_distance_sharp
-                                      : Icons.sort_sharp,
+                                  ? Icons.social_distance_sharp
+                                  : Icons.sort_sharp,
                               color: Theme.of(context).primaryColorLight,
                               size: 45.sp),
                           color: Theme.of(context).primaryColorDark,
                           itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  height: 60.h,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        localization.sortByName,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                                fontSize: 22.sp),
-                                      ),
-                                      sortByName
-                                          ? Container(
-                                              width: 20.w,
-                                              height: 20.h,
-                                              decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: ColorManager.primary),
-                                            )
-                                          : const SizedBox()
-                                    ],
+                            PopupMenuItem(
+                              height: 60.h,
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    localization.sortByName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(
+                                        color: Theme.of(context)
+                                            .primaryColorLight,
+                                        fontSize: 22.sp),
                                   ),
-                                  onTap: () {
-                                    widget.services.sort(
+                                  sortByName
+                                      ? Container(
+                                    width: 20.w,
+                                    height: 20.h,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ColorManager.primary),
+                                  )
+                                      : const SizedBox()
+                                ],
+                              ),
+                              onTap: () {
+                                widget.services.sort(
                                       (a, b) => a.name!.compareTo(b.name!),
-                                    );
-                                    sortByName = true;
-                                    sortByDistance = false;
+                                );
+                                sortByName = true;
+                                sortByDistance = false;
 
-                                    setState(() {});
-                                  },
-                                ),
-                                PopupMenuItem(
-                                  height: 60.h,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        localization.sortByDistance,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                                fontSize: 22.sp),
-                                      ),
-                                      sortByDistance
-                                          ? Container(
-                                              width: 20.w,
-                                              height: 20.h,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: ColorManager.primary,
-                                              ),
-                                            )
-                                          : const SizedBox()
-                                    ],
+                                setState(() {});
+                              },
+                            ),
+                            PopupMenuItem(
+                              height: 60.h,
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    localization.sortByDistance,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(
+                                        color: Theme.of(context)
+                                            .primaryColorLight,
+                                        fontSize: 22.sp),
                                   ),
-                                  onTap: () {
-                                    widget.services.sort(
+                                  sortByDistance
+                                      ? Container(
+                                    width: 20.w,
+                                    height: 20.h,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: ColorManager.primary,
+                                    ),
+                                  )
+                                      : const SizedBox()
+                                ],
+                              ),
+                              onTap: () {
+                                widget.services.sort(
                                       (a, b) =>
-                                          a.distance!.compareTo(b.distance!),
-                                    );
-                                    sortByName = false;
-                                    sortByDistance = true;
-                                    setState(() {});
-                                  },
-                                ),
-                                PopupMenuItem(
-                                  height: 60.h,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'sort by visitor',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                                fontSize: 22.sp),
-                                      ),
-                                      sortByNumberOfvisitor
-                                          ? Container(
-                                              width: 20.w,
-                                              height: 20.h,
-                                              decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: ColorManager.primary),
-                                            )
-                                          : const SizedBox()
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    widget.services.sort(
-                                      (a, b) => a.numberOfvisitors == null
-                                          ? 0
-                                          : a.numberOfvisitors!.compareTo(
-                                              b.numberOfvisitors == null
-                                                  ? 0
-                                                  : b.numberOfvisitors!),
-                                    );
-                                    sortByName = false;
-                                    sortByDistance = false;
-                                    sortByNumberOfvisitor = true;
+                                      a.distance!.compareTo(b.distance!),
+                                );
+                                sortByName = false;
+                                sortByDistance = true;
+                                setState(() {});
+                              },
+                            )
+                          ])
+                          : const SizedBox(),
+                    ],
+                  ),
+                  // SizedBox(
+                  //   height: 20.h,
+                  // ),
+                  Expanded(child: ShowDiscount()),
 
-                                    setState(() {});
-                                  },
-                                ),
-                              ])
-                      : const SizedBox(),
-                ],
-              ),
-              // SizedBox(
-              //   height: 20.h,
-              // ),
-              // ShowDiscount(),
-
-              widget.services.length == 0
-                  ? Expanded(
+                  widget.services.length == 0
+                      ? Expanded(
+                    flex: 3,
+                    child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Spacer(),
                           SizedBox(
@@ -312,263 +253,264 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                           const Spacer(flex: 2)
                         ],
                       ),
-                    )
-                  : Expanded(
-                      child: AnimationLimiter(
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
-                          padding: EdgeInsets.all(16.w),
-                          itemCount: widget.services.length,
-                          itemBuilder: (context, index) {
-                            markerLocationData.add(GoogleMapMarker(
-                              providerId: widget.services[index].providerId!,
-                              BitmapDescriptor.hueRed,
-                              id: widget.services[index].id!,
-                              name: widget.services[index].name!,
-                              latLng: LatLng(
-                                double.parse(widget.services[index].latitude!),
-                                double.parse(widget.services[index].longitude!),
-                              ),
-                            ));
+                    ),
+                  )
+                      : Expanded(
+                    child: AnimationLimiter(
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        padding: EdgeInsets.all(16.w),
+                        itemCount: widget.services.length,
+                        itemBuilder: (context, index) {
+                          markerLocationData.add(GoogleMapMarker(
+                            providerId: widget.services[index].providerId!,
+                            BitmapDescriptor.hueRed,
+                            id: widget.services[index].id!,
+                            name: widget.services[index].name!,
+                            latLng: LatLng(
+                              double.parse(widget.services[index].latitude!),
+                              double.parse(widget.services[index].longitude!),
+                            ),
+                          ));
 
-                            final service = widget.services[index];
+                          final service = widget.services[index];
 
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              delay: const Duration(milliseconds: 200),
-                              child: SlideAnimation(
-                                duration: const Duration(milliseconds: 2500),
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            delay: const Duration(milliseconds: 200),
+                            child: SlideAnimation(
+                              duration: const Duration(milliseconds: 2500),
+                              curve: Curves.fastLinearToSlowEaseIn,
+                              child: FadeInAnimation(
                                 curve: Curves.fastLinearToSlowEaseIn,
-                                child: FadeInAnimation(
-                                  curve: Curves.fastLinearToSlowEaseIn,
-                                  duration: const Duration(milliseconds: 3000),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (sharedPref.getString(
-                                              CacheConstant.tokenKey) ==
-                                          null) {
-                                        UIUtils.showMessage(
-                                            "You have to Sign in first");
-                                        return;
-                                      }
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => ShowDetails(
-                                              id: service.providerId!),
-                                        ),
-                                      );
-                                    },
-                                    child: Card(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(16.w),
-                                        child: Row(
-                                          crossAxisAlignment:
+                                duration: const Duration(milliseconds: 3000),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (sharedPref.getString(
+                                        CacheConstant.tokenKey) ==
+                                        null) {
+                                      UIUtils.showMessage(
+                                          "You have to Sign in first");
+                                      return;
+                                    }
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => ShowDetails(
+                                            id: service.providerId!),
+                                      ),
+                                    );
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16.w),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          service.providerImage != null
+                                              ? CircleAvatar(
+                                            radius: 60.r,
+                                            // backgroundImage:
+                                            //     NetworkImage(service.providerImage!),
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                BorderRadius
+                                                    .circular(60.r),
+                                                child: CashImage(
+                                                  path: service
+                                                      .providerImage,
+                                                )),
+                                          )
+                                              : CircleAvatar(
+                                            radius: 60.r,
+                                            backgroundColor:
+                                            ColorManager.primary,
+                                            child: Icon(Icons.person,
+                                                size: 60.r,
+                                                color:
+                                                ColorManager.white),
+                                          ),
+                                          SizedBox(width: 20.w),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
-                                            service.providerImage != null
-                                                ? CircleAvatar(
-                                                    radius: 60.r,
-                                                    // backgroundImage:
-                                                    //     NetworkImage(service.providerImage!),
-                                                    child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(60.r),
-                                                        child: CashImage(
-                                                          path: service
-                                                              .providerImage,
-                                                        )),
-                                                  )
-                                                : CircleAvatar(
-                                                    radius: 60.r,
-                                                    backgroundColor:
-                                                        ColorManager.primary,
-                                                    child: Icon(Icons.person,
-                                                        size: 60.r,
-                                                        color:
-                                                            ColorManager.white),
-                                                  ),
-                                            SizedBox(width: 20.w),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Text(
-                                                          service.name ??
-                                                              "Service Name",
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .labelSmall!
-                                                              .copyWith(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColorLight),
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Text(
+                                                        service.name ??
+                                                            "Service Name",
+                                                        style: Theme.of(
+                                                            context)
+                                                            .textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                            color: Theme.of(
+                                                                context)
+                                                                .primaryColorLight),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
-                                                      Expanded(
-                                                          child: FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            CircleAvatar(
-                                                              radius: 12.r,
-                                                              backgroundColor:
-                                                                  ColorManager
-                                                                      .primary,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 10.w,
-                                                            ),
-                                                            Text(
-                                                              service.distance !=
-                                                                      null
-                                                                  ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
-                                                                  : '',
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .labelSmall!
-                                                                  .copyWith(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColorLight),
-                                                              textAlign:
-                                                                  TextAlign.end,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ))
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 8.h),
-                                                  Text(
-                                                    "${localization.provider}: ${service.providerName ?? "Unknown"}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelMedium!
-                                                        .copyWith(
-                                                            fontSize: 24.sp),
-                                                  ),
-                                                  SizedBox(height: 8.h),
-                                                  Text(
-                                                    "${localization.description} : ${service.description}" ??
-                                                        "No description available",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelMedium!
-                                                        .copyWith(
-                                                            fontSize: 24.sp),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  SizedBox(height: 8.h),
-                                                  Row(
-                                                    children: [
-                                                      Icon(Icons.category,
-                                                          size: 34.r,
-                                                          color: ColorManager
-                                                              .primary),
-                                                      SizedBox(width: 10.w),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Text(
-                                                          service.categoryName ??
-                                                              "Category",
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .labelMedium!
-                                                              .copyWith(
-                                                                  fontSize:
-                                                                      24.sp,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis),
-                                                        ),
-                                                      ),
-                                                      //     Align(
-                                                      //   alignment:
-                                                      //       Alignment.bottomLeft,
-                                                      //   child: FavoriteWidget(),
-                                                      // )
-
-                                                      Expanded(
-                                                          flex: 1,
+                                                    ),
+                                                    Expanded(
+                                                        child: FittedBox(
+                                                          fit: BoxFit.scaleDown,
                                                           child: Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
                                                             children: [
-                                                              const Icon(Icons
-                                                                  .visibility_outlined),
-                                                              SizedBox(
-                                                                width: 5,
+                                                              CircleAvatar(
+                                                                radius: 12.r,
+                                                                backgroundColor:
+                                                                ColorManager
+                                                                    .primary,
                                                               ),
-                                                              Expanded(
-                                                                child:
-                                                                    FittedBox(
-                                                                  alignment: Directionality.of(
-                                                                              context) ==
-                                                                          TextDirection
-                                                                              .rtl
-                                                                      ? Alignment
-                                                                          .centerRight
-                                                                      : Alignment
-                                                                          .centerLeft,
-                                                                  fit: BoxFit
-                                                                      .scaleDown,
-                                                                  child: Text(
-                                                                      '${service.numberOfvisitors == null ? "0" : service.numberOfvisitors}',
-                                                                      style: theme
-                                                                          .labelMedium!
-                                                                          .copyWith(
-                                                                              fontSize: 24.sp)),
-                                                                ),
-                                                              )
+                                                              SizedBox(
+                                                                width: 10.w,
+                                                              ),
+                                                              Text(
+                                                                service.distance !=
+                                                                    null
+                                                                    ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
+                                                                    : '',
+                                                                style: Theme.of(
+                                                                    context)
+                                                                    .textTheme
+                                                                    .labelSmall!
+                                                                    .copyWith(
+                                                                    color: Theme.of(
+                                                                        context)
+                                                                        .primaryColorLight),
+                                                                textAlign:
+                                                                TextAlign.end,
+                                                              ),
                                                             ],
-                                                          )),
-                                                      FavoriteWidget(
-                                                        userId: service
-                                                            .providerId
-                                                            .toString(),
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                                SizedBox(height: 8.h),
+                                                Text(
+                                                  "${localization.provider}: ${service.providerName ?? "Unknown"}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelMedium!
+                                                      .copyWith(
+                                                      fontSize: 24.sp),
+                                                ),
+                                                SizedBox(height: 8.h),
+                                                Text(
+                                                  "${localization.description} : ${service.description}" ??
+                                                      "No description available",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelMedium!
+                                                      .copyWith(
+                                                      fontSize: 24.sp),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                  TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 8.h),
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.category,
+                                                        size: 34.r,
+                                                        color: ColorManager
+                                                            .primary),
+                                                    SizedBox(width: 10.w),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Text(
+                                                        service.categoryName ??
+                                                            "Category",
+                                                        style: Theme.of(
+                                                            context)
+                                                            .textTheme
+                                                            .labelMedium!
+                                                            .copyWith(
+                                                            fontSize:
+                                                            24.sp,
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis),
                                                       ),
-                                                      //Icon(Icons.visibility_outlined)
-                                                    ],
-                                                  ),
-                                                  //SizedBox(height: 10.h),
-                                                ],
-                                              ),
+                                                    ),
+                                                    //     Align(
+                                                    //   alignment:
+                                                    //       Alignment.bottomLeft,
+                                                    //   child: FavoriteWidget(),
+                                                    // )
+
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Row(
+                                                          children: [
+                                                            const Icon(Icons
+                                                                .visibility_outlined),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child:
+                                                              FittedBox(
+                                                                alignment: Directionality.of(
+                                                                    context) ==
+                                                                    TextDirection
+                                                                        .rtl
+                                                                    ? Alignment
+                                                                    .centerRight
+                                                                    : Alignment
+                                                                    .centerLeft,
+                                                                fit: BoxFit
+                                                                    .scaleDown,
+                                                                child: Text(
+                                                                    '${service.numberOfvisitors}',
+                                                                    style: theme
+                                                                        .labelMedium!
+                                                                        .copyWith(
+                                                                        fontSize: 24.sp)),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )),
+                                                    FavoriteWidget(
+                                                      userId: service
+                                                          .providerId
+                                                          .toString(),
+                                                    ),
+                                                    //Icon(Icons.visibility_outlined)
+                                                  ],
+                                                ),
+                                                //SizedBox(height: 10.h),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-            ],
-          ),
-        ),
-      )),
+                  ),
+                ],
+              ),
+            ),
+          )),
     );
   }
 }

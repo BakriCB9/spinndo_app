@@ -50,50 +50,102 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
         }
       },
       fieldViewBuilder: (context, text, focusNode, onFieldSubmitted) {
-        return TextField(
-          style: theme.bodyMedium,
-          controller: text, // ✅ Must use the passed controller
-          focusNode: focusNode, // ✅ Must use the passed focus node
-
-          decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search),
-            hintText: localization.serviceOrProviderName,
+        return Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: TextField(
+            style: theme.bodyMedium?.copyWith(
+              color: ColorManager.grey2,
+              fontSize: 28.sp,
+            ),
+            controller: text,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText: localization.serviceOrProviderName,
+              hintStyle: TextStyle(color: ColorManager.grey),
+              prefixIcon: AnimatedBuilder(
+                animation: focusNode!,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: focusNode!.hasFocus ? 1.3 : 1.0,
+                    child: Icon(
+                      Icons.search,
+                      color: focusNode!.hasFocus
+                          ? ColorManager.primary
+                          : Colors.grey[700],
+                    ),
+                  );
+                },
+              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: ColorManager.primary, width: 2),
+              ),
+            ),
           ),
         );
 
-        // return CustomTextFormField(
-        //   icon: Icons.search,
-        //   controller: text,
-        //   hintText: localization.serviceOrProviderName,
 
-        //   // padding: 20.w,
-        // );
       },
       optionsViewBuilder: (context, onSelected, options) {
         return Align(
           alignment: Alignment.topLeft,
-          child: Material(
-            elevation: 2,
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: options.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final option = options.elementAt(index);
-                return Container(
-                  color: ColorManager.primary,
-                  child: ListTile(
-                    title: Text(
-                      option,
-                      style: theme.bodyMedium!.copyWith(fontSize: 27.sp),
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: options.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final option = options.elementAt(index);
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 4),
                     ),
-                    onTap: () => onSelected(option),
-                    tileColor: Colors.grey[100],
-                    hoverColor: Colors.greenAccent,
+                  ],
+                ),
+                child: ListTile(
+                  title: Text(
+                    option,
+                    style: theme.bodyMedium!.copyWith(
+                      fontSize: 27.sp,
+                      color: ColorManager.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                );
-              },
-            ),
+                  onTap: () => onSelected(option),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
+                  hoverColor: Colors.amber.withOpacity(0.2),
+                ),
+              );
+
+            },
           ),
         );
       },

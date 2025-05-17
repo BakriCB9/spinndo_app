@@ -22,9 +22,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _logoController;
-  late Animation<double> _logoFadeAnimation;
-  late Animation<double> _logoScaleAnimation;
+  late Animation<Offset> _logoSlideAnimation;
+  late Animation<double> _logoRotationAnimation;
+
   final _authCubit = serviceLocator.get<AuthCubit>();
+
   late AnimationController _textController;
   late Animation<double> _textFadeAnimation;
   late Animation<Offset> _textSlideAnimation;
@@ -33,63 +35,68 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Logo Animation (Fade + Scale)
+    // Logo Animations (slide + rotate)
     _logoController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    _logoFadeAnimation = CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.easeIn,
-    );
-    _logoScaleAnimation =
-        Tween<double>(begin: 0.6, end: 1.0).animate(CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.easeOutBack,
-    ));
 
-    // Text Animation (Fade + Slide)
+    _logoSlideAnimation = Tween<Offset>(
+      begin: const Offset(-0.05, 0),
+      end: const Offset(0.05, 0),
+    ).animate(
+      CurvedAnimation(
+        parent: _logoController,
+        curve: Curves.easeInOutSine,
+      ),
+    );
+
+    _logoRotationAnimation = Tween<double>(
+      begin: -0.05,
+      end: 0.05,
+    ).animate(
+      CurvedAnimation(
+        parent: _logoController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _logoController.repeat(reverse: true);
+
+    // Text Animation (optional)
     _textController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
+
     _textFadeAnimation = CurvedAnimation(
       parent: _textController,
       curve: Curves.easeIn,
     );
-    _textSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5), // Start below the center
-      end: Offset.zero, // End at original position
-    ).animate(CurvedAnimation(
-      parent: _textController,
-      curve: Curves.easeOut,
-    ));
 
-    // Start Animations
-    _logoController.forward();
+    _textSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.5),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _textController,
+        curve: Curves.easeOut,
+      ),
+    );
+
     Future.delayed(const Duration(seconds: 1), () {
       _textController.forward();
     });
 
-    // Navigate to the next screen
     Future.delayed(const Duration(seconds: 4), () async {
-      //await _authCubit.getCategories();
-
-      if (sharedPref.getString(CacheConstant.tokenKey) == null) {
-        return Navigator.of(context)
-            .pushReplacementNamed(SignInScreen.routeName);
-      } else {
-        return Navigator.of(context)
-            .pushReplacementNamed(ServiceScreen.routeName);
-      }
-      // Navigator.pushReplacementNamed(
-      //   context,
-      //   sharedPref.getString(CacheConstant.tokenKey) == null
-      //       ? (sharedPref.getString(CacheConstant.emailKey) == null
-      //           ? SignUpScreen.routeName
-      //           : SignInScreen.routeName)
-      //       : ServiceScreen.routeName,
-      // );
+      Navigator.pushReplacementNamed(
+        context,
+        sharedPref.getString(CacheConstant.tokenKey) == null
+            ? (sharedPref.getString(CacheConstant.emailKey) == null
+            ? SignUpScreen.routeName
+            : SignInScreen.routeName)
+            : ServiceScreen.routeName,
+      );
     });
   }
 
@@ -107,9 +114,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     return Container(
       decoration: isDarkMode
-          ? BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          ? const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("asset/images/bg.png"),
+          fit: BoxFit.fill,
+        ),
+      )
           : null,
       child: Scaffold(
         body: Container(
@@ -126,12 +136,12 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Spacer(flex: 3),
-                // Logo with fade + scale animation
-                ScaleTransition(
-                  scale: _logoScaleAnimation,
-                  child: FadeTransition(
-                    opacity: _logoFadeAnimation,
+                const Spacer(flex: 3),
+                // Logo with only slide + rotate
+                SlideTransition(
+                  position: _logoSlideAnimation,
+                  child: RotationTransition(
+                    turns: _logoRotationAnimation,
                     child: CircleAvatar(
                       radius: 200.r,
                       backgroundColor: Colors.transparent,
@@ -144,8 +154,8 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
                 ),
-                Spacer(),
-                // Text with fade + slide animation
+                const Spacer(),
+                // Text
                 SlideTransition(
                   position: _textSlideAnimation,
                   child: FadeTransition(
@@ -155,16 +165,14 @@ class _SplashScreenState extends State<SplashScreen>
                       style: TextStyle(
                         color: isDarkMode ? Colors.white70 : Colors.black87,
                         fontSize: 52.sp,
-                        fontFamily: 'Raleway', // Elegant font
+                        fontFamily: 'Raleway',
                         fontWeight: FontWeight.bold,
                         letterSpacing: 8,
                       ),
                     ),
                   ),
                 ),
-                Spacer(
-                  flex: 6,
-                )
+                const Spacer(flex: 6),
               ],
             ),
           ),

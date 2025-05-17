@@ -26,14 +26,15 @@ class EditUserAccountScreen extends StatelessWidget {
   final String firstNameAr;
   final String lastNameAr;
   final String typeAccount;
+  final String email;
 
-  const EditUserAccountScreen(
-      {required this.firstName,
-      required this.firstNameAr,
-      required this.lastNameAr,
-      required this.lastName,
-      required this.typeAccount,
-      super.key});
+  const EditUserAccountScreen({required this.firstName,
+    required this.firstNameAr,
+    required this.lastNameAr,
+    required this.lastName,
+    required this.typeAccount,
+    required this.email,
+    super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +45,7 @@ class EditUserAccountScreen extends StatelessWidget {
     _profileCubit.lastNameEditController.text = lastName;
     _profileCubit.firstNameArEditController.text = firstNameAr;
     _profileCubit.lastNameArEditController.text = lastNameAr;
+    _profileCubit.emailEditController.text = email;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
     //  final base64String =sharedPref.getString(CacheConstant.imagePhoto);
@@ -55,8 +57,8 @@ class EditUserAccountScreen extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          image: DecorationImage(
+              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
         appBar: AppBar(
@@ -383,15 +385,18 @@ class EditUserAccountScreen extends StatelessWidget {
                   onChanged: (value) {
                     print('');
                     _profileCubit.updateInfo(
-                        curFirst: firstName,
-                        curFirstAr: firstNameAr,
-                        newFirstAr:
-                            _profileCubit.firstNameArEditController.text,
-                        curLastAr: lastNameAr,
-                        newLastAr: _profileCubit.lastNameArEditController.text,
-                        newFirst: _profileCubit.firstNameEditController.text,
-                        curLast: lastName,
-                        newLast: _profileCubit.lastNameEditController.text);
+                      curFirst: firstName,
+                      curFirstAr: firstNameAr,
+                      newFirstAr:
+                      _profileCubit.firstNameArEditController.text,
+                      curLastAr: lastNameAr,
+                      newLastAr: _profileCubit.lastNameArEditController.text,
+                      newFirst: _profileCubit.firstNameEditController.text,
+                      curLast: lastName,
+                      newLast: _profileCubit.lastNameEditController.text,
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                    );
                   },
                 ),
                 SizedBox(
@@ -423,15 +428,17 @@ class EditUserAccountScreen extends StatelessWidget {
                   onChanged: (value) {
                     print('');
                     _profileCubit.updateInfo(
-                        curFirst: firstName,
-                        curFirstAr: firstNameAr,
-                        newFirstAr:
-                            _profileCubit.firstNameArEditController.text,
-                        curLastAr: lastNameAr,
-                        newLastAr: _profileCubit.lastNameArEditController.text,
-                        newFirst: _profileCubit.firstNameEditController.text,
-                        curLast: lastName,
-                        newLast: _profileCubit.lastNameEditController.text);
+                      curFirst: firstName,
+                      curFirstAr: firstNameAr,
+                      newFirstAr: _profileCubit.firstNameArEditController.text,
+                      curLastAr: lastNameAr,
+                      newLastAr: _profileCubit.lastNameArEditController.text,
+                      newFirst: _profileCubit.firstNameEditController.text,
+                      curLast: lastName,
+                      newLast: _profileCubit.lastNameEditController.text,
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                    );
                   },
                 ),
                 SizedBox(
@@ -465,13 +472,15 @@ class EditUserAccountScreen extends StatelessWidget {
                     _profileCubit.updateInfo(
                         curFirst: firstName,
                         curFirstAr: firstNameAr,
-                        newFirstAr:
-                            _profileCubit.firstNameArEditController.text,
+                        newFirstAr: _profileCubit.firstNameArEditController.text,
                         curLastAr: lastNameAr,
                         newLastAr: _profileCubit.lastNameArEditController.text,
                         newFirst: _profileCubit.firstNameEditController.text,
                         curLast: lastName,
-                        newLast: _profileCubit.lastNameEditController.text);
+                        newLast: _profileCubit.lastNameEditController.text,
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                    );
                   },
                 ),
                 SizedBox(
@@ -481,15 +490,57 @@ class EditUserAccountScreen extends StatelessWidget {
                   controller: _profileCubit.lastNameEditController,
                   onChanged: (value) {
                     _profileCubit.updateInfo(
-                        curFirst: firstName,
-                        curFirstAr: firstNameAr,
-                        newFirstAr:
-                            _profileCubit.firstNameArEditController.text,
-                        curLastAr: lastNameAr,
-                        newLastAr: _profileCubit.lastNameArEditController.text,
-                        newFirst: _profileCubit.firstNameEditController.text,
-                        curLast: lastName,
-                        newLast: _profileCubit.lastNameEditController.text);
+                      curFirst: firstName,
+                      curFirstAr: firstNameAr,
+                      newFirstAr: _profileCubit.firstNameArEditController.text,
+                      curLastAr: lastNameAr,
+                      newLastAr: _profileCubit.lastNameArEditController.text,
+                      newFirst: _profileCubit.firstNameEditController.text,
+                      curLast: lastName,
+                      newLast: _profileCubit.lastNameEditController.text,
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                    );
+                  },
+                  style: TextStyle(
+                    color: _drawerCubit.themeMode == ThemeMode.light
+                        ? Colors.black
+                        : Colors.white,
+                    fontSize: 25.sp,
+                  ),
+                  cursorColor: ColorManager.primary,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(100),
+                  ],
+                  decoration: InputDecoration(
+                    label: Text(localization.email),
+                    prefixIcon: Icon(
+                      Icons.person,
+                      size: 45.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
+                TextFormField(
+                  controller: _profileCubit.emailEditController,
+                  onChanged: (value) {
+                    _profileCubit.updateInfo(
+                      curFirst: firstName,
+                      curFirstAr: firstNameAr,
+                      newFirstAr: _profileCubit.firstNameArEditController.text,
+                      curLastAr: lastNameAr,
+                      newLastAr: _profileCubit.lastNameArEditController.text,
+                      newFirst: _profileCubit.firstNameEditController.text,
+                      curLast: lastName,
+                      newLast: _profileCubit.lastNameEditController.text,
+                      curEmail: email,
+                      newEmail: _profileCubit.emailEditController.text,
+                    );
                   },
                   style: TextStyle(
                       color: _drawerCubit.themeMode == ThemeMode.light
@@ -499,15 +550,16 @@ class EditUserAccountScreen extends StatelessWidget {
                   cursorColor: ColorManager.primary,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.emailAddress,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(200),
                   ],
                   decoration: InputDecoration(
                     label: Text(
-                      localization.lastName,
+                      localization.email,
                     ),
                     prefixIcon: Icon(
-                      Icons.person,
+                      Icons.email,
                       size: 45.sp,
                     ),
                     // counter: SizedBox()
@@ -538,20 +590,23 @@ class EditUserAccountScreen extends StatelessWidget {
                           UIUtils.showMessage(state.message);
                         } else if (state is UpdateSuccess) {
                           UIUtils.hideLoading(context);
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(true);
                           _profileCubit.getUserRole();
                         }
                       },
                       child: ElevatedButton(
                           onPressed: () {
                             if (_profileCubit
-                                    .firstNameEditController.text.isEmpty ||
+                                .firstNameEditController.text.isEmpty ||
                                 _profileCubit
                                     .firstNameArEditController.text.isEmpty ||
                                 _profileCubit
                                     .lastNameArEditController.text.isEmpty ||
                                 _profileCubit
-                                    .lastNameEditController.text.isEmpty) {
+                                    .lastNameEditController.text.isEmpty||
+                                _profileCubit
+                                    .emailEditController.text.isEmpty
+                            ) {
                               return UIUtils.showMessage(
                                   'Enter the name the field is Empty');
                             }
@@ -565,14 +620,21 @@ class EditUserAccountScreen extends StatelessWidget {
                                       firstName: _profileCubit
                                           .firstNameEditController.text,
                                       lastName: _profileCubit
-                                          .lastNameEditController.text));
+                                          .lastNameEditController.text,
+                                      email: _profileCubit
+                                          .emailEditController.text));
                             } else {
                               _profileCubit.updateProviderProfile(
                                   UpdateProviderRequest(
+                                      firstNameAr: _profileCubit
+                                          .firstNameArEditController.text,
+                                      lastNameAr: _profileCubit
+                                          .lastNameArEditController.text,
                                     firstName: _profileCubit
                                         .firstNameEditController.text,
                                     lastName: _profileCubit
                                         .lastNameEditController.text,
+                                    email:_profileCubit.emailEditController.text
                                   ),
                                   1);
                             }

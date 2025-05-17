@@ -165,6 +165,7 @@
   "anUnexpectedErrorOccurred": "An unexpected error occurred",
   "paymentDetails": "Payment Details",
   "addPaymentMethods": "Add payment methods",
-  "packages": "Packages"
+  "packages": "Packages",
+  "phone": "Phone"
 
 }

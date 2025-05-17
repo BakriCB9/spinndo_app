@@ -159,7 +159,9 @@
   "anUnexpectedErrorOccurred": "Ein unerwarteter Fehler ist aufgetreten",
   "paymentDetails": "Zahlungsdetails",
   "addPaymentMethods": "Zahlungsmethoden hinzufügen",
-  "packages": "Pakete"
+  "packages": "Pakete",
+  "phone": "Telefon"
+
 
 }
 
