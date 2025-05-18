@@ -98,7 +98,6 @@ class ThemeManager {
           color: ColorManager.grey,
           fontSize: FontSize.s28.sp,
           fontFamily: "Lato"),
-
       //drop down
       displayMedium:
       getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),

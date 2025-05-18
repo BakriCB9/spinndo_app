@@ -102,7 +102,6 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     email: widget.providerProfile.email!,
                     phone: widget.providerProfile.phone??'',
                   ),
-                  SizedBox(height: 15.h),
                   CustomDescription(
                     lat: widget.providerProfile.details!.latitude!,
                     lng: widget.providerProfile.details!.longitude!,
