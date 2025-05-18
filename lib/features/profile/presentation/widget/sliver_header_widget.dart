@@ -15,6 +15,7 @@ import 'package:app/features/profile/presentation/widget/icon_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'position_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -80,13 +81,22 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                         initialImage: image);
                   })),
           CustomPosition(
-              left: 0,
-              top: topSpace,
-              child: CustomIconButton(
-                  ontap: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icons.arrow_back)),
+              left: 20,
+              top: topSpace+15,
+              child:  InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: SvgPicture.asset(
+                  'asset/icons/back.svg',
+                  width: 20,
+                  height: 21,
+                  colorFilter: ColorFilter.mode(
+                    ColorManager.grey,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),),
           myId == userId
               ? CustomPosition(
                   right: 0,

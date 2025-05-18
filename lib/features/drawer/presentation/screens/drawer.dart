@@ -273,52 +273,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  !_authCubit.isClient
-                      ? InkWell(
-                    onTap: () {
-                      Scaffold.of(context).closeDrawer();
-                      Navigator.of(context)
-                          .pushNamed(PackagesScreen.routeName);
-                    },
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.inventory_2_rounded,
-                        color: ColorManager.primary,
-                      ),
-                      title: Text(
-                        localization.packages,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(fontSize: 32.sp),
-                      ),
-                    ),
-                  )
-                      : SizedBox(),
-                  getUserRole() != null
-                      ? getUserRole() == 'Client'
-                      ? SizedBox()
-                      : InkWell(
-                    onTap: () {
-                      Scaffold.of(context).closeDrawer();
-                      Navigator.of(context)
-                          .pushNamed(DiscountScreen.routeName);
-                    },
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.discount,
-                        color: ColorManager.primary,
-                      ),
-                      title: Text(
-                        localization.disco,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(fontSize: 32.sp),
-                      ),
-                    ),
-                  )
-                      : const SizedBox(),
+
                   // getUserRole() != null
                   //     ? getUserRole() == 'Client'
                   //         ? SizedBox()
@@ -346,7 +301,7 @@ class CustomDrawer extends StatelessWidget {
                   //     : const SizedBox(),
         getUserRole() != null
             ? getUserRole() == 'Client'
-                ?
+                ?SizedBox():
                 InkWell(
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
@@ -365,7 +320,31 @@ class CustomDrawer extends StatelessWidget {
                             .copyWith(fontSize: 32.sp),
                       ),
                     ),
-                  ) :SizedBox(): SizedBox(),
+                  ) : SizedBox(),
+                  getUserRole() != null
+                      ? getUserRole() == 'Client'
+                      ? SizedBox()
+                      : InkWell(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                      Navigator.of(context)
+                          .pushNamed(DiscountScreen.routeName);
+                    },
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.discount,
+                        color: ColorManager.primary,
+                      ),
+                      title: Text(
+                        localization.disco,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 32.sp),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
                   InkWell(
                     onTap: () {
                       Scaffold.of(context).closeDrawer();

@@ -190,7 +190,12 @@
   "allSubCategory": "كل الاصناف الفرعية",
   "homePage": "الرئيسية",
   "clients": "العملاء",
-  "socialLinks": "روابط التواصل الاجتماعي"
+  "socialLinks": "روابط التواصل الاجتماعي",
+  "serviceRequests": "طلبات الخدمة",
+  "passwordEmpty": "كلمة المرور فارغة",
+  "passwordMustContainLettersAndNumbers": "يجب أن تحتوي كلمة المرور على أحرف وأرقام"
+
+
 
 
 }

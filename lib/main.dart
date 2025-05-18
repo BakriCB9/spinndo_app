@@ -149,9 +149,6 @@ class MyApp extends StatelessWidget {
                         //     ForgotPasswordScreen(),
                         // SignUpScreen.routeName: (context) => SignUpScreen(),
                         MapScreen.routeName: (context) => MapScreen(),
-                        // SignInScreen.routeName: (context) => SignInScreen(),
-                        // VerficationCodeScreen.routeName: (context) =>
-                        //     VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
                         PackagesScreen.routeName: (context) =>

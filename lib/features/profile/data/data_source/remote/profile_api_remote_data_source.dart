@@ -165,6 +165,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
           data: socialMediaLinksRequest.toJson());
       return SocialMediaLinksResponse.fromJson(response.data);
     } catch (e) {
+      print('Error adding social link: $e');
       throw RemoteAppException('Failed to add link of social');
     }
   }

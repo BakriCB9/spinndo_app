@@ -1,5 +1,6 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -38,7 +40,28 @@ class SettingScreen extends StatelessWidget {
           : null,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(localization.setting),
+          title: Text(
+            localization.setting,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: FontSize.s22,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+          leading: IconButton(
+            icon: SvgPicture.asset(
+              'asset/icons/back.svg',
+              width: 20,
+              height: 20,
+              colorFilter: ColorFilter.mode(
+                ColorManager.grey,
+                BlendMode.srcIn,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -56,7 +79,7 @@ class SettingScreen extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
-                            .copyWith(fontSize: 30.sp)),
+                            .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
                   ),
                   Expanded(
                     child: Align(
@@ -88,41 +111,55 @@ class SettingScreen extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge!
-                              .copyWith(fontSize: 30.sp))),
+                              .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400))),
                   Expanded(
                     child: SizedBox(
                       width: 90.w,
-                      child: DropdownButtonHideUnderline(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: _drawerCubit.themeMode == ThemeMode.dark
+                              ? ColorManager.darkBlue
+                              : ColorManager.white,
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12, // لون الظل خفيف
+                              blurRadius: 6,
+                              offset: Offset(0, 3), // اتجاه الظل
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 12), // لتفادي الالتصاق
+                        child: DropdownButtonHideUnderline(
                           child: DropdownButton<Languages>(
-                              value: languages.firstWhere(
-                                (lang) =>
-                                    lang.code == _drawerCubit.languageCode,
+                            icon: Icon(Icons.language, color: ColorManager.primary),
+                            value: languages.firstWhere(
+                                  (lang) => lang.code == _drawerCubit.languageCode,
+                            ),
+                            style: Theme.of(context).textTheme.displayMedium,
+                            items: languages
+                                .map(
+                                  (language) => DropdownMenuItem<Languages>(
+                                value: language,
+                                child: Text(language.name,
+                                    style: Theme.of(context).textTheme.displayMedium),
                               ),
-                              style: Theme.of(context).textTheme.displayMedium,
-                              items: languages
-                                  .map(
-                                    (language) => DropdownMenuItem<Languages>(
-                                      value: language,
-                                      child: Text(language.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (selectedLanguage) {
-                                if (selectedLanguage != null) {
-                                  _drawerCubit
-                                      .changeLanguage(selectedLanguage.code);
+                            )
+                                .toList(),
+                            onChanged: (selectedLanguage) {
+                              if (selectedLanguage != null) {
+                                _drawerCubit.changeLanguage(selectedLanguage.code);
+                                _serviceCubit.getCountriesAndCategories();
+                              }
+                            },
+                            borderRadius: BorderRadius.circular(25),
+                            dropdownColor: _drawerCubit.themeMode == ThemeMode.dark
+                                ? ColorManager.darkBlue
+                                : ColorManager.white,
+                          ),
+                        ),
+                      ),
 
-                                  _serviceCubit.getCountriesAndCategories();
-                                }
-                              },
-                              borderRadius: BorderRadius.circular(25),
-                              dropdownColor:
-                                  _drawerCubit.themeMode == ThemeMode.dark
-                                      ? ColorManager.darkBlue
-                                      : ColorManager.white)),
                     ),
                   )
                 ],
@@ -140,7 +177,7 @@ class SettingScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
-                      .copyWith(fontSize: 30.sp),
+                      .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400),
                 ),
               ),
               SizedBox(
@@ -246,11 +283,11 @@ class SettingScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!
-                          .copyWith(fontSize: 30.sp)),
+                          .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
                 ),
               ),
               SizedBox(
-                height: 60.h,
+                height: 40.h,
               ),
               BlocListener<DrawerCubit, DrawerStates>(
                 bloc: _drawerCubit,
@@ -310,7 +347,7 @@ class SettingScreen extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
-                            .copyWith(fontSize: 30.sp)),
+                            .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
                   ),
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/discount/data/model/discount_request/add_discount_request.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
@@ -42,40 +43,7 @@ class DiscountScreen extends StatelessWidget {
                 key: _formKey,
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child:
-                            SvgPicture.asset(
-                              'asset/icons/back.svg',
-                              width: 20,
-                              height: 20,
-                              colorFilter: ColorFilter.mode(
-                                ColorManager.grey,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 20.w),
-                        Expanded(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: Directionality.of(context) == TextDirection.rtl
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Text(
-                              localization.disco,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    CustomAppbar(appBarText: localization.disco,),
                     SizedBox(height: 100.h,),
                     Container(
                       decoration: BoxDecoration(
@@ -90,7 +58,13 @@ class DiscountScreen extends StatelessWidget {
                         ],
                       ),
                       child: TextFormField(
+                        style: TextStyle(
+                          color: ColorManager.textColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 32.sp,
+                        ),
                         keyboardType: TextInputType.numberWithOptions(),
+                        textInputAction: TextInputAction.next,
                         controller: discountController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -103,7 +77,7 @@ class DiscountScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.percent, color: ColorManager.primary),
                           labelText: localization.discountLabel,
-                          labelStyle: TextStyle(color: Colors.grey[700]),
+                          labelStyle: TextStyle(color: Colors.grey[700],fontWeight: FontWeight.w400),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.r),
                             borderSide: BorderSide.none,
@@ -114,11 +88,10 @@ class DiscountScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    SizedBox(height: 20),
-
+                    SizedBox(height: 70.h,),
                     Container(
                       decoration: BoxDecoration(
+
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
@@ -130,6 +103,11 @@ class DiscountScreen extends StatelessWidget {
                         ],
                       ),
                       child: TextFormField(
+                        style: TextStyle(
+                          color: ColorManager.textColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 32.sp,
+                        ),
                         controller: discountCodeController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -138,9 +116,10 @@ class DiscountScreen extends StatelessWidget {
                           return null;
                         },
                         decoration: InputDecoration(
+
                           prefixIcon: Icon(Icons.confirmation_num, color: ColorManager.primary),
                           labelText: localization.codeLabel,
-                          labelStyle: TextStyle(color: Colors.grey[700]),
+                          labelStyle: TextStyle(color: Colors.grey[700],fontWeight: FontWeight.w400),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.r),
                             borderSide: BorderSide.none,
@@ -171,7 +150,7 @@ class DiscountScreen extends StatelessWidget {
                             final text =
                                 state.addDiscountState as BaseSuccessState;
                             UIUtils.hideLoading(context);
-          
+
                             Navigator.of(context).pop();
                             UIUtils.showMessage(text.data);
                           }

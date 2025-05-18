@@ -163,7 +163,12 @@
   "phone": "Telefon",
   "homePage": "Startseite",
   "clients": "Kunden",
-  "socialLinks": "Soziale Netzwerke"
+  "socialLinks": "Soziale Netzwerke",
+  "serviceRequests": "Serviceanfragen",
+  "passwordEmpty": "Passwort ist leer",
+  "passwordMustContainLettersAndNumbers": "Das Passwort muss Buchstaben und Zahlen enthalten"
+
+
 
 
 

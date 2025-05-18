@@ -9,6 +9,7 @@ import 'font_manager.dart';
 
 class ThemeManager {
   static ThemeData lightTheme = ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.seed),
     fontFamily: 'Lato',
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
@@ -185,6 +186,7 @@ class ThemeManager {
     /// Main Colors
     ///
     ///
+   colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primaryLight),
     fontFamily: 'Lato',
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(

@@ -23,6 +23,7 @@ class SignInScreen extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
   final _loginCubit = serviceLocator.get<LoginCubit>();
+
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
@@ -37,29 +38,53 @@ class SignInScreen extends StatelessWidget {
               key: formKey,
               child: Column(
                 children: [
-                  CustomTextFormField(
-                    validator: (value) {
-                      if (!Validator.isEmail(value)) {
-                        return localization.validEmail;
-                      }
-                      return null;
-                    },
-                    controller: _loginCubit.emailController,
-                    icon: Icons.email,
-                    labelText: localization.email,
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: CustomTextFormField(
+                      validator: (value) {
+                        if (!Validator.isEmail(value)) {
+                          return localization.validEmail;
+                        }
+                        return null;
+                      },
+                      controller: _loginCubit.emailController,
+                      icon: Icons.email_outlined,
+                      labelText: localization.email,
+                    ),
                   ),
-                  SizedBox(height: 30.h),
-                  CustomTextFormField(
-                    validator: (value) {
-                      if (!Validator.isPassword(value)) {
-                        return localization.passwordLessThanSix;
-                      }
-                      return null;
-                    },
-                    controller: _loginCubit.passwordController,
-                    icon: Icons.lock,
-                    isPassword: true,
-                    labelText: localization.password,
+                  SizedBox(height: 60.h),
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: CustomTextFormField(
+                        validator: (value) {
+                          if (!Validator.isPassword(value)) {
+                            return localization.passwordLessThanSix;
+                          }
+                          return null;
+                        },
+                        controller: _loginCubit.passwordController,
+                        icon: Icons.lock_outline_rounded,
+                        isPassword: true,
+                        labelText: localization.password,
+                      ),
+                    ),
                   ),
                 ],
               )),
@@ -74,10 +99,15 @@ class SignInScreen extends StatelessWidget {
                     _loginCubit.confirmPasswordController.clear();
                     _loginCubit.emailController.clear();
                   },
-                  child: Text(localization.forgetPassword,
-                      style: theme.titleMedium!
-                          .copyWith(color: ColorManager.primary)))),
-          SizedBox(height: 10.h),
+                  child: Text(
+                    localization.forgetPassword,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationColor: ColorManager.primary,
+                        color: ColorManager.primary
+                    ),
+                  ),)),
+          SizedBox(height: 60.h),
           BlocListener<LoginCubit, LoginState>(
             listenWhen: (pre, cur) {
               return pre.loginStatus != cur.loginStatus;
@@ -89,6 +119,11 @@ class SignInScreen extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(36),
+                  ),
+                ),
                 onPressed: _login,
                 child: Text(localization.login,
                     style: Theme.of(context).textTheme.bodyLarge),
@@ -99,23 +134,60 @@ class SignInScreen extends StatelessWidget {
           SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.textColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(36),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pushNamed(ServiceScreen.routeName);
                   },
                   child: Text(
                     localization.guest,
-                    style: theme.bodyLarge!
-                        .copyWith( fontSize: 30.sp),
+                    style: theme.bodyLarge!.copyWith(fontSize: 30.sp),
                   ))),
-          SizedBox(height: 25.h),
+          SizedBox(height: 40.h),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey.shade300,
+                    thickness: 1,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Text(
+                    'or',
+                   style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey.shade300,
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 40.h),
           Center(
             child: InkWell(
               onTap: () {
                 Navigator.of(context)
                     .pushReplacementNamed(Routes.registerRoute);
               },
-              child: Text(localization.createNewAccount,
-                  style: Theme.of(context).textTheme.titleMedium),
+              child: Text(
+                localization.createNewAccount,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: ColorManager.textColor
+                ),
+              ),
             ),
           ),
         ],

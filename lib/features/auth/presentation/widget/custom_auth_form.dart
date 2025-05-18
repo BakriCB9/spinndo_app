@@ -49,11 +49,18 @@ class CustomAuthForm extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Icon(
-                                Icons.arrow_back_sharp,
-                                color: Theme.of(context).primaryColorLight,
-                                size: 45.sp,
-                              ))
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SvgPicture.asset(
+                                  'asset/icons/back.svg',
+                                  width: 20,
+                                  height: 20,
+                                  colorFilter: const ColorFilter.mode(
+                                    Color(0xFF9E9E9E),
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),)
                           : const SizedBox(),
                       const Spacer(),
                       // isGuest

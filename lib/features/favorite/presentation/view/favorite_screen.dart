@@ -1,6 +1,7 @@
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/favorite/presentation/view/favorite.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -53,11 +55,28 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           : null,
       child: Scaffold(
           appBar: AppBar(
-            title: const FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  'Favorite',
-                )),
+            title: Text(
+              localization.fav,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontSize: FontSize.s22,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            leading: IconButton(
+              icon: SvgPicture.asset(
+                'asset/icons/back.svg',
+                width: 20,
+                height: 20,
+                colorFilter: ColorFilter.mode(
+                  ColorManager.grey,
+                  BlendMode.srcIn,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           body: BlocBuilder<FavoriteCubit, FavoriteCubitState>(
             bloc: favCubit,
