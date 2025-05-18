@@ -46,6 +46,8 @@ class UserAccount extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 24.h),
+          // SizedBox(height: 2.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -108,7 +110,7 @@ class UserAccount extends StatelessWidget {
                   : const SizedBox(),
             ],
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: 50.h),
           Row(
             children: [
               SvgPicture.asset(

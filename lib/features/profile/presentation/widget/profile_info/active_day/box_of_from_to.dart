@@ -1,3 +1,4 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,6 +25,8 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return InkWell(
       //onTap: widget.dateSelect.daySelect
 
@@ -34,10 +37,12 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(widget.time,
-                style: Theme.of(context).textTheme.labelMedium),
+    style: theme.textTheme.labelMedium?.copyWith(
+    color: ColorManager.black2,
+    fontWeight: FontWeight.w400),
           ),
         ),
       ),
-    );
+    ));
   }
 }

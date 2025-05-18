@@ -35,85 +35,91 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     // print(
     //     'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
     final myId = sharedPref.getInt(CacheConstant.userId);
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(localization.images,
-                style: Theme.of(context).textTheme.labelLarge),
-            // myId == widget.userId
-            //     ? IconButton(
-            //         onPressed: widget.isApprovid == 1
-            //             ? () {
-            //                 Navigator.of(context).push(MaterialPageRoute(
-            //                     builder: (context) => EditImageScreen()));
-            //               }
-            //             : () {
-            //                 UIUtils.showMessage(
-            //                     'You Have to wait to Accept your Informations');
-            //               },
-            //         icon: Icon(
-            //           Icons.edit,
-            //           color:
-            //               widget.isApprovid == 1 ? Colors.yellow : Colors.grey,
-            //         ))
-            //     : const SizedBox()
-          ],
-        ),
-        SizedBox(
-          height: 25.h,
-        ),
-        myId == widget.userId
-            ? Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            typeSelect = 1;
-                          });
-                        },
-                        child: DiplomaAndProtofile(
-                            active: typeSelect == 1,
-                            type: 1,
-                            text: localization.certificate)),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            typeSelect = 2;
-                          });
-                        },
-                        child: DiplomaAndProtofile(
-                            active: typeSelect == 2,
-                            type: 2,
-                            text: localization.photos)),
-                  ),
-                ],
-              )
-            : const SizedBox(),
-        // SizedBox(height: 15.h),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(localization.images,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                      color: ColorManager.black,
+                      fontWeight: FontWeight.w600)),
+              // myId == widget.userId
+              //     ? IconButton(
+              //         onPressed: widget.isApprovid == 1
+              //             ? () {
+              //                 Navigator.of(context).push(MaterialPageRoute(
+              //                     builder: (context) => EditImageScreen()));
+              //               }
+              //             : () {
+              //                 UIUtils.showMessage(
+              //                     'You Have to wait to Accept your Informations');
+              //               },
+              //         icon: Icon(
+              //           Icons.edit,
+              //           color:
+              //               widget.isApprovid == 1 ? Colors.yellow : Colors.grey,
+              //         ))
+              //     : const SizedBox()
+            ],
+          ),
+          SizedBox(
+            height: 40.h,
+          ),
+          myId == widget.userId
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              typeSelect = 1;
+                            });
+                          },
+                          child: DiplomaAndProtofile(
+                              active: typeSelect == 1,
+                              type: 1,
+                              text: localization.certificate)),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              typeSelect = 2;
+                            });
+                          },
+                          child: DiplomaAndProtofile(
+                              active: typeSelect == 2,
+                              type: 2,
+                              text: localization.photos)),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
+          // SizedBox(height: 15.h),
 
-        // ///here i have to pass the list of diploma or protofile
-        // ///depend on the typeSelect (using if to choose which list)
-        SizedBox(
-          height: 30.h,
-        ),
-        RowOfImages(
-          userId: widget.userId,
-          typeSelect: typeSelect,
-          moreImage: widget.images,
-          imagePic: widget.imageCertificate,
-        ),
-      ],
+          // ///here i have to pass the list of diploma or protofile
+          // ///depend on the typeSelect (using if to choose which list)
+          SizedBox(
+            height: 30.h,
+          ),
+          RowOfImages(
+            userId: widget.userId,
+            typeSelect: typeSelect,
+            moreImage: widget.images,
+            imagePic: widget.imageCertificate,
+          ),
+        ],
+      ),
     );
   }
 }

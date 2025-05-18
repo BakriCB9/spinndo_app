@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,17 +17,32 @@ class DiplomaAndProtofile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: 50.h,
       decoration: BoxDecoration(
-          border: Border(
-              bottom: active
-                  ? BorderSide(
-                      color: Theme.of(context).primaryColor, width: 2.w)
-                  : BorderSide.none)),
-      child: Text(text,
+        border: Border(
+          bottom: active
+              ? BorderSide(
+            color: Theme.of(context).primaryColor,
+            width: 2.w,
+          )
+              : BorderSide.none,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 8.h),
+        child: Text(
+          text,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelMedium),
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: ColorManager.primary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
+
   }
 }
