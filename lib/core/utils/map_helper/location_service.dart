@@ -53,6 +53,9 @@ var permissionStatus = await location.hasPermission();
     if (!ans) {
       return left(Failure(''));
     }
+   
+    await  location.changeSettings(accuracy: LocationAccuracy.high);
+    
     return right(await location.getLocation());
     
     

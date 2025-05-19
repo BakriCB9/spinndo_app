@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/core/error/failure.dart';
-import 'package:app/features/profile/domain/entities/client_profile.dart';
 import 'package:app/features/profile/domain/repository/profile_repository.dart';
 
 @lazySingleton

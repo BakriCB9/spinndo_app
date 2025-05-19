@@ -59,8 +59,11 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
             emit(state.copyWith(getCurrentLocation: BaseErrorState(null))),
         (location) {
       getCurrentLocation = location;
+      print('we get Location Now  *************************************** ${location.latitude} and lang ${location.longitude}');
+      
       getCountriesAndCategories();
       emit(state.copyWith(getCurrentLocation: BaseSuccessState()));
+      
     });
   }
 

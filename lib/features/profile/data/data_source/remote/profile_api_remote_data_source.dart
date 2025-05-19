@@ -112,39 +112,42 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
 
   @override
   Future<ImageProfileResponse> addImagePhoto(File image) async {
-    try {
-      final imagePhoto = await MultipartFile.fromFile(
-        image.path,
-        filename: image.path.split('/').last,
-      );
-      final userToken = sharedPref.getString(CacheConstant.tokenKey);
-      final response = await _dio.post(ApiConstant.imageProfile,
-          data: FormData.fromMap({'image': imagePhoto}),
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $userToken"
-          }));
+    final imagePhoto = await MultipartFile.fromFile(
+      image.path,
+      filename: image.path.split('/').last,
+    );
+    final userToken = sharedPref.getString(CacheConstant.tokenKey);
+    final response = await _dio.post(ApiConstant.imageProfile,
+        data: FormData.fromMap({'image': imagePhoto}),
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $userToken"
+        }));
 
-      return ImageProfileResponse.fromJson(response.data);
-    } catch (e) {
-      throw RemoteAppException('Failed to add Image');
-    }
+    return ImageProfileResponse.fromJson(response.data);
+    // try {
+
+    // } catch (e) {
+    //   throw RemoteAppException('Failed to add Image');
+    // }
   }
 
   @override
   Future<DeleteImageResponse> deleteImage() async {
-    try {
-      final userToken = sharedPref.getString(CacheConstant.tokenKey);
-      final response = await _dio.post(ApiConstant.deleteImage,
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $userToken"
-          }),
-          data: {'for_delete': '1'});
-      return DeleteImageResponse.fromJson(response.data);
-    } catch (e) {
-      throw RemoteAppException('Failed to delete image,try again');
-    }
+    final userToken = sharedPref.getString(CacheConstant.tokenKey);
+    final response = await _dio.post(ApiConstant.deleteImage,
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $userToken"
+        }),
+        data: {'for_delete': '1'});
+    return DeleteImageResponse.fromJson(response.data);
+
+    // try {
+
+    // } catch (e) {
+    //   throw RemoteAppException('Failed to delete image,try again');
+    // }
   }
 
   @override

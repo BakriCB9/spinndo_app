@@ -291,10 +291,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i762.GetAllDiscountUseCase(gh<_i292.DiscountRepo>()));
     gh.factory<_i35.ChangePasswordUseCase>(
         () => _i35.ChangePasswordUseCase(gh<_i193.DrawerRepository>()));
-    gh.lazySingleton<_i734.ProfileRepository>(() => _i649.ProfileRepositoryImpl(
-          gh<_i437.ProfileRemoteDataSource>(),
-          gh<_i597.ProfileLocalDataSource>(),
-        ));
     gh.factory<_i757.PaymentsRepository>(() => _i246.PaymentsMethodImpl(
           gh<_i124.PaymentsRemoteDatasource>(),
           gh<_i460.SharedPreferences>(),
@@ -337,6 +333,11 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i35.AddServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
     gh.factory<_i600.DeleteServiceRequestUseCase>(() =>
         _i600.DeleteServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
+    gh.lazySingleton<_i734.ProfileRepository>(() => _i649.ProfileRepositoryImpl(
+          gh<_i279.SharedPreferencesUtils>(),
+          gh<_i437.ProfileRemoteDataSource>(),
+          gh<_i597.ProfileLocalDataSource>(),
+        ));
     gh.factory<_i456.AddPaymentMethodUseCase>(
         () => _i456.AddPaymentMethodUseCase(gh<_i757.PaymentsRepository>()));
     gh.factory<_i23.AddSubscribeUseCase>(

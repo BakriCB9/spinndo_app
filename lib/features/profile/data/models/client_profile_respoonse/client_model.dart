@@ -2,6 +2,7 @@ import 'package:app/features/profile/domain/entities/client_profile.dart';
 
 class ClientModel extends ClientProfile {
   const ClientModel({
+    required super.phoneNumber,
     required super.firstNameAr,
     required super.lastNameAr,
     required super.id,
@@ -18,6 +19,7 @@ class ClientModel extends ClientProfile {
 
   factory ClientModel.fromJson(Map<String, dynamic> json) => ClientModel(
         id: json['id'] as int,
+        phoneNumber: json['phone'] as String,
          firstNameAr:   json['first_name_ar'] as String,
          lastNameAr: json['last_name_ar'] as String,   
         firstName: json['first_name'] as String,

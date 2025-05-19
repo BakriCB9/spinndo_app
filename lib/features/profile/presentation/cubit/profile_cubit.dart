@@ -27,7 +27,6 @@ import 'package:app/features/profile/domain/use_cases/get_client_profile.dart';
 import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart';
 import 'package:app/features/profile/domain/use_cases/get_user_role.dart';
 import 'package:app/features/profile/presentation/cubit/profile_states.dart';
-import 'package:location/location.dart';
 
 import '../../domain/use_cases/update_provider_profile.dart';
 
@@ -67,6 +66,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TextEditingController lastNameArEditController = TextEditingController();
   TextEditingController serviceNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController webSiteController = TextEditingController();
   Categories? selectedCategory;
   List<Categories>? categoriesList;
   List<Categories>? catChildren;
@@ -86,6 +87,11 @@ class ProfileCubit extends Cubit<ProfileStates> {
     DateSelect(day: "Friday", start: "08:00", end: "15:00"),
     DateSelect(day: "Saturday", start: "08:00", end: "15:00"),
   ];
+
+  String? lat;
+  String? long;
+  // String?CountryName;
+
   DateSelect? dateSelected;
   LatLng? currentLocation;
   String? cityName;
@@ -95,26 +101,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
   List<Categories?> chosenCategories = [];
 
   ProviderProfileCity? city;
-//   void extractCategoryNames(ProviderProfileCategory? category,List<Categories>? categoriesListll) {
-//     List<Categories?> names = [];
-// Categories ?name;
-//     // Traverse up the parent hierarchy
-//     while (category != null) {
-//
-//       name = categoriesListll?.firstWhere(
-//             (element) => element.name == category?.name,
-//         orElse: () => Categories(name: "name", id: -50, children: []), // Return null if no match is found
-//       );
-//
-//       if (name != null&&name.id!=-50) {
-//         names.add(name);
-//       }
-//       category = category.parent ; // Move to the parent category
-//     }
-//
-//     // Reverse the list to start with the root category
-//     chosenCategories =names.reversed.toList();
-//   }
 
   void extractCategoryNames(
       ProviderProfileCategory? category, List<Categories>? categoriesList) {
@@ -152,10 +138,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   void slesctedProfileCat() {
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     print(selectedCategory?.id);
     print(providerProfile?.details?.category?.id);
-    print("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+
     selectedCategory?.id != providerProfile?.details?.category?.id
         ? emit(IsUpdated())
         : emit(IsNotUpdated());
@@ -183,13 +168,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
     final result = await _getProviderProfile();
     result.fold((failure) {
-      print(
-          'we emit error state in getProviderProfile now wwwwwwwwwwwwwwwwwwwwwwwwwwww');
       emit(
         GetProfileErrorr(failure.message),
       );
     }, (data) {
-      print('now i currently get provider profile');
       providerProfile = ProviderProfile(
           id: data.id,
           email: data.email,
@@ -204,8 +186,29 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-  void updateProviderProfile(
-      UpdateProviderRequest updateRequest, int typeEdit) async {
+  void updateProviderProfile(int typeEdit) async {
+    final updateRequest;
+    if (typeEdit == 1) {
+      updateRequest = UpdateProviderRequest(
+        phoneNumber: phoneNumberController.text,
+        firstNameAr: firstNameArEditController.text,
+        lastNameAr: lastNameArEditController.text,
+        firstName: firstNameEditController.text,
+        lastName: lastNameEditController.text,
+      );
+    } else if (typeEdit == 2) {
+      updateRequest = UpdateProviderRequest(
+          latitudeService: lat,
+          longitudeService: long,
+          cityNameService: cityName,
+          categoryIdService: selectedCategory?.id.toString(),
+          nameService: serviceNameController.text,
+          descriptionService: descriptionController.text,
+          websiteService: webSiteController.text);
+    } else {
+      updateRequest = UpdateProviderRequest(listOfDay: dateSelect);
+    }
+    //
     emit(UpdateLoading());
     final result = await _updateProviderProfile(updateRequest, typeEdit);
     result.fold((failure) => emit(UpdateError(failure.message)),
@@ -215,17 +218,15 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   void getUserRole() {
-    print('the user role is now bakkkkar aweja ');
     emit(GetProfileLoading());
 
     final result = _getUserRole();
-    print('the result of role is ${result}');
+
     result.fold(
         (failure) => emit(
               GetUserRoleErrorr(failure.message),
             ), (role) {
       if (role == "ServiceProvider") {
-        print('we stand in userProvider role now');
         getProviderProfile();
       } else if (role == "Client") {
         getClientProfile();
@@ -248,27 +249,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
     );
   }
 
-// Future<void> getCategories() async {
-//   // emit(CountryCategoryLoading());
-//   final result = await _getCategories();
-  //   result.fold((failure) {
-  //     failureMessegae = failure.message;
-  //     // emit(CountryCategoryError(failure.message)),
-  //   }, (categories) {
-  //     categoriesList = categories;
-  //     // for(int i=0;i<categoriesList!.length;i++){
-  //     //   var chid=categoriesList?[i].children;
-  //     //   for(int j=0;j<chid!.length;i++){
-  //     //     childCategoryList?[i].add(chid[j]);
-  //     //   }
-  //     // }
-  //     // }
-  //     // print('the final list is now of child ############################  ${childCategoryList}');
-  //     // emit(CountryCategorySuccess());
-  //   });
-  // }
-
-  void updateClientProfile(UpdateAccountProfile updateRequest) async {
+  void updateClientProfile() async {
+    final updateRequest = UpdateAccountProfile(
+        phoneNumber: phoneNumberController.text,
+        firstNameAr: firstNameArEditController.text,
+        lastNameAr: lastNameArEditController.text,
+        firstName: firstNameEditController.text,
+        lastName: lastNameEditController.text);
     emit(UpdateLoading());
     final result = await _updateClientProfile(updateRequest);
     result.fold((failure) => emit(UpdateError(failure.message)),
@@ -277,16 +264,23 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-  updateInfo(
-      {required String curFirst,
-       required String curFirstAr,
-       required String newFirstAr,
-       required String curLastAr,
-       required String newLastAr,
-      required String newFirst,
-      required String curLast,
-      required String newLast}) {
-    if (curFirst == newFirst && curFirstAr == newFirstAr&& curLast == newLast&& curLastAr == newLastAr) {
+  updateInfo({
+    required String curFirst,
+    required String curFirstAr,
+    required String newFirstAr,
+    required String curLastAr,
+    required String newLastAr,
+    required String newFirst,
+    required String curLast,
+    required String newLast,
+    required String curphoneNumber,
+    required String newPhoneNumber,
+  }) {
+    if (curphoneNumber == newPhoneNumber &&
+        curFirst == newFirst &&
+        curFirstAr == newFirstAr &&
+        curLast == newLast &&
+        curLastAr == newLastAr) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());
@@ -296,9 +290,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
   updateJobDetails(
       {required String curServiceName,
       required String newServiceName,
+      required String curWebSite,
+      required String newWebSite,
       required String curDescription,
       required String newDescription}) {
-    if (curServiceName == newServiceName && curDescription == newDescription) {
+    if (curServiceName == newServiceName &&
+        curDescription == newDescription &&
+        curWebSite == newWebSite) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());
@@ -372,7 +370,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   Future<void> getCurrentLocation() async {
-    
     // try {
     //   emit(GetUpdatedLocationLoading());
     //   LocationData getCurrentLocation = await LocationService.getLocationData();
@@ -383,11 +380,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
     //   emit(GetUpdatedLocationErrorr("Couldn't get your location"));
     // }
     emit(GetUpdatedLocationLoading());
-    final result=await LocationService.getLocationData();
-    result.fold((failure)=>emit(GetUpdatedLocationErrorr("Couldn't get your location")), (location){
-         currentLocation =
-          LatLng(location.latitude!, location.longitude!);
-             emit(GetUpdatedLocationSuccess());
+    final result = await LocationService.getLocationData();
+    result.fold(
+        (failure) =>
+            emit(GetUpdatedLocationErrorr("Couldn't get your location")),
+        (location) {
+      currentLocation = LatLng(location.latitude!, location.longitude!);
+      emit(GetUpdatedLocationSuccess());
     });
   }
 

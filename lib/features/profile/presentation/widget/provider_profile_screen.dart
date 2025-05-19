@@ -1,10 +1,10 @@
 import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_states.dart';
-import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +25,6 @@ class ProviderProfileScreen extends StatefulWidget {
     required this.providerProfile,
     super.key,
   });
-  // const ProviderProfileScreen({required this.providerProfile, super.key});
 
   @override
   State<ProviderProfileScreen> createState() => _ProviderProfileScreenState();
@@ -33,6 +32,7 @@ class ProviderProfileScreen extends StatefulWidget {
 
 class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   final _profileCubit = serviceLocator.get<ProfileCubit>();
+  final _sharedPreferencesUtils = serviceLocator.get<SharedPreferencesUtils>();
   List<String> localSocialList = [];
   final List<String> listOfSocialLocal = [
     "facebook",
@@ -52,11 +52,9 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
         return e!.platform!;
       }).toList();
     }
-    print('the lsit of local social from api is $localSocialList');
-    // print('');
-    // print('the answer is ${widget.providerProfile.socialLinks}');
-    // print('');
-    int? myid = sharedPref.getInt(CacheConstant.userId);
+
+    int? myid =
+        _sharedPreferencesUtils.getData(key: CacheConstant.userId) as int?;
     _profileCubit.latitu = widget.providerProfile.details!.latitude!;
     _profileCubit.longti = widget.providerProfile.details!.longitude!;
     _profileCubit.city = widget.providerProfile.details?.city;
@@ -78,8 +76,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
         // controller: _control,
         slivers: [
           SliverPersistentHeader(
-            delegate: SliverPersistentDelegate(widget.providerProfile.id!, size,
-                widget.providerProfile.imagePath),
+            delegate: SliverPersistentDelegate(userId:  widget.providerProfile.id!,size:size,
+              image:widget.providerProfile.imagePath,myId: myid!),
             pinned: true,
           ),
           SliverFillRemaining(
@@ -90,6 +88,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UserAccount(
+                    phoneNumber: widget.providerProfile.phoneNumber!,
                     firstNameAr: widget.providerProfile.firstNameAr!,
                     lastNameAr: widget.providerProfile.lastNameAr!,
                     userId: widget.providerProfile.id,
@@ -101,6 +100,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
+                    webSite:widget.providerProfile.details!.website ,
                     lat: widget.providerProfile.details!.latitude!,
                     lng: widget.providerProfile.details!.longitude!,
                     cityName:

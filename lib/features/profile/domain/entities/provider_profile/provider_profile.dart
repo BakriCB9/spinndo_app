@@ -9,6 +9,7 @@ class ProviderProfile {
   String? lastNameAr;
   String? email;
   dynamic imagePath;
+  String?phoneNumber;
   List<ProviderProfileSocialLinks?>? socialLinks;
   ProviderProfileDetailsJob? details;
   ProviderProfile({
@@ -21,9 +22,8 @@ class ProviderProfile {
     this.imagePath,
     this.socialLinks,
     this.details,
+    this.phoneNumber
   }) {
-    print('we create provider profile now');
-    print('the social linke of list is ${socialLinks}');
     // print('the social linke of list is ${socialLinks?[0].platform}');
   }
 }

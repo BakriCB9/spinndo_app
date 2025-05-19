@@ -17,7 +17,12 @@ class HandleException {
       return localization.noInternetConnection;
     } else if (exception is FormatException) {
       return localization.dataParsingException;
-    } else {
+    }else if(exception is LocalAppException){
+      return '';
+      // return localization.un;
+    } 
+    
+    else {
       return localization.unexpectederror;
     }
   }
