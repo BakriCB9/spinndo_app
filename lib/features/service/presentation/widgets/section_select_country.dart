@@ -13,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class SectionSelectCountry extends StatefulWidget {
   final ServiceSettingCubit serviceCubit;
+
   const SectionSelectCountry({required this.serviceCubit, super.key});
 
   @override
@@ -25,6 +26,8 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
     final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +35,7 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
         SizedBox(height: 30.h),
         Text(
           localization.chooseCountry,
-          style: theme.textTheme.titleMedium!.copyWith(fontSize: 32.sp,color: ColorManager.textColor),
+          style: theme.textTheme.titleMedium!,
         ),
         SizedBox(height: 8.h),
         Row(
@@ -40,13 +43,12 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1), // لون الظل
-                      blurRadius: 8, // مدى ضبابية الظل
-                      offset: Offset(0, 4), // اتجاه الظل
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
                     ),
                   ],
                 ),
@@ -56,35 +58,31 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
                     width: 24,
                     height: 24,
                     colorFilter: ColorFilter.mode(
-                      widget.serviceCubit.selectedCountry == null
-                          ? Colors.black
-                          :ColorManager.primary,
+                      widget.serviceCubit.selectedCountry != null
+                          ?  (theme.textTheme.labelMedium?.color ??
+                          ColorManager.textColorLight)
+                          : ColorManager.primary,
                       BlendMode.srcIn,
                     ),
                   ),
                   dropdownColor: theme.primaryColorDark,
-                  hint: Text(
-                    localization.country,
-                    style: theme.textTheme.displayMedium?.copyWith(
-                      color: Colors.grey,
-                    ),
+                  hint: Text(localization.country,
+                      style: theme.textTheme.labelMedium
                   ),
                   menuMaxHeight: 200,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
                   value: widget.serviceCubit.selectedCountry,
                   items: widget.serviceCubit.countriesList!
-                      .map((e) => DropdownMenuItem<Countries>(
-                    value: e,
-                    child: Text(
-                      e.name,
-                      style: theme.textTheme.displayMedium?.copyWith(
-                        color:Colors.black
-                      ),
-                    ),
-                  ))
+                      .map((e) =>
+                      DropdownMenuItem<Countries>(
+                        value: e,
+                        child: Text(e.name,
+                          style: theme.textTheme.displayMedium),
+                      ))
                       .toList(),
                   onChanged: (value) {
                     selectedCountryService(value!);
@@ -94,85 +92,80 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
             ),
           ],
         ),
-
-
         widget.serviceCubit.selectedCountry != null &&
-                widget.serviceCubit.selectedCountry?.id != -1
+            widget.serviceCubit.selectedCountry?.id != -1
             ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 30.h),
-                  Text(
-                    localization.chooseCity,
-                    textAlign: TextAlign.start,
-                    style:
-                    theme.textTheme.titleMedium!.copyWith(fontSize: 32.sp,color: ColorManager.textColor),
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: DropdownButtonFormField<Cities>(
-                            dropdownColor: theme.primaryColorDark,
-                            hint: Text(
-                              localization.city,
-                              style: theme.textTheme.displayMedium?.copyWith(
-                                color: Colors.grey,  // لون النص قبل الاختيار (فضي)
-                              ),
-                            ),
-                            icon: SvgPicture.asset(
-                              'asset/icons/drop_down.svg',
-                              width: 24,
-                              height: 24,
-                              colorFilter: ColorFilter.mode(
-                                widget.serviceCubit.selectedCity == null
-                                    ? Colors.black
-                                    : ColorManager.primary,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            value: widget.serviceCubit.selectedCity,
-                            menuMaxHeight: 200,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            ),
-                            items: widget.serviceCubit.citiesList
-                                ?.map((e) => DropdownMenuItem<Cities>(
-                              value: e,
-                              child: Text(
-                                e.name,
-                                style: theme.textTheme.displayMedium?.copyWith(
-                                  color: Colors.black
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 30.h),
+            Text(
+              localization.chooseCity,
+              textAlign: TextAlign.start,
+              style:
+              theme.textTheme.titleMedium!.copyWith(fontSize: 32.sp),
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: DropdownButtonFormField<Cities>(
+                      dropdownColor: theme.primaryColorDark,
+                      hint: Text(localization.city,
+                          style: theme.textTheme.labelMedium
 
-                                ),
-                              ),
-                            ))
-                                .toList(),
-                            onChanged: (value) {
-                              selectedCityService(value!);
-                            },
-                          ),
+                           ),
+                      icon: SvgPicture.asset(
+                        'asset/icons/drop_down.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: ColorFilter.mode(
+                          widget.serviceCubit.selectedCountry != null
+                              ?  (theme.textTheme.labelMedium?.color ??
+                              ColorManager.textColorLight)
+                              : ColorManager.primary,
+                          BlendMode.srcIn,
                         ),
                       ),
-                    ],
-                  )
-
-
-                ],
-              )
+                      value: widget.serviceCubit.selectedCity,
+                      menuMaxHeight: 200,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                      ),
+                      items: widget.serviceCubit.citiesList
+                          ?.map((e) =>
+                          DropdownMenuItem<Cities>(
+                            value: e,
+                            child: Text(
+                              e.name,
+                              style: theme.textTheme.displayMedium
+                                  ,
+                            ),
+                          )
+                      )
+                          .toList(),
+                      onChanged: (value) {
+                        selectedCityService(value!);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        )
             : const SizedBox(),
         SizedBox(height: 30.h),
         GestureDetector(
@@ -183,10 +176,14 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
             duration: Duration(milliseconds: 300),
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: widget.serviceCubit.isCurrent ? Colors.amber.shade100 : Colors.grey.shade100,
+              color: widget.serviceCubit.isCurrent
+                  ? Colors.amber.shade100
+                  : isDarkMode?ColorManager.darkTextFieldBg:Colors.grey.shade100,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: widget.serviceCubit.isCurrent ? Colors.amber : Colors.grey.shade300,
+                color: widget.serviceCubit.isCurrent
+                    ? Colors.amber
+                    : isDarkMode?ColorManager.textColorLight: Colors.grey.shade300,
                 width: 1.5,
               ),
               boxShadow: widget.serviceCubit.isCurrent
@@ -202,15 +199,18 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
             child: Row(
               children: [
                 Icon(
-                  widget.serviceCubit.isCurrent ? Icons.check_circle : Icons.location_on_outlined,
-                  color: widget.serviceCubit.isCurrent ? Colors.amber : Colors.grey,
+                  widget.serviceCubit.isCurrent
+                      ? Icons.check_circle
+                      : Icons.location_on_outlined,
+                  color: widget.serviceCubit.isCurrent
+                      ? Colors.amber
+                      : Colors.grey,
                 ),
                 SizedBox(width: 12),
                 Text(
                   localization.currentLocation,
-                  style: theme.textTheme.displayMedium?.copyWith(
+                  style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: widget.serviceCubit.isCurrent ? Colors.black87 : Colors.black54,
                   ),
                 ),
               ],
@@ -222,35 +222,42 @@ class _SectionSelectCountryState extends State<SectionSelectCountry> {
             alignment: Alignment.topCenter,
             duration: const Duration(milliseconds: 500),
             child: (widget.serviceCubit.isCurrent != false &&
-                    widget.serviceCubit.selectedCountry?.id == null)
+                widget.serviceCubit.selectedCountry?.id == null)
                 ? Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(localization.distance,
-                          style: theme.textTheme.displayMedium),
-                      SizedBox(height: 10.h),
-                      Slider(
-                        activeColor: theme.primaryColor,
-                        inactiveColor: drawerCubit.themeMode == ThemeMode.dark
-                            ? Theme.of(context).primaryColorLight
-                            : Colors.grey.shade300,
-                        value: widget.serviceCubit.selectedDistance!,
-                        min: 0,
-                        max: 25,
-                        divisions: 5,
-                        label:
-                            "${widget.serviceCubit.selectedDistance?.toInt() ?? 10} ${localization.km}",
-                        onChanged: (value) {
-                          distanceSelect(value);
-                        },
-                      ),
-                      Text(
-                          "${widget.serviceCubit.selectedDistance?.toInt() ?? 10} ${localization.km}",
-                          style: Theme.of(context).textTheme.displayMedium),
-                      SizedBox(height: 16.h),
-                    ],
-                  )
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(localization.distance,
+                    style: theme.textTheme.displayMedium),
+                SizedBox(height: 10.h),
+                Slider(
+                  activeColor: theme.primaryColor,
+                  inactiveColor: drawerCubit.themeMode == ThemeMode.dark
+                      ? Theme
+                      .of(context)
+                      .primaryColorLight
+                      : Colors.grey.shade300,
+                  value: widget.serviceCubit.selectedDistance!,
+                  min: 0,
+                  max: 25,
+                  divisions: 5,
+                  label:
+                  "${widget.serviceCubit.selectedDistance?.toInt() ??
+                      10} ${localization.km}",
+                  onChanged: (value) {
+                    distanceSelect(value);
+                  },
+                ),
+                Text(
+                    "${widget.serviceCubit.selectedDistance?.toInt() ??
+                        10} ${localization.km}",
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .displayMedium),
+                SizedBox(height: 16.h),
+              ],
+            )
                 : const SizedBox()),
       ],
     );

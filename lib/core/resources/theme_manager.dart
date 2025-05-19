@@ -36,6 +36,7 @@ class ThemeManager {
     ),
     primaryColorLight: ColorManager.black,
     primaryColorDark: Colors.white,
+    shadowColor: ColorManager.lightShadow,
     scaffoldBackgroundColor: Colors.white.withOpacity(0.97),
     appBarTheme: AppBarTheme(
       titleTextStyle: TextStyle(
@@ -87,48 +88,51 @@ class ThemeManager {
     ),
 
     textTheme: TextTheme(
-      labelLarge: getSemiBoldStyle(
+      labelLarge: getMediumStyle(
           color: ColorManager.primary,
           fontSize: FontSize.s32.sp,
           fontFamily: "Lato"),
-      labelMedium: getSemiBoldStyle(
-          color: ColorManager.black,
+      labelMedium: getMediumStyle(
+          color: ColorManager.textColorLight,
           fontSize: FontSize.s30.sp,
           fontFamily: "Lato"),
-      labelSmall: getSemiBoldStyle(
+      labelSmall: getMediumStyle(
           color: ColorManager.grey,
           fontSize: FontSize.s28.sp,
           fontFamily: "Lato"),
       //drop down
       displayMedium:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+      getRegularStyle(color: ColorManager.grey2, fontSize: FontSize.s30.sp,fontFamily: "Lato"),
       //guest
       titleSmall:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s24.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s24.sp,fontFamily: "Lato"),
       //text butt
       titleMedium: getMediumStyle(
-          color: ColorManager.black,
-          fontSize: FontSize.s28.sp,
+          color: ColorManager.textColor,
+          fontSize: FontSize.s32.sp,
           fontFamily: "Lato",
           fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
         color: ColorManager.black,
         fontSize: FontSize.s48.sp,
+          fontFamily: "Lato"
       ),
       //text in body
       bodySmall:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s32.sp),
+      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s32.sp,fontFamily: "Lato"),
       //client word
       bodyMedium: getMediumStyle(
         color: ColorManager.black,
         fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"
       ),
 
       //elevated butt
       bodyLarge: getBoldStyle(
         color: ColorManager.white,
         fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"
       ),
     ),
 
@@ -188,6 +192,7 @@ class ThemeManager {
     ///
    colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primaryLight),
     fontFamily: 'Lato',
+    shadowColor: ColorManager.darkShadow,
     menuButtonTheme: MenuButtonThemeData(
         style: ButtonStyle(
             textStyle: WidgetStatePropertyAll(TextStyle(
@@ -198,22 +203,22 @@ class ThemeManager {
             foregroundColor: WidgetStatePropertyAll(ColorManager.white))),
     dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
-            backgroundColor: WidgetStatePropertyAll(ColorManager.darkBlue)),
+            backgroundColor: WidgetStatePropertyAll(ColorManager.darkTextFieldBg)),
         textStyle: TextStyle(fontSize: 30.sp, color: Colors.white)),
     bottomSheetTheme:
-    BottomSheetThemeData(backgroundColor: ColorManager.darkBlue),
+    BottomSheetThemeData(backgroundColor: ColorManager.darkTextFieldBg),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: ColorManager.darkBlue,
+        backgroundColor: ColorManager.darkTextFieldBg,
         foregroundColor: ColorManager.white),
-    primaryColor: ColorManager.primary,
+    primaryColor: ColorManager.primaryDark,
     iconTheme: IconThemeData(color: ColorManager.primary, size: 40.sp),
-    dialogBackgroundColor: ColorManager.darkBlue,
+    dialogBackgroundColor: ColorManager.darkTextFieldBg,
     primaryColorLight: ColorManager.white,
-    primaryColorDark: ColorManager.darkBlue,
+    primaryColorDark: ColorManager.darkTextFieldBg,
     scaffoldBackgroundColor: Colors.transparent,
     appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: ColorManager.darkBlue,
+          systemNavigationBarColor: ColorManager.darkTextFieldBg,
         ),
         backgroundColor: Colors.transparent,
         foregroundColor: ColorManager.white,
@@ -244,7 +249,7 @@ class ThemeManager {
     ),
 
     cardTheme: CardTheme(
-      color: ColorManager.darkBlue,
+      color: ColorManager.darkTextFieldBg,
       elevation: 3,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSize.s16.r),
@@ -253,17 +258,17 @@ class ThemeManager {
     ),
 
     textTheme: TextTheme(
-      labelLarge: getSemiBoldStyle(
-          color: ColorManager.primary, fontSize: FontSize.s32.sp),
-      labelMedium: getSemiBoldStyle(
-          color: ColorManager.white, fontSize: FontSize.s30.sp),
-      labelSmall: getSemiBoldStyle(
+      labelLarge: getMediumStyle(
+          color: ColorManager.primary, fontSize: FontSize.s32.sp,fontFamily: "Lato"),
+      labelMedium: getMediumStyle(
+          color: ColorManager.textColorLight, fontSize: FontSize.s30.sp,fontFamily: "Lato"),
+      labelSmall: getMediumStyle(
           color: ColorManager.grey,
           fontSize: FontSize.s28.sp,
           fontFamily: "Lato"),
       //drop down
       displayMedium: getRegularStyle(
-          color: ColorManager.white,
+          color: ColorManager.greyWhite,
           fontSize: FontSize.s30.sp,
           fontFamily: "Lato"),
       //guest
@@ -273,33 +278,36 @@ class ThemeManager {
           fontFamily: "Lato"),
       //text butt
       titleMedium: getMediumStyle(
-          color: ColorManager.white,
-          fontSize: FontSize.s28.sp,
+          color: ColorManager.lightGrey,
+          fontSize: FontSize.s32.sp,
           fontFamily: "Lato",
           fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
         color: ColorManager.white,
         fontSize: FontSize.s48.sp,
+          fontFamily: "Lato"
       ),
       //text in body
       bodySmall:
-      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s32.sp),
+      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s32.sp,fontFamily: "Lato"),
       //client word
       bodyMedium: getMediumStyle(
         color: ColorManager.white,
         fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"
       ),
 
       //elevated butt
       bodyLarge: getBoldStyle(
         color: ColorManager.white,
         fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"
       ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
-      fillColor: ColorManager.darkBlue,
+      fillColor: ColorManager.darkTextFieldBg,
       prefixIconColor: ColorManager.primary,
       suffixIconColor: ColorManager.primary,
       contentPadding: EdgeInsets.all(AppPadding.p8.sp),

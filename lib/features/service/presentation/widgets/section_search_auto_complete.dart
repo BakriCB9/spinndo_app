@@ -26,6 +26,7 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
   late ServiceCubit _serviceCubit;
 
   late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
+
   @override
   void initState() {
     _serviceCubit = serviceLocator.get<ServiceCubit>();
@@ -54,23 +55,22 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8,
-                offset: Offset(0, 4),
+                color: Theme.of(context).shadowColor,
+                blurRadius: 5,
+                offset: Offset(0, 1),
               ),
             ],
             borderRadius: BorderRadius.circular(16),
           ),
           child: TextField(
             style: theme.bodyMedium?.copyWith(
-              color: ColorManager.grey2,
+              // color: ColorManager.grey2,
               fontSize: 28.sp,
             ),
             controller: text,
             focusNode: focusNode,
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white,
               hintText: localization.serviceOrProviderName,
               hintStyle: TextStyle(color: ColorManager.grey),
               prefixIcon: AnimatedBuilder(
@@ -87,7 +87,8 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
                   );
                 },
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,
@@ -103,8 +104,6 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
             ),
           ),
         );
-
-
       },
       optionsViewBuilder: (context, onSelected, options) {
         return Align(
@@ -118,11 +117,11 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorDark,
                   borderRadius: BorderRadius.circular(16.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black12,
+                      color:Theme.of(context).shadowColor,
                       blurRadius: 6,
                       offset: Offset(0, 4),
                     ),
@@ -144,7 +143,6 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
                   hoverColor: Colors.amber.withOpacity(0.2),
                 ),
               );
-
             },
           ),
         );

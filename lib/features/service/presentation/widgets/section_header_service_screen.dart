@@ -41,10 +41,11 @@ class _SectionHeaderServiceScreenState
             width: 24,
             height: 24,
             colorFilter: ColorFilter.mode(
-              ColorManager.grey2,
+              Theme.of(context).primaryColorLight,
               BlendMode.srcIn,
             ),
           ),
+
           onPressed: () {
             if (hasToken == null) {
               showDialog(
@@ -131,7 +132,7 @@ class _SectionHeaderServiceScreenState
                   width: 24,
                   height: 24,
                   colorFilter: ColorFilter.mode(
-                    ColorManager.grey2,
+                    Theme.of(context).primaryColorLight,
                     BlendMode.srcIn,
                   ),
                 ),

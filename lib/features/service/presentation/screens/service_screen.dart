@@ -1,3 +1,4 @@
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/error_location_widget.dart';
 import 'package:app/core/utils/error_network_widget.dart';
@@ -55,224 +56,231 @@ class _ServiceScreenState extends State<ServiceScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+        decoration: isDarkMode
+            ? const BoxDecoration(
+            color: ColorManager.darkBg
+        ): null,
       child: Scaffold(
           drawer: CustomDrawer(),
           body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SectionHeaderServiceScreen(),
-                  SizedBox(height: 40.h),
-                  Expanded(
-                    child:
-                        BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
-                      bloc: _serviceSettingCubit,
-                      buildWhen: (pre, cur) {
-                        if (pre.getCurrentLocation != cur.getCurrentLocation) {
-                          return true;
-                        }
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SectionHeaderServiceScreen(),
+                    SizedBox(height: 40.h),
+                    Expanded(
+                      child:
+                          BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
+                        bloc: _serviceSettingCubit,
+                        buildWhen: (pre, cur) {
+                          if (pre.getCurrentLocation != cur.getCurrentLocation) {
+                            return true;
+                          }
 
-                        return false;
-                      },
-                      builder: (context, state) {
-                        if (state.getCurrentLocation is BaseLoadingState) {
-                          return _dummyScreen(theme, localization);
-                        } else if (state.getCurrentLocation
-                            is BaseSuccessState) {
-                          return BlocBuilder<ServiceSettingCubit,
-                              ServiceSettingState>(
-                            bloc: _serviceSettingCubit,
-                            buildWhen: (pre, cur) {
-                              if (pre.getCountryAndCategory !=
-                                  cur.getCountryAndCategory) {
-                                return true;
-                              }
-                              return false;
-                            },
-                            builder: (context, state) {
-                              if (state.getCountryAndCategory
-                                  is BaseLoadingState) {
-                                return _dummyScreen(theme, localization);
-                              }
-                              //
-                              //Error connection country and category
-                              //
-                              else if (state.getCountryAndCategory
-                                  is BaseErrorState) {
-                                final message = state.getCountryAndCategory
-                                    as BaseErrorState;
-                                return ErrorNetworkWidget(
-                                    message: message.error.toString(),
-                                    onTap: () => _serviceSettingCubit
-                                        .getCountriesAndCategories());
-                              }
-                              //
-                              //Success Conection country and category
-                              //
-                              else if (state.getCountryAndCategory
-                                  is BaseSuccessState) {
-                                return _serviceSettingCubit.categoriesList ==
-                                            null ||
-                                        _serviceSettingCubit.countriesList ==
-                                            null
-                                    ? SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                1.2,
-                                        child: Center(
-                                          child: Column(
-                                            children: [
-                                              // Text(state.message,
-                                              //     style: Theme.of(context).textTheme.bodySmall),
-                                              const Icon(
-                                                Icons.replay_outlined,
-                                                color: ColorManager.primary,
-                                              ),
+                          return false;
+                        },
+                        builder: (context, state) {
+                          if (state.getCurrentLocation is BaseLoadingState) {
+                            return _dummyScreen(theme, localization);
+                          } else if (state.getCurrentLocation
+                              is BaseSuccessState) {
+                            return BlocBuilder<ServiceSettingCubit,
+                                ServiceSettingState>(
+                              bloc: _serviceSettingCubit,
+                              buildWhen: (pre, cur) {
+                                if (pre.getCountryAndCategory !=
+                                    cur.getCountryAndCategory) {
+                                  return true;
+                                }
+                                return false;
+                              },
+                              builder: (context, state) {
+                                if (state.getCountryAndCategory
+                                    is BaseLoadingState) {
+                                  return _dummyScreen(theme, localization);
+                                }
+                                //
+                                //Error connection country and category
+                                //
+                                else if (state.getCountryAndCategory
+                                    is BaseErrorState) {
+                                  final message = state.getCountryAndCategory
+                                      as BaseErrorState;
+                                  return ErrorNetworkWidget(
+                                      message: message.error.toString(),
+                                      onTap: () => _serviceSettingCubit
+                                          .getCountriesAndCategories());
+                                }
+                                //
+                                //Success Conection country and category
+                                //
+                                else if (state.getCountryAndCategory
+                                    is BaseSuccessState) {
+                                  return _serviceSettingCubit.categoriesList ==
+                                              null ||
+                                          _serviceSettingCubit.countriesList ==
+                                              null
+                                      ? SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.height /
+                                                  1.2,
+                                          child: Center(
+                                            child: Column(
+                                              children: [
+                                                // Text(state.message,
+                                                //     style: Theme.of(context).textTheme.bodySmall),
+                                                const Icon(
+                                                  Icons.replay_outlined,
+                                                  color: ColorManager.primary,
+                                                ),
 
-                                              TextButton(
-                                                onPressed: () {
-                                                  _serviceSettingCubit
-                                                      .getCountriesAndCategories();
-                                                },
-                                                child: Text(
-                                                  localization.reload,
+                                                TextButton(
+                                                  onPressed: () {
+                                                    _serviceSettingCubit
+                                                        .getCountriesAndCategories();
+                                                  },
+                                                  child: Text(
+                                                    localization.reload,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium!
+                                                        .copyWith(
+                                                            fontSize: 30.sp),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const SectionSearchAutoComplete(),
+                                                SizedBox(height: 40.h),
+                                                SectionSelectCountry(
+                                                    serviceCubit:
+                                                        _serviceSettingCubit),
+                                                SizedBox(height: 40.h),
+                                                Text(
+                                                  localization.chooseCategory,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleMedium!
-                                                      .copyWith(
-                                                          fontSize: 30.sp),
+                                                      .copyWith(fontSize: 32.sp,),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SectionSearchAutoComplete(),
-                                              SizedBox(height: 30.h),
-                                              SectionSelectCountry(
-                                                  serviceCubit:
-                                                      _serviceSettingCubit),
-                                              Text(
-                                                localization.chooseCategory,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium!
-                                                    .copyWith(fontSize: 32.sp,color: ColorManager.textColor),
-                                              ),
-                                              SizedBox(height: 8.h),
-                                              CascadingDropdowns(
-                                                categories: _serviceSettingCubit
-                                                    .categoriesList,
-                                                isService: true,
-                                              ),
-                                              SizedBox(height: 10.h),
-                                              Align(
-                                                alignment: AlignmentDirectional
-                                                    .centerEnd,
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 16.w,
-                                                      vertical: 8.h),
-                                                  child: InkWell(
-                                                      onTap: () {
-                                                        // _serviceSettingCubit
-                                                        //     .resetSetting();
-                                                      },
-                                                      child: Text(
-                                                          localization.resetAll,
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .titleMedium!
-                                                              .copyWith(
-                                                                  color: ColorManager
-                                                                      .primary))),
+                                                SizedBox(height: 8.h),
+                                                CascadingDropdowns(
+                                                  categories: _serviceSettingCubit
+                                                      .categoriesList,
+                                                  isService: true,
                                                 ),
-                                              ),
-                                              SizedBox(height: 60.h),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  if (_serviceSettingCubit.selectedCountry == null &&
-                                                      _serviceSettingCubit
-                                                              .selectedCategory ==
-                                                          null &&
-                                                      _serviceSettingCubit
-                                                              .isCurrent ==
-                                                          false) {
-                                                    _showSnack(localization
-                                                        .filterOnlocationOrCategory);
-                                                    return;
-                                                  }
-
-                                                  if (_serviceSettingCubit
-                                                          .selectedCategory
-                                                          ?.id ==
-                                                      -1) {
-                                                    Navigator.of(context)
-                                                        .pushNamed(Routes
-                                                            .getMainCategoryScreen);
-                                                    // _serviceSettingCubit
-                                                    //     .getAllMainCategory();
-                                                  } else {
-                                                    _serviceSettingCubit
-                                                        .getServiceAndDiscount();
-                                                    Navigator.of(context).pushNamed(
-                                                        Routes
-                                                            .serviceFilterScreen,
-                                                        arguments:
-                                                            _serviceSettingCubit);
-                                                  }
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  minimumSize: const Size(double.infinity, 48),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(36),
+                                                SizedBox(height: 10.h),
+                                                Align(
+                                                  alignment: AlignmentDirectional
+                                                      .centerEnd,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal: 16.w,
+                                                        vertical: 8.h),
+                                                    child: InkWell(
+                                                        onTap: () {
+                                                          // _serviceSettingCubit
+                                                          //     .resetSetting();
+                                                        },
+                                                        child: Text(
+                                                            localization.resetAll,
+                                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                                fontSize: FontSize.s16,
+                                                                decoration: TextDecoration.underline,
+                                                                decorationColor: ColorManager.primary,
+                                                                color: ColorManager.primary
+                                                            ),
+                                                           ),
+                                                    ),
                                                   ),
                                                 ),
+                                                SizedBox(height: 60.h),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    if (_serviceSettingCubit.selectedCountry == null &&
+                                                        _serviceSettingCubit
+                                                                .selectedCategory ==
+                                                            null &&
+                                                        _serviceSettingCubit
+                                                                .isCurrent ==
+                                                            false) {
+                                                      _showSnack(localization
+                                                          .filterOnlocationOrCategory);
+                                                      return;
+                                                    }
 
-                                                child: Text(
-                                                    localization.startSearch,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyLarge),
-                                              ),
-                                            ],
-                                          ),
-                                        ));
-                              } else {
-                                return const SizedBox();
-                              }
-                            },
-                          );
-                        }
-                        //Error get Current Location
-                        else if (state.getCurrentLocation is BaseErrorState) {
-                          return ErrorLocationWidget(getCurrentLocation: () {
-                            _serviceSettingCubit.getCurrentLocationFilter();
-                          });
-                        }
-                        return const SizedBox();
-                      },
+                                                    if (_serviceSettingCubit
+                                                            .selectedCategory
+                                                            ?.id ==
+                                                        -1) {
+                                                      Navigator.of(context)
+                                                          .pushNamed(Routes
+                                                              .getMainCategoryScreen);
+                                                      // _serviceSettingCubit
+                                                      //     .getAllMainCategory();
+                                                    } else {
+                                                      _serviceSettingCubit
+                                                          .getServiceAndDiscount();
+                                                      Navigator.of(context).pushNamed(
+                                                          Routes
+                                                              .serviceFilterScreen,
+                                                          arguments:
+                                                              _serviceSettingCubit);
+                                                    }
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    minimumSize: const Size(double.infinity, 48),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(36),
+                                                    ),
+                                                  ),
+
+                                                  child: Text(
+                                                      localization.startSearch,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyLarge),
+                                                ),
+                                              ],
+                                            ),
+                                          ));
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                            );
+                          }
+                          //Error get Current Location
+                          else if (state.getCurrentLocation is BaseErrorState) {
+                            return ErrorLocationWidget(getCurrentLocation: () {
+                              _serviceSettingCubit.getCurrentLocationFilter();
+                            });
+                          }
+                          return const SizedBox();
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           )),
@@ -314,16 +322,16 @@ Widget _dummyScreen(ThemeData theme, AppLocalizations localizations) {
             Text(
               localizations.currentLocation,
               style: theme.textTheme.titleMedium!
-                  .copyWith(fontSize: 30.sp, color: Colors.grey.shade400),
+                  .copyWith(fontSize: 30.sp, ),
             ),
             const SizedBox(width: 10),
             Container(width: 20, height: 20, color: Colors.grey)
           ]),
-          SizedBox(height: 30.h),
+          SizedBox(height: 80.h),
           Text(
             localizations.chooseCategory,
             style: theme.textTheme.titleMedium!
-                .copyWith(fontSize: 36.sp, color: Colors.grey.shade400),
+                .copyWith(fontSize: 36.sp,),
           ),
           const SizedBox(
               width: double.infinity,

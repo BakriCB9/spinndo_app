@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/resources/color_manager.dart';
+
 class SplashScreen extends StatefulWidget {
   static const String routeName = '/splash';
 
@@ -64,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _logoController.repeat(reverse: true);
 
-    // Text Animation (optional)
+    // Text Animation
     _textController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -90,10 +92,6 @@ class _SplashScreenState extends State<SplashScreen>
     });
 
     Future.delayed(const Duration(seconds: 4), () async {
-      //await _authCubit.getCategories();
-      // Navigator.of(context).pushNamedAndRemoveUntil(SignInScreen.routeName, (p){
-      //   return p.settings.name == SignInScreen.routeName;
-      // });
       if (sharedPref.getString(CacheConstant.tokenKey) == null) {
         Navigator.of(context).pushNamedAndRemoveUntil(Routes.loginRoute, (p){
           return p.settings.name == Routes.loginRoute;
@@ -101,19 +99,9 @@ class _SplashScreenState extends State<SplashScreen>
         });
         print('the current size is nowwwwwwwwwwwwwwwwwwwwwwwwwwwww ${navObserver.stackSize}');
         navObserver.printRouts();
-        // return Navigator.of(context)
-        //     .pushReplacementNamed(SignInScreen.routeName);
       } else {
         return Navigator.of(context).pushNamedAndRemoveUntil(ServiceScreen.routeName,(p){return false;});
       }
-      // Navigator.pushReplacementNamed(
-      //   context,
-      //   sharedPref.getString(CacheConstant.tokenKey) == null
-      //       ? (sharedPref.getString(CacheConstant.emailKey) == null
-      //           ? SignUpScreen.routeName
-      //           : SignInScreen.routeName)
-      //       : ServiceScreen.routeName,
-      // );
     });
   }
   @override
@@ -131,10 +119,7 @@ class _SplashScreenState extends State<SplashScreen>
     return Container(
       decoration: isDarkMode
           ? const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("asset/images/bg.png"),
-          fit: BoxFit.fill,
-        ),
+       color: ColorManager.darkBg
       )
           : null,
       child: Scaffold(

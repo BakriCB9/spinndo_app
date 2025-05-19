@@ -16,6 +16,7 @@ class CascadingDropdowns extends StatefulWidget {
   final bool isService;
   final bool isProfile;
   RegisterCubit? authCubit;
+
   CascadingDropdowns(
       {required this.categories,
       this.isService = false,
@@ -30,6 +31,7 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
   final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
   final _profileCubit = serviceLocator.get<ProfileCubit>();
   List<Categories?> selectedCategories = [];
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +52,6 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
       selectedCategories[level] = selected;
       selectedCategories = selectedCategories.sublist(0, level + 1);
       // // Remove any deeper selections
-      
     } else {
       selectedCategories.add(selected);
     }
@@ -115,6 +116,7 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
     List<Widget> dropdowns = [];
     List<Categories>? currentList = widget.categories;
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     for (int i = 0; i <= selectedCategories.length; i++) {
       // Skip this level if there are no children to select
@@ -137,7 +139,6 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -153,29 +154,29 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
                       width: 24,
                       height: 24,
                       colorFilter: ColorFilter.mode(
-                        (i < selectedCategories.length && selectedCategories[i] != null)
-                            ? ColorManager.primary
-                            :Colors.black,
+                        (i < selectedCategories.length &&
+                                selectedCategories[i] != null)
+                            ? (theme.textTheme.labelMedium?.color ??
+                                ColorManager.textColorLight)
+                            : ColorManager.primary,
                         BlendMode.srcIn,
                       ),
                     ),
                     dropdownColor: Theme.of(context).primaryColorDark,
                     hint: Padding(
-                      padding: EdgeInsets.only(left: 12), // نفس الـ padding تقريبًا
+                      padding: EdgeInsets.only(left: 12),
                       child: Row(
                         children: [
                           Icon(
                             Icons.category,
-                            color: (i < selectedCategories.length && selectedCategories[i] != null)
-                                ?ColorManager.primary
-                                : Colors.black,
+                            color: ColorManager.darkShadow
                           ),
                           SizedBox(width: 24),
                           Text(
-                            i == 0 ? localization.category : localization.subCategory,
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              color: Colors.grey,
-                            ),
+                            i == 0
+                                ? localization.category
+                                : localization.subCategory,
+                              style: theme.textTheme.labelMedium
                           ),
                         ],
                       ),
@@ -184,18 +185,20 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
                     isExpanded: true,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
-                    value: i < selectedCategories.length ? selectedCategories[i] : null,
+                    value: i < selectedCategories.length
+                        ? selectedCategories[i]
+                        : null,
                     items: currentList.map((category) {
-                      final isSelected = i < selectedCategories.length && selectedCategories[i] == category;
+                      final isSelected = i < selectedCategories.length &&
+                          selectedCategories[i] == category;
                       return DropdownMenuItem<Categories>(
                         value: category,
                         child: Text(
                           category.name,
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                            color:Colors.black ,
-                          ),
+                            style: theme.textTheme.displayMedium
                         ),
                       );
                     }).toList(),
@@ -211,7 +214,6 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
           SizedBox(height: 30.h),
         ],
       ));
-
 
       // If a category is selected at this level, update the current list
       if (i < selectedCategories.length &&
@@ -231,6 +233,7 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
     }
     return dropdowns;
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
