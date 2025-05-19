@@ -2,6 +2,7 @@ import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/utils/error_network_widget.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -24,8 +25,9 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
   final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
+  final drawerCubit = serviceLocator.get<DrawerCubit>();
+
   @override
   void initState() {
     super.initState();
@@ -35,52 +37,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: isDarkMode
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: Scaffold(
+
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Column(
               children: [
-              Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () => Navigator.of(context).pop(),
-                    child:
-                    SvgPicture.asset(
-                      'asset/icons/back.svg',
-                      width: 20,
-                      height: 20,
-                      colorFilter: ColorFilter.mode(
-                        ColorManager.grey,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 20.w),
-                Expanded(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Directionality.of(context) == TextDirection.rtl
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Text(
-                      localization.notifications,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                CustomAppbar(appBarText: localization.notifications,),
                 SizedBox(height: 40.h),
             BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
               bloc: _serviceCubit,
@@ -128,11 +99,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         itemBuilder: (context, index) {
                           final item = listNotification[index];
                           return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 28.h),
+                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 38.h),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16.r),
+                                  color:isDarkMode?ColorManager.darkTextFieldBg:ColorManager.white,
+                                borderRadius: BorderRadius.circular(30.r),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black12,
@@ -142,9 +113,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 ],
                               ),
                               child: ListTile(
-
                                 contentPadding:
-                                EdgeInsets.symmetric(horizontal: 16.w, vertical: 26.h),
+                                EdgeInsets.symmetric(horizontal: 16.w, vertical: 36.h),
                                 leading: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
@@ -165,17 +135,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Text(
                                     item.title ?? '',
-                                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorManager.textColor,
-                                      fontSize: 30.sp,
-                                    ),
-                                  ),
+                                    style: Theme.of(context).listTileTheme.titleTextStyle,                                   ),
                                 ),
                                 subtitle: Text(
                                   item.description?? '',
                                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Colors.grey.shade600,
+                                    color: ColorManager.grey,
                                     fontSize: 28.sp,
                                   ),
                                   maxLines: 2,

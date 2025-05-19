@@ -52,10 +52,7 @@ class UserAccount extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("${firstName} ${lastName} / ${firstNameAr} ${lastNameAr}",
-                style: theme.textTheme.displayMedium?.copyWith(
-                    color: ColorManager.black,
-                    fontSize: FontSize.s22
-                ),),
+                style: theme.textTheme.labelLarge!),
               typeAccount == 'Client'
                   ? IconButton(
                   onPressed: () {
@@ -124,10 +121,7 @@ class UserAccount extends StatelessWidget {
               SizedBox(width: 24.w),
               Text(
                 '${email}',
-                style: theme.textTheme.displayMedium?.copyWith(
-                    color: ColorManager.textColor,
-                    fontSize: FontSize.s16
-                ),
+                style: theme.textTheme.displayMedium!
               ),
             ],
           ),
@@ -146,10 +140,7 @@ class UserAccount extends StatelessWidget {
               SizedBox(width: 24.w),
               Text(
                 '${phone}',
-                style: theme.textTheme.displayMedium?.copyWith(
-                    color: ColorManager.textColor,
-                    fontSize: FontSize.s16
-                ),
+                style: theme.textTheme.displayMedium!
               ),
             ],
           ),

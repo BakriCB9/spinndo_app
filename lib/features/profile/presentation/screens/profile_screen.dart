@@ -35,13 +35,14 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: isDarkMode
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: Scaffold(
         body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
           if (cur is GetProfileLoading ||

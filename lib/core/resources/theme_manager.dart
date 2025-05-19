@@ -25,7 +25,23 @@ class ThemeManager {
         textStyle: TextStyle(fontSize: 25.sp, color: Colors.black)),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: ColorManager.white),
 
-    /// Main Colors
+    tabBarTheme: TabBarTheme(
+      labelColor: ColorManager.black2,
+      unselectedLabelColor: Colors.grey,
+      labelStyle: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontWeight: FontWeight.normal,
+        fontSize: 16,
+      ),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      splashFactory: NoSplash.splashFactory,
+      dividerColor: Colors.transparent,
+      indicatorSize: TabBarIndicatorSize.tab,
+    ),
+
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: ColorManager.white,
         foregroundColor: ColorManager.black),
@@ -34,6 +50,7 @@ class ThemeManager {
       color: ColorManager.primary,
       size: 40.sp,
     ),
+    listTileTheme: ListTileThemeData(),
     primaryColorLight: ColorManager.black,
     primaryColorDark: Colors.white,
     shadowColor: ColorManager.lightShadow,
@@ -66,7 +83,7 @@ class ThemeManager {
           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s28.r))),
           padding:
-          WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
+              WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
     ),
     textButtonTheme: TextButtonThemeData(),
     buttonTheme: ButtonThemeData(
@@ -89,8 +106,9 @@ class ThemeManager {
 
     textTheme: TextTheme(
       labelLarge: getMediumStyle(
-          color: ColorManager.primary,
+          color: ColorManager.grey2,
           fontSize: FontSize.s32.sp,
+          fontWeight: FontWeight.w600,
           fontFamily: "Lato"),
       labelMedium: getMediumStyle(
           color: ColorManager.textColorLight,
@@ -101,11 +119,15 @@ class ThemeManager {
           fontSize: FontSize.s28.sp,
           fontFamily: "Lato"),
       //drop down
-      displayMedium:
-      getRegularStyle(color: ColorManager.grey2, fontSize: FontSize.s30.sp,fontFamily: "Lato"),
+      displayMedium: getRegularStyle(
+          color: ColorManager.grey2,
+          fontSize: FontSize.s30.sp,
+          fontFamily: "Lato"),
       //guest
-      titleSmall:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s24.sp,fontFamily: "Lato"),
+      titleSmall: getRegularStyle(
+          color: ColorManager.black,
+          fontSize: FontSize.s24.sp,
+          fontFamily: "Lato"),
       //text butt
       titleMedium: getMediumStyle(
           color: ColorManager.textColor,
@@ -114,26 +136,25 @@ class ThemeManager {
           fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
-        color: ColorManager.black,
-        fontSize: FontSize.s48.sp,
-          fontFamily: "Lato"
-      ),
+          color: ColorManager.black,
+          fontSize: FontSize.s48.sp,
+          fontFamily: "Lato"),
       //text in body
-      bodySmall:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s32.sp,fontFamily: "Lato"),
+      bodySmall: getRegularStyle(
+          color: ColorManager.black,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
       //client word
       bodyMedium: getMediumStyle(
-        color: ColorManager.black,
-        fontSize: FontSize.s32.sp,
-          fontFamily: "Lato"
-      ),
+          color: ColorManager.black,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
 
       //elevated butt
       bodyLarge: getBoldStyle(
-        color: ColorManager.white,
-        fontSize: FontSize.s32.sp,
-          fontFamily: "Lato"
-      ),
+          color: ColorManager.white,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
@@ -147,9 +168,9 @@ class ThemeManager {
       //   fontSize: FontSize.s13,
       // ),
       labelStyle:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
       hintStyle:
-      getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
+          getRegularStyle(color: ColorManager.black, fontSize: FontSize.s30.sp),
       errorStyle: getRegularStyle(color: Colors.red, fontSize: FontSize.s20.sp),
       filled: true,
 
@@ -190,7 +211,7 @@ class ThemeManager {
     /// Main Colors
     ///
     ///
-   colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primaryLight),
+    colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primaryLight),
     fontFamily: 'Lato',
     shadowColor: ColorManager.darkShadow,
     menuButtonTheme: MenuButtonThemeData(
@@ -203,10 +224,11 @@ class ThemeManager {
             foregroundColor: WidgetStatePropertyAll(ColorManager.white))),
     dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
-            backgroundColor: WidgetStatePropertyAll(ColorManager.darkTextFieldBg)),
+            backgroundColor:
+                WidgetStatePropertyAll(ColorManager.darkTextFieldBg)),
         textStyle: TextStyle(fontSize: 30.sp, color: Colors.white)),
     bottomSheetTheme:
-    BottomSheetThemeData(backgroundColor: ColorManager.darkTextFieldBg),
+        BottomSheetThemeData(backgroundColor: ColorManager.darkTextFieldBg),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: ColorManager.darkTextFieldBg,
         foregroundColor: ColorManager.white),
@@ -224,6 +246,15 @@ class ThemeManager {
         foregroundColor: ColorManager.white,
         elevation: 0),
 
+    listTileTheme: ListTileThemeData(
+      titleTextStyle: TextStyle(
+        fontSize: 32.sp,
+        fontWeight: FontWeight.bold,
+        fontFamily: "Lato",
+        color: ColorManager.lightWhite,
+      ),
+    ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
           textStyle: WidgetStatePropertyAll(
@@ -236,7 +267,7 @@ class ThemeManager {
           shape: WidgetStatePropertyAll(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s28.r))),
           padding:
-          WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
+              WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 12.h))),
     ),
     textButtonTheme: TextButtonThemeData(),
     buttonTheme: ButtonThemeData(
@@ -259,9 +290,14 @@ class ThemeManager {
 
     textTheme: TextTheme(
       labelLarge: getMediumStyle(
-          color: ColorManager.primary, fontSize: FontSize.s32.sp,fontFamily: "Lato"),
+          color: ColorManager.white,
+          fontSize: FontSize.s36.sp,
+          fontWeight: FontWeight.w600,
+          fontFamily: "Lato"),
       labelMedium: getMediumStyle(
-          color: ColorManager.textColorLight, fontSize: FontSize.s30.sp,fontFamily: "Lato"),
+          color: ColorManager.textColorLight,
+          fontSize: FontSize.s30.sp,
+          fontFamily: "Lato"),
       labelSmall: getMediumStyle(
           color: ColorManager.grey,
           fontSize: FontSize.s28.sp,
@@ -284,26 +320,25 @@ class ThemeManager {
           fontWeight: FontWeight.w600),
       //title spinndo
       titleLarge: getBoldStyle(
-        color: ColorManager.white,
-        fontSize: FontSize.s48.sp,
-          fontFamily: "Lato"
-      ),
+          color: ColorManager.white,
+          fontSize: FontSize.s48.sp,
+          fontFamily: "Lato"),
       //text in body
-      bodySmall:
-      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s32.sp,fontFamily: "Lato"),
+      bodySmall: getRegularStyle(
+          color: ColorManager.white,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
       //client word
       bodyMedium: getMediumStyle(
-        color: ColorManager.white,
-        fontSize: FontSize.s32.sp,
-          fontFamily: "Lato"
-      ),
+          color: ColorManager.white,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
 
       //elevated butt
       bodyLarge: getBoldStyle(
-        color: ColorManager.white,
-        fontSize: FontSize.s32.sp,
-          fontFamily: "Lato"
-      ),
+          color: ColorManager.white,
+          fontSize: FontSize.s32.sp,
+          fontFamily: "Lato"),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
@@ -316,9 +351,9 @@ class ThemeManager {
       //   fontSize: FontSize.s13,
       // ),
       labelStyle:
-      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
       hintStyle:
-      getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
+          getRegularStyle(color: ColorManager.white, fontSize: FontSize.s30.sp),
       errorStyle: getRegularStyle(
           color: Colors.red.shade400, fontSize: FontSize.s20.sp),
       filled: true,

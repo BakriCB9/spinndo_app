@@ -57,7 +57,7 @@ class CustomDrawer extends StatelessWidget {
     final base64String = sharedPref.getString(CacheConstant.imagePhoto);
     return Drawer(
       backgroundColor: _drawerCubit.themeMode == ThemeMode.dark
-          ? ColorManager.darkBlue
+          ? ColorManager.darkBg
           : Colors.white,
       child: Column(
         children: [

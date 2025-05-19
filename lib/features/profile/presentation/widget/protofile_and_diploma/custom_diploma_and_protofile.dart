@@ -48,9 +48,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(localization.images,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                      color: ColorManager.black,
-                      fontWeight: FontWeight.w600)),
+                  style: theme.textTheme.labelLarge),
               // myId == widget.userId
               //     ? IconButton(
               //         onPressed: widget.isApprovid == 1

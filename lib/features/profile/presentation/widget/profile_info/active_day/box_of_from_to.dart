@@ -37,9 +37,7 @@ class _BoxFromDateToDateState extends State<BoxFromDateToDate> {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(widget.time,
-    style: theme.textTheme.labelMedium?.copyWith(
-    color: ColorManager.black2,
-    fontWeight: FontWeight.w400),
+    style: theme.textTheme.labelMedium!,
           ),
         ),
       ),

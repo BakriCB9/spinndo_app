@@ -53,9 +53,7 @@ class CustomDescription extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(localization.jobDetails,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                      color: ColorManager.black,
-                      fontWeight: FontWeight.w600)),
+                  style: theme.textTheme.labelLarge),
               userId == myId
                   ? IconButton(
                       onPressed: isApprovid == true
@@ -91,7 +89,6 @@ class CustomDescription extends StatelessWidget {
             ],
           ),
           SizedBox(height: 30.h),
-
           Row(
             children: [
               SvgPicture.asset(
@@ -106,10 +103,7 @@ class CustomDescription extends StatelessWidget {
               SizedBox(width: 24.w),
               Text(
                 '${categoryName}',
-                style: theme.textTheme.displayMedium?.copyWith(
-                    color: ColorManager.textColor,
-                    fontSize: FontSize.s16
-                ),
+                style: theme.textTheme.displayMedium!
               ),
             ],
           ),
@@ -120,10 +114,7 @@ class CustomDescription extends StatelessWidget {
               SizedBox(width: 24.w),
               Text(
                 '${serviceName}',
-                style: theme.textTheme.displayMedium?.copyWith(
-                    color: ColorManager.textColor,
-                    fontSize: FontSize.s16
-                ),
+                style: theme.textTheme.displayMedium!
               ),
             ],
           ),
@@ -142,10 +133,7 @@ class CustomDescription extends StatelessWidget {
               SizedBox(width: 24.w),
               Text(
                 '${cityName}',
-                style: theme.textTheme.displayMedium?.copyWith(
-                    color: ColorManager.textColor,
-                    fontSize: FontSize.s16
-                ),
+                style: theme.textTheme.displayMedium!
               ),
             ],
           ),

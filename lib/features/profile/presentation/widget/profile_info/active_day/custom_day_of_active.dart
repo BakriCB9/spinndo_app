@@ -41,9 +41,8 @@ class CustomDayActive extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(localization.activeDay,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                      color: ColorManager.black2,
-                      fontWeight: FontWeight.w600)),
+                  style: theme.textTheme.labelLarge!
+              ),
               myId == userId
                   ? IconButton(
                       onPressed: issAprrovid == true
@@ -78,7 +77,6 @@ class CustomDayActive extends StatelessWidget {
                                     fit: BoxFit.scaleDown,
                                     child: Text(e.day!,
                                         style: theme.textTheme.labelMedium?.copyWith(
-                                            color: ColorManager.primary,
                                             fontWeight: FontWeight.w600)),
                                   ),
                                 ),

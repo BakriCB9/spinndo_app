@@ -1,5 +1,6 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,11 +33,8 @@ class CustomAppbar extends StatelessWidget {
               'asset/icons/back.svg',
               width: 20,
               height: 20,
-              colorFilter: isDarkMode? ColorFilter.mode(
-                ColorManager.primary,
-                BlendMode.srcIn,
-              ): ColorFilter.mode(
-                Color(0xFF9E9E9E),
+              colorFilter:ColorFilter.mode(
+                ColorManager.grey,
                 BlendMode.srcIn,
               )
             ),
@@ -52,11 +50,9 @@ class CustomAppbar extends StatelessWidget {
                 : Alignment.centerLeft,
             child: Text(
               appBarText ?? 'AppBar',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
+
+    ),
           ),
         ),
       ],

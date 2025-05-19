@@ -26,18 +26,15 @@ class _ShowMoreAndShowLessState extends State<ShowMoreAndShowLess> {
         word.length < 30 || word.length - 30 < 20
             ? Text(word.join(' '),
                 style: theme.textTheme.displayMedium?.copyWith(
-    color: ColorManager.textColor,
     fontSize: FontSize.s16
     ))
         : isExpanded
                 ? Text(word.join(' '),
             style: theme.textTheme.displayMedium?.copyWith(
-                color: ColorManager.textColor,
                 fontSize: FontSize.s16
     ))
                 : Text(word.sublist(0, 30).join(' '),
     style: theme.textTheme.displayMedium?.copyWith(
-    color: ColorManager.textColor,
     fontSize: FontSize.s16
     )),
     SizedBox(

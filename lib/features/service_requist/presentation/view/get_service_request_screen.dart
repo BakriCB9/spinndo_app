@@ -40,17 +40,18 @@ class _GetServiceRequestScreenState extends State<GetServiceRequestScreen> {
     final myId = sharedPref.getInt(CacheConstant.userId);
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+
     return BlocProvider(
       create: (context) => _serviceRequestCubit,
       child: DefaultTabController(
         length: 2,
         child: Container(
-          decoration: _drawerCubit.themeMode == ThemeMode.dark
+          decoration: isDarkMode
               ? const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("asset/images/bg.png"),
-                      fit: BoxFit.fill))
-              : null,
+              color: ColorManager.darkBg
+          ): null,
           child: Scaffold(
             floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -87,7 +88,6 @@ class _GetServiceRequestScreenState extends State<GetServiceRequestScreen> {
                   ],
                 ),
                 child: AppBar(
-
                   backgroundColor: Colors.white,
                   leading: IconButton(
                     icon: SvgPicture.asset(
@@ -116,7 +116,6 @@ class _GetServiceRequestScreenState extends State<GetServiceRequestScreen> {
                     preferredSize: Size.fromHeight(50),
                     child: Container(
                       color: Colors.white,
-
                       child: TabBar(
                         labelColor: ColorManager.black2,
                         unselectedLabelColor: Colors.grey,

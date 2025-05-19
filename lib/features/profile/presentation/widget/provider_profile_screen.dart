@@ -71,16 +71,15 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
         double.parse(_profileCubit.longti!));
     _profileCubit.oldLocation = LatLng(double.parse(_profileCubit.latitu!),
         double.parse(_profileCubit.longti!));
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
     final size = MediaQuery.of(context).size;
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: isDarkMode
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
-            ),
+          color: ColorManager.darkBg
+      ): null,
       child: CustomScrollView(
         // controller: _control,
         slivers: [
@@ -162,14 +161,11 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 100.h),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(localization.socialLinks,
-                            style: theme.textTheme.labelMedium?.copyWith(
-                                color: ColorManager.black2,
-                                fontWeight: FontWeight.w600)),
+                            style: theme.textTheme.labelLarge),
                         myid == widget.providerProfile.id
                             ? IconButton(
                             onPressed: () {
