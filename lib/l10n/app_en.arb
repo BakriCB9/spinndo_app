@@ -197,5 +197,8 @@
   "homePage": "Home Page",
   "clients": "Clients",
   "socialLinks": "Social Links",
-  "serviceRequests": "Service Requests"
+  "serviceRequests": "Service Requests",
+  "yourSubscriptionIsActive": "Subscribe",
+  "notSubscribedToThisPackage": "Not subscribed"
+
 }

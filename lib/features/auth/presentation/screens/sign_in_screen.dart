@@ -1,4 +1,5 @@
 import 'package:app/core/const_variable.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/login_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/login_state.dart';
@@ -38,59 +39,38 @@ class SignInScreen extends StatelessWidget {
               key: formKey,
               child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
+                  CustomTextFormField(
+                    validator: (value) {
+                      if (!Validator.isEmail(value)) {
+                        return localization.validEmail;
+                      }
+                      return null;
+                    },
+                    controller: _loginCubit.emailController,
+                    icon: Icons.email_outlined,
+                    labelText: localization.email,
+                  ),
+                  SizedBox(height: 60.h),
+                  Material(
+                    color: Colors.transparent,
                     child: CustomTextFormField(
                       validator: (value) {
-                        if (!Validator.isEmail(value)) {
-                          return localization.validEmail;
+                        if (!Validator.isPassword(value)) {
+                          return localization.passwordLessThanSix;
                         }
                         return null;
                       },
-                      controller: _loginCubit.emailController,
-                      icon: Icons.email_outlined,
-                      labelText: localization.email,
-                    ),
-                  ),
-                  SizedBox(height: 60.h),
-                  Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: CustomTextFormField(
-                        validator: (value) {
-                          if (!Validator.isPassword(value)) {
-                            return localization.passwordLessThanSix;
-                          }
-                          return null;
-                        },
-                        controller: _loginCubit.passwordController,
-                        icon: Icons.lock_outline_rounded,
-                        isPassword: true,
-                        labelText: localization.password,
-                      ),
+                      controller: _loginCubit.passwordController,
+                      icon: Icons.lock_outline_rounded,
+                      isPassword: true,
+                      labelText: localization.password,
                     ),
                   ),
                 ],
               )),
           SizedBox(height: 20.h),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
               child: InkWell(
                   onTap: () {
                     Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
@@ -104,49 +84,56 @@ class SignInScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         decoration: TextDecoration.underline,
                         decorationColor: ColorManager.primary,
-                        color: ColorManager.primary
+                        color: ColorManager.primary,
+                        fontSize: FontSize.s16
                     ),
                   ),)),
           SizedBox(height: 60.h),
-          BlocListener<LoginCubit, LoginState>(
-            listenWhen: (pre, cur) {
-              return pre.loginStatus != cur.loginStatus;
-            },
-            bloc: _loginCubit,
-            listener: (_, state) {
-              _checkState(context, state);
-            },
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(36),
-                  ),
-                ),
-                onPressed: _login,
-                child: Text(localization.login,
-                    style: Theme.of(context).textTheme.bodyLarge),
-              ),
-            ),
-          ),
-          SizedBox(height: 30.h),
-          SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w,),
+            child: BlocListener<LoginCubit, LoginState>(
+              listenWhen: (pre, cur) {
+                return pre.loginStatus != cur.loginStatus;
+              },
+              bloc: _loginCubit,
+              listener: (_, state) {
+                _checkState(context, state);
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorManager.textColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(36),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(ServiceScreen.routeName);
-                  },
-                  child: Text(
-                    localization.guest,
-                    style: theme.bodyLarge!.copyWith(fontSize: 30.sp),
-                  ))),
+                  onPressed: _login,
+                  child: Text(localization.login,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 30.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w,),
+            child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.textColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(36),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(ServiceScreen.routeName);
+                    },
+                    child: Text(
+                      localization.guest,
+                      style: theme.bodyLarge!.copyWith(fontSize: 30.sp),
+                    ))),
+          ),
           SizedBox(height: 40.h),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -185,7 +172,7 @@ class SignInScreen extends StatelessWidget {
                 localization.createNewAccount,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   decoration: TextDecoration.underline,
-                  color: ColorManager.textColor
+                  fontSize: FontSize.s16
                 ),
               ),
             ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/theme_manager.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/packages/data/model/subscription/subscribe_model.dart';
 import 'package:app/features/payment/data/model/payments_model.dart';
@@ -13,6 +14,7 @@ import 'package:app/features/payment/presentation/view_model/payments_state.dart
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import '../view_model/packages_cubit.dart';
 import '../view_model/packages_state.dart';
@@ -43,6 +45,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
   http.Response? responseFromStripeAPI;
   Map<String, dynamic>? paymentIntentData;
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
+
 
   Future<Map<String, dynamic>?> makeIntentForPayment(
       int amountToBeCharged, String currency, String paymentMethodType) async {
@@ -122,76 +125,8 @@ class _PackagesScreenState extends State<PackagesScreen> {
         );
       },
     );
-
-    // this must be moved to the first page
     // this function must only return true/false
     return result ?? false;
-    // if (result == true) {
-    //   final localization = AppLocalizations.of(context)!;
-    //   final cubit = context.read<PackagesCubit>();
-    //   final int userId = cubit.getUserId();
-    //
-    //   try {
-    //     final List<dynamic>? paymentTypes =
-    //         paymentIntentData?['payment_method_types'];
-    //     final String? methodType =
-    //         (paymentTypes != null && paymentTypes.isNotEmpty)
-    //             ? paymentTypes[0]
-    //             : null;
-    //     final String? intentId = paymentIntentData?['id']?.toString();
-    //
-    //     if (methodType != null && intentId != null) {
-    //       print('نوع الدفع: $methodType - Stripe ID: $intentId');
-    //
-    //       final method = PaymentMethodModel(
-    //         userId: userId,
-    //         methodType: methodType,
-    //         stripePaymentMethodId: intentId,
-    //       );
-    //
-    //       await context.read<PaymentsCubit>().addPayment(method);
-    //
-    //       if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
-    //         await Stripe.instance.confirmPaymentSheetPayment();
-    //         if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
-    //           final subscription = SubscribeModel(
-    //             userId: userId,
-    //             packageId: package.id!,
-    //           );
-    //           await cubit.addSubscription(subscription);
-    //           await cubit.getAllPackages();
-    //
-    //           ScaffoldMessenger.of(context).showSnackBar(
-    //             SnackBar(content: Text('${localization.paymentSuccessful} 🎉')),
-    //           );
-    //         } else if (context.read<PaymentsCubit>().state is PaymentAddError) {
-    //           final errorState =
-    //               context.read<PaymentsCubit>().state as PaymentAddError;
-    //           print("فشل إضافة وسيلة الدفع: ${errorState.message}");
-    //         }
-    //       }
-    //     } else {
-    //       print("خطأ: البيانات غير كاملة من Stripe");
-    //     }
-    //   } on StripeException catch (e) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //           content: Text(
-    //               '${localization.errorStripe}: ${e.error.localizedMessage}')),
-    //     );
-    //   } catch (e) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //           content: Text('${localization.anUnexpectedErrorOccurred} $e')),
-    //     );
-    //   }
-    //   cubit.getAllPackages();
-    // } else if (result == false && paymentIntentData != null) {
-    //   String? id = paymentIntentData!['id']?.toString();
-    //   if (id != null && id.isNotEmpty) {
-    //     await context.read<PaymentsCubit>().addRefund(id);
-    //   }
-    // }
   }
 
   Future<bool> showPaymentSheet() async {
@@ -282,76 +217,158 @@ class _PackagesScreenState extends State<PackagesScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+    final theme = Theme.of(context);
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(localization.packages),
-          backgroundColor: Colors.yellow[700],
-        ),
-        body: BlocBuilder<PackagesCubit, PackagesState>(
-          builder: (context, state) {
-            if (state is PackagesLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is PackagesSuccess) {
-              return ListView.builder(
-                padding: EdgeInsets.all(12),
-                itemCount: state.packages.length,
-                itemBuilder: (context, index) {
-                  final package = state.packages[index];
-                  final isSubscribed = package?.is_subscribed ?? false;
-                  return material.Card(
-                    color: _drawerCubit.themeMode == ThemeMode.dark
-                        ? Colors.indigo[950]
-                        : Colors.yellow[50],
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 12),
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                isSubscribed
-                                    ? Icons.circle
-                                    : Icons.circle_outlined,
-                                size: 16,
-                                color: ColorManager.primary,
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                  child: Column(
+      decoration:
+          isDarkMode ? const BoxDecoration(color: ColorManager.darkBg) : null,
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              SizedBox(height: 30.h),
+              CustomAppbar(appBarText: localization.packages),
+              Expanded(
+                child: BlocBuilder<PackagesCubit, PackagesState>(
+                  builder: (context, state) {
+                    if (state is PackagesLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state is PackagesSuccess) {
+                      return ListView.builder(
+                        padding: EdgeInsets.all(12),
+                        itemCount: state.packages.length,
+                        itemBuilder: (context, index) {
+                          final package = state.packages[index];
+                          final isSubscribed = package?.is_subscribed ?? false;
+                          return material.Card(
+                            color: _drawerCubit.themeMode == ThemeMode.dark
+                                ? Colors.indigo[950]
+                                : Colors.white,
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 16),
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    package!.name!,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                  // Header Circle + Title
+                                  Center(
+                                    child: Container(
+                                      width: 140,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Colors.orange,
+                                            ColorManager.primary
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        ),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.orange.withOpacity(0.4),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 6),
+                                          ),
+                                        ],
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            package!.name!.toUpperCase(),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            "\$${package?.price.toStringAsFixed(0)}",
+                                            style: TextStyle(fontSize: 27),
+                                          ),
+                                          Text(
+                                            "per month",
+                                            style:Theme.of(context)
+                                                .textTheme
+                                                .labelMedium!
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "${localization.price} ${package?.price}",
-                                    style: TextStyle(
-                                        fontSize: 16),
+
+                                  const SizedBox(height: 20),
+
+                                  // Subscription Info
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        isSubscribed
+                                            ? Icons.check_circle
+                                            : Icons.circle_outlined,
+                                        size: 20,
+                                        color: ColorManager.primary,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          isSubscribed
+                                              ? localization
+                                                  .yourSubscriptionIsActive
+                                              : localization
+                                                  .notSubscribedToThisPackage,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: _drawerCubit.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 10),
+
+                                  const SizedBox(height: 16),
+
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "${localization.duration}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: _drawerCubit.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white70
+                                              : Colors.black87,
+                                        ),
+                                      ),
                                   Text(
-                                    "${localization.duration} ${package?.duration}",
+                                    " ${package?.duration} months",
                                     style: TextStyle(
-                                        fontSize: 16),
+                                      fontSize: 16,
+
+                                    ),
                                   ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 20),
+
+                                  // Subscribe/Unsubscribe Button
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: ElevatedButton(
@@ -363,15 +380,14 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                         final int userId = cubit.getUserId();
 
                                         if (isSubscribed) {
-                                          // المستخدم مشترك بالفعل - عرض خيار الإلغاء
+// The user is already subscribed – show the cancellation option
                                           final result = await showDialog<bool>(
                                             context: context,
                                             builder: (context) => AlertDialog(
                                               title: Text(localization
                                                   .cancelSubscription),
-                                              content: Text(localization
-                                                      .doYouWantToUnsubscribeFromThisPackage +
-                                                  "?"),
+                                              content: Text(
+                                                  "${localization.doYouWantToUnsubscribeFromThisPackage}?"),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () =>
@@ -388,15 +404,15 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                               ],
                                             ),
                                           );
-
                                           if (result == true) {
                                             await cubit
                                                 .cancelSubscription(userId);
                                             cubit
-                                                .getAllPackages(); // تحديث القائمة بعد الإلغاء
+                                                .getAllPackages(); // Refresh the list after cancellation
                                           }
                                         } else {
-                                          // تحقق إن كان لديه اشتراك نشط في أي باقة أخرى
+// Check if the user has an active subscription to any other package
+
                                           bool hasActiveSubscription =
                                               state.packages.any(
                                             (pkg) => pkg?.is_subscribed == true,
@@ -422,10 +438,11 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                                 ],
                                               ),
                                             );
-                                            return; // خروج إذا لديه اشتراك
+                                            return; // Logout if the user has a subscription
                                           }
 
-                                          // عرض تأكيد الاشتراك
+// Show subscription confirmation
+
                                           final confirmResult =
                                               await showDialog<bool>(
                                             context: context,
@@ -454,18 +471,18 @@ class _PackagesScreenState extends State<PackagesScreen> {
 
                                           if (confirmResult != true) return;
 
-                                          // عملية الدفع
+                                          //paymentProcess
                                           var isPaid =
                                               await showAvailablePaymentMethods(
                                                   context,
                                                   package.price ?? 0.0);
 
                                           if (isPaid != true) {
-                                            print("لم تتم عملية الدفع");
+                                            print("payment was not done");
                                             return;
                                           }
 
-                                          // تنفيذ الاشتراك بعد الدفع
+                                          //subscribe process after paying
                                           final subscription = SubscribeModel(
                                             userId: userId,
                                             packageId: package.id,
@@ -474,42 +491,44 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                           await cubit
                                               .addSubscription(subscription);
                                           cubit
-                                              .getAllPackages(); // تحديث القائمة بعد الاشتراك
+                                              .getAllPackages(); //update UI after subscibe
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: isSubscribed
-                                            ? Colors.grey
-                                            : Colors.yellow[700],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          isSubscribed
-                                              ? '${localization.subscribed} ✅'
-                                              : '${localization.subscribe}',
-                                          style: const TextStyle(
-                                              color: Colors.black),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
                                         ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal: 24,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        isSubscribed ? localization.subscribed : localization.subscribe,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),
                                 ],
-                              ))
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else if (state is PackagesError) {
-              return Center(child: Text(state.message));
-            } else {
-              return Center(child: Text("no pacs"));
-            }
-          },
+                              ),
+                            ),
+                          );
+
+
+                        },
+                      );
+                    } else if (state is PackagesError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      return Center(child: Text("no pacs"));
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

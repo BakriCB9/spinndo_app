@@ -193,7 +193,11 @@
   "socialLinks": "روابط التواصل الاجتماعي",
   "serviceRequests": "طلبات الخدمة",
   "passwordEmpty": "كلمة المرور فارغة",
-  "passwordMustContainLettersAndNumbers": "يجب أن تحتوي كلمة المرور على أحرف وأرقام"
+  "passwordMustContainLettersAndNumbers": "يجب أن تحتوي كلمة المرور على أحرف وأرقام",
+  "yourSubscriptionIsActive": "اشتراكك فعّال",
+  "notSubscribedToThisPackage": "أنت غير مشترك في هذه الباقة"
+
+
 
 
 

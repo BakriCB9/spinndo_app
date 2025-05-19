@@ -88,7 +88,7 @@ class _GetServiceRequestScreenState extends State<GetServiceRequestScreen> {
                   ],
                 ),
                 child: AppBar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: isDarkMode?ColorManager.darkTextFieldBg:ColorManager.white,
                   leading: IconButton(
                     icon: SvgPicture.asset(
                       'asset/icons/back.svg',
@@ -106,25 +106,14 @@ class _GetServiceRequestScreenState extends State<GetServiceRequestScreen> {
                   centerTitle: false,
                   title: Text(
                     localization.serviceRequests,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontSize: FontSize.s22,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
                   ),
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(50),
                     child: Container(
-                      color: Colors.white,
+                      color: isDarkMode?ColorManager.darkTextFieldBg:ColorManager.white,
                       child: TabBar(
-                        labelColor: ColorManager.black2,
-                        unselectedLabelColor: Colors.grey,
-                        labelStyle: theme.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
-                        unselectedLabelStyle: theme.textTheme.titleMedium,
-                        overlayColor: WidgetStateProperty.all(Colors.transparent),
-                        splashFactory: NoSplash.splashFactory,
-                        dividerColor: Colors.transparent,
+
                         tabs: [
                           Tab(text: localization.allServiceRequest),
                           Tab(text: localization.myServiceRequest),

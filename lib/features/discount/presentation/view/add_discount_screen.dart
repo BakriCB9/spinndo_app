@@ -26,14 +26,15 @@ class DiscountScreen extends StatelessWidget {
     final theme = Theme.of(context).textTheme;
     final discountCubit = serviceLocator<DiscountViewModelCubit>();
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final myId = sharedPref.getInt(CacheConstant.userId);
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: isDarkMode
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: Scaffold(
         body: SafeArea(
           child: Padding(
@@ -47,7 +48,6 @@ class DiscountScreen extends StatelessWidget {
                     SizedBox(height: 100.h,),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
                           BoxShadow(
@@ -58,11 +58,9 @@ class DiscountScreen extends StatelessWidget {
                         ],
                       ),
                       child: TextFormField(
-                        style: TextStyle(
-                          color: ColorManager.textColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 32.sp,
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium,
                         keyboardType: TextInputType.numberWithOptions(),
                         textInputAction: TextInputAction.next,
                         controller: discountController,
@@ -77,13 +75,12 @@ class DiscountScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.percent, color: ColorManager.primary),
                           labelText: localization.discountLabel,
-                          labelStyle: TextStyle(color: Colors.grey[700],fontWeight: FontWeight.w400),
+                          labelStyle: Theme.of(context).textTheme.bodyMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.r),
                             borderSide: BorderSide.none,
                           ),
                           filled: true,
-                          fillColor: Colors.white,
                           contentPadding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
                         ),
                       ),
@@ -91,8 +88,6 @@ class DiscountScreen extends StatelessWidget {
                     SizedBox(height: 70.h,),
                     Container(
                       decoration: BoxDecoration(
-
-                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
                           BoxShadow(
@@ -116,16 +111,14 @@ class DiscountScreen extends StatelessWidget {
                           return null;
                         },
                         decoration: InputDecoration(
-
                           prefixIcon: Icon(Icons.confirmation_num, color: ColorManager.primary),
                           labelText: localization.codeLabel,
-                          labelStyle: TextStyle(color: Colors.grey[700],fontWeight: FontWeight.w400),
+                          labelStyle: Theme.of(context).textTheme.bodyMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.r),
                             borderSide: BorderSide.none,
                           ),
                           filled: true,
-                          fillColor: Colors.white,
                           contentPadding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
                         ),
                       ),

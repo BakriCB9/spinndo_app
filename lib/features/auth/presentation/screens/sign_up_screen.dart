@@ -47,45 +47,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
             key: formKey,
             child: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return localization.enterName;
-                      } else if (!Validator.hasMinLength(
-                        value,
-                        minLength: 2,
-                      )) {
-                        return localization.nameLessThanTwo;
-                      }
-                      return null;
-                    },
-                    controller: _registerCubit.firstNameArcontroller,
-                    icon: Icons.person,
-                    labelText: localization.firstNameAr,
-                  ),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(
+                      value,
+                      minLength: 2,
+                    )) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.firstNameArcontroller,
+                  icon: Icons.person,
+                  labelText: localization.firstNameAr,
                 ),
                 SizedBox(height: 40.h),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(value, minLength: 2)) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.lastNameArCOntroller,
+                  icon: Icons.person,
+                  labelText: localization.lastNameAr,
+                ),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localization.enterName;
+                    } else if (!Validator.hasMinLength(value, minLength: 2)) {
+                      return localization.nameLessThanTwo;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.firstNameContoller,
+                  icon: Icons.person,
+                  labelText: localization.firstName,
+                ),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return localization.enterName;
@@ -94,82 +101,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                       return null;
                     },
-                    controller: _registerCubit.lastNameArCOntroller,
+                    controller: _registerCubit.lastNameContoller,
                     icon: Icons.person,
-                    labelText: localization.lastNameAr,
-                  ),
-                ),
+                    labelText: localization.lastName),
                 SizedBox(height: 30.h),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
+                CustomTextFormField(
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return localization.enterName;
-                      } else if (!Validator.hasMinLength(value, minLength: 2)) {
-                        return localization.nameLessThanTwo;
+                      if (!Validator.isEmail(value)) {
+                        return localization.validEmail;
                       }
                       return null;
                     },
-                    controller: _registerCubit.firstNameContoller,
-                    icon: Icons.person,
-                    labelText: localization.firstName,
-                  ),
-                ),
-                SizedBox(height: 30.h),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.enterName;
-                        } else if (!Validator.hasMinLength(value, minLength: 2)) {
-                          return localization.nameLessThanTwo;
-                        }
-                        return null;
-                      },
-                      controller: _registerCubit.lastNameContoller,
-                      icon: Icons.person,
-                      labelText: localization.lastName),
-                ),
-                SizedBox(height: 30.h),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
-                      validator: (value) {
-                        if (!Validator.isEmail(value)) {
-                          return localization.validEmail;
-                        }
-                        return null;
-                      },
-                      controller: _registerCubit.emailController,
-                      icon: Icons.email,
-                      labelText: localization.email),
-                ),
+                    controller: _registerCubit.emailController,
+                    icon: Icons.email,
+                    labelText: localization.email),
                 SizedBox(height: 30.h),
                 Row(children: [
                   Expanded(
@@ -196,145 +141,124 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(width: 5.w),
                   Expanded(
                       flex: 3,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: CustomTextFormField(
-                            keyboardType: TextInputType.phone,
-                            controller: _registerCubit.phoneNumberController,
-                            labelText: localization.phoneNumber,
-                            icon: Icons.phone,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return localization.validePhoneNumber;
-                              }
-                              return null;
-                            }),
-                      ))
+                      child: CustomTextFormField(
+                          keyboardType: TextInputType.phone,
+                          controller: _registerCubit.phoneNumberController,
+                          labelText: localization.phoneNumber,
+                          icon: Icons.phone,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return localization.validePhoneNumber;
+                            }
+                            return null;
+                          }))
                 ]),
                 SizedBox(height: 30.h),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
-                      validator: (value) {
-                        if (!Validator.isPassword(value)) {
-                          return localization.passwordLessThanSix;
-                        }
-                        return null;
-                      },
-                      controller: _registerCubit.passwordController,
-                      icon: Icons.lock,
-                      isPassword: true,
-                      labelText: localization.password),
-                ),
-                SizedBox(height: 30.h),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: CustomTextFormField(
+                CustomTextFormField(
                     validator: (value) {
                       if (!Validator.isPassword(value)) {
                         return localization.passwordLessThanSix;
-                      } else if (_registerCubit.passwordController.text !=
-                          _registerCubit.confirmPasswordController.text) {
-                        return localization.passwordNotMatched;
                       }
                       return null;
                     },
-                    controller: _registerCubit.confirmPasswordController,
+                    controller: _registerCubit.passwordController,
                     icon: Icons.lock,
                     isPassword: true,
-                    labelText: localization.confirmPassword,
-                  ),
+                    labelText: localization.password),
+                SizedBox(height: 30.h),
+                CustomTextFormField(
+                  validator: (value) {
+                    if (!Validator.isPassword(value)) {
+                      return localization.passwordLessThanSix;
+                    } else if (_registerCubit.passwordController.text !=
+                        _registerCubit.confirmPasswordController.text) {
+                      return localization.passwordNotMatched;
+                    }
+                    return null;
+                  },
+                  controller: _registerCubit.confirmPasswordController,
+                  icon: Icons.lock,
+                  isPassword: true,
+                  labelText: localization.confirmPassword,
                 ),
               ],
             ),
           ),
           SizedBox(height: 20.h),
-          SectionRememberMe(authCubit: _registerCubit),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w,),
+            child: SectionRememberMe(authCubit: _registerCubit),
+          ),
           SizedBox(height: 20.h),
-          SectionAccountType(authcubit: _registerCubit),
-          BlocListener<RegisterCubit, RegisterState>(
-              bloc: _registerCubit,
-              listenWhen: (pre, cur) {
-                if (pre.registerClientState != cur.registerClientState ||
-                    pre.getCategoryState != cur.getCategoryState) {
-                  previousState = pre;
-                  return true;
-                }
-                return false;
-              },
-              listener: (_, state) {
-                if (state.registerClientState is BaseLoadingState ||
-                    state.getCategoryState is BaseLoadingState) {
-                  UIUtils.showLoadingDialog(context);
-                } else if (state.registerClientState is BaseSuccessState) {
-                  UIUtils.hideLoading(context);
-                  Navigator.of(context).pushNamed(Routes.verificationRoutes,
-                      arguments: _registerCubit.emailController.text);
-                } else if (state.registerClientState is BaseErrorState &&
-                    previousState?.registerClientState !=
-                        state.registerClientState) {
-                  final result = state.registerClientState as BaseErrorState;
-                  UIUtils.hideLoading(context);
-                  UIUtils.showMessage(result.error!);
-                } else if (state.getCategoryState is BaseSuccessState &&
-                    previousState?.getCategoryState != state.getCategoryState) {
-                  UIUtils.hideLoading(context);
-                  Navigator.of(context).pushNamed(Routes.employeDetails,
-                      arguments: _registerCubit);
-                  
-                } else if (state.getCategoryState is BaseErrorState &&
-                    previousState?.getCategoryState != state.getCategoryState) {
-                  final result = state.getCategoryState as BaseErrorState;
-                  UIUtils.hideLoading(context);
-                  UIUtils.showMessage(result.error!);
-                }
-              },
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    _register(context);
-                  },
-                  child: Text(
-                      _registerCubit.isClient
-                          ? localization.signUp
-                          : localization.next,
-                      style: Theme.of(context).textTheme.bodyLarge),
-                ),
-              )),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w,),
+            child: SectionAccountType(authcubit: _registerCubit),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w,),
+            child: BlocListener<RegisterCubit, RegisterState>(
+                bloc: _registerCubit,
+                listenWhen: (pre, cur) {
+                  if (pre.registerClientState != cur.registerClientState ||
+                      pre.getCategoryState != cur.getCategoryState) {
+                    previousState = pre;
+                    return true;
+                  }
+                  return false;
+                },
+                listener: (_, state) {
+                  if (state.registerClientState is BaseLoadingState ||
+                      state.getCategoryState is BaseLoadingState) {
+                    UIUtils.showLoadingDialog(context);
+                  } else if (state.registerClientState is BaseSuccessState) {
+                    UIUtils.hideLoading(context);
+                    Navigator.of(context).pushNamed(Routes.verificationRoutes,
+                        arguments: _registerCubit.emailController.text);
+                  } else if (state.registerClientState is BaseErrorState &&
+                      previousState?.registerClientState !=
+                          state.registerClientState) {
+                    final result = state.registerClientState as BaseErrorState;
+                    UIUtils.hideLoading(context);
+                    UIUtils.showMessage(result.error!);
+                  } else if (state.getCategoryState is BaseSuccessState &&
+                      previousState?.getCategoryState != state.getCategoryState) {
+                    UIUtils.hideLoading(context);
+                    Navigator.of(context).pushNamed(Routes.employeDetails,
+                        arguments: _registerCubit);
+
+                  } else if (state.getCategoryState is BaseErrorState &&
+                      previousState?.getCategoryState != state.getCategoryState) {
+                    final result = state.getCategoryState as BaseErrorState;
+                    UIUtils.hideLoading(context);
+                    UIUtils.showMessage(result.error!);
+                  }
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _register(context);
+                    },
+                    child: Text(
+                        _registerCubit.isClient
+                            ? localization.signUp
+                            : localization.next,
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  ),
+                )),
+          ),
           SizedBox(height: 30.h),
-          Center(
-              child: InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(Routes.loginRoute);
-                  },
-                  child: Text(localization.alreadyHaveAccount,
-                      style: Theme.of(context).textTheme.titleMedium))),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w,),
+            child: Center(
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(Routes.loginRoute);
+                    },
+                    child: Text(localization.alreadyHaveAccount,
+                        style: Theme.of(context).textTheme.titleMedium))),
+          ),
           SizedBox(height: 100.h)
         ]));
   }

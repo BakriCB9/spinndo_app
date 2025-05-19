@@ -26,20 +26,28 @@ class ThemeManager {
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: ColorManager.white),
 
     tabBarTheme: TabBarTheme(
-      labelColor: ColorManager.black2,
+      labelColor: ColorManager.primary,
       unselectedLabelColor: Colors.grey,
       labelStyle: TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 16,
-      ),
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          color: ColorManager.primary,
+          fontFamily: "Lato"),
       unselectedLabelStyle: TextStyle(
         fontWeight: FontWeight.normal,
         fontSize: 16,
+          fontFamily: "Lato"
       ),
       overlayColor: WidgetStateProperty.all(Colors.transparent),
       splashFactory: NoSplash.splashFactory,
       dividerColor: Colors.transparent,
       indicatorSize: TabBarIndicatorSize.tab,
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(
+          color: ColorManager.primary,
+          width: 2,
+        ),
+      ),
     ),
 
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -212,6 +220,26 @@ class ThemeManager {
     ///
     ///
     colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.primaryLight),
+    tabBarTheme: TabBarTheme(
+      labelColor: ColorManager.primary,
+      unselectedLabelColor: ColorManager.grey,
+      labelStyle: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        fontFamily: "Lato",
+        color: ColorManager.primary,
+      ),
+      unselectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.normal, fontSize: 16, fontFamily: "Lato"),
+      dividerColor: Colors.transparent,
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(
+          color: ColorManager.primary,
+          width: 2,
+        ),
+      ),
+    ),
     fontFamily: 'Lato',
     shadowColor: ColorManager.darkShadow,
     menuButtonTheme: MenuButtonThemeData(

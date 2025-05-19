@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_state.dart';
@@ -27,18 +28,18 @@ class DeplomaProtofileImageScreen extends StatefulWidget {
 
 class _DeplomaProtofileImageScreenState
     extends State<DeplomaProtofileImageScreen> {
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  final drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
     final localization = AppLocalizations.of(context)!;
     final theme = Theme.of(context).textTheme;
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: isDarkMode
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: CustomAuthForm(
         hasAvatar: false,
         hasTitle: false,
