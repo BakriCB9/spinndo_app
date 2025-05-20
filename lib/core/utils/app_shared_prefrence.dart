@@ -42,7 +42,7 @@ class SharedPreferencesUtils {
     }
   }
 
-  Future<String?> getString(String key) async {
+  String? getString(String key)  {
     try {
       return sharedPreferences.getString(key);
     } catch (e) {

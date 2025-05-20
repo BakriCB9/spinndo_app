@@ -43,7 +43,7 @@ class ApiConstant {
 class CacheConstant {
   static const String tokenKey = 'token';
   static const String emailKey = 'email';
-  static const String semailKey = 'semail';
+  // static const String semailKey = 'semail';
   static const String nameKey = 'name';
   static const String userId = 'user_id';
   static const String userRole = 'user_role';

@@ -80,7 +80,7 @@ class AuthSharedPrefLocalDataSource implements AuthLocalDataSource {
   @override
   Future<void> saveUserEmail(String email) async {
     try {
-      await _sharedPreferences.setString(CacheConstant.semailKey, email);
+      await _sharedPreferences.setString(CacheConstant.emailKey, email);
     } catch (_) {
       throw LocalAppException('Failed to store email');
     }

@@ -28,6 +28,38 @@ class _SectionSocialLinksState extends State<SectionSocialLinks> {
   int? myid = serviceLocator
       .get<SharedPreferencesUtils>()
       .getData(key: CacheConstant.userId) as int?;
+
+  @override
+  Widget build(BuildContext context) {
+    return myid != widget.providerId
+        ? (widget.listOfSoicalFromApi!.isNotEmpty
+            ? Expanded(
+                child: ShowSocialLinksForUsers(
+                    listOfSocial: widget.listOfSoicalFromApi),
+              )
+            : const SizedBox())
+        : Expanded(
+            child: ShowSocialLinksForMyProfileWithOptions(
+                profileCubit: widget.profileCubit,
+                listOfSocialFromApi: widget.listOfSoicalFromApi));
+  }
+}
+
+class ShowSocialLinksForMyProfileWithOptions extends StatefulWidget {
+  final List<ProviderProfileSocialLinks?>? listOfSocialFromApi;
+  final ProfileCubit profileCubit;
+  const ShowSocialLinksForMyProfileWithOptions(
+      {required this.profileCubit,
+      required this.listOfSocialFromApi,
+      super.key});
+
+  @override
+  State<ShowSocialLinksForMyProfileWithOptions> createState() =>
+      _ShowSocialLinksForMyProfileWithOptionsState();
+}
+
+class _ShowSocialLinksForMyProfileWithOptionsState
+    extends State<ShowSocialLinksForMyProfileWithOptions> {
   List<String> localSocialListNotAvilable = [];
   final List<String> listOfAllSocialLocal = [
     "facebook",
@@ -35,11 +67,10 @@ class _SectionSocialLinksState extends State<SectionSocialLinks> {
     "twitter",
     "linkedin"
   ];
-
   @override
   void initState() {
-    if (widget.listOfSoicalFromApi!.isNotEmpty) {
-      localSocialListNotAvilable = widget.listOfSoicalFromApi!.map((e) {
+    if (widget.listOfSocialFromApi!.isNotEmpty) {
+      localSocialListNotAvilable = widget.listOfSocialFromApi!.map((e) {
         return e!.platform!;
       }).toList();
     }
@@ -49,139 +80,137 @@ class _SectionSocialLinksState extends State<SectionSocialLinks> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    return myid != widget.providerId
-        ? (widget.listOfSoicalFromApi!.isNotEmpty
-            ? Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      'Your Social links',
-                      style: theme.textTheme.labelLarge,
-                    ),
-                    Expanded(
-                        child: Column(
-                      children: widget.listOfSoicalFromApi!.map((e) {
-                        return Column(
-                          children: [
-                            Text(
-                              e!.platform!,
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            const SizedBox(height: 5),
-                            SelectableText(e.url!, maxLines: 1)
-                          ],
-                        );
-                      }).toList(),
-                    ))
-                  ],
-                ),
-              )
-            : const SizedBox())
-        : Expanded(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Your social links',
-                      style: theme.textTheme.labelLarge,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          List<String> listofSocialAvailable = [];
-
-                          for (int i = 0;
-                              i < listOfAllSocialLocal.length;
-                              i++) {
-                            if (!localSocialListNotAvilable
-                                .contains(listOfAllSocialLocal[i])) {
-                              listofSocialAvailable
-                                  .add(listOfAllSocialLocal[i]);
-                            }
-                          }
-
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled:
-                                true, //  Important for keyboard to push content
-
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20)),
-                            ),
-                            builder: (context) {
-                              return SectionBodySheetAddLink(
-                                  listofSocialAvailable: listofSocialAvailable,
-                                  profileCubit: widget.profileCubit);
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.add))
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: Column(
-                    children: widget.listOfSoicalFromApi!.map((e) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            e!.platform!,
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: SelectableText(e.url!, maxLines: 1)),
-                              IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) {
-                                          return SectionBodySheetEditLink(
-                                              profileCubit: widget.profileCubit,
-                                              platform: e.platform!,
-                                              url: e.url!);
-                                        });
-                                  },
-                                  icon: const Icon(Icons.edit)),
-                              BlocListener<ProfileCubit, ProfileStates>(
-                                listener: (context, state) {
-                                  if (state is DeleteSocialLinkLoading) {
-                                    UIUtils.showLoading(context);
-                                  } else if (state is DeleteSocialLinkError) {
-                                    UIUtils.hideLoading(context);
-                                    UIUtils.showMessage(state.message);
-                                  } else if (state is DeleteSocialLinkSuccess) {
-                                    UIUtils.hideLoading(context);
-                                    UIUtils.showMessage(state.message);
-                                    widget.profileCubit.getUserRole();
-                                  }
-                                },
-                                child: widget.providerId == myid
-                                    ? IconButton(
-                                        onPressed: () {
-                                          widget.profileCubit
-                                              .deleteSocialLinks(e.id!);
-                                        },
-                                        icon: const Icon(Icons.close))
-                                    : const SizedBox(),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 10)
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                )
-              ],
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Your social links',
+              style: theme.textTheme.labelLarge,
             ),
-          );
+            IconButton(
+                onPressed: () {
+                  List<String> listofSocialAvailable = [];
+
+                  for (int i = 0; i < listOfAllSocialLocal.length; i++) {
+                    if (!localSocialListNotAvilable
+                        .contains(listOfAllSocialLocal[i])) {
+                      listofSocialAvailable.add(listOfAllSocialLocal[i]);
+                    }
+                  }
+
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled:
+                        true, //  Important for keyboard to push content
+
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (context) {
+                      return SectionBodySheetAddLink(
+                          listofSocialAvailable: listofSocialAvailable,
+                          profileCubit: widget.profileCubit);
+                    },
+                  );
+                },
+                icon: const Icon(Icons.add))
+          ],
+        ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: Column(
+            children: widget.listOfSocialFromApi!.map((e) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    e!.platform!,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(child: SelectableText(e.url!, maxLines: 1)),
+                      IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return SectionBodySheetEditLink(
+                                      profileCubit: widget.profileCubit,
+                                      platform: e.platform!,
+                                      url: e.url!);
+                                });
+                          },
+                          icon: const Icon(Icons.edit)),
+                      BlocListener<ProfileCubit, ProfileStates>(
+                          listener: (context, state) {
+                            if (state is DeleteSocialLinkLoading) {
+                              UIUtils.showLoadingDialog(context);
+                            } else if (state is DeleteSocialLinkError) {
+                              UIUtils.hideLoading(context);
+                              UIUtils.showMessage(state.message);
+                            } else if (state is DeleteSocialLinkSuccess) {
+                              UIUtils.hideLoading(context);
+                              UIUtils.showMessage(state.message);
+                              widget.profileCubit.getUserRole();
+                            }
+                          },
+                          child: IconButton(
+                              onPressed: () {
+                                widget.profileCubit.deleteSocialLinks(e.id!);
+                              },
+                              icon: const Icon(Icons.close)))
+                    ],
+                  ),
+                  const SizedBox(height: 10)
+                ],
+              );
+            }).toList(),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class ShowSocialLinksForUsers extends StatelessWidget {
+  const ShowSocialLinksForUsers({
+    super.key,
+    required this.listOfSocial,
+  });
+
+  final List<ProviderProfileSocialLinks?>? listOfSocial;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        Text(
+          'Your Social links',
+          style: theme.textTheme.labelLarge,
+        ),
+        Expanded(
+            child: Column(
+          children: listOfSocial!.map((e) {
+            return Column(
+              children: [
+                Text(
+                  e!.platform!,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                const SizedBox(height: 5),
+                SelectableText(e.url!, maxLines: 1)
+              ],
+            );
+          }).toList(),
+        ))
+      ],
+    );
   }
 }
 
@@ -194,15 +223,23 @@ class SectionBodySheetAddLink extends StatefulWidget {
       super.key});
 
   @override
-  State<SectionBodySheetAddLink> createState() => _SectionBodySheetAddLinkState();
+  State<SectionBodySheetAddLink> createState() =>
+      _SectionBodySheetAddLinkState();
 }
 
 class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
   TextEditingController textSelectedPlatform = TextEditingController();
-    TextEditingController textSelectUrl = TextEditingController();
+  TextEditingController textSelectUrl = TextEditingController();
+
+  @override
+  dispose() {
+    super.dispose();
+    textSelectUrl;
+    textSelectedPlatform;
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom, //Push above keyboard
@@ -233,7 +270,7 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
             BlocListener<ProfileCubit, ProfileStates>(
               listener: (context, state) {
                 if (state is AddorUpdateSoicalLinksLoading) {
-                  UIUtils.showLoading(context);
+                  UIUtils.showLoadingDialog(context);
                 } else if (state is AddorUpdateSoicalLinksError) {
                   UIUtils.hideLoading(context);
                   UIUtils.showMessage(state.message);
@@ -246,9 +283,10 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
               child: ElevatedButton(
                 onPressed: () {
                   if (textSelectUrl.text.contains(textSelectedPlatform.text)) {
-                    widget.profileCubit.addOrupdateSoical(SocialMediaLinksRequest(
-                        platform: textSelectedPlatform.text,
-                        url: textSelectUrl.text));
+                    widget.profileCubit.addOrupdateSoical(
+                        SocialMediaLinksRequest(
+                            platform: textSelectedPlatform.text,
+                            url: textSelectUrl.text));
                   } else {
                     UIUtils.showMessage(
                         'Ther url that enter is not same type of platform');
@@ -265,7 +303,7 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
   }
 }
 
-class SectionBodySheetEditLink extends StatelessWidget {
+class SectionBodySheetEditLink extends StatefulWidget {
   final String url;
   final String platform;
   final ProfileCubit profileCubit;
@@ -276,8 +314,26 @@ class SectionBodySheetEditLink extends StatelessWidget {
       super.key});
 
   @override
+  State<SectionBodySheetEditLink> createState() =>
+      _SectionBodySheetEditLinkState();
+}
+
+class _SectionBodySheetEditLinkState extends State<SectionBodySheetEditLink> {
+  final TextEditingController urlText = TextEditingController();
+  @override
+  initState() {
+    super.initState();
+    urlText.text = widget.url;
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    urlText;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController urlText = TextEditingController(text: url);
     return Padding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -301,22 +357,23 @@ class SectionBodySheetEditLink extends StatelessWidget {
                 BlocListener<ProfileCubit, ProfileStates>(
                   listener: (context, state) {
                     if (state is AddorUpdateSoicalLinksLoading) {
-                      UIUtils.showLoading(context);
+                      UIUtils.showLoadingDialog(context);
                     } else if (state is AddorUpdateSoicalLinksError) {
                       UIUtils.hideLoading(context);
                       UIUtils.showMessage(state.message);
                     } else if (state is AddorUpdateSoicalLinksSuccess) {
                       UIUtils.hideLoading(context);
                       Navigator.of(context).pop();
-                      profileCubit.getUserRole();
+                      widget.profileCubit.getUserRole();
                     }
                   },
                   child: ElevatedButton(
                       onPressed: () {
-                        if (urlText.text.contains(platform)) {
-                          profileCubit.addOrupdateSoical(
+                        if (urlText.text.contains(widget.platform)) {
+                          widget.profileCubit.addOrupdateSoical(
                               SocialMediaLinksRequest(
-                                  platform: platform, url: urlText.text));
+                                  platform: widget.platform,
+                                  url: urlText.text));
                         }
                       },
                       child: const Text('Save')),

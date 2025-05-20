@@ -158,11 +158,10 @@ class DrawerCubit extends Cubit<DrawerStates> {
         await sharedPref.remove(CacheConstant.nameKey);
         await sharedPref.remove(CacheConstant.imagePhotoFromLogin);
         await sharedPref.remove(CacheConstant.userRole);
-        await sharedPreferences.remove(CacheConstant.semailKey);
+        await sharedPreferences.remove(CacheConstant.emailKey);
         emit(DeleteAccountSuccess());
       }
     } catch (e) {
-     
       emit(DeleteAccountError("An error occurred. Please try again."));
     }
   }
