@@ -1,9 +1,4 @@
 import 'dart:io';
-
-import 'package:app/core/models/google_map_model.dart';
-import 'package:app/core/utils/map_helper/location_service.dart';
-import 'package:app/features/auth/domain/entities/country.dart';
-import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
@@ -19,9 +14,8 @@ import 'package:app/features/service/domain/entities/categories.dart';
 
 import 'package:app/features/service/domain/use_cases/get_categories.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/features/profile/domain/use_cases/get_client_profile.dart';
 import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart';
@@ -39,7 +33,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
       this._updateClientProfile,
       this._updateProviderProfile,
       this._getCategories,
-      this._getCountryCityName,
       this._addImagePhoto,
       this._deleteImage,
       this._addOrUpdateSocialUseCase,
@@ -57,8 +50,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final DeleteSocialLinksUseCase _deleteSocialLinksUseCase;
 
   //variable
-  // Categories? parent;
-  // Categories? child;
+
   TextEditingController emailEditController = TextEditingController();
   TextEditingController firstNameEditController = TextEditingController();
   TextEditingController lastNameEditController = TextEditingController();
@@ -73,9 +65,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
   List<Categories>? catChildren;
   String? selectedSubCategoryId;
   Categories? selectedSubCategory;
-  final Getcountryname _getCountryCityName;
+
   ProviderProfile? providerProfile;
-  String? latitu;
 
   String? longti;
   List<DateSelect> dateSelect = [
@@ -90,16 +81,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   String? lat;
   String? long;
-  // String?CountryName;
-
   DateSelect? dateSelected;
-  LatLng? currentLocation;
   String? cityName;
-  LatLng? myLocation;
-  LatLng? oldLocation;
-  Country? country;
   List<Categories?> chosenCategories = [];
-
   ProviderProfileCity? city;
 
   void extractCategoryNames(
@@ -330,102 +314,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
       }
     }
     return false;
-  }
-
-  bool isCurrent = true;
-
-  String? mapStyle;
-
-  Set<Marker> markers = {};
-  GoogleMapController? googleMapController;
-  List<GoogleMapModel> markerLocationData = [];
-  bool isCountySuccess = false;
-
-  void initMarkerAddress() {
-    markers.clear();
-    var myMarker = markerLocationData
-        .map(
-          (e) => Marker(
-            position: e.latLng,
-            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-            infoWindow: InfoWindow(title: e.name),
-            markerId: MarkerId(
-              e.id.toString(),
-            ),
-          ),
-        )
-        .toSet();
-    markers.addAll(myMarker);
-    markerLocationData.clear();
-  }
-
-  void initCurrentLocation() {
-    CameraPosition newLocation = CameraPosition(target: myLocation!, zoom: 15);
-    googleMapController!
-        .animateCamera(CameraUpdate.newCameraPosition(newLocation));
-
-    markerLocationData.add(GoogleMapModel(BitmapDescriptor.hueGreen,
-        id: 1, name: "your location", latLng: myLocation!));
-    emit(SelectedLocationUpdatedState());
-  }
-
-  Future<void> getCurrentLocation() async {
-    // try {
-    //   emit(GetUpdatedLocationLoading());
-    //   LocationData getCurrentLocation = await LocationService.getLocationData();
-    //   currentLocation =
-    //       LatLng(getCurrentLocation.latitude!, getCurrentLocation.longitude!);
-    //   emit(GetUpdatedLocationSuccess());
-    // } catch (e) {
-    //   emit(GetUpdatedLocationErrorr("Couldn't get your location"));
-    // }
-    emit(GetUpdatedLocationLoading());
-    final result = await LocationService.getLocationData();
-    result.fold(
-        (failure) =>
-            emit(GetUpdatedLocationErrorr("Couldn't get your location")),
-        (location) {
-      currentLocation = LatLng(location.latitude!, location.longitude!);
-      emit(GetUpdatedLocationSuccess());
-    });
-  }
-
-  void selectLocation(LatLng onSelectedLocation) {
-    markerLocationData.add(GoogleMapModel(
-      BitmapDescriptor.hueGreen,
-      id: 1,
-      name: "your Location",
-      latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
-    ));
-
-    emit(SelectedLocationUpdatedState());
-  }
-
-  void getCountryAndCityNameFromCrocd(double lat, double long) async {
-    lat != latitu && long != longti ? emit(IsUpdated()) : emit(IsNotUpdated());
-
-    emit(GetLocationCountryLoading());
-    isCountySuccess = false;
-    cityName = null;
-    final result = await _getCountryCityName(lat, long);
-
-    result.fold((failure) => emit(GetLocationCountryErrorr(failure.message)),
-        (response) {
-      cityName = response.cityName;
-      isCountySuccess = true;
-      country = response;
-      emit(GetLocationCountrySuccess());
-    });
-  }
-
-  Future<void> loadMapStyle(bool isDark) async {
-    try {
-      mapStyle = await rootBundle.loadString(
-          "asset/map_styles/${isDark ? "night_map_style.json" : "light_map_style.json"}");
-      // emit(MapStyleLoading());
-    } catch (e) {
-      // emit(MapStyleError("Failed to load map style."));
-    }
   }
 
   void addImagePhoto(File image) async {

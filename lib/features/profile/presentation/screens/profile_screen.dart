@@ -61,13 +61,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Text(
-                  //   state.message,
-                  //   style: TextStyle(
-                  //       fontSize: 30.sp,
-                  //       color: Colors.black,
-                  //       fontWeight: FontWeight.w500),
-                  // ),
+                  
                   SizedBox(height: 20.h),
                   const Icon(
                     Icons.replay_outlined,

@@ -307,10 +307,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i460.SharedPreferences>(),
           gh<_i597.ProfileLocalDataSource>(),
         ));
-    gh.factory<_i508.GoogleMapUsecase>(
-        () => _i508.GoogleMapUsecase(gh<_i515.GoogleMapRepository>()));
     gh.factory<_i259.GetLatlngCountryUseCase>(
         () => _i259.GetLatlngCountryUseCase(gh<_i515.GoogleMapRepository>()));
+    gh.factory<_i508.GoogleMapUsecase>(
+        () => _i508.GoogleMapUsecase(gh<_i515.GoogleMapRepository>()));
     gh.factory<_i779.GetCategoriesUseCase>(
         () => _i779.GetCategoriesUseCase(gh<_i1054.ServiceRepository>()));
     gh.factory<_i538.GetCountriesUseCase>(
@@ -368,6 +368,18 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i614.GetAllFavUsecase(gh<_i258.FavRepositry>()));
     gh.factory<_i654.RemoveFromFavUsecase>(
         () => _i654.RemoveFromFavUsecase(gh<_i258.FavRepositry>()));
+    gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
+          gh<_i916.GetClientProfile>(),
+          gh<_i140.GetProviderProfile>(),
+          gh<_i849.GetUserRole>(),
+          gh<_i837.UpdateClientProfile>(),
+          gh<_i284.UpdateProviderProfile>(),
+          gh<_i779.GetCategoriesUseCase>(),
+          gh<_i814.AddImagePhoto>(),
+          gh<_i628.DeleteImage>(),
+          gh<_i83.AddOrUpdateSocialUseCase>(),
+          gh<_i54.DeleteSocialLinksUseCase>(),
+        ));
     gh.factory<_i651.AuthRepository>(() => _i201.AuthRepositoryImpl(
           gh<_i856.AuthRemoteDataSource>(),
           gh<_i279.SharedPreferencesUtils>(),
@@ -461,19 +473,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i156.RegisterServiceUseCase>(),
           gh<_i374.RegisterUseCase>(),
           gh<_i779.GetCategoriesUseCase>(),
-        ));
-    gh.lazySingleton<_i87.ProfileCubit>(() => _i87.ProfileCubit(
-          gh<_i916.GetClientProfile>(),
-          gh<_i140.GetProviderProfile>(),
-          gh<_i849.GetUserRole>(),
-          gh<_i837.UpdateClientProfile>(),
-          gh<_i284.UpdateProviderProfile>(),
-          gh<_i779.GetCategoriesUseCase>(),
-          gh<_i728.Getcountryname>(),
-          gh<_i814.AddImagePhoto>(),
-          gh<_i628.DeleteImage>(),
-          gh<_i83.AddOrUpdateSocialUseCase>(),
-          gh<_i54.DeleteSocialLinksUseCase>(),
         ));
     return this;
   }
