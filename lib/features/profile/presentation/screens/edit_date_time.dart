@@ -15,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkingSchedulePage extends StatefulWidget {
   final List<ProviderPriofileWorkingday> listOfworkday;
+
   const WorkingSchedulePage({super.key, required this.listOfworkday});
 
   @override
@@ -23,6 +24,7 @@ class WorkingSchedulePage extends StatefulWidget {
 
 class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
   final _profileCubit = serviceLocator.get<ProfileCubit>();
+
   @override
   void dispose() {
     for (int i = 0; i < _profileCubit.dateSelect.length; i++) {
@@ -53,9 +55,20 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
     }
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: ColorManager.grey,
+          ),
+        ),
         title: Text(
           localization.editTime,
-          style: TextStyle(fontSize: 35.sp, color: Colors.black),
+          style: TextStyle(
+            fontSize: 38.sp,
+          ),
         ),
         actions: [
           IconButton(

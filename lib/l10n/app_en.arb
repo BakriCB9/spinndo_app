@@ -199,6 +199,7 @@
   "socialLinks": "Social Links",
   "serviceRequests": "Service Requests",
   "yourSubscriptionIsActive": "Subscribe",
-  "notSubscribedToThisPackage": "Not subscribed"
+  "notSubscribedToThisPackage": "Not subscribed",
+  "editUserAccount": "Edit user account"
 
 }

@@ -168,7 +168,10 @@
   "passwordEmpty": "Passwort ist leer",
   "passwordMustContainLettersAndNumbers": "Das Passwort muss Buchstaben und Zahlen enthalten",
   "yourSubscriptionIsActive": "Dein Abonnement ist aktiv",
-  "notSubscribedToThisPackage": "Sie sind für dieses Paket nicht abonniert"
+  "notSubscribedToThisPackage": "Sie sind für dieses Paket nicht abonniert",
+  "editUserAccount": "Benutzerkonto bearbeiten"
+
+
 
 
 
