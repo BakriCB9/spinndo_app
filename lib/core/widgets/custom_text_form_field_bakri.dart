@@ -8,10 +8,10 @@ class CustomTextFromFieldBakri extends StatefulWidget {
   final int? maxlines;
   const CustomTextFromFieldBakri(
       {required this.label,
-      this.maxlines,
-      this.icon,
-      this.initialvalue,
-      super.key});
+        this.maxlines,
+        this.icon,
+        this.initialvalue,
+        super.key});
 
   @override
   State<CustomTextFromFieldBakri> createState() =>

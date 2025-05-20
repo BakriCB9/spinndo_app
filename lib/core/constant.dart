@@ -48,6 +48,7 @@ class CacheConstant {
   static const String userId = 'user_id';
   static const String userRole = 'user_role';
   static const String imagePhoto = 'Image_photo';
+  static const String imagePhotoFromFile='image_photo_file';
   static const String imagePhotoFromLogin = 'image_phot';
   static const String userAccountStatus = 'account_status';
   static const String  googleMapKey = 'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';

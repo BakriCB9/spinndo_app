@@ -55,13 +55,16 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
     emit(state.copyWith(getCurrentLocation: BaseLoadingState()));
     final result = await LocationService.getLocationData();
     result.fold(
-        (failure) =>
+            (failure) =>
             emit(state.copyWith(getCurrentLocation: BaseErrorState(null))),
-        (location) {
-      getCurrentLocation = location;
-      getCountriesAndCategories();
-      emit(state.copyWith(getCurrentLocation: BaseSuccessState()));
-    });
+            (location) {
+          getCurrentLocation = location;
+          print('we get Location Now  *************************************** ${location.latitude} and lang ${location.longitude}');
+
+          getCountriesAndCategories();
+          emit(state.copyWith(getCurrentLocation: BaseSuccessState()));
+
+        });
   }
 
   Future<void> getCountriesAndCategories() async {
@@ -79,7 +82,7 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
         DataCountries addAllCountry = DataCountries(
             id: -1,
             name:
-                AppLocalizations.of(navigatorKey.currentContext!)!.allCountries,
+            AppLocalizations.of(navigatorKey.currentContext!)!.allCountries,
             cities: []);
         countriesList?.add(addAllCountry);
       });
@@ -90,7 +93,7 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
         categoriesList = categories;
         DataCategory addAllCategories = DataCategory(
             name:
-                AppLocalizations.of(navigatorKey.currentContext!)!.allCategory,
+            AppLocalizations.of(navigatorKey.currentContext!)!.allCategory,
             id: -1,
             children: []);
         categoriesList?.add(addAllCategories);
@@ -152,11 +155,11 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
 
     final result = await _getServiceProfileUseCase(id);
     result.fold(
-      (failure) => emit(
+          (failure) => emit(
           state.copyWith(getDetailsUserState: BaseErrorState(failure.message))),
-      (providerProfile) => emit(state.copyWith(
+          (providerProfile) => emit(state.copyWith(
           getDetailsUserState:
-              BaseSuccessState<ProviderProfile>(data: providerProfile))),
+          BaseSuccessState<ProviderProfile>(data: providerProfile))),
     );
   }
 
@@ -165,12 +168,12 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
 
     final result = await _getNotificationsUseCase();
     result.fold(
-      (failure) => emit(state.copyWith(
+          (failure) => emit(state.copyWith(
           getAllNotificationState: BaseErrorState(failure.message))),
-      (notification) {
+          (notification) {
         emit(state.copyWith(
             getAllNotificationState:
-                BaseSuccessState<List<Notifications>>(data: notification)));
+            BaseSuccessState<List<Notifications>>(data: notification)));
       },
     );
   }
@@ -185,8 +188,8 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
       // listOfAllMainCategory = list.listOfItemMainCategory;
       emit(state.copyWith(
           getMainCategoryState:
-              BaseSuccessState<List<DataOfItemMainCategoryEntity>>(
-                  data: list.listOfItemMainCategory)));
+          BaseSuccessState<List<DataOfItemMainCategoryEntity>>(
+              data: list.listOfItemMainCategory)));
     });
   }
 
