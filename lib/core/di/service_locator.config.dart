@@ -421,10 +421,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i833.VerifyCodeUseCase(gh<_i651.AuthRepository>()));
     gh.singleton<_i128.ResendCodeUseCase>(
         () => _i128.ResendCodeUseCase(gh<_i651.AuthRepository>()));
-    gh.lazySingleton<_i649.DrawerCubit>(() => _i649.DrawerCubit(
-          sharedPreferences: gh<_i460.SharedPreferences>(),
-          changePasswordUseCase: gh<_i35.ChangePasswordUseCase>(),
-        ));
     gh.factory<_i673.VerificationCubit>(() => _i673.VerificationCubit(
           gh<_i833.VerifyCodeUseCase>(),
           gh<_i128.ResendCodeUseCase>(),
@@ -446,6 +442,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i302.GetNotificationsUseCase>(),
           gh<_i762.GetAllDiscountUseCase>(),
           gh<_i785.GetMainCategoryUseCase>(),
+        ));
+    gh.lazySingleton<_i649.DrawerCubit>(() => _i649.DrawerCubit(
+          changePasswordUseCase: gh<_i35.ChangePasswordUseCase>(),
+          sharedPreferencesUtils: gh<_i279.SharedPreferencesUtils>(),
         ));
     gh.lazySingleton<_i392.GetAllPackagesUseCase>(
         () => _i392.GetAllPackagesUseCase(gh<_i673.PackageRepository>()));

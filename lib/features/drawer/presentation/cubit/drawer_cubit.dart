@@ -1,24 +1,25 @@
 import 'package:app/core/error/apiResult.dart';
+import 'package:app/core/network/remote/handle_dio_exception.dart';
+import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/features/drawer/data/model/change_password_request.dart';
 import 'package:app/features/drawer/domain/use_cases/change_password_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
-import 'package:app/main.dart';
 
 @lazySingleton
 class DrawerCubit extends Cubit<DrawerStates> {
   DrawerCubit(
-      {required this.sharedPreferences, required this.changePasswordUseCase})
+      {required this.changePasswordUseCase,
+      required this.sharedPreferencesUtils})
       : super(DrawerInitial());
   ChangePasswordUseCase changePasswordUseCase;
-  SharedPreferences sharedPreferences;
+  SharedPreferencesUtils sharedPreferencesUtils;
   ThemeMode themeMode = ThemeMode.light;
 
   String languageCode = 'en';
@@ -34,16 +35,14 @@ class DrawerCubit extends Cubit<DrawerStates> {
 
   Future<void> saveTheme(ThemeMode themeMode) async {
     String newTheme = themeMode == ThemeMode.dark ? "dark" : "light";
-    await sharedPreferences.setString('theme', newTheme);
+    await sharedPreferencesUtils.saveData(key: 'theme', value: newTheme);
   }
 
   String? getTheme() {
-    return sharedPreferences.getString('theme');
+    return sharedPreferencesUtils.getString('theme');
   }
 
   Future<void> loadThemeData() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-
     String? oldTheme = getTheme();
     if (oldTheme != null) {
       themeMode = oldTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
@@ -69,42 +68,37 @@ class DrawerCubit extends Cubit<DrawerStates> {
   }
 
   Future<void> saveLanguage(String language) async {
-    await sharedPreferences.setString('language', language);
+    await sharedPreferencesUtils.saveData(key: 'language', value: language);
   }
 
   String? getLanguage() {
-    return sharedPreferences.getString('language');
+    return sharedPreferencesUtils.getString('language');
   }
 
   Future<void> loadLanguage() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-
     String? language = getLanguage();
     if (language != null) {
       languageCode = language;
-// emit(state)
     }
   }
 
   Future<void> logout() async {
-    Dio _dio = Dio(BaseOptions(
+    Dio dio = Dio(BaseOptions(
       baseUrl: ApiConstant.baseUrl,
       receiveDataWhenStatusError: true,
-      // connectTimeout:const  Duration(seconds: 120),
-      // receiveTimeout:const  Duration(seconds: 120)
     ));
 
     try {
-      final token = sharedPref.getString(CacheConstant.tokenKey);
+      final token = sharedPreferencesUtils.getString(CacheConstant.tokenKey);
       emit(LogOutLoading());
-      // Ensure token is not null or empty
+
       if (token == null || token.isEmpty) {
         UIUtils.showMessage("You are not logged in.");
         return;
       }
 
       // Make the API call
-      final response = await _dio!.post(
+      final response = await dio.post(
         '${ApiConstant.logoutEndPoint}',
         options: Options(
           headers: {
@@ -116,31 +110,26 @@ class DrawerCubit extends Cubit<DrawerStates> {
 
       // Check the response status
       if (response.statusCode == 200) {
-        await sharedPref.remove(CacheConstant.tokenKey);
-        await sharedPref.remove(CacheConstant.emailKey);
-        await sharedPref.remove(CacheConstant.imagePhoto);
-        await sharedPref.remove(CacheConstant.imagePhotoFromLogin);
-        await sharedPref.remove(CacheConstant.userId);
-        await sharedPref.clear();
+        await sharedPreferencesUtils.clearAllData();
         emit(LogOutSuccess());
       }
-    } catch (error) {
-      // Log and show the error
-      debugPrint("Logout Error: $error");
-      emit(LogOutErrorr("An error occurred. Please try again."));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      emit(LogOutErrorr(exception));
     }
   }
 
   Future<void> deleteAccount() async {
-    Dio _dio = Dio(BaseOptions(
+    Dio dio = Dio(BaseOptions(
       baseUrl: ApiConstant.baseUrl,
       receiveDataWhenStatusError: true,
     ));
     try {
-      final token = sharedPref.getString(CacheConstant.tokenKey);
-      final userId = sharedPref.getInt(CacheConstant.userId);
+      final token = sharedPreferencesUtils.getString(CacheConstant.tokenKey);
+      final userId =
+          sharedPreferencesUtils.getData(key: CacheConstant.userId) as int;
       emit(DeleteAccountLoading());
-      final response = await _dio.delete(
+      final response = await dio.delete(
         '${ApiConstant.deleteMyAccount}/$userId',
         options: Options(
           headers: {
@@ -151,18 +140,13 @@ class DrawerCubit extends Cubit<DrawerStates> {
       );
       if (response.statusCode == 200) {
         // Clear user session
+        await sharedPreferencesUtils.clearAllData();
 
-        await sharedPref.remove(CacheConstant.tokenKey);
-        await sharedPref.remove(CacheConstant.emailKey);
-        await sharedPref.remove(CacheConstant.imagePhoto);
-        await sharedPref.remove(CacheConstant.nameKey);
-        await sharedPref.remove(CacheConstant.imagePhotoFromLogin);
-        await sharedPref.remove(CacheConstant.userRole);
-        await sharedPreferences.remove(CacheConstant.emailKey);
         emit(DeleteAccountSuccess());
       }
     } catch (e) {
-      emit(DeleteAccountError("An error occurred. Please try again."));
+      final exception = HandleException.exceptionType(e);
+      emit(DeleteAccountError(exception));
     }
   }
 }
