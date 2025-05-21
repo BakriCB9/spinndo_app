@@ -7,10 +7,10 @@ import 'package:app/features/service/domain/repository/service_repository.dart';
 import '../../../../core/error/failure.dart';
 
 @injectable
-class GetCountriesUseCase {
+class GetCountries {
   final ServiceRepository _serviceRepository;
 
-  GetCountriesUseCase(this._serviceRepository);
+  GetCountries(this._serviceRepository);
 
   Future<Either<Failure, List<Countries>>> call() =>
       _serviceRepository.getCountries();

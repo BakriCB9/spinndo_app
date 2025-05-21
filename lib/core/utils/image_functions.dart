@@ -10,7 +10,7 @@ class ImageFunctions {
     final croppedImage = await ImageCropper().cropImage(
       sourcePath: imagePath,
       aspectRatio:
-          const CropAspectRatio(ratioX: 1, ratioY: 1), // Square aspect ratio
+      const CropAspectRatio(ratioX: 1, ratioY: 1), // Square aspect ratio
       uiSettings: [
         AndroidUiSettings(
           hideBottomControls: false,
@@ -36,16 +36,20 @@ class ImageFunctions {
   static Future<File?> _cropImage(String imagePath) async {
     final croppedImage = await ImageCropper().cropImage(
       sourcePath: imagePath,
-      
+      // aspectRatio:
+      //     const CropAspectRatio(ratioX: 1, ratioY: 1), //
+      // Square aspect ratio
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           toolbarColor: Colors.black,
           aspectRatioPresets: [
-            
+            // CropAspectRatioPreset.ratio3x2,
             CropAspectRatioPreset.original,
             CropAspectRatioPreset.ratio4x3,
-            
+            // CropAspectRatioPreset.ratio5x3,
+            // CropAspectRatioPreset.ratio5x4,
+            // CropAspectRatioPreset.ratio7x5,
             CropAspectRatioPreset.ratio16x9,
             CropAspectRatioPreset.square,
           ],
@@ -78,7 +82,27 @@ class ImageFunctions {
     }
   }
 
-
+  // static Future<File?> galleryPicker() async {
+  //   PermissionStatus status;
+  //   if (Platform.isAndroid) {
+  //     final androidInfo = await DeviceInfoPlugin().androidInfo;
+  //     if (androidInfo.version.sdkInt <= 34) {
+  //       status = await Permission.storage.request();
+  //     } else {
+  //       status = await Permission.phone.request();
+  //     }
+  //   } else {
+  //     status = await Permission.phone.request();
+  //   }
+  //   if (status.isGranted) {
+  //     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (image != null) {
+  //       return File(image.path);
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
   static Future<File?> galleryPicker(bool isSquare) async {
     PermissionStatus status;
 

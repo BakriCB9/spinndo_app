@@ -35,8 +35,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final drawerCubit = serviceLocator.get<DrawerCubit>();
-    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = _drawerCubit.themeMode == ThemeMode.dark;
 
     return Container(
       decoration: isDarkMode

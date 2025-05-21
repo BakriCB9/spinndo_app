@@ -1,5 +1,4 @@
 import 'package:app/core/resources/color_manager.dart';
-import 'package:app/core/resources/font_manager.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,7 @@ import 'package:app/features/profile/presentation/widget/profile_info/job_items/
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomDescription extends StatelessWidget {
   final String categoryName;
@@ -38,128 +37,139 @@ class CustomDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     print('the value of isAprrovid is $isApprovid');
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     final myId = sharedPref.getInt(CacheConstant.userId);
-    final theme = Theme.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(localization.jobDetails,
-                  style: theme.textTheme.labelLarge),
-              userId == myId
-                  ? IconButton(
-                      onPressed: isApprovid == true
-                          ? () {
-                              _profileCubit.selectedSubCategory = null;
-                              _profileCubit.selectedCategory = null;
-                              _profileCubit.getCategories();
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditJobDetails(
-                                        lat: lat,
-                                        lng: lng,
-                                        locationName: cityName,
-                                        categoryName: categoryName,
-                                        description: description,
-                                        serviceName: serviceName,
-                                      )));
-                            }
-                          : () {
-                              UIUtils.showMessage(
-                                  'You Have to wait to Accept Your Information');
-                            },
-                      icon: SvgPicture.asset(
-                        'asset/icons/edit.svg',
-                        width: 20,
-                        height: 18,
-                        colorFilter: ColorFilter.mode(
-                          isApprovid == true ? ColorManager.primary : Colors.grey,
-                          BlendMode.srcIn,
-                        ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(localization.jobDetails,
+                style: Theme.of(context).textTheme.labelLarge),
+            userId == myId
+                ? IconButton(
+                    onPressed: isApprovid == true
+                        ? () {
+                            _profileCubit.selectedSubCategory = null;
+                            _profileCubit.selectedCategory = null;
+                            _profileCubit.getCategories();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditJobDetails(
+                                      lat: lat,
+                                      lng: lng,
+                                      locationName: cityName,
+                                      categoryName: categoryName,
+                                      description: description,
+                                      serviceName: serviceName,
+                                    )));
+                          }
+                        : () {
+                            UIUtils.showMessage(
+                                'You Have to wait to Accept Your Information');
+                          },
+                    icon: SvgPicture.asset(
+                      'asset/icons/edit.svg',
+                      width: 20,
+                      height: 18,
+                      colorFilter: ColorFilter.mode(
+                        isApprovid == true ? ColorManager.primary : Colors.grey,
+                        BlendMode.srcIn,
                       ),
-                    )
-                  : const SizedBox()
-            ],
-          ),
-          SizedBox(height: 30.h),
-          Row(
-            children: [
-              SvgPicture.asset(
-                'asset/icons/work.svg',
-                width: 28,
-                height: 28,
-                colorFilter: ColorFilter.mode(
-                  ColorManager.primary,
-                  BlendMode.srcIn,
-                ),
+                    ),
+                  )
+                : const SizedBox()
+          ],
+        ),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/work.svg',
+              height: 23,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
               ),
-              SizedBox(width: 24.w),
-              Text(
+            ),
+            SizedBox(width: 24.w),
+            Text(
                 '${categoryName}',
-                style: theme.textTheme.displayMedium!
+                style:  Theme.of(context).textTheme.labelMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 24.h),
+
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/location.svg',
+              height: 23,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
               ),
-            ],
-          ),
-          SizedBox(height: 50.h),
-          Row(
-            children: [
-              Icon(Icons.maps_home_work_outlined),
-              SizedBox(width: 24.w),
-              Text(
+            ),
+            SizedBox(width: 24.w),
+            Text(
                 '${serviceName}',
-                style: theme.textTheme.displayMedium!
+                style: Theme.of(context).textTheme.labelMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 24.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/location.svg',
+              height: 23,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
               ),
-            ],
-          ),
-          SizedBox(height: 50.h),
-          Row(
-            children: [
-              SvgPicture.asset(
-                'asset/icons/location.svg',
-                width: 26,
-                height: 26,
-                colorFilter: ColorFilter.mode(
-                  ColorManager.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              SizedBox(width: 24.w),
-              Text(
+            ),
+            SizedBox(width: 24.w),
+            Text(
                 '${cityName}',
-                style: theme.textTheme.displayMedium!
+                style: Theme.of(context).textTheme.labelMedium!
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        SizedBox(height: 30.h),
+        Divider(color: Colors.grey, thickness: 0.2),
+        SizedBox(height: 30.h),
+
+        Text(localization.description,
+            style: Theme.of(context).textTheme.labelLarge),
+        SizedBox(height: 24.h),
+
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/description.svg',
+              height: 23,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
               ),
-            ],
-          ),
-          SizedBox(height: 50.h),
-          Row(
-            children: [
-              SvgPicture.asset(
-                'asset/icons/description.svg',
-                width: 26,
-                height: 26,
-                colorFilter: ColorFilter.mode(
-                  ColorManager.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              SizedBox(width: 24.w),
-              ShowMoreAndShowLess(txt: description)
-            ],
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          SizedBox(height: 30.h),
-          Divider(color: Colors.grey, thickness: 0.2)
-        ],
-      ),
+            ),
+            SizedBox(width: 24.w),
+            ShowMoreAndShowLess(txt: description)
+          ],
+        ),
+
+        SizedBox(
+          height: 30.h,
+        ),
+        Divider(color: Colors.grey, thickness: 0.2),
+
+      ],
     );
   }
 }

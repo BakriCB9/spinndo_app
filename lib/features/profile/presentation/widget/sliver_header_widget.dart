@@ -15,7 +15,7 @@ import 'package:app/features/profile/presentation/widget/icon_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'position_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -81,22 +81,22 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                         initialImage: image);
                   })),
           CustomPosition(
-              left: 20,
-              top: topSpace+15,
-              child:  InkWell(
-                onTap: (){
-                  Navigator.pop(context);
-                },
-                child: SvgPicture.asset(
-                  'asset/icons/back.svg',
-                  width: 20,
-                  height: 21,
-                  colorFilter: ColorFilter.mode(
-                    ColorManager.grey,
-                    BlendMode.srcIn,
-                  ),
+              left: 0,
+              top: topSpace,
+              child: CustomIconButton(
+                  ontap: () {
+                    Navigator.pop(context);
+                  },
+                icon:SvgPicture.asset(
+                    'asset/icons/back.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter:ColorFilter.mode(
+                      ColorManager.grey,
+                      BlendMode.srcIn,
+                    )
                 ),
-              ),),
+              )),
           myId == userId
               ? CustomPosition(
                   right: 0,
@@ -202,7 +202,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                                               ),
                                               SizedBox(height: 15.h),
                                               Text(
-                                                'Camera',
+                                                localization.camera,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .titleLarge!
@@ -240,7 +240,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                                               ),
                                               SizedBox(height: 15.h),
                                               Text(
-                                                'Gallery',
+                                                localization.gallery,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .titleLarge!
@@ -256,7 +256,10 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                                 ));
                               });
                         },
-                        icon: Icons.camera_alt_outlined),
+                        icon: SvgPicture.asset(
+                      'asset/images/camera.svg',
+                      height: 400.h,
+                    ),),
                   ))
               : const SizedBox(),
           // CustomPosition(child: IconButton(onPressed: (){}, icon:Icon(Icons.camera_alt_outlined,color: ColorManager.primary,))),

@@ -98,8 +98,8 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _register(requestData);
 
     result.fold(
-      (failure) => emit(RegisterError(failure.message)),
-      (response) => emit(RegisterSuccess()),
+          (failure) => emit(RegisterError(failure.message)),
+          (response) => emit(RegisterSuccess()),
     );
   }
 
@@ -108,8 +108,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _verifyCode(requestData);
     result.fold(
-      (failure) => emit(VerifyCodeError(failure.message)),
-      (response) => emit(VerifyCodeSuccess()),
+          (failure) => emit(VerifyCodeError(failure.message)),
+          (response) => emit(VerifyCodeSuccess()),
     );
   }
 
@@ -120,8 +120,8 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _registerService(requestData);
 
     result.fold(
-      (failure) => emit(RegisterServiceError(failure.message)),
-      (response) => emit(RegisterServiceSuccess()),
+          (failure) => emit(RegisterServiceError(failure.message)),
+          (response) => emit(RegisterServiceSuccess()),
     );
   }
 
@@ -132,8 +132,8 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _upgradeAccountUseCase(requestData);
 
     result.fold(
-      (failure) => emit(RegisterServiceError(failure.message)),
-      (response) => emit(RegisterServiceSuccess()),
+          (failure) => emit(RegisterServiceError(failure.message)),
+          (response) => emit(RegisterServiceSuccess()),
     );
   }
 
@@ -142,8 +142,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _resendCode(requestData);
     result.fold(
-      (failure) => emit(ResendCodeError(failure.message)),
-      (response) {
+          (failure) => emit(ResendCodeError(failure.message)),
+          (response) {
         // verifyCodeTime();
         emit(ResendCodeSuccess());
       },
@@ -219,14 +219,14 @@ class AuthCubit extends Cubit<AuthState> {
     var myMarker = markerLocationData
         .map(
           (e) => Marker(
-            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-            position: e.latLng,
-            infoWindow: InfoWindow(title: e.name),
-            markerId: MarkerId(
-              e.id.toString(),
-            ),
-          ),
-        )
+        icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
+        position: e.latLng,
+        infoWindow: InfoWindow(title: e.name),
+        markerId: MarkerId(
+          e.id.toString(),
+        ),
+      ),
+    )
         .toSet();
     markers.addAll(myMarker);
     markerLocationData.clear();
@@ -235,7 +235,7 @@ class AuthCubit extends Cubit<AuthState> {
   void initCurrentLocation() {
     markerLocationData.clear();
     CameraPosition newLocation =
-        CameraPosition(target: currentLocation!, zoom: 15);
+    CameraPosition(target: currentLocation!, zoom: 15);
     googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(newLocation));
 
@@ -276,12 +276,12 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _getCountryCityName(lat, long);
 
     result.fold((failure) => emit(GetLocationCountryErrorr(failure.message)),
-        (response) {
-      cityName = response.cityName;
-      isCountySuccess = true;
-      country = response;
-      emit(GetLocationCountrySuccess());
-    });
+            (response) {
+          cityName = response.cityName;
+          isCountySuccess = true;
+          country = response;
+          emit(GetLocationCountrySuccess());
+        });
   }
 
   void updateCertificateImage(File? image) {
@@ -290,8 +290,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void addImagetoProtofile(
-    File? image,
-  ) {
+      File? image,
+      ) {
     //firstImage = image;
     listOfFileImagesProtofile.removeLast();
     listOfFileImagesProtofile.add(image);

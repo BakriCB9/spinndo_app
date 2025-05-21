@@ -1,6 +1,7 @@
 import 'package:app/core/const_variable.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/verification_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/verification_state.dart';
+import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:app/features/auth/presentation/widget/section_resend_code_timer.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/auth/data/models/verify_code_request.dart';
-import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:app/features/service/presentation/screens/service_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class VerficationCodeScreen extends StatefulWidget {
   String? email;

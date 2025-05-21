@@ -94,8 +94,6 @@ import 'package:app/features/google_map/data/repository_impl/google_map_reposito
     as _i272;
 import 'package:app/features/google_map/domain/repository/google_map_repository.dart'
     as _i515;
-import 'package:app/features/google_map/domain/usecase/get_latlng_country_use_case.dart'
-    as _i259;
 import 'package:app/features/google_map/domain/usecase/google_map_usecase.dart'
     as _i508;
 import 'package:app/features/google_map/presentation/view_model/cubit/google_map_cubit.dart'
@@ -186,8 +184,6 @@ import 'package:app/features/service/domain/use_cases/get_services.dart'
     as _i590;
 import 'package:app/features/service/presentation/cubit/service_cubit.dart'
     as _i254;
-import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart'
-    as _i225;
 import 'package:app/features/service_requist/data/dataSource/remote/service_request_remote_dataSouce_impl.dart'
     as _i290;
 import 'package:app/features/service_requist/data/dataSource/remote/service_requist_remote_dataSource.dart'
@@ -313,20 +309,18 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i508.GoogleMapUsecase>(
         () => _i508.GoogleMapUsecase(gh<_i515.GoogleMapRepository>()));
-    gh.factory<_i259.GetLatlngCountryUseCase>(
-        () => _i259.GetLatlngCountryUseCase(gh<_i515.GoogleMapRepository>()));
     gh.factory<_i779.GetCategoriesUseCase>(
         () => _i779.GetCategoriesUseCase(gh<_i1054.ServiceRepository>()));
-    gh.factory<_i538.GetCountriesUseCase>(
-        () => _i538.GetCountriesUseCase(gh<_i1054.ServiceRepository>()));
-    gh.factory<_i904.GetServiceProfileUseCase>(
-        () => _i904.GetServiceProfileUseCase(gh<_i1054.ServiceRepository>()));
-    gh.factory<_i785.GetMainCategoryUseCase>(
-        () => _i785.GetMainCategoryUseCase(gh<_i1054.ServiceRepository>()));
-    gh.factory<_i302.GetNotificationsUseCase>(
-        () => _i302.GetNotificationsUseCase(gh<_i1054.ServiceRepository>()));
-    gh.factory<_i590.GetServicesUseCase>(
-        () => _i590.GetServicesUseCase(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i538.GetCountries>(
+        () => _i538.GetCountries(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i904.GetServiceProfile>(
+        () => _i904.GetServiceProfile(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i785.GetMainCategory>(
+        () => _i785.GetMainCategory(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i302.GetNotifications>(
+        () => _i302.GetNotifications(gh<_i1054.ServiceRepository>()));
+    gh.factory<_i590.GetServices>(
+        () => _i590.GetServices(gh<_i1054.ServiceRepository>()));
     gh.factory<_i881.GetServiceRequestUseCase>(
         () => _i881.GetServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
     gh.factory<_i457.UpdateServiceRequestUseCase>(() =>
@@ -337,6 +331,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i35.AddServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
     gh.factory<_i600.DeleteServiceRequestUseCase>(() =>
         _i600.DeleteServiceRequestUseCase(gh<_i461.ServiceRequestRepo>()));
+    gh.factory<_i1040.GoogleMapCubit>(
+        () => _i1040.GoogleMapCubit(gh<_i508.GoogleMapUsecase>()));
     gh.factory<_i456.AddPaymentMethodUseCase>(
         () => _i456.AddPaymentMethodUseCase(gh<_i757.PaymentsRepository>()));
     gh.factory<_i23.AddSubscribeUseCase>(
@@ -377,18 +373,14 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i456.AddPaymentMethodUseCase>(),
           gh<_i846.RefundPaymentMethodUseCase>(),
         ));
-    gh.factory<_i1040.GoogleMapCubit>(() => _i1040.GoogleMapCubit(
-          gh<_i508.GoogleMapUsecase>(),
-          gh<_i259.GetLatlngCountryUseCase>(),
-        ));
-    gh.singleton<_i225.ServiceSettingCubit>(() => _i225.ServiceSettingCubit(
-          gh<_i538.GetCountriesUseCase>(),
+    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
+          gh<_i590.GetServices>(),
+          gh<_i538.GetCountries>(),
           gh<_i779.GetCategoriesUseCase>(),
-          gh<_i590.GetServicesUseCase>(),
+          gh<_i904.GetServiceProfile>(),
+          gh<_i302.GetNotifications>(),
           gh<_i762.GetAllDiscountUseCase>(),
-          gh<_i904.GetServiceProfileUseCase>(),
-          gh<_i302.GetNotificationsUseCase>(),
-          gh<_i785.GetMainCategoryUseCase>(),
+          gh<_i785.GetMainCategory>(),
         ));
     gh.factory<_i898.AddUnsubscribeUseCase>(
         () => _i898.AddUnsubscribeUseCase(gh<_i673.PackageRepository>()));
@@ -416,23 +408,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i833.VerifyCodeUseCase>(),
           gh<_i128.ResendCodeUseCase>(),
         ));
-    gh.factory<_i720.LoginCubit>(() => _i720.LoginCubit(
-          gh<_i293.LoginUseCase>(),
-          gh<_i801.ResetPasswordUseCase>(),
-        ));
     gh.factory<_i840.ServiceRequestCubit>(() => _i840.ServiceRequestCubit(
           gh<_i881.GetServiceRequestUseCase>(),
           gh<_i35.AddServiceRequestUseCase>(),
           gh<_i457.UpdateServiceRequestUseCase>(),
           gh<_i600.DeleteServiceRequestUseCase>(),
-        ));
-    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
-          gh<_i590.GetServicesUseCase>(),
-          gh<_i538.GetCountriesUseCase>(),
-          gh<_i779.GetCategoriesUseCase>(),
-          gh<_i302.GetNotificationsUseCase>(),
-          gh<_i762.GetAllDiscountUseCase>(),
-          gh<_i785.GetMainCategoryUseCase>(),
         ));
     gh.lazySingleton<_i392.GetAllPackagesUseCase>(
         () => _i392.GetAllPackagesUseCase(gh<_i673.PackageRepository>()));
@@ -473,6 +453,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i628.DeleteImage>(),
           gh<_i83.AddOrUpdateSocialUseCase>(),
           gh<_i54.DeleteSocialLinksUseCase>(),
+        ));
+    gh.factory<_i720.LoginCubit>(() => _i720.LoginCubit(
+          gh<_i293.LoginUseCase>(),
+          gh<_i801.ResetPasswordUseCase>(),
+          gh<_i128.ResendCodeUseCase>(),
         ));
     return this;
   }

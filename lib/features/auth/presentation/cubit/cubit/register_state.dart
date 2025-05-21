@@ -8,25 +8,25 @@ class RegisterState extends Equatable {
 
   RegisterState(
       {this.getCategoryState,
-      this.registerClientState,
-      this.registerProviderState});
+        this.registerClientState,
+        this.registerProviderState});
   RegisterState copyWith(
       {BaseState? registerClientState,
-      BaseState? registerProviderState,
-      BaseState? getCategoryState}) {
+        BaseState? registerProviderState,
+        BaseState? getCategoryState}) {
     return RegisterState(
         registerClientState: registerClientState ?? this.registerClientState,
         registerProviderState:
-            registerProviderState ?? this.registerProviderState,
+        registerProviderState ?? this.registerProviderState,
         getCategoryState: getCategoryState ?? this.getCategoryState);
   }
 
   @override
   List<Object?> get props => [
-        registerClientState,
-        registerProviderState,
-        getCategoryState,
-      ];
+    registerClientState,
+    registerProviderState,
+    getCategoryState,
+  ];
 }
 
 final class RegisterInitial extends RegisterState {}

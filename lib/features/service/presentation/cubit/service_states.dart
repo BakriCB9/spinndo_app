@@ -1,6 +1,6 @@
 import 'package:app/features/profile/domain/entities/provider_profile/provider_profile.dart';
+import 'package:app/features/service/domain/entities/notifications.dart';
 import 'package:app/features/service/domain/entities/services.dart';
-import 'package:equatable/equatable.dart';
 
 abstract class ServiceStates {}
 
@@ -100,6 +100,3 @@ class GetPackagesError extends ServiceStates {
 }
 
 class GetPackagesSuccess extends ServiceStates {}
-
-
-

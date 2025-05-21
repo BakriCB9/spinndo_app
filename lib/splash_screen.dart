@@ -99,8 +99,11 @@ class _SplashScreenState extends State<SplashScreen>
         });
         print('the current size is nowwwwwwwwwwwwwwwwwwwwwwwwwwwww ${navObserver.stackSize}');
         navObserver.printRouts();
+        // return Navigator.of(context)
+        //     .pushReplacementNamed(SignInScreen.routeName);
       } else {
-        return Navigator.of(context).pushNamedAndRemoveUntil(ServiceScreen.routeName,(p){return false;});
+        return Navigator.of(context)
+            .pushReplacementNamed(ServiceScreen.routeName);
       }
     });
   }
@@ -167,7 +170,6 @@ class _SplashScreenState extends State<SplashScreen>
                         color: isDarkMode ? Colors.white70 : Colors.black87,
                         fontSize: 52.sp,
                         fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
                         letterSpacing: 8,
                       ),
                     ),

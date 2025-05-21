@@ -15,7 +15,7 @@ class VerificationState extends Equatable {
 
   @override
   List<Object?> get props => [
-        verifyState,
-        resendCodeState,
-      ];
+    verifyState,
+    resendCodeState,
+  ];
 }

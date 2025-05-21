@@ -30,7 +30,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
   final TextEditingController durationController = TextEditingController();
   List<ServiceRequestEntity> listOfAllService = [];
 
-  
+
   getServiceRequest(int? userId) async {
     emit(state.copyWith(
         updateServiceState: null,
@@ -38,7 +38,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
         deleteServiceState: null,
         getServiceState: BaseLoadingState()));
     ApiResult<List<ServiceRequestEntity>> ans =
-        await _getServiceRequestUseCase(userId);
+    await _getServiceRequestUseCase(userId);
     switch (ans) {
       case ApiResultSuccess():
         {
@@ -49,7 +49,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
             createServiceState: null,
             deleteServiceState: null,
             getServiceState:
-                BaseSuccessState<List<ServiceRequestEntity>>(ans.data),
+            BaseSuccessState<List<ServiceRequestEntity>>(ans.data),
           ));
         }
       case ApiresultError():
@@ -70,7 +70,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
         deleteServiceState: null,
         createServiceState: BaseLoadingState()));
     ApiResult<ServiceRequestEntity> ans =
-        await _addServiceRequestUseCase(myservice);
+    await _addServiceRequestUseCase(myservice);
     switch (ans) {
       case ApiResultSuccess():
         {
@@ -83,7 +83,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
               getServiceState: BaseSuccessState<List<ServiceRequestEntity>>(
                   listOfAllService),
               createServiceState:
-                  BaseSuccessState<ServiceRequestEntity>(ans.data)));
+              BaseSuccessState<ServiceRequestEntity>(ans.data)));
           listOfAllService.add(ans.data);
         }
       case ApiresultError():
@@ -104,7 +104,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
         deleteServiceState: null,
         updateServiceState: BaseLoadingState()));
     ApiResult<ServiceRequestEntity> ans =
-        await _updateServiceRequestUseCase(idOfSerivce, myservice);
+    await _updateServiceRequestUseCase(idOfSerivce, myservice);
     switch (ans) {
       case ApiResultSuccess():
         {
@@ -122,7 +122,7 @@ class ServiceRequestCubit extends Cubit<ServiceRequestState> {
               getServiceState: BaseSuccessState<List<ServiceRequestEntity>>(
                   listOfAllService),
               updateServiceState:
-                  BaseSuccessState<ServiceRequestEntity>(ans.data)));
+              BaseSuccessState<ServiceRequestEntity>(ans.data)));
         }
       case ApiresultError():
         {

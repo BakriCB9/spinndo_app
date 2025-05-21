@@ -6,6 +6,4 @@ class Routes{
   static const String verificationRoutes = '/verification';  
   static const String googleMapSccren='/googleMap';  
   static const String employeDetails='/employeDetails';
-  static const String serviceFilterScreen='/servcieFilter';
-  static const String getMainCategoryScreen='/getMainCategory';
 }

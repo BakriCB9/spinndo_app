@@ -48,12 +48,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = _drawerCubit.themeMode == ThemeMode.dark;
+
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: isDarkMode
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: SafeArea(
         child: Scaffold(
             body: BlocBuilder<FavoriteCubit, FavoriteCubitState>(

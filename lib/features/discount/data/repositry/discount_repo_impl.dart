@@ -1,5 +1,4 @@
 import 'package:app/core/error/apiResult.dart';
-import 'package:app/core/network/remote/handle_dio_exception.dart';
 import 'package:app/features/discount/data/dataSource/remote/remote_dataSource.dart';
 import 'package:app/features/discount/data/model/discount_request/add_discount_request.dart';
 import 'package:app/features/discount/domain/entity/all_discount_entity.dart';
@@ -15,9 +14,11 @@ class DiscountRepoImpl implements DiscountRepo {
   Future<ApiResult<String>> addDiscount(AddDiscountRequest addDiscount) async {
     try {
       final ans = await _discountRemoteDataSource.addDiscount(addDiscount);
-
+      print('yes it add now bakkkar');
       return ApiResultSuccess<String>(ans);
     } catch (exception) {
+      print(
+          'it is fail now rohhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi');
       var message = 'Failed to add Discount';
 
       if (exception is DioException) {
@@ -60,16 +61,14 @@ class DiscountRepoImpl implements DiscountRepo {
         return e.toAllDiscountEntity();
       }).toList();
       return ApiResultSuccess<List<AllDiscountEntity>>(aux ?? []);
-    } catch (e) {
-      final exception = HandleException.exceptionType(e);
-      return ApiresultError(exception);
-      // var message = 'Failed to add Discount';
-      // if (exception is DioException) {
-      //   final errorMessage = exception.response?.data['message'];
+    } catch (exception) {
+      var message = 'Failed to add Discount';
+      if (exception is DioException) {
+        final errorMessage = exception.response?.data['message'];
 
-      //   if (errorMessage != null) message = errorMessage;
-      // }
-      // return ApiresultError<List<AllDiscountEntity>>(message);
+        if (errorMessage != null) message = errorMessage;
+      }
+      return ApiresultError<List<AllDiscountEntity>>(message);
     }
   }
 }

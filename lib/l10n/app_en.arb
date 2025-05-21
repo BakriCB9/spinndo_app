@@ -200,6 +200,8 @@
   "serviceRequests": "Service Requests",
   "yourSubscriptionIsActive": "Subscribe",
   "notSubscribedToThisPackage": "Not subscribed",
-  "editUserAccount": "Edit user account"
+  "editUserAccount": "Edit user account",
+  "gallery": "Gallery",
+  "camera": "Camera"
 
 }

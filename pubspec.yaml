@@ -124,19 +124,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # spinndo:
   fonts:
-    - family: ElMessiri
-      fonts:
-        - asset: asset/fonts/ElMessiri-Regular.ttf
-        - asset: asset/fonts/ElMessiri-VariableFont_wght.ttf
-    - family: WorkSans
-      fonts:
-        - asset: asset/fonts/WorkSans-VariableFont_wght.ttf
-    - family: Poppins
-      fonts:
-        - asset: asset/fonts/Poppins-Regular.ttf
-    - family: Raleway
-      fonts:
-        - asset: asset/fonts/Raleway-Regular.ttf
     - family: Lato
       fonts:
           - asset: asset/fonts/Lato-Regular.ttf

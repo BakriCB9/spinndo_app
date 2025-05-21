@@ -1,7 +1,9 @@
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_state.dart';
+import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:app/features/auth/presentation/widget/section_day_select.dart';
 import 'package:app/features/auth/presentation/widget/section_location.dart';
+
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/test.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/utils/validator.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
-import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'deploma_protofile_image_screen.dart';
@@ -116,8 +117,8 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                             registerCubit.selectedCategory != null) {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => DeplomaProtofileImageScreen(
-                                    registerCubit: registerCubit,
-                                  )));
+                                registerCubit: registerCubit,
+                              )));
 
                           return;
                         } else {
@@ -150,5 +151,5 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
           content: Text(content,
               style: TextStyle(fontSize: 28.sp, color: Colors.white))),
     );
-  } 
+  }
 }

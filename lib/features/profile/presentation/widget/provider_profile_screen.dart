@@ -18,8 +18,6 @@ import 'package:app/features/profile/presentation/widget/profile_info/user_accou
 import 'package:app/features/profile/presentation/widget/protofile_and_diploma/custom_diploma_and_protofile.dart';
 import 'package:app/features/profile/presentation/widget/sliver_header_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class ProviderProfileScreen extends StatefulWidget {
   final ProviderProfile providerProfile;
@@ -44,21 +42,16 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
   ];
   @override
   initState() {
-    print('Client Profile: ${widget.providerProfile.firstNameAr}');
-    print('Phone: ${widget.providerProfile.phone}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.providerProfile.socialLinks!.isNotEmpty) {
       localSocialList = widget.providerProfile.socialLinks!.map((e) {
         return e!.platform!;
       }).toList();
     }
-    final localization = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
     print('the lsit of local social from api is $localSocialList');
     // print('');
     // print('the answer is ${widget.providerProfile.socialLinks}');
@@ -71,15 +64,15 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
         double.parse(_profileCubit.longti!));
     _profileCubit.oldLocation = LatLng(double.parse(_profileCubit.latitu!),
         double.parse(_profileCubit.longti!));
-    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final _drawerCubit = serviceLocator.get<DrawerCubit>();
     final size = MediaQuery.of(context).size;
-    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+    final isDarkMode = _drawerCubit.themeMode == ThemeMode.dark;
 
     return Container(
-      decoration: isDarkMode
-          ? const BoxDecoration(
-          color: ColorManager.darkBg
-      ): null,
+        decoration: isDarkMode
+            ? const BoxDecoration(
+            color: ColorManager.darkBg
+        ): null,
       child: CustomScrollView(
         // controller: _control,
         slivers: [
@@ -104,8 +97,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     firstName: widget.providerProfile.firstName!,
                     lastName: widget.providerProfile.lastName!,
                     email: widget.providerProfile.email!,
-                    phone: widget.providerProfile.phone??'No number is mentioned',
                   ),
+                  SizedBox(height: 15.h),
                   CustomDescription(
                     lat: widget.providerProfile.details!.latitude!,
                     lng: widget.providerProfile.details!.longitude!,
@@ -119,7 +112,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     description: widget.providerProfile.details?.description ??
                         "No description",
                     serviceName:
-                        widget.providerProfile.details?.name ?? "No email yet",
+                        widget.providerProfile.details?.name ?? "No emial yet",
                   ),
                   SizedBox(height: 10.h),
                   CustomDayActive(
@@ -130,7 +123,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 30.h),
                   Row(
                     children: [
-                      const Icon(Icons.location_on),
+                      const Icon(Icons.location_on_outlined),
                       SizedBox(
                         width: 20.w,
                       ),
@@ -148,6 +141,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     ],
                   ),
                   SizedBox(height: 30.h),
+
                   Divider(color: Colors.grey, thickness: 0.2),
                   SizedBox(height: 30.h),
                   CustomDiplomaAndProtofile(
@@ -159,134 +153,127 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     images: widget.providerProfile.details?.images ?? [],
                   ),
                   SizedBox(height: 100.h),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(localization.socialLinks,
-                            style: theme.textTheme.labelLarge),
-                        myid == widget.providerProfile.id
-                            ? IconButton(
-                            onPressed: () {
-                              List<String> listofSocial = [];
-                              for (int i = 0;
-                              i < listOfSocialLocal.length;
-                              i++) {
-                                if (!localSocialList
-                                    .contains(listOfSocialLocal[i])) {
-                                  listofSocial.add(listOfSocialLocal[i]);
-                                }
-                              }
-                              TextEditingController _textSelectedPlatform =
-                              TextEditingController();
-                              TextEditingController _textSelectUrl =
-                              TextEditingController();
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled:
-                                true,
-                                // backgroundColor: ColorManager.white,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20)),
-                                ),
-                                builder: (context) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                      bottom: MediaQuery.of(context)
-                                          .viewInsets
-                                          .bottom,
-                                    ),
-                                    child: SingleChildScrollView(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize
-                                            .min,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                        children: [
-                                          const SizedBox(height: 20),
-                                          TextFormField(
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                            controller: _textSelectUrl,
-                                            decoration: const InputDecoration(
-                                              hintText: "Enter your link",
-                                              border: OutlineInputBorder(),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 40),
-                                          BlocListener<ProfileCubit,
-                                              ProfileStates>(
-                                            listener: (context, state) {
-                                              if (state
-                                              is AddorUpdateSoicalLinksLoading) {
-                                                UIUtils.showLoading(context);
-                                              } else if (state
-                                              is AddorUpdateSoicalLinksError) {
-                                                UIUtils.hideLoading(context);
-                                                UIUtils.showMessage(
-                                                    state.message);
-                                              } else if (state
-                                              is AddorUpdateSoicalLinksSuccess) {
-                                                UIUtils.hideLoading(context);
-                                                Navigator.of(context).pop();
-                                              }
-                                            },
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                if (_textSelectUrl.text.isNotEmpty && _textSelectedPlatform.text != null) {
-                                                  if (_textSelectUrl.text.contains(_textSelectedPlatform.text!)) {
-                                                    _profileCubit.addOrupdateSoical(
-                                                      SocialMediaLinksRequest(
-                                                        platform: _textSelectedPlatform.text!,
-                                                        url: _textSelectUrl.text,
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    UIUtils.showMessage('The url that entered is not the same type of platform');
-                                                  }
-                                                } else {
-                                                  UIUtils.showMessage('Please select a platform and enter a valid URL');
-                                                }
+                  Divider(color: Colors.grey, thickness: 0.2),
 
-                                                // if (_textSelectUrl.text
-                                                //     .contains(
-                                                //     _textSelectedPlatform
-                                                //         .text)) {
-                                                //   _profileCubit.addOrupdateSoical(
-                                                //       SocialMediaLinksRequest(
-                                                //           platform:
-                                                //           _textSelectedPlatform
-                                                //               .text,
-                                                //           url: _textSelectUrl
-                                                //               .text));
-                                                // } else {
-                                                //   UIUtils.showMessage(
-                                                //       'Ther url that enter is not same type of platform');
-                                                // }
-                                              },child:  Text(
-                                                localization.save,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20)
-                                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Your social links',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      myid == widget.providerProfile.id
+                          ? IconButton(
+                              onPressed: () {
+                                List<String> listofSocial = [];
+                                for (int i = 0;
+                                    i < listOfSocialLocal.length;
+                                    i++) {
+                                  if (!localSocialList
+                                      .contains(listOfSocialLocal[i])) {
+                                    listofSocial.add(listOfSocialLocal[i]);
+                                  }
+                                }
+
+                                TextEditingController _textSelectedPlatform =
+                                    TextEditingController();
+                                TextEditingController _textSelectUrl =
+                                    TextEditingController();
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled:
+                                      true, // 👈 Important for keyboard to push content
+                                  // backgroundColor: ColorManager.white,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20)),
+                                  ),
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom, // 👈 Push above keyboard
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.add))
-                            : const SizedBox(),
-                      ],
-                    ),
+                                      child: SingleChildScrollView(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize
+                                              .min, // 👈 Wrap content
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            DropdownMenu(
+                                              hintText: 'choose your social',
+                                              controller: _textSelectedPlatform,
+                                              dropdownMenuEntries:
+                                                  listofSocial.map((e) {
+                                                return DropdownMenuEntry(
+                                                    value: e, label: e);
+                                              }).toList(),
+                                            ),
+                                            const SizedBox(height: 20),
+                                            TextFormField(
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                              controller: _textSelectUrl,
+                                              decoration: const InputDecoration(
+                                                hintText: "Enter your link",
+                                                border: OutlineInputBorder(),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 40),
+                                            BlocListener<ProfileCubit,
+                                                ProfileStates>(
+                                              listener: (context, state) {
+                                                if (state
+                                                    is AddorUpdateSoicalLinksLoading) {
+                                                  UIUtils.showLoading(context);
+                                                } else if (state
+                                                    is AddorUpdateSoicalLinksError) {
+                                                  UIUtils.hideLoading(context);
+                                                  UIUtils.showMessage(
+                                                      state.message);
+                                                } else if (state
+                                                    is AddorUpdateSoicalLinksSuccess) {
+                                                  UIUtils.hideLoading(context);
+                                                  Navigator.of(context).pop();
+                                                }
+                                              },
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  if (_textSelectUrl.text
+                                                      .contains(
+                                                          _textSelectedPlatform
+                                                              .text)) {
+                                                    _profileCubit.addOrupdateSoical(
+                                                        SocialMediaLinksRequest(
+                                                            platform:
+                                                                _textSelectedPlatform
+                                                                    .text,
+                                                            url: _textSelectUrl
+                                                                .text));
+                                                  } else {
+                                                    UIUtils.showMessage(
+                                                        'Ther url that enter is not same type of platform');
+                                                  }
+                                                },
+                                                child: const Text('Save'),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 20)
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.add))
+                          : const SizedBox(),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   widget.providerProfile.socialLinks!.isNotEmpty
@@ -315,91 +302,91 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                                                   TextEditingController();
                                               _text.text = e.url!;
                                               String platform = e.platform!;
-                                              // showModalBottomSheet(
-                                              //     context: context,
-                                              //     builder: (context) {
-                                              //       return Padding(
-                                              //           padding: EdgeInsets.only(
-                                              //               bottom:
-                                              //                   MediaQuery.of(
-                                              //                           context)
-                                              //                       .viewInsets
-                                              //                       .bottom),
-                                              //           child: IntrinsicHeight(
-                                              //             child: Padding(
-                                              //               padding:
-                                              //                   const EdgeInsets
-                                              //                       .symmetric(
-                                              //                       horizontal:
-                                              //                           10,
-                                              //                       vertical:
-                                              //                           50),
-                                              //               child: Column(
-                                              //                 children: [
-                                              //                   TextFormField(
-                                              //                     style: const TextStyle(
-                                              //                         color: Colors
-                                              //                             .black),
-                                              //                     autofocus:
-                                              //                         true,
-                                              //                     controller:
-                                              //                         _text,
-                                              //                     decoration: const InputDecoration(
-                                              //                         enabledBorder: UnderlineInputBorder(
-                                              //                             borderSide: BorderSide(
-                                              //                                 color: ColorManager
-                                              //                                     .primary)),
-                                              //                         fillColor:
-                                              //                             Colors
-                                              //                                 .transparent,
-                                              //                         focusedBorder:
-                                              //                             UnderlineInputBorder(
-                                              //                                 borderSide: BorderSide(color: ColorManager.primary))),
-                                              //                   ),
-                                              //                   const SizedBox(
-                                              //                       height: 20),
-                                              //                   BlocListener<
-                                              //                       ProfileCubit,
-                                              //                       ProfileStates>(
-                                              //                     listener:
-                                              //                         (context,
-                                              //                             state) {
-                                              //                       if (state
-                                              //                           is AddorUpdateSoicalLinksLoading) {
-                                              //                         UIUtils.showLoading(
-                                              //                             context);
-                                              //                       } else if (state
-                                              //                           is AddorUpdateSoicalLinksError) {
-                                              //                         UIUtils.hideLoading(
-                                              //                             context);
-                                              //                         UIUtils.showMessage(
-                                              //                             state
-                                              //                                 .message);
-                                              //                       } else if (state
-                                              //                           is AddorUpdateSoicalLinksSuccess) {
-                                              //                         UIUtils.hideLoading(
-                                              //                             context);
-                                              //                         Navigator.of(
-                                              //                                 context)
-                                              //                             .pop();
-                                              //                       }
-                                              //                     },
-                                              //                     child:
-                                              //                         ElevatedButton(
-                                              //                             onPressed:
-                                              //                                 () {
-                                              //                               if (_text.text.contains(platform)) {
-                                              //                                 _profileCubit.addOrupdateSoical(SocialMediaLinksRequest(platform: platform, url: _text.text));
-                                              //                               }
-                                              //                             },
-                                              //                             child:
-                                              //                                 const Text('Save')),
-                                              //                   ),
-                                              //                 ],
-                                              //               ),
-                                              //             ),
-                                              //           ));
-                                              //     });
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Padding(
+                                                        padding: EdgeInsets.only(
+                                                            bottom:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .viewInsets
+                                                                    .bottom),
+                                                        child: IntrinsicHeight(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical:
+                                                                        50),
+                                                            child: Column(
+                                                              children: [
+                                                                TextFormField(
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black),
+                                                                  autofocus:
+                                                                      true,
+                                                                  controller:
+                                                                      _text,
+                                                                  decoration: const InputDecoration(
+                                                                      enabledBorder: UnderlineInputBorder(
+                                                                          borderSide: BorderSide(
+                                                                              color: ColorManager
+                                                                                  .primary)),
+                                                                      fillColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      focusedBorder:
+                                                                          UnderlineInputBorder(
+                                                                              borderSide: BorderSide(color: ColorManager.primary))),
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 20),
+                                                                BlocListener<
+                                                                    ProfileCubit,
+                                                                    ProfileStates>(
+                                                                  listener:
+                                                                      (context,
+                                                                          state) {
+                                                                    if (state
+                                                                        is AddorUpdateSoicalLinksLoading) {
+                                                                      UIUtils.showLoading(
+                                                                          context);
+                                                                    } else if (state
+                                                                        is AddorUpdateSoicalLinksError) {
+                                                                      UIUtils.hideLoading(
+                                                                          context);
+                                                                      UIUtils.showMessage(
+                                                                          state
+                                                                              .message);
+                                                                    } else if (state
+                                                                        is AddorUpdateSoicalLinksSuccess) {
+                                                                      UIUtils.hideLoading(
+                                                                          context);
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      ElevatedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            if (_text.text.contains(platform)) {
+                                                                              _profileCubit.addOrupdateSoical(SocialMediaLinksRequest(platform: platform, url: _text.text));
+                                                                            }
+                                                                          },
+                                                                          child:
+                                                                              const Text('Save')),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ));
+                                                  });
                                             },
                                             icon: const Icon(Icons.edit))
                                         : const SizedBox(),

@@ -25,17 +25,17 @@ final ScrollController _control = ScrollController();
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
+
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = _drawerCubit.themeMode == ThemeMode.dark;
+
     final size = MediaQuery.of(context).size;
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
-            ),
+        decoration: isDarkMode
+            ? const BoxDecoration(
+            color: ColorManager.darkBg
+        ): null,
       child: CustomScrollView(
         controller: _control,
         slivers: [
@@ -59,7 +59,6 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     firstName: widget.clientProfile.firstName,
                     lastName: widget.clientProfile.lastName,
                     email: widget.clientProfile.email,
-                    phone: widget.clientProfile.phone,
                   ),
                   const SizedBox(height: 20),
                   BlocListener<AuthCubit, AuthState>(

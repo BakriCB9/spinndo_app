@@ -1,11 +1,11 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/service/data/models/get_all_category_response/data.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/presentation/cubit/service_cubit.dart';
-import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +28,7 @@ class CascadingDropdowns extends StatefulWidget {
 }
 
 class _CascadingDropdownsState extends State<CascadingDropdowns> {
-  final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
+  final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final _profileCubit = serviceLocator.get<ProfileCubit>();
   List<Categories?> selectedCategories = [];
 

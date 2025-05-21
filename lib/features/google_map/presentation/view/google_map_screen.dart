@@ -1,33 +1,16 @@
-import 'package:app/core/constant.dart';
-import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
-import 'package:app/core/utils/app_shared_prefrence.dart';
-import 'package:app/core/utils/error_network_widget.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
-import 'package:app/features/google_map/domain/entity/marker_location.dart';
 import 'package:app/features/google_map/presentation/view_model/cubit/google_map_cubit.dart';
-import 'package:app/features/service/presentation/screens/show_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:location/location.dart';
-
-enum MapType { showMarkers, chosseLocation }
 
 class GoogleMapScreen extends StatefulWidget {
-  final MapType mapType;
-  String? nameOfCountry;
-  LocationData? currentLocation;
-
-  GoogleMapScreen(
-      {super.key,
-      required this.mapType,
-      this.currentLocation,
-      this.nameOfCountry});
+  const GoogleMapScreen({super.key});
 
   @override
   State<GoogleMapScreen> createState() => _GoogleMapScreenState();
@@ -36,41 +19,10 @@ class GoogleMapScreen extends StatefulWidget {
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   Widget build(BuildContext context) {
-    if (widget.mapType == MapType.chosseLocation) {
-      return const GoogleMapLocation();
-    } else {
-      // return const  SizedBox();
-      return GoogleMapMarker(
-        name: widget.nameOfCountry,
-        currentLocation: widget.currentLocation,
-      );
-    }
-  }
-}
-
-class GoogleMapLocation extends StatefulWidget {
-  const GoogleMapLocation({super.key});
-
-  @override
-  State<GoogleMapLocation> createState() => _GoogleMapLocationState();
-}
-
-class _GoogleMapLocationState extends State<GoogleMapLocation> {
-  late GoogleMapCubit googleMapCubit;
-  @override
-  void initState() {
-    googleMapCubit = serviceLocator.get<GoogleMapCubit>()
-      ..getCurrentLocation()
-      ..loadMapStyle();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    final googleMapCubit = BlocProvider.of<GoogleMapCubit>(context);
     final localization = AppLocalizations.of(context)!;
     return Scaffold(
         floatingActionButton: BlocListener<GoogleMapCubit, GoogleMapState>(
-          bloc: googleMapCubit,
           listenWhen: (pre, cur) {
             if (pre.getNameOfCountry != cur.getNameOfCountry) return true;
             return false;
@@ -186,118 +138,4 @@ class _GoogleMapLocationState extends State<GoogleMapLocation> {
               }
             }));
   }
-}
-
-class GoogleMapMarker extends StatefulWidget {
-  String? name;
-  LocationData? currentLocation;
-  GoogleMapMarker({this.currentLocation, this.name, super.key});
-
-  @override
-  State<GoogleMapMarker> createState() => _GoogleMapMarkerState();
-}
-
-class _GoogleMapMarkerState extends State<GoogleMapMarker> {
-  Set<Marker> markers = {};
-  final googleMapCubit = serviceLocator.get<GoogleMapCubit>()..loadMapStyle();
-  @override
-  initState() {
-    super.initState();
-    if (widget.name != null) {
-      googleMapCubit.getLatLngCountry(widget.name!);
-    }
-    initMarkers();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          fit: BoxFit.scaleDown,
-          alignment: Directionality.of(context) == TextDirection.rtl
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
-          child: Text(
-            localization.googleMap,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        backgroundColor: Theme.of(context).primaryColorDark,
-      ),
-      body: BlocBuilder<GoogleMapCubit, GoogleMapState>(
-        bloc:googleMapCubit,
-        builder: (context, state) {
-          if (state.getLatlangcountry is BaseLoadingState) {
-            return const Center(
-              child: LoadingIndicator(ColorManager.primary),
-            );
-          } else if (state.getLatlangcountry is BaseErrorState) {
-            final message = state.getLatlangcountry as BaseErrorState;
-            return ErrorNetworkWidget(
-                message: message.error!,
-                onTap: () {
-                  googleMapCubit.getLatLngCountry(widget.name!);
-                });
-          } else if (state.getLatlangcountry is BaseSuccessState) {
-            final CameraPosition cameraPosition = CameraPosition(
-                target: (state.getLatlangcountry as BaseSuccessState).data,
-                zoom: 7);
-            return GoogleMap(
-              zoomControlsEnabled: false,
-              minMaxZoomPreference: const MinMaxZoomPreference(0, 50),
-              markers: markers,
-              //cameraTargetBounds: CameraTargetBounds(_serviceCubit.filterBounds),
-              initialCameraPosition: cameraPosition,
-              style: googleMapCubit.mapStyle,
-            );
-          } else {
-            CameraPosition initCameraPosition = CameraPosition(
-                target: LatLng(widget.currentLocation!.latitude!,
-                    widget.currentLocation!.longitude!),
-                zoom: 12);
-            return GoogleMap(
-              zoomControlsEnabled: false,
-              minMaxZoomPreference: const MinMaxZoomPreference(0, 50),
-              markers: markers,
-              //cameraTargetBounds: CameraTargetBounds(_serviceCubit.filterBounds),
-              initialCameraPosition: initCameraPosition,
-              style: googleMapCubit.mapStyle,
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  initMarkers() {
-    markers = markerLocationData.map((e) {
-      return Marker(
-        icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-        position: e.latLng,
-        infoWindow: InfoWindow(title: e.name),
-        onTap: () {
-          if (isLogIn() == null) {
-            UIUtils.showMessage("You have to Sign in first");
-            return;
-          }
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ShowDetails(id: e.providerId!),
-            ),
-          );
-        },
-        markerId: MarkerId(
-          e.id.toString(),
-        ),
-      );
-    }).toSet();
-  }
-}
-
-String? isLogIn() {
-  final sharedpref = serviceLocator.get<SharedPreferencesUtils>();
-  return sharedpref.getData(key: CacheConstant.tokenKey) as String?;
 }

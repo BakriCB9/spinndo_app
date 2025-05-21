@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app/core/constant.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/image_functions.dart';
 import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
@@ -42,13 +43,13 @@ class _DeplomaProtofileImageScreenState
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final isDarkMode = _drawerCubit.themeMode == ThemeMode.dark;
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+      decoration: isDarkMode
+          ? const BoxDecoration(
+          color: ColorManager.darkBg
+      ): null,
       child: CustomAuthForm(
         hasAvatar: false, hasTitle: false,
         // floatingActionButton: Padding(

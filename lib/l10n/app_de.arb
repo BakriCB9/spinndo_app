@@ -169,6 +169,8 @@
   "passwordMustContainLettersAndNumbers": "Das Passwort muss Buchstaben und Zahlen enthalten",
   "yourSubscriptionIsActive": "Dein Abonnement ist aktiv",
   "notSubscribedToThisPackage": "Sie sind für dieses Paket nicht abonniert",
+  "gallery": "Galerie",
+  "camera": "Kamera",
   "editUserAccount": "Benutzerkonto bearbeiten"
 
 

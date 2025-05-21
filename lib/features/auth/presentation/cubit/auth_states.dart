@@ -69,9 +69,9 @@ class SelectedLocationState extends AuthState {}
 class GetCurrentLocationLoading extends AuthState {}
 
 class GetCurrentLocationSuccess extends AuthState {}
-  
+
 class GetCurrentLocationErrorr extends AuthState {
-   String? message;
+  String? message;
 
   GetCurrentLocationErrorr({this.message});
 }

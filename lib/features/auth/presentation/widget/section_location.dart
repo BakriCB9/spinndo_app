@@ -2,7 +2,6 @@ import 'package:app/core/resources/values_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
-import 'package:app/features/google_map/presentation/view/google_map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,8 +26,7 @@ class _SectionLocationState extends State<SectionLocation> {
     return InkWell(
         splashColor: Colors.transparent,
         onTap: () {
-          Navigator.of(context).pushNamed(Routes.googleMapSccren,
-              arguments: {"type": MapType.chosseLocation}).then((value) {
+          Navigator.of(context).pushNamed(Routes.googleMapSccren).then((value) {
             if (value != null) {
               setState(() {
                 if (value is List<dynamic>) {

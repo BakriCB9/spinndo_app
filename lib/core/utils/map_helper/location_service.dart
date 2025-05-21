@@ -38,8 +38,8 @@ class LocationService {
   // }
 
   static Future<Either<Failure, LocationData>> getLocationData() async {
-
-    var permissionStatus = await location.hasPermission();
+   
+var permissionStatus = await location.hasPermission();
 
     if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await location.requestPermission();
@@ -53,11 +53,8 @@ class LocationService {
     if (!ans) {
       return left(Failure(''));
     }
-
-    await  location.changeSettings(accuracy: LocationAccuracy.high);
-
     return right(await location.getLocation());
-
-
+    
+    
   }
 }

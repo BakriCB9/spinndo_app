@@ -1,4 +1,3 @@
-import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,17 +27,17 @@ class CustomAuthForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final drawerCubit = serviceLocator.get<DrawerCubit>();
-    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+    final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
     return Container(
-      decoration: isDarkMode
+      decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-          color: ColorManager.darkBg
-      ): null,
+              image: DecorationImage(
+                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          : null,
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric( vertical: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -50,18 +49,11 @@ class CustomAuthForm extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SvgPicture.asset(
-                                  'asset/icons/back.svg',
-                                  width: 20,
-                                  height: 20,
-                                  colorFilter: const ColorFilter.mode(
-                                    Color(0xFF9E9E9E),
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),)
+                              child: Icon(
+                                Icons.arrow_back_sharp,
+                                color: Theme.of(context).primaryColorLight,
+                                size: 45.sp,
+                              ))
                           : const SizedBox(),
                       const Spacer(),
                       // isGuest
@@ -105,8 +97,7 @@ class CustomAuthForm extends StatelessWidget {
                               borderRadius: BorderRadius.circular(200.r),
                               child: SvgPicture.asset("asset/images/logo.svg")))
                       : const SizedBox(),
-                  child,
-
+                  child
                 ],
               ),
             ),

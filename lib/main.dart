@@ -88,9 +88,6 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => serviceLocator.get<PaymentsCubit>(),
-          ),
-          BlocProvider(
-            create: (context) => serviceLocator.get<PaymentsCubit>(),
           )
         ],
         child: ScreenUtilInit(
@@ -100,17 +97,15 @@ class MyApp extends StatelessWidget {
               return Builder(builder: (context) {
                 return BlocBuilder<DrawerCubit, DrawerStates>(
                   builder: (context, state) {
-                    // serviceLocator.registerSingleton(AppLocalizations.of(context)!);
-
                     return MaterialApp(
                       navigatorObservers: [navObserver],
                       navigatorKey: navigatorKey,
                       theme: ThemeManager.lightTheme,
                       darkTheme: ThemeManager.darkTheme,
                       themeMode:
-                          BlocProvider.of<DrawerCubit>(context).themeMode,
+                      BlocProvider.of<DrawerCubit>(context).themeMode,
                       localizationsDelegates:
-                          AppLocalizations.localizationsDelegates,
+                      AppLocalizations.localizationsDelegates,
                       supportedLocales: AppLocalizations.supportedLocales,
                       locale: Locale(
                           BlocProvider.of<DrawerCubit>(context).languageCode),
@@ -127,21 +122,21 @@ class MyApp extends StatelessWidget {
                       routes: {
                         DiscountScreen.routeName: (context) => DiscountScreen(),
                         AddServiceRequestScreen.routeName: (context) =>
-                            const AddServiceRequestScreen(),
+                        const AddServiceRequestScreen(),
                         GetServiceRequestScreen.routeName: (context) =>
-                            const GetServiceRequestScreen(),
+                        const GetServiceRequestScreen(),
                         FavoriteScreen.routeName: (context) =>
-                            const FavoriteScreen(),
+                        const FavoriteScreen(),
                         EmployeeDetails.routeName: (context) =>
                             EmployeeDetails(),
                         SettingScreen.routeName: (context) =>
-                            const SettingScreen(),
+                        const SettingScreen(),
                         NotificationScreen.routeName: (context) =>
-                            const NotificationScreen(),
+                        const NotificationScreen(),
                         ServiceScreen.routeName: (context) => ServiceScreen(),
                         SplashScreen.routeName: (context) => SplashScreen(),
-                        // ServiceMapScreen.routeName: (context) =>
-                        //     ServiceMapScreen(),
+                        ServiceMapScreen.routeName: (context) =>
+                            ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>
                             DeplomaProtofileImageScreen(),
@@ -149,10 +144,13 @@ class MyApp extends StatelessWidget {
                         //     ForgotPasswordScreen(),
                         // SignUpScreen.routeName: (context) => SignUpScreen(),
                         MapScreen.routeName: (context) => MapScreen(),
+                        // SignInScreen.routeName: (context) => SignInScreen(),
+                        // VerficationCodeScreen.routeName: (context) =>
+                        //     VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
-                            const Profile_Screen(),
+                        const Profile_Screen(),
                         PackagesScreen.routeName: (context) =>
-                            const PackagesScreen(),
+                        const PackagesScreen(),
                         PaymentsScreen.routeName: (context) => PaymentsScreen(),
                       },
                       debugShowCheckedModeBanner: false,

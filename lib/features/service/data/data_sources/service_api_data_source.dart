@@ -20,169 +20,131 @@ class ServiceApiDataSource implements ServiceDataSource {
   final SharedPreferences _sharedPreferences;
 
   ServiceApiDataSource(this._dio, this._sharedPreferences);
-
-  @override
+  
   Future<GetServicesResponse> getServices(
       GetServicesRequest requestBody) async {
-    final lang = _sharedPreferences.getString('language');
-    final response = await _dio.request(
-      ApiConstant.getServices,
-      data: requestBody.toJson(), // Include the body here
-      options: Options(
-        method: 'GET', // Specify GET explicitly
-        headers: {
-          "Accept-Language": '$lang',
-          'Content-Type': 'application/json', // Optional: Set headers if needed
-        },
-      ),
-    );
+    try {
+      // final response = await _dio.get(
+      //   // data: requestBody.toJson(),
+      //   ApiConstant.getServices,
+      // );
+      final lang = _sharedPreferences.getString('language');
+      final response = await _dio.request(
+        ApiConstant.getServices,
+        data: requestBody.toJson(), // Include the body here
+        options: Options(
+          method: 'GET', // Specify GET explicitly
+          headers: {
+            "Accept-Language": '$lang',
+            'Content-Type':
+                'application/json', // Optional: Set headers if needed
+          },
+        ),
+      );
 
-    return GetServicesResponse.fromJson(response.data);
-    // try {
-    //   // final response = await _dio.get(
-    //   //   // data: requestBody.toJson(),
-    //   //   ApiConstant.getServices,
-    //   // );
-    //   final lang = _sharedPreferences.getString('language');
-    //   final response = await _dio.request(
-    //     ApiConstant.getServices,
-    //     data: requestBody.toJson(), // Include the body here
-    //     options: Options(
-    //       method: 'GET', // Specify GET explicitly
-    //       headers: {
-    //         "Accept-Language": '$lang',
-    //         'Content-Type':
-    //             'application/json', // Optional: Set headers if needed
-    //       },
-    //     ),
-    //   );
-
-    //   return GetServicesResponse.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get services");
-    // }
+      return GetServicesResponse.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get services");
+    }
   }
 
   @override
   Future<GetAllCategoryResponse> getAllCategory() async {
-    final lang = _sharedPreferences.getString('language');
-    final response = await _dio.get(ApiConstant.getAllCategory,
-        options: Options(
-          headers: {
-            "Accept-Language": '$lang',
-            'Content-Type':
-                'application/json', // Optional: Set headers if needed
-          },
-        ));
+    try {
+      final lang = _sharedPreferences.getString('language');
+      final response = await _dio.get(ApiConstant.getAllCategory,
+          options: Options(
+            headers: {
+              "Accept-Language": '$lang',
+              'Content-Type':
+                  'application/json', // Optional: Set headers if needed
+            },
+          ));
 
-    return GetAllCategoryResponse.fromJson(response.data);
+      return GetAllCategoryResponse.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get categories");
+    }
   }
 
   @override
   Future<GetAllCountriesResponse> getAllCountries() async {
-    final lang = _sharedPreferences.getString('language');
-    final response = await _dio.get(ApiConstant.getAllCountries,
-        options: Options(
-          headers: {
-            "Accept-Language": '$lang',
-            'Content-Type':
-                'application/json', // Optional: Set headers if needed
-          },
-        ));
+    try {
+      final lang = _sharedPreferences.getString('language');
+      final response = await _dio.get(ApiConstant.getAllCountries,
+          options: Options(
+            headers: {
+              "Accept-Language": '$lang',
+              'Content-Type':
+                  'application/json', // Optional: Set headers if needed
+            },
+          ));
 
-    return GetAllCountriesResponse.fromJson(response.data);
+      return GetAllCountriesResponse.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get countries");
+    }
   }
 
-  @override
   Future<ProviderProfileResponse> getProviderService(int id) async {
-    final lang = _sharedPreferences.getString('language');
-    String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    final response =
-        await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$id',
-            options: Options(headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer $user_token",
-              "Accept-Language": '$lang',
-            }));
+    try {
+      final lang = _sharedPreferences.getString('language');
+      String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
+      final response =
+          await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$id',
+              options: Options(headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $user_token",
+                "Accept-Language": '$lang',
+              }));
 
-    return ProviderProfileResponse.fromJson(response.data);
-    // try {
-    //   final lang = _sharedPreferences.getString('language');
-    //   String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    //   final response =
-    //       await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$id',
-    //           options: Options(headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization": "Bearer $user_token",
-    //             "Accept-Language": '$lang',
-    //           }));
-
-    //   return ProviderProfileResponse.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get Details");
-    // }
+      return ProviderProfileResponse.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get Details");
+    }
   }
 
   @override
   Future<NotificationModel> getAllNotification() async {
-    final lang = _sharedPreferences.getString('language');
-    String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    final response = await _dio.get(ApiConstant.getAllNotification,
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $user_token",
-          "Accept-Language": '$lang',
-        }));
+    try {
+      final lang = _sharedPreferences.getString('language');
+      String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
+      final response = await _dio.get(ApiConstant.getAllNotification,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $user_token",
+            "Accept-Language": '$lang',
+          }));
 
-    return NotificationModel.fromJson(response.data);
-
-    // try {
-    //   final lang = _sharedPreferences.getString('language');
-    //   String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    //   final response = await _dio.get(ApiConstant.getAllNotification,
-    //       options: Options(headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": "Bearer $user_token",
-    //         "Accept-Language": '$lang',
-    //       }));
-
-    //   return NotificationModel.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get Notification");
-    // }
+      return NotificationModel.fromJson(response.data);
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get Notification");
+    }
   }
 
   @override
-  Future<GetCategoryMain> getAllMainCategory() async {
-    // final ans=await  _dio.get(ApiConstant.getAllMainCategory);
+  Future<GetCategoryMain> getAllMainCategory() async{
     
-     final lang = _sharedPreferences.getString('language');
-      String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-      final response = await _dio.get(
-        ApiConstant.getAllMainCategory,
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $user_token",
-          "Accept-Language": '$lang',
-        })
-      );
+    // final ans=await  _dio.get(ApiConstant.getAllMainCategory);
+   try {
+      //final lang = _sharedPreferences.getString('language');
+      //String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
+      final response = await _dio.get(ApiConstant.getAllMainCategory,
+          // options: Options(headers: {
+          //   "Content-Type": "application/json",
+          //   "Authorization": "Bearer $user_token",
+          //   "Accept-Language": '$lang',
+          // })
+          
+          );
 
-      return GetCategoryMain.fromJson(response.data);
-    // try {
-    //   final lang = _sharedPreferences.getString('language');
-    //   String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    //   final response = await _dio.get(
-    //     ApiConstant.getAllMainCategory,
-    //     options: Options(headers: {
-    //       "Content-Type": "application/json",
-    //       "Authorization": "Bearer $user_token",
-    //       "Accept-Language": '$lang',
-    //     })
-    //   );
-
-    //   return GetCategoryMain.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get data");
-    // }
+      return GetCategoryMain.fromJson(response.data); 
+    } catch (exciption) {
+      throw RemoteAppException("Failed to get data");
+    }
   }
-}
+
+
+  }
+
+

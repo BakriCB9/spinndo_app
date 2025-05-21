@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/features/packages/presentation/view_model/packages_cubit.dart';
 import 'package:app/features/payment/data/model/payments_model.dart';
 import 'package:app/features/payment/keys.dart';
@@ -321,13 +323,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(localization.paymentDetails, style: const TextStyle(color: Colors.black)),
-        backgroundColor: Colors.amber,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
       body: Column(
         children: [
+          CustomAppbar(appBarText: localization.paymentDetails),
           Expanded(
             child: BlocBuilder<PaymentsCubit, PaymentsState>(
               builder: (context, state) {
@@ -387,7 +385,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => showAvailablePaymentMethods(context),
-                icon: const Icon(Icons.add, color: Colors.black),
+                icon:  Icon(Icons.add, color: ColorManager.primary),
                 label: Text(
                   localization.addPaymentMethods,
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

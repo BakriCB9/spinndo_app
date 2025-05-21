@@ -2,6 +2,7 @@ import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/service_requist/data/model/request_model/update_my_service_request.dart';
@@ -49,9 +50,9 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
     final _serviceRequestCubit = BlocProvider.of<ServiceRequestCubit>(context);
     if (widget.serviceRequestEntity != null) {
       _serviceRequestCubit.titleController.text =
-          widget.serviceRequestEntity!.title!;
+      widget.serviceRequestEntity!.title!;
       _serviceRequestCubit.descriptionController.text =
-          widget.serviceRequestEntity!.desCription!;
+      widget.serviceRequestEntity!.desCription!;
       _serviceRequestCubit.durationController.text =
           widget.serviceRequestEntity!.dayDuration!.toString();
 
@@ -63,8 +64,8 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+          image: DecorationImage(
+              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
           : null,
       child: Scaffold(
         body: SafeArea(
@@ -76,48 +77,10 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: SvgPicture.asset(
-                              'asset/icons/back.svg',
-                              width: 20,
-                              height: 20,
-                              colorFilter: ColorFilter.mode(
-                                ColorManager.grey,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 20.w),
-                        Expanded(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment:
-                                Directionality.of(context) == TextDirection.rtl
-                                    ? Alignment.centerRight
-                                    : Alignment.centerLeft,
-                            child: Text(
-                              widget.serviceRequestEntity != null
-                                  ? localization.save
-                                  : localization.addRequest,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                      fontSize: FontSize.s22,
-                                      fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                     SizedBox(height: 90.h),
+                    CustomAppbar(appBarText:   widget.serviceRequestEntity != null
+                        ? localization.save
+                        : localization.addRequest,),
+                    SizedBox(height: 90.h),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -288,7 +251,7 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
                     SizedBox(
                       width: double.infinity,
                       child:
-                          BlocListener<ServiceRequestCubit, ServiceRequestState>(
+                      BlocListener<ServiceRequestCubit, ServiceRequestState>(
                         bloc: _serviceRequestCubit,
                         listener: (context, state) {
                           if (state.createServiceState is BaseLoadingState ||
@@ -297,22 +260,22 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
                           } else if (state.createServiceState is BaseErrorState ||
                               state.updateServiceState is BaseErrorState) {
                             final errorState;
-          
+
                             if (state.createServiceState is BaseErrorState) {
                               errorState =
-                                  state.createServiceState as BaseErrorState;
+                              state.createServiceState as BaseErrorState;
                             } else {
                               errorState =
-                                  state.updateServiceState as BaseErrorState;
+                              state.updateServiceState as BaseErrorState;
                             }
-          
+
                             UIUtils.hideLoading(context);
                             UIUtils.showMessage(errorState.error!);
                           } else if (state.createServiceState
-                                  is BaseSuccessState ||
+                          is BaseSuccessState ||
                               state.updateServiceState is BaseSuccessState) {
                             UIUtils.hideLoading(context);
-          
+
                             UIUtils.showMessage('Successs');
                             // _serviceRequestCubit.getServiceRequest(widget.userId);
                             //context.read<ServiceRequestCubit>().getServiceRequest(widget.userId);
@@ -325,11 +288,11 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
                         },
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 48),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(36),
+                              minimumSize: const Size(double.infinity, 48),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(36),
+                              ),
                             ),
-                          ),
                             onPressed: () {
                               if (!_keyform.currentState!.validate()) {
                                 return;

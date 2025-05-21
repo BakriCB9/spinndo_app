@@ -100,7 +100,7 @@ class _MapScreenState extends State<MapScreen> {
                       markers: authCubit.markerLocationData.map((e) {
                         return Marker(
                             icon:
-                                BitmapDescriptor.defaultMarkerWithHue(e.color),
+                            BitmapDescriptor.defaultMarkerWithHue(e.color),
                             position: e.latLng,
                             infoWindow: InfoWindow(title: e.name),
                             markerId: MarkerId(e.id.toString()));
@@ -115,7 +115,7 @@ class _MapScreenState extends State<MapScreen> {
                       },
                       initialCameraPosition: CameraPosition(
                           target:
-                              authCubit.currentLocation ?? const LatLng(0, 0),
+                          authCubit.currentLocation ?? const LatLng(0, 0),
                           zoom: 15),
                     );
                   },

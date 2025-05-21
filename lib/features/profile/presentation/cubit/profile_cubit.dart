@@ -67,7 +67,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TextEditingController lastNameArEditController = TextEditingController();
   TextEditingController serviceNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController phoneEditController = TextEditingController();
   Categories? selectedCategory;
   List<Categories>? categoriesList;
   List<Categories>? catChildren;
@@ -194,7 +193,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
       providerProfile = ProviderProfile(
           id: data.id,
           email: data.email,
-          phone: data.phone,
           firstName: data.firstName,
           imagePath: data.imagePath,
           lastName: data.lastName,
@@ -287,11 +285,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
        required String newLastAr,
       required String newFirst,
       required String curLast,
-      required String newLast,
-        required String curEmail,
-        required String newEmail,
-      }) {
-    if (curFirst == newFirst && curFirstAr == newFirstAr&& curLast == newLast&& curLastAr == newLastAr && curEmail == newEmail) {
+      required String newLast}) {
+    if (curFirst == newFirst && curFirstAr == newFirstAr&& curLast == newLast&& curLastAr == newLastAr) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());

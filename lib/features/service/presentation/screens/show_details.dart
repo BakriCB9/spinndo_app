@@ -1,6 +1,3 @@
-import 'package:app/core/utils/error_network_widget.dart';
-import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
-import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/core/di/service_locator.dart';
@@ -19,7 +16,7 @@ class ShowDetails extends StatefulWidget {
 
 class _ShowDetailsState extends State<ShowDetails> {
   @override
-  final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
+  final _serviceCubit = serviceLocator.get<ServiceCubit>();
   void initState() {
     _serviceCubit.showDetailsUser(widget.id);
     super.initState();
@@ -29,30 +26,26 @@ class _ShowDetailsState extends State<ShowDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
+      body: BlocBuilder(
           bloc: _serviceCubit,
           builder: (context, state) {
-            if (state.getDetailsUserState is BaseLoadingState) {
+            if (state is ShowDetailsLoading) {
               return LoadingIndicator(Theme.of(context).primaryColor);
-            } else if (state.getDetailsUserState is BaseErrorState) {
-              final message=state.getDetailsUserState as BaseErrorState;
-              return ErrorNetworkWidget(message:message.error! , onTap: (){
-                _serviceCubit.showDetailsUser(widget.id);
-              });
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Center(
-              //       child: Text(state.message),
-              //     )
-              //   ],
-              // );
-            } else if (state.getDetailsUserState is BaseSuccessState) {
+            } else if (state is ShowDetailsError) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(state.message),
+                  )
+                ],
+              );
+            } else if (state is ShowDetailsSuccess) {
               return ProviderProfileScreen(
-                  providerProfile: (state.getDetailsUserState as BaseSuccessState).data);
+                  providerProfile: state.providerProfile);
             } else {
-              return const SizedBox();
+              return SizedBox();
             }
           }),
     );

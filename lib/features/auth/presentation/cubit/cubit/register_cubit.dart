@@ -26,9 +26,9 @@ class RegisterCubit extends Cubit<RegisterState> {
     final result = await _registerUseCase(requestData);
 
     result.fold(
-      (failure) => emit(
+          (failure) => emit(
           state.copyWith(registerClientState: BaseErrorState(failure.message))),
-      (response) =>
+          (response) =>
           emit(state.copyWith(registerClientState: BaseSuccessState())),
     );
   }
@@ -42,7 +42,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     }, (categories) {
       emit(state.copyWith(
           getCategoryState:
-              BaseSuccessState<List<Categories>>(data: categories)));
+          BaseSuccessState<List<Categories>>(data: categories)));
     });
   }
 
@@ -53,14 +53,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     final result = await _registerServiceUseCase(requestData);
 
     result.fold(
-      (failure) => emit(state.copyWith(
+          (failure) => emit(state.copyWith(
           registerProviderState: BaseErrorState(failure.message))),
-      (response) =>
+          (response) =>
           emit(state.copyWith(registerProviderState: BaseSuccessState())),
     );
   }
 
-  
+
 
   bool isAnotherDaySelected() {
     for (int i = 0; i < dateSelect.length; i++) {

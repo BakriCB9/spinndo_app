@@ -104,12 +104,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
-    GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState>();
 
 class Fcm {
   static final FirebaseMessaging messaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
     await requestPermission();
@@ -148,7 +148,7 @@ class Fcm {
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -169,7 +169,7 @@ class Fcm {
             ),
           ),
           payload:
-              message.data['route'] ?? 'default_screen', // Pass dynamic route
+          message.data['route'] ?? 'default_screen', // Pass dynamic route
         );
       }
     });
@@ -177,9 +177,9 @@ class Fcm {
 
   static Future<void> initializeNotification() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_launcher');
+    AndroidInitializationSettings('ic_launcher');
     const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,

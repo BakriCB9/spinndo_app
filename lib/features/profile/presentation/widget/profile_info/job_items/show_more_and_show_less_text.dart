@@ -1,5 +1,3 @@
-import 'package:app/core/resources/color_manager.dart';
-import 'package:app/core/resources/font_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,30 +12,21 @@ class ShowMoreAndShowLess extends StatefulWidget {
 class _ShowMoreAndShowLessState extends State<ShowMoreAndShowLess> {
   List<String> word = [];
   bool isExpanded = false;
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     check(widget.txt);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         word.length < 30 || word.length - 30 < 20
             ? Text(word.join(' '),
-                style: theme.textTheme.displayMedium?.copyWith(
-    fontSize: FontSize.s16
-    ))
-        : isExpanded
+                style: Theme.of(context).textTheme.labelMedium)
+            : isExpanded
                 ? Text(word.join(' '),
-            style: theme.textTheme.displayMedium?.copyWith(
-                fontSize: FontSize.s16
-    ))
+                    style: Theme.of(context).textTheme.labelMedium)
                 : Text(word.sublist(0, 30).join(' '),
-    style: theme.textTheme.displayMedium?.copyWith(
-    fontSize: FontSize.s16
-    )),
-    SizedBox(
+                    style: Theme.of(context).textTheme.labelMedium),
+        SizedBox(
           width: 5.w,
         ),
         word.length > 30 && word.length - 30 > 20

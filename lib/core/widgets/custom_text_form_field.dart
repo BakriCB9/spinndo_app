@@ -55,59 +55,70 @@ class _CustomTextFormField extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-
-      focusNode: _focus,
-
-      onFieldSubmitted: (_) {
-        _focus.unfocus();
-      },
-      style: Theme.of(context).textTheme.bodyMedium,
-
-      decoration: InputDecoration(
-          hintText: widget.hintText,
-          hintStyle:
-          Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 30.sp),
-          labelStyle:
-          Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 27.sp),
-          label: widget.labelText != null
-              ? Text(
-            widget.labelText!,
-          )
-              : null,
-          suffixIcon: widget.isPassword
-              ? IconButton(
-              onPressed: () {
-                isObsecure = !isObsecure;
-                setState(() {});
-              },
-              icon: Icon(
-                  isObsecure ? Icons.visibility : Icons.visibility_off))
-              : null,
-
-          prefixIcon: widget.icon == null
-              ? null
-              : Icon(
-            widget.icon,
-            size: 45.sp,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, 4),
           ),
-          enabled: true,
-          contentPadding: EdgeInsets.only(left: 50.w)
-
+        ],
       ),
-      onChanged:widget.onChanged ,
-      cursorColor: ColorManager.primary,
-      obscureText: widget.isPassword ? !isObsecure : false,
-      controller: widget.controller,
-      maxLines: widget.maxLines,
-      minLines: widget.minLines,
-      validator: widget.validator,
-      keyboardType: widget.keyboardType ?? TextInputType.multiline,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      textInputAction: TextInputAction.done,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(200),
-      ],
+      child: TextFormField(
+
+        focusNode: _focus,
+
+        onFieldSubmitted: (_) {
+          _focus.unfocus();
+        },
+        style: Theme.of(context).textTheme.bodyMedium,
+
+        decoration: InputDecoration(
+            hintText: widget.hintText,
+            hintStyle:
+            Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 30.sp),
+            labelStyle:
+            Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 27.sp),
+            label: widget.labelText != null
+                ? Text(
+              widget.labelText!,
+            )
+                : null,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                onPressed: () {
+                  isObsecure = !isObsecure;
+                  setState(() {});
+                },
+                icon: Icon(
+                    isObsecure ? Icons.visibility : Icons.visibility_off))
+                : null,
+
+            prefixIcon: widget.icon == null
+                ? null
+                : Icon(
+              widget.icon,
+              size: 45.sp,
+            ),
+            enabled: true,
+
+        ),
+        onChanged:widget.onChanged ,
+        cursorColor: ColorManager.primary,
+        obscureText: widget.isPassword ? !isObsecure : false,
+        controller: widget.controller,
+        maxLines: widget.maxLines,
+        minLines: widget.minLines,
+        validator: widget.validator,
+        keyboardType: widget.keyboardType ?? TextInputType.multiline,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: TextInputAction.done,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(200),
+        ],
+      ),
     );
   }
 }

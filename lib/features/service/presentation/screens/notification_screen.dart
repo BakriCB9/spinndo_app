@@ -1,14 +1,13 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/font_manager.dart';
-import 'package:app/core/utils/error_network_widget.dart';
 import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/service/domain/entities/notifications.dart';
-import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
-import 'package:app/features/service/presentation/widgets/section_card_of_notification.dart';
+import 'package:app/features/service/presentation/cubit/service_cubit.dart';
+import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +24,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  final _serviceCubit = serviceLocator.get<ServiceSettingCubit>();
+  final _serviceCubit = serviceLocator.get<ServiceCubit>();
   final drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
@@ -53,110 +52,146 @@ class _NotificationScreenState extends State<NotificationScreen> {
               children: [
                 CustomAppbar(appBarText: localization.notifications,),
                 SizedBox(height: 40.h),
-            BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
+            BlocBuilder<ServiceCubit, ServiceStates>(
               bloc: _serviceCubit,
+              buildWhen: (pre, cur) {
+                if (cur is GetNotificationError ||
+                    cur is GetNotificationLoading ||
+                    cur is GetNotificationSuccess) {
+                  return true;
+                }
+                return false;
+              },
               builder: (context, state) {
-                if (state.getAllNotificationState is BaseLoadingState) {
+                if (state is GetNotificationLoading) {
                   return const Expanded(
                     child: Center(
                       child: LoadingIndicator(ColorManager.primary),
                     ),
                   );
-                } else if (state.getAllNotificationState is BaseErrorState) {
-                  return Expanded(
-                    child: ErrorNetworkWidget(
-                      message: (state.getAllNotificationState as BaseErrorState).error!,
-                      onTap: () {
-                        _serviceCubit.getAllNotification();
-                      },
+                } else if (state is GetNotificationError) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.replay_outlined,
+                          color: ColorManager.primary,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              _serviceCubit.getAllNotification();
+                            },
+                            child: Text(
+                              localization.reload,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(fontSize: 30.sp),
+                            )),
+                      ],
                     ),
                   );
-                } else if (state.getAllNotificationState is BaseSuccessState) {
-                  final listNotification = (state.getAllNotificationState
-                  as BaseSuccessState<List<Notifications>>)
-                      .data;
-
-                  if (listNotification == null || listNotification.isEmpty) {
+                } else
+                  {
                     return Expanded(
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(localization.noNotificationRecived),
-                            SizedBox(width: 10.w),
-                            const Icon(Icons.error_outline),
-                          ],
-                        ),
+                      child: AnimationLimiter(
+                        child: ListView.builder(
+                            physics: BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            itemCount:
+                            _serviceCubit.listNotification.length,
+                            itemBuilder: (context, index) {
+                              return _serviceCubit.listNotification.isEmpty
+                                  ? Center(
+                                child: Row(
+                                  children: [
+                                    Text(localization
+                                        .noNotificationRecived),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Icon(Icons.error_outline)
+                                  ],
+                                ),
+                              )
+                                  : AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  delay: Duration(milliseconds: 200),
+                                  child: SlideAnimation(
+                                    duration:
+                                    Duration(milliseconds: 2500),
+                                    curve:
+                                    Curves.fastLinearToSlowEaseIn,
+                                    child: FadeInAnimation(
+                                      curve:
+                                      Curves.fastLinearToSlowEaseIn,
+                                      duration:
+                                      Duration(milliseconds: 3000),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w,
+                                            vertical: 10.h),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color:isDarkMode?ColorManager.darkTextFieldBg:ColorManager.white,
+                                            borderRadius: BorderRadius.circular(30.r),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                blurRadius: 8,
+                                                offset: Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: ListTile(
+                                            contentPadding:
+                                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 36.h),
+                                            leading: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                width: 48.w,
+                                                height: 48.w,
+                                                decoration: BoxDecoration(
+                                                  color: ColorManager.primary.withOpacity(0.1),
+                                                  borderRadius: BorderRadius.circular(12.r),
+                                                ),
+                                                child: Icon(
+                                                  Icons.notifications_active_outlined,
+                                                  color: ColorManager.primary,
+                                                  size: 48.sp,
+                                                ),
+                                              ),
+                                            ),
+                                            title: Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Text(
+                                                _serviceCubit
+                                                    .listNotification[
+                                                index].title ?? '',
+                                                style: Theme.of(context).listTileTheme.titleTextStyle,                                   ),
+                                            ),
+                                            subtitle: Text(
+                                              _serviceCubit
+                                                  .listNotification[
+                                              index].description?? '',
+                                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                                color: ColorManager.grey,
+                                                fontSize: 28.sp,
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ));
+                            }),
                       ),
                     );
                   }
-
-                  return Expanded(
-                    child: AnimationLimiter(
-                      child: ListView.builder(
-                        itemCount: listNotification.length,
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                        itemBuilder: (context, index) {
-                          final item = listNotification[index];
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 38.h),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color:isDarkMode?ColorManager.darkTextFieldBg:ColorManager.white,
-                                borderRadius: BorderRadius.circular(30.r),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: ListTile(
-                                contentPadding:
-                                EdgeInsets.symmetric(horizontal: 16.w, vertical: 36.h),
-                                leading: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: 48.w,
-                                    height: 48.w,
-                                    decoration: BoxDecoration(
-                                      color: ColorManager.primary.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(12.r),
-                                    ),
-                                    child: Icon(
-                                      Icons.notifications_active_outlined,
-                                      color: ColorManager.primary,
-                                      size: 48.sp,
-                                    ),
-                                  ),
-                                ),
-                                title: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text(
-                                    item.title ?? '',
-                                    style: Theme.of(context).listTileTheme.titleTextStyle,                                   ),
-                                ),
-                                subtitle: Text(
-                                  item.description?? '',
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: ColorManager.grey,
-                                    fontSize: 28.sp,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                } else {
-                  return const SizedBox();
-                }
               },
             )
 

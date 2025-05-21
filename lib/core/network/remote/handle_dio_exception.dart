@@ -6,23 +6,21 @@ import 'package:dio/dio.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HandleException {
-  static AppLocalizations get localization =>
-      AppLocalizations.of(navigatorKey.currentContext!)!;
-  static String exceptionType(dynamic exception) {
-    if (exception is DioException) {
-      return handleDioException(exception, localization);
-    } else if (exception is AppException) {
-      return exception.message;
-    } else if (exception is SocketException) {
-      return localization.noInternetConnection;
-    } else if (exception is FormatException) {
-      return localization.dataParsingException;
-    }else if(exception is LocalAppException){
-      return '';
-      // return localization.un;
+ static AppLocalizations  localization=AppLocalizations.of(navigatorKey.currentContext!)!;
+ static String exceptionType(dynamic exception){
+    if(exception is DioException){
+    return   handleDioException(exception, localization);
     }
-
-    else {
+    else if(exception is AppException){
+      return exception.message;
+    }
+    else if(exception is SocketException){
+      return localization.noInternetConnection;
+    }
+    else if(exception is FormatException ){
+      return localization.dataParsingException;
+    }
+    else{
       return localization.unexpectederror;
     }
   }

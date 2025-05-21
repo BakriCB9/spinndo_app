@@ -57,7 +57,7 @@ class CustomDrawer extends StatelessWidget {
     final base64String = sharedPref.getString(CacheConstant.imagePhoto);
     return Drawer(
       backgroundColor: _drawerCubit.themeMode == ThemeMode.dark
-          ? ColorManager.darkBg
+          ? ColorManager.darkBlue
           : Colors.white,
       child: Column(
         children: [
@@ -273,36 +273,10 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // getUserRole() != null
-                  //     ? getUserRole() == 'Client'
-                  //         ? SizedBox()
-                  //         :
-                  // InkWell(
-                  //             onTap: () {
-                  //               Scaffold.of(context).closeDrawer();
-                  //               Navigator.of(context)
-                  //                   .pushNamed(DiscountScreen.routeName);
-                  //             },
-                  //             child: ListTile(
-                  //               leading: const Icon(
-                  //                 Icons.discount,
-                  //                 color: ColorManager.primary,
-                  //               ),
-                  //               title: Text(
-                  //                 localization.disco,
-                  //                 style: Theme.of(context)
-                  //                     .textTheme
-                  //                     .titleLarge!
-                  //                     .copyWith(fontSize: 32.sp),
-                  //               ),
-                  //             ),
-                  //           )
-                  //     : const SizedBox(),
-        getUserRole() != null
-            ? getUserRole() == 'Client'
-                ?SizedBox():
-                InkWell(
+                  getUserRole() != null
+                      ? getUserRole() == 'Client'
+                      ?SizedBox():
+                  InkWell(
                     onTap: () {
                       Scaffold.of(context).closeDrawer();
                       Navigator.of(context).pushNamed(PackagesScreen.routeName);
@@ -345,6 +319,31 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   )
                       : const SizedBox(),
+                  // getUserRole() != null
+                  //     ? getUserRole() == 'Client'
+                  //         ? SizedBox()
+                  //         :
+                  // InkWell(
+                  //             onTap: () {
+                  //               Scaffold.of(context).closeDrawer();
+                  //               Navigator.of(context)
+                  //                   .pushNamed(DiscountScreen.routeName);
+                  //             },
+                  //             child: ListTile(
+                  //               leading: const Icon(
+                  //                 Icons.discount,
+                  //                 color: ColorManager.primary,
+                  //               ),
+                  //               title: Text(
+                  //                 localization.disco,
+                  //                 style: Theme.of(context)
+                  //                     .textTheme
+                  //                     .titleLarge!
+                  //                     .copyWith(fontSize: 32.sp),
+                  //               ),
+                  //             ),
+                  //           )
+                  //     : const SizedBox(),
                   InkWell(
                     onTap: () {
                       Scaffold.of(context).closeDrawer();

@@ -25,7 +25,7 @@ class GetServicesRequest {
     if (countryId != null) data['country_id'] = countryId;
     if (cityId != null) data['city_id'] = cityId;
     if (search != null) data['search'] = search;
-    
+    print('the value of data is %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% $data');
 
     return data;
   }

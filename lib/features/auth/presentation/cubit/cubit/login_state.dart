@@ -4,21 +4,23 @@ import 'package:equatable/equatable.dart';
 class LoginState extends Equatable {
   BaseState? loginStatus;
   BaseState? resetStatus;
-  LoginState({
-    this.loginStatus,
-    this.resetStatus,
-  });
+  BaseState? sendCodeState;
+  LoginState({this.loginStatus, this.resetStatus, this.sendCodeState});
 
-  LoginState copyWith({
-    BaseState? loginStatus,
-    BaseState? resetStatus,
-  }) {
+  LoginState copyWith(
+      {BaseState? loginStatus,
+        BaseState? resetStatus,
+        BaseState? sendCodeState}) {
     return LoginState(
-      loginStatus: loginStatus ?? this.loginStatus,
-      resetStatus: resetStatus ?? this.resetStatus,
-    );
+        loginStatus: loginStatus ?? this.loginStatus,
+        resetStatus: resetStatus ?? this.resetStatus,
+        sendCodeState: sendCodeState ?? this.sendCodeState);
   }
 
   @override
-  List<Object?> get props => [loginStatus, resetStatus];
+  List<Object?> get props => [
+    loginStatus,
+    resetStatus,
+    sendCodeState,
+  ];
 }

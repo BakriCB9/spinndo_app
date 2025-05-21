@@ -1,9 +1,10 @@
-import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_state.dart';
+import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:app/features/auth/presentation/widget/section_account_type.dart';
 import 'package:app/features/auth/presentation/widget/section_remember_me.dart';
+
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/auth/data/models/register_request.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/screens/employee_details.dart';
-import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/utils/ui_utils.dart';
 import '../../../../core/utils/validator.dart';
@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   icon: Icons.person,
                   labelText: localization.firstNameAr,
                 ),
-                SizedBox(height: 40.h),
+                SizedBox(height: 30.h),
                 CustomTextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -119,25 +119,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Row(children: [
                   Expanded(
                       flex: 2,
-                      child: Container(
-                        child: CountryCodePicker(
-                            barrierColor: Colors.grey.withOpacity(0.2),
-
-                            dialogBackgroundColor:
-                                Theme.of(context).primaryColorDark,
-                            flagWidth: 25,
-                            textStyle: Theme.of(context).textTheme.bodyMedium,
-                            padding: EdgeInsets.zero,
-                            backgroundColor: ColorManager.grey,
-                            searchStyle: Theme.of(context).textTheme.bodyMedium,
-                            onChanged: (value) {
-                              _registerCubit.countryCode = value.dialCode!;
-                            },
-                            showCountryOnly: true,
-                            showOnlyCountryWhenClosed: false,
-                            alignLeft: true),
-                      )
-                  ),
+                      child: CountryCodePicker(
+                          barrierColor: Colors.grey.withOpacity(0.2),
+                          dialogBackgroundColor:
+                          Theme.of(context).primaryColorDark,
+                          flagWidth: 25,
+                          textStyle: Theme.of(context).textTheme.bodyMedium,
+                          padding: EdgeInsets.zero,
+                          backgroundColor: Theme.of(context).primaryColorDark,
+                          searchStyle: Theme.of(context).textTheme.bodyMedium,
+                          onChanged: (value) {
+                            _registerCubit.countryCode = value.dialCode!;
+                          },
+                          showCountryOnly: true,
+                          showOnlyCountryWhenClosed: false,
+                          alignLeft: true)),
                   SizedBox(width: 5.w),
                   Expanded(
                       flex: 3,
@@ -185,80 +181,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
           SizedBox(height: 20.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w,),
-            child: SectionRememberMe(authCubit: _registerCubit),
-          ),
+          SectionRememberMe(authCubit: _registerCubit),
           SizedBox(height: 20.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w,),
-            child: SectionAccountType(authcubit: _registerCubit),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w,),
-            child: BlocListener<RegisterCubit, RegisterState>(
-                bloc: _registerCubit,
-                listenWhen: (pre, cur) {
-                  if (pre.registerClientState != cur.registerClientState ||
-                      pre.getCategoryState != cur.getCategoryState) {
-                    previousState = pre;
-                    return true;
-                  }
-                  return false;
-                },
-                listener: (_, state) {
-                  if (state.registerClientState is BaseLoadingState ||
-                      state.getCategoryState is BaseLoadingState) {
-                    UIUtils.showLoadingDialog(context);
-                  } else if (state.registerClientState is BaseSuccessState) {
-                    UIUtils.hideLoading(context);
-                    Navigator.of(context).pushNamed(Routes.verificationRoutes,
-                        arguments: _registerCubit.emailController.text);
-                  } else if (state.registerClientState is BaseErrorState &&
-                      previousState?.registerClientState !=
-                          state.registerClientState) {
-                    final result = state.registerClientState as BaseErrorState;
-                    UIUtils.hideLoading(context);
-                    UIUtils.showMessage(result.error!);
-                  } else if (state.getCategoryState is BaseSuccessState &&
-                      previousState?.getCategoryState != state.getCategoryState) {
-                    UIUtils.hideLoading(context);
-                    Navigator.of(context).pushNamed(Routes.employeDetails,
-                        arguments: _registerCubit);
-
-                  } else if (state.getCategoryState is BaseErrorState &&
-                      previousState?.getCategoryState != state.getCategoryState) {
-                    final result = state.getCategoryState as BaseErrorState;
-                    UIUtils.hideLoading(context);
-                    UIUtils.showMessage(result.error!);
-                  }
-                },
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _register(context);
-                    },
-                    child: Text(
-                        _registerCubit.isClient
-                            ? localization.signUp
-                            : localization.next,
-                        style: Theme.of(context).textTheme.bodyLarge),
-                  ),
-                )),
-          ),
+          SectionAccountType(authcubit: _registerCubit),
+          BlocListener<RegisterCubit, RegisterState>(
+              bloc: _registerCubit,
+              listenWhen: (pre, cur) {
+                if (pre.registerClientState != cur.registerClientState ||
+                    pre.getCategoryState != cur.getCategoryState) {
+                  previousState = pre;
+                  return true;
+                }
+                return false;
+              },
+              listener: (_, state) {
+                if (state.registerClientState is BaseLoadingState ||
+                    state.getCategoryState is BaseLoadingState) {
+                  UIUtils.showLoadingDialog(context);
+                } else if (state.registerClientState is BaseSuccessState) {
+                  UIUtils.hideLoading(context);
+                  Navigator.of(context).pushNamed(Routes.verificationRoutes,
+                      arguments: _registerCubit.emailController.text);
+                } else if (state.registerClientState is BaseErrorState &&
+                    previousState?.registerClientState !=
+                        state.registerClientState) {
+                  final result = state.registerClientState as BaseErrorState;
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(result.error!);
+                } else if (state.getCategoryState is BaseSuccessState &&
+                    previousState?.getCategoryState != state.getCategoryState) {
+                  UIUtils.hideLoading(context);
+                  Navigator.of(context).pushNamed(Routes.employeDetails,
+                      arguments: _registerCubit);
+                  // Navigator.of(context)
+                  //     .push(MaterialPageRoute(builder: (context) {
+                  //   return BlocProvider.value(
+                  //     value: _authCubit,
+                  //     child: EmployeeDetails(
+                  //       registerCubit: _registerCubit,
+                  //     ),
+                  //   );
+                  // }));
+                } else if (state.getCategoryState is BaseErrorState &&
+                    previousState?.getCategoryState != state.getCategoryState) {
+                  final result = state.getCategoryState as BaseErrorState;
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(result.error!);
+                }
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _register(context);
+                  },
+                  child: Text(
+                      _registerCubit.isClient
+                          ? localization.signUp
+                          : localization.next,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
+              )),
           SizedBox(height: 30.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w,),
-            child: Center(
-                child: InkWell(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(Routes.loginRoute);
-                    },
-                    child: Text(localization.alreadyHaveAccount,
-                        style: Theme.of(context).textTheme.titleMedium))),
-          ),
+          Center(
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.loginRoute);
+                  },
+                  child: Text(localization.alreadyHaveAccount,
+                      style: Theme.of(context).textTheme.titleMedium))),
           SizedBox(height: 100.h)
         ]));
   }
@@ -267,7 +259,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (formKey.currentState!.validate()) {
       if (_registerCubit.isClient) {
         _registerCubit.register(RegisterRequest(
-            phone: _registerCubit.countryCode +
+            phoneNumber: _registerCubit.countryCode +
                 _registerCubit.phoneNumberController.text,
             first_name_ar: _registerCubit.firstNameArcontroller.text,
             last_name_ar: _registerCubit.lastNameArCOntroller.text,

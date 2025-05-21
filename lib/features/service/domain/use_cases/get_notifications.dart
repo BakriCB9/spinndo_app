@@ -5,10 +5,10 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetNotificationsUseCase {
+class GetNotifications {
   final ServiceRepository _serviceRepository;
 
-  GetNotificationsUseCase(this._serviceRepository);
+  GetNotifications(this._serviceRepository);
 
   Future<Either<Failure, List<Notifications>>> call() =>
       _serviceRepository.getAllNotification();

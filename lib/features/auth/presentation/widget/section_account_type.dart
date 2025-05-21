@@ -29,10 +29,12 @@ class _SectionAccountTypeState extends State<SectionAccountType> {
                 hoverColor: ColorManager.primary,
                 groupValue: isClient,
                 onChanged: (value) {
+                  print('Client value is $value');
                   setState(() {
                     isClient = value!;
                     widget.authcubit.isClient = isClient;
                   });
+                  print('Client value is ${widget.authcubit.isClient}');
                 },
               ),
               Text(localization!.client,
@@ -48,9 +50,11 @@ class _SectionAccountTypeState extends State<SectionAccountType> {
               groupValue: isClient,
               onChanged: (value) {
                 setState(() {
+                  print('Provider value is $value');
                   isClient = value!;
                   widget.authcubit.isClient = isClient;
                 });
+                print('Provider value is ${widget.authcubit.isClient}');
               },
             ),
             Text(localization.employee,

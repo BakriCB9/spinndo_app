@@ -20,9 +20,9 @@ class VerificationCubit extends Cubit<VerificationState> {
 
     final result = await _verifyCodeUseCase(requestData);
     result.fold(
-      (failure) =>
+          (failure) =>
           emit(state.copyWith(verifyState: BaseErrorState(failure.message))),
-      (response) => emit(state.copyWith(verifyState: BaseSuccessState())),
+          (response) => emit(state.copyWith(verifyState: BaseSuccessState())),
     );
   }
 
@@ -31,9 +31,9 @@ class VerificationCubit extends Cubit<VerificationState> {
 
     final result = await _resendCodeUseCase(requestData);
     result.fold(
-      (failure) => emit(
+          (failure) => emit(
           state.copyWith(resendCodeState: BaseErrorState(failure.message))),
-      (response) {
+          (response) {
         // verifyCodeTime();
         emit(state.copyWith(resendCodeState: BaseSuccessState()));
       },

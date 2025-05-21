@@ -407,6 +407,7 @@
 
 import 'dart:io';
 
+import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:app/test.dart';
 import 'package:flutter/material.dart';
@@ -422,7 +423,6 @@ import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/auth/presentation/screens/map_screen.dart';
-import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
@@ -479,7 +479,6 @@ class EmployeeDetails extends StatelessWidget {
                   bloc: _authCubit,
                   builder: (context, state) {
                     return CascadingDropdowns(
-                        //authCubit: _authCubit,
                         categories: _authCubit.categoriesList);
                   },
                 ),

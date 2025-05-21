@@ -8,7 +8,6 @@ class ProviderProfile {
   String? firstNameAr;
   String? lastNameAr;
   String? email;
-  String? phone;
   dynamic imagePath;
   List<ProviderProfileSocialLinks?>? socialLinks;
   ProviderProfileDetailsJob? details;
@@ -19,7 +18,6 @@ class ProviderProfile {
     this.lastNameAr,
     this.lastName,
     this.email,
-    this.phone,
     this.imagePath,
     this.socialLinks,
     this.details,

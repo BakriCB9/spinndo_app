@@ -12,8 +12,8 @@ class BaseLoadingState extends BaseState {}
 class BaseErrorState extends BaseState {
   String? error;
   BaseErrorState(
-    this.error,
-  );
+      this.error,
+      );
 }
 
 
@@ -28,9 +28,9 @@ class ServiceRequestState extends Equatable {
   BaseState? createServiceState;
   ServiceRequestState(
       {this.deleteServiceState,
-      this.getServiceState,
-      this.updateServiceState,
-      this.createServiceState});
+        this.getServiceState,
+        this.updateServiceState,
+        this.createServiceState});
   ServiceRequestState copyWith({
     BaseState? getServiceState,
     BaseState? updateServiceState,
@@ -46,9 +46,9 @@ class ServiceRequestState extends Equatable {
 
   @override
   List<Object?> get props => [
-        getServiceState,
-        updateServiceState,
-        deleteServiceState,
-        createServiceState
-      ];
+    getServiceState,
+    updateServiceState,
+    deleteServiceState,
+    createServiceState
+  ];
 }

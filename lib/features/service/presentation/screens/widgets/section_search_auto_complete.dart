@@ -26,7 +26,6 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
   late ServiceCubit _serviceCubit;
 
   late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
-
   @override
   void initState() {
     _serviceCubit = serviceLocator.get<ServiceCubit>();
@@ -88,7 +87,7 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
                 },
               ),
               contentPadding:
-                  const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,
@@ -104,46 +103,56 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
             ),
           ),
         );
+
+        // return CustomTextFormField(
+        //   icon: Icons.search,
+        //   controller: text,
+        //   hintText: localization.serviceOrProviderName,
+
+        //   // padding: 20.w,
+        // );
       },
       optionsViewBuilder: (context, onSelected, options) {
         return Align(
           alignment: Alignment.topLeft,
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: options.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              final option = options.elementAt(index);
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
-                  borderRadius: BorderRadius.circular(16.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color:Theme.of(context).shadowColor,
-                      blurRadius: 6,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ListTile(
-                  title: Text(
-                    option,
-                    style: theme.bodyMedium!.copyWith(
-                      fontSize: 27.sp,
-                      color: ColorManager.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onTap: () => onSelected(option),
-                  shape: RoundedRectangleBorder(
+          child: Material(
+            elevation: 2,
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: options.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final option = options.elementAt(index);
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorDark,
                     borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color:Theme.of(context).shadowColor,
+                        blurRadius: 6,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  hoverColor: Colors.amber.withOpacity(0.2),
-                ),
-              );
-            },
+                  child: ListTile(
+                    title: Text(
+                      option,
+                      style: theme.bodyMedium!.copyWith(
+                        fontSize: 27.sp,
+                        color: ColorManager.primary,
+                        fontWeight: FontWeight.bold,
+                      ),                    ),
+                    onTap: () => onSelected(option),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    hoverColor: Colors.greenAccent,
+                  ),
+                );
+              },
+            ),
           ),
         );
       },

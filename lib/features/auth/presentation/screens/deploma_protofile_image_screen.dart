@@ -16,8 +16,11 @@ import 'package:app/features/auth/data/models/register_service_provider_request.
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
+
 class DeplomaProtofileImageScreen extends StatefulWidget {
   DeplomaProtofileImageScreen({this.registerCubit, super.key});
+
   RegisterCubit? registerCubit;
   static const String routeName = '/deploma';
 
@@ -28,16 +31,17 @@ class DeplomaProtofileImageScreen extends StatefulWidget {
 
 class _DeplomaProtofileImageScreenState
     extends State<DeplomaProtofileImageScreen> {
-  final drawerCubit = serviceLocator.get<DrawerCubit>();
+  final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
     final localization = AppLocalizations.of(context)!;
-    final theme = Theme.of(context).textTheme;
+    final theme = Theme
+        .of(context)
+        .textTheme;
     return Container(
-      decoration: isDarkMode
-          ? const BoxDecoration(
+      decoration: _drawerCubit.themeMode == ThemeMode.dark
+          ? BoxDecoration(
           color: ColorManager.darkBg
       ): null,
       child: CustomAuthForm(
@@ -58,7 +62,8 @@ class _DeplomaProtofileImageScreenState
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(localization.uploadProtofileImage,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .titleLarge!
                         .copyWith(fontSize: 40.sp)),
@@ -67,7 +72,7 @@ class _DeplomaProtofileImageScreenState
 
               SectionProtofileImage(registerCubit: widget.registerCubit!),
 
-              
+
               SizedBox(height: 20.h),
               SizedBox(height: 30.h),
               BlocListener<RegisterCubit, RegisterState>(
@@ -77,7 +82,7 @@ class _DeplomaProtofileImageScreenState
                     UIUtils.showLoadingDialog(context);
                   } else if (state.registerProviderState is BaseErrorState) {
                     final message =
-                        state.registerProviderState as BaseErrorState;
+                    state.registerProviderState as BaseErrorState;
                     UIUtils.hideLoading(context);
                     UIUtils.showMessage(message.error!);
                     widget.registerCubit!.listOfFileImagesProtofile
@@ -107,45 +112,57 @@ class _DeplomaProtofileImageScreenState
                       widget.registerCubit!.listOfFileImagesProtofile
                           .removeLast();
                       try {
-                        widget.registerCubit!.registerService(RegisterServiceProviderRequest(
-                            websiteService: widget.registerCubit!
+                        widget.registerCubit!.registerService(
+                            RegisterServiceProviderRequest(
+                                websiteService: widget.registerCubit!
                                     .websiteController.text.isEmpty
-                                ? null
-                                : widget.registerCubit!.websiteController.text,
-                            phone: widget.registerCubit!.countryCode +
-                                widget
-                                    .registerCubit!.phoneNumberController.text,
-                            firstNameAr: widget
-                                .registerCubit!.firstNameArcontroller.text,
-                            lastNameAr:
+                                    ? null
+                                    : widget.registerCubit!.websiteController
+                                    .text,
+                                phoneNumber: widget.registerCubit!.countryCode +
+                                    widget
+                                        .registerCubit!.phoneNumberController
+                                        .text,
+                                firstNameAr: widget
+                                    .registerCubit!.firstNameArcontroller.text,
+                                lastNameAr:
                                 widget.registerCubit!.lastNameArCOntroller.text,
-                            firstName:
+                                firstName:
                                 widget.registerCubit!.firstNameContoller.text,
-                            lastName:
+                                lastName:
                                 widget.registerCubit!.lastNameContoller.text,
-                            email: widget.registerCubit!.emailController.text,
-                            listOfDay: widget.registerCubit!.dateSelect,
-                            password:
+                                email: widget.registerCubit!.emailController
+                                    .text,
+                                listOfDay: widget.registerCubit!.dateSelect,
+                                password:
                                 widget.registerCubit!.passwordController.text,
-                            nameService: widget
-                                .registerCubit!.serviceNameController.text,
-                            descriptionService: widget.registerCubit!
-                                .serviceDescriptionController.text,
-                            categoryIdService: widget
-                                .registerCubit!.selectedCategory!.id
-                                .toString(),
-                            cityNameService: widget.registerCubit!.countryName!,
-                            certificate: widget.registerCubit!.certificateImage!,
-                            latitudeService: widget.registerCubit!.lat!.toString(),
-                            longitudeService: widget.registerCubit!.lang!.toString(),
-                            images: widget.registerCubit!.listOfFileImagesProtofile));
+                                nameService: widget
+                                    .registerCubit!.serviceNameController.text,
+                                descriptionService: widget.registerCubit!
+                                    .serviceDescriptionController.text,
+                                categoryIdService: widget
+                                    .registerCubit!.selectedCategory!.id
+                                    .toString(),
+                                cityNameService: widget.registerCubit!
+                                    .countryName!,
+                                certificate: widget.registerCubit!
+                                    .certificateImage!,
+                                latitudeService: widget.registerCubit!.lat!
+                                    .toString(),
+                                longitudeService: widget.registerCubit!.lang!
+                                    .toString(),
+                                images: widget.registerCubit!
+                                    .listOfFileImagesProtofile));
                       } catch (e) {
                         widget.registerCubit!.listOfFileImagesProtofile
                             .add(File(''));
                       }
                     },
                     child: Text(localization.signUp,
-                        style: Theme.of(context).textTheme.bodyLarge),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyLarge),
                   ),
                 ),
               ),
