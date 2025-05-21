@@ -2,6 +2,7 @@ import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/login_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/login_state.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
+import 'package:app/features/service/presentation/screens/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -123,7 +124,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           email: _loginCubit.emailController.text));
                     }
                   },
-                  child: Text(localization.verify,
+                  child: Text(localization.confirm,
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),
               ),
@@ -143,7 +144,10 @@ class ForgotPasswordScreen extends StatelessWidget {
       UIUtils.showMessage(result.error!);
     } else if (state.resetStatus is BaseSuccessState) {
       UIUtils.hideLoading(context);
-      Navigator.of(context).pushNamed(Routes.loginRoute);
+      Navigator.of(context).pushNamedAndRemoveUntil(ServiceScreen.routeName,
+          (p) {
+        return false;
+      });
     }
   }
 }

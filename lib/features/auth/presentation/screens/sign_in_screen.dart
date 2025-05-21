@@ -68,11 +68,15 @@ class SignInScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
               child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
+                    Navigator.of(context).pushNamed(Routes.sendCodeScreen,
                         arguments: _loginCubit);
                     _loginCubit.passwordController.clear();
-                    _loginCubit.confirmPasswordController.clear();
                     _loginCubit.emailController.clear();
+                    // Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
+                    //     arguments: _loginCubit);
+                    // _loginCubit.passwordController.clear();
+                    // _loginCubit.confirmPasswordController.clear();
+                    // _loginCubit.emailController.clear();
                   },
                   child: Text(localization.forgetPassword,
                       style: theme.titleMedium!

@@ -23,3 +23,7 @@ List<String> listImage = [
   'asset/images/info.png'
 ];
 List<int> number = [1, 2, 3];
+enum TypeVerificationComing{
+  comeFromRegisterOfLogin,
+  comeFromForgetPassword;
+}

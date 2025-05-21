@@ -1,4 +1,6 @@
 import 'package:app/core/const_variable.dart';
+import 'package:app/core/routes/routes.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/login_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/verification_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/verification_state.dart';
 import 'package:app/features/auth/presentation/widget/section_resend_code_timer.dart';
@@ -14,7 +16,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerficationCodeScreen extends StatefulWidget {
   String? email;
-  VerficationCodeScreen({this.email = 'bakkaraweja@gmail.come', super.key});
+  TypeVerificationComing? typeComing;
+  LoginCubit? loginCubit;
+  VerficationCodeScreen(
+      {this.email = 'user@gmail.come',
+      this.typeComing,
+      this.loginCubit,
+      super.key});
 
   @override
   State<VerficationCodeScreen> createState() => _VerficationCodeScreenState();
@@ -31,8 +39,7 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
   @override
   Widget build(BuildContext context) {
     final verficyCubit = BlocProvider.of<VerificationCubit>(context);
-    //  authCubit?.timer?.cancel();
-    // authCubit?.verifyCodeTime();
+
     final localization = AppLocalizations.of(context)!;
 
     return CustomAuthForm(
@@ -109,11 +116,17 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
                   UIUtils.showMessage(result.error!);
                 } else if (state.verifyState is BaseSuccessState) {
                   UIUtils.hideLoading(context);
+                  if (widget.typeComing ==
+                      TypeVerificationComing.comeFromForgetPassword) {
+                    Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
+                        arguments: widget.loginCubit);
+                  } else {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil(ServiceScreen.routeName, (p) {
+                      return false;
+                    });
+                  }
 
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(ServiceScreen.routeName, (p) {
-                    return false;
-                  });
                   //  authCubit!.close();
                 }
               },
@@ -126,7 +139,7 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
                         code: verficyCubit.codeController.text));
                   }
                 },
-                child: Text(localization.verify,
+                child: Text(localization.confirm,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),

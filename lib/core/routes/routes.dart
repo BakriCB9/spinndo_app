@@ -8,4 +8,5 @@ class Routes{
   static const String employeDetails='/employeDetails';
   static const String serviceFilterScreen='/servcieFilter';
   static const String getMainCategoryScreen='/getMainCategory';
+  static const String sendCodeScreen='/sendCode';
 }

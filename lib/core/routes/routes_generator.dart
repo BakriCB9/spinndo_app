@@ -8,10 +8,10 @@ import 'package:app/features/auth/presentation/screens/employee_details.dart';
 import 'package:app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:app/features/auth/presentation/screens/send_email_for_code_scree.dart';
 import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/google_map/presentation/view/google_map_screen.dart';
-import 'package:app/features/google_map/presentation/view_model/cubit/google_map_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:app/features/service/presentation/screens/filter_result_screen.dart';
 import 'package:app/features/service/presentation/screens/get_main_category_screen.dart';
@@ -33,20 +33,30 @@ class RoutesGenerator {
                   child: ForgotPasswordScreen(),
                 ));
 
+      case Routes.sendCodeScreen:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider.value(
+                  value: args as LoginCubit,
+                  child: const SendEmailForCodeScreen(),
+                ));
       case Routes.registerRoute:
         return AnimationRoute(page: SignUpScreen());
 
       case Routes.employeDetails:
         return AnimationRoute(
             page: BlocProvider.value(
-                value: args as RegisterCubit, child: EmployeeDetails()));
+                value: args as RegisterCubit, child: const EmployeeDetails()));
       case Routes.verificationRoutes:
-        return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                create: (_) => serviceLocator.get<VerificationCubit>(),
-                child: VerficationCodeScreen(
-                  email: args as String,
-                )));
+        return MaterialPageRoute(builder: (_) {
+          final map = args as Map<String, dynamic>;
+          return BlocProvider(
+              create: (_) => serviceLocator.get<VerificationCubit>(),
+              child: VerficationCodeScreen(
+                email: map['email'],
+                typeComing: map['type'],
+                loginCubit: map['cubit'],
+              ));
+        });
 
       case Routes.googleMapSccren:
         return MaterialPageRoute(builder: (_) {
