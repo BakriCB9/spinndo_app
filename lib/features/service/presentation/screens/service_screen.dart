@@ -94,7 +94,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             bloc: _serviceSettingCubit,
                             buildWhen: (pre, cur) {
                               if (pre.getCountryAndCategory !=
-                                  cur.getCountryAndCategory) {
+                                  cur.getCountryAndCategory || pre.resetData!=cur.resetData) {
                                 return true;
                               }
                               return false;
@@ -164,7 +164,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const SectionSearchAutoComplete(),
+                                              const SectionSearchAutoComplete(serviceSettingCubit:_serviceSettingCubit),
                                               SizedBox(height: 30.h),
                                               SectionSelectCountry(
                                                   serviceCubit:
@@ -192,8 +192,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                       vertical: 8.h),
                                                   child: InkWell(
                                                       onTap: () {
-                                                        // _serviceSettingCubit
-                                                        //     .resetSetting();
+                                                        _serviceSettingCubit
+                                                            .resetAllData();
                                                       },
                                                       child: Text(
                                                           localization.resetAll,

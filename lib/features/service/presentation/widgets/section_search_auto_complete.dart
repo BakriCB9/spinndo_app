@@ -3,19 +3,18 @@ import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
-
 import 'package:app/core/di/service_locator.dart';
-
-import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 
 typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
 
 class SectionSearchAutoComplete extends StatefulWidget {
-  const SectionSearchAutoComplete({super.key});
+final   ServiceSettingCubit serviceSettingCubit;
+  const SectionSearchAutoComplete({required this.serviceSettingCubit, super.key});
 
   @override
   State<SectionSearchAutoComplete> createState() =>
@@ -23,12 +22,12 @@ class SectionSearchAutoComplete extends StatefulWidget {
 }
 
 class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
-  late ServiceCubit _serviceCubit;
+  // late ServiceCubit _serviceCubit;
 
   late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
   @override
   void initState() {
-    _serviceCubit = serviceLocator.get<ServiceCubit>();
+    // _serviceCubit = serviceLocator.get<ServiceCubit>();
 
     _debouncedSearch = _debounce<Iterable<String>?, String>(_search);
     super.initState();
@@ -37,7 +36,7 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
-    print('we build the autoCompletet now ##########################');
+    
     final localization = AppLocalizations.of(context)!;
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) async {
@@ -98,7 +97,7 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
         );
       },
       onSelected: (selection) {
-        // _serviceCubit.searchController.text=selection;
+    widget.serviceSettingCubit.searchController.text=selection;
       },
     );
   }

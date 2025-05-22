@@ -51,9 +51,7 @@ class _DeplomaProtofileImageScreenState
                   style: theme.titleLarge!.copyWith(fontSize: 40.sp)),
               SizedBox(height: 50.h),
               SectionCertificateImage(registerCubit: widget.registerCubit!),
-
               SizedBox(height: 50.h),
-
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(localization.uploadProtofileImage,
@@ -63,10 +61,7 @@ class _DeplomaProtofileImageScreenState
                         .copyWith(fontSize: 40.sp)),
               ),
               SizedBox(height: 50.h),
-
               SectionProtofileImage(registerCubit: widget.registerCubit!),
-
-              
               SizedBox(height: 20.h),
               SizedBox(height: 30.h),
               BlocListener<RegisterCubit, RegisterState>(
@@ -84,7 +79,9 @@ class _DeplomaProtofileImageScreenState
                   } else if (state.registerProviderState is BaseSuccessState) {
                     UIUtils.hideLoading(context);
                     Navigator.of(context).pushNamed(Routes.verificationRoutes,
-                        arguments: widget.registerCubit!.emailController.text);
+                        arguments: {
+                          'email': widget.registerCubit!.emailController.text
+                        });
                   }
                 },
                 child: Container(

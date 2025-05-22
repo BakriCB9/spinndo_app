@@ -12,11 +12,9 @@ import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/core/utils/validator.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/auth/data/models/login_request.dart';
-import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:app/features/service/presentation/screens/service_screen.dart';
-import 'sign_up_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -72,11 +70,6 @@ class SignInScreen extends StatelessWidget {
                         arguments: _loginCubit);
                     _loginCubit.passwordController.clear();
                     _loginCubit.emailController.clear();
-                    // Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
-                    //     arguments: _loginCubit);
-                    // _loginCubit.passwordController.clear();
-                    // _loginCubit.confirmPasswordController.clear();
-                    // _loginCubit.emailController.clear();
                   },
                   child: Text(localization.forgetPassword,
                       style: theme.titleMedium!
@@ -147,7 +140,7 @@ class SignInScreen extends StatelessWidget {
       if (message.error ==
           "This accouct is Inactive.You must insert verification code from your email.") {
         Navigator.of(context).pushNamed(Routes.verificationRoutes,
-            arguments: _loginCubit.emailController.text);
+            arguments: {'email': _loginCubit.emailController.text});
       }
     }
   }
