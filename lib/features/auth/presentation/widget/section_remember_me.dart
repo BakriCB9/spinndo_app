@@ -1,9 +1,9 @@
 import 'package:app/core/resources/color_manager.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:flutter/material.dart';
 
 class SectionRememberMe extends StatefulWidget {
-  final AuthCubit authCubit;
+  final RegisterCubit authCubit;
   const SectionRememberMe({required this.authCubit, super.key});
 
   @override
@@ -22,7 +22,7 @@ class _SectionRememberMeState extends State<SectionRememberMe> {
             onChanged: (value) {
               setState(() {
                 isAgree = value!;
-                widget.authCubit.isAgree = value;
+                // widget.authCubit.isAgree = value;
               });
             }),
         const SizedBox(width: 10),

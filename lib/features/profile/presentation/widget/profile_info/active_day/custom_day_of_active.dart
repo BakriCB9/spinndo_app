@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
-import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
-//import 'package:app/features/auth/data/models/register_service_provider_request.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/profile/domain/entities/provider_profile/provider_priofile_workingday.dart';
 import 'package:app/features/profile/presentation/screens/edit_date_time.dart';
 import 'package:app/main.dart';
-// import 'package:app/core/const_variable.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'box_of_from_to.dart';
@@ -41,7 +38,7 @@ class CustomDayActive extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             myId == userId
                 ? IconButton(
-                    onPressed: issAprrovid == true
+                    onPressed: issAprrovid == false
                         ? () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => WorkingSchedulePage(

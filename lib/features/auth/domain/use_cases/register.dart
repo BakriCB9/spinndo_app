@@ -6,11 +6,11 @@ import 'package:app/features/auth/domain/repository/auth_repository.dart';
 
 import '../../../../core/error/failure.dart';
 
-@singleton
-class Register {
+@injectable
+class RegisterUseCase {
   final AuthRepository _authRepository;
 
-  Register(this._authRepository);
+  RegisterUseCase(this._authRepository);
 
   Future<Either<Failure, RegisterResponse>> call(RegisterRequest requestData) =>
       _authRepository.register(requestData);

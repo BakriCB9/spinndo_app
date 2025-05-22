@@ -9,8 +9,6 @@ import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app/features/auth/data/models/register_service_provider_request.dart';
-import 'package:app/features/profile/presentation/widget/profile_info/active_day/box_of_from_to.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkingSchedulePage extends StatefulWidget {
@@ -60,9 +58,7 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
         actions: [
           IconButton(
               onPressed: () {
-                _profileCubit.updateProviderProfile(
-                    UpdateProviderRequest(listOfDay: _profileCubit.dateSelect),
-                    3);
+                _profileCubit.updateProviderProfile(3);
               },
               icon: Icon(Icons.check, color: Theme.of(context).primaryColor))
         ],

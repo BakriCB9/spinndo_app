@@ -1,56 +1,46 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:app/core/di/service_locator.dart';
 import 'package:app/features/auth/data/models/upgeade_regiest_service_provider.dart';
 import 'package:app/features/auth/domain/entities/country.dart';
 import 'package:app/features/auth/domain/use_cases/upgrade_account_use_case.dart';
-import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:app/features/service/domain/entities/child_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
-
 import 'package:app/core/utils/map_helper/location_service.dart';
-import 'package:app/features/auth/data/models/login_request.dart';
 import 'package:app/features/auth/data/models/register_request.dart';
 import 'package:app/features/auth/data/models/register_service_provider_request.dart';
 import 'package:app/features/auth/data/models/resend_code_request.dart';
-import 'package:app/features/auth/data/models/reset_password_request.dart';
 import 'package:app/features/auth/data/models/verify_code_request.dart';
-import 'package:app/features/auth/domain/use_cases/login.dart';
 import 'package:app/features/auth/domain/use_cases/register.dart';
 import 'package:app/features/auth/domain/use_cases/register_service.dart';
 import 'package:app/features/auth/domain/use_cases/resend_code.dart';
-import 'package:app/features/auth/domain/use_cases/reset_password.dart';
 import 'package:app/features/auth/domain/use_cases/verify_code.dart';
 import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/use_cases/get_categories.dart';
-
 import '../../../../core/models/google_map_model.dart';
 import '../../domain/use_cases/getCountryName.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
-      this._login,
       this._register,
       this._verifyCode,
       this._registerService,
       this._resendCode,
-      this._resetPassword,
       this._getCategories,
-      this._getCountryCityName,this._upgradeAccountUseCase)
+      this._getCountryCityName,
+      this._upgradeAccountUseCase)
       : super(AuthInitial());
-  final Login _login;
-  final Register _register;
-  final VerifyCode _verifyCode;
-  final ResendCode _resendCode;
-  final ResetPassword _resetPassword;
-  final RegisterService _registerService;
+
+  final RegisterUseCase _register;
+  final VerifyCodeUseCase _verifyCode;
+  final ResendCodeUseCase _resendCode;
+
+  final RegisterServiceUseCase _registerService;
   final Getcountryname _getCountryCityName;
   final UpgradeAccountUseCase _upgradeAccountUseCase;
   List<DateSelect> dateSelect = [
@@ -62,7 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
     DateSelect(day: "Friday", start: "08:00", end: "15:00"),
     DateSelect(day: "Saturday", start: "08:00", end: "15:00"),
   ];
-  // String website = '';
+
   final emailController = TextEditingController();
 
   String locationName = "enter your location";
@@ -75,7 +65,7 @@ class AuthCubit extends Cubit<AuthState> {
   final firstNameArcontroller = TextEditingController();
   final lastNameArCOntroller = TextEditingController();
   final phoneNumberController = TextEditingController();
-  String countryCode='+93';
+  String countryCode = '+93';
   final lastNameContoller = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -86,21 +76,19 @@ class AuthCubit extends Cubit<AuthState> {
   final addressController = TextEditingController();
   final websiteController = TextEditingController();
   final serviceDescriptionController = TextEditingController();
-  bool isAgree = false;
+
   List<File?> listOfFileImagesProtofile = [File("")];
   bool isClient = true;
   int resendCodeTime = 60;
   Timer? timer;
   bool canResend = false;
   File? certificateImage;
-  File? firstImage;
-  File? secondImage;
+
   List<Categories>? categoriesList;
   Country? country;
   Categories? selectedCategory;
-  final GetCategories _getCategories;
-  // String? selectedCategoryId;
-  late CameraPosition initialCameraPosition;
+  final GetCategoriesUseCase _getCategories;
+
   bool isCurrent = true;
   bool isCountySuccess = false;
   String? cityName;
@@ -112,20 +100,6 @@ class AuthCubit extends Cubit<AuthState> {
     result.fold(
       (failure) => emit(RegisterError(failure.message)),
       (response) => emit(RegisterSuccess()),
-    );
-  }
-
-  Future<void> login(LoginRequest requestData) async {
-    emit(LoginLoading());
-
-    final result = await _login(requestData);
-    print('the result is bakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkar ${result}');
-    result.fold(
-      (failure) {
-        print('here is big errrorr rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-        emit(LoginError(failure.message));
-      },
-      (response) => emit(LoginSuccess()),
     );
   }
 
@@ -150,14 +124,13 @@ class AuthCubit extends Cubit<AuthState> {
       (response) => emit(RegisterServiceSuccess()),
     );
   }
-   
 
-Future<void> upgradeAccount(
+  Future<void> upgradeAccount(
       UpgradeRegiestServiceProviderRequest requestData) async {
     emit(RegisterServiceLoading());
 
     final result = await _upgradeAccountUseCase(requestData);
-    print('the result from cubit is $result');
+
     result.fold(
       (failure) => emit(RegisterServiceError(failure.message)),
       (response) => emit(RegisterServiceSuccess()),
@@ -175,21 +148,6 @@ Future<void> upgradeAccount(
         emit(ResendCodeSuccess());
       },
     );
-  }
-
-  Future<void> resetPassword(ResetPasswordRequest requestData) async {
-    emit(ResetPasswordLoading());
-
-    final result = await _resetPassword(requestData);
-    result.fold(
-      (failure) => emit(ResetPasswordError(failure.message)),
-      (response) => emit(ResetPasswordSuccess()),
-    );
-  }
-
-  onChooseAccountType(bool value) {
-    isClient = value;
-    emit(ChooseAccountState());
   }
 
   onDayUpdate(bool daySelect, DateSelect date) {
@@ -240,7 +198,7 @@ Future<void> upgradeAccount(
 
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
-    print('we get category now bakri aweja');
+
     final result = await _getCategories();
     result.fold((failure) {
       // failureMessegae=failure.message;
@@ -248,13 +206,13 @@ Future<void> upgradeAccount(
     }, (categories) {
       categoriesList = categories;
       emit(GetCategorySuccess());
-      selectedAuthCat();
+      //selectedAuthCat();
     });
   }
 
-  void selectedAuthCat() {
-    emit(SelectedCategoryState());
-  }
+  // void selectedAuthCat() {
+  //   emit(SelectedCategoryState());
+  // }
 
   void initMarkerAddress() {
     markers.clear();
@@ -275,6 +233,7 @@ Future<void> upgradeAccount(
   }
 
   void initCurrentLocation() {
+    markerLocationData.clear();
     CameraPosition newLocation =
         CameraPosition(target: currentLocation!, zoom: 15);
     googleMapController!
@@ -282,31 +241,31 @@ Future<void> upgradeAccount(
 
     markerLocationData.add(GoogleMapModel(BitmapDescriptor.hueGreen,
         id: 1, name: "your current location", latLng: currentLocation!));
+    selectedLocation = currentLocation;
     emit(SelectedLocationState());
   }
 
   Future<void> getCurrentLocation() async {
-    try {
-      emit(GetCurrentLocationLoading());
-      LocationData getCurrentLocation = await LocationService.getLocationData();
-      currentLocation =
-          LatLng(getCurrentLocation.latitude!, getCurrentLocation.longitude!);
+    emit(GetCurrentLocationLoading());
+    final result = await LocationService.getLocationData();
+    result.fold((failure) => emit(GetCurrentLocationErrorr()), (location) {
+      currentLocation = LatLng(location.latitude!, location.longitude!);
+      selectedLocation = currentLocation;
       emit(GetCurrentLocationSuccess());
-    } catch (e) {
-      emit(GetCurrentLocationErrorr("Couldn't get your location"));
-    }
+    });
   }
 
   void selectLocation(LatLng onSelectedLocation) {
+    markerLocationData.clear();
     markerLocationData.add(GoogleMapModel(
       BitmapDescriptor.hueGreen,
       id: 1,
       name: "your Location",
-      latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
+      latLng: onSelectedLocation,
     ));
 
-    selectedLocation =
-        LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude);
+    selectedLocation = onSelectedLocation;
+    //LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude);
     emit(SelectedLocationState());
   }
 
@@ -344,11 +303,6 @@ Future<void> upgradeAccount(
     listOfFileImagesProtofile.removeAt(index);
     emit(UpdateImageProtofile());
   }
-
-  // void updateSecondImage(File? image) {
-  //   secondImage = image;
-  //   emit(SecondImageUpdated(image));
-  // }
 
   String? mapStyle;
 

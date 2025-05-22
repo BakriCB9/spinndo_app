@@ -1,7 +1,6 @@
 class UpdateProviderRequest {
   final String? firstName;
   final String? lastName;
-  final String? email;
   final String? password;
   final String? nameService;
   final String? descriptionService;
@@ -10,18 +9,22 @@ class UpdateProviderRequest {
   final String? websiteService;
   final String? longitudeService;
   final String? latitudeService;
-
+  final String? firstNameAr;
+  final String? lastNameAr;
   List<DateSelect>? listOfDay;
+  final String? phoneNumber;
   // final File certificate;
   // final List<File> images;
 
   UpdateProviderRequest(
       {this.firstName,
       this.lastName,
+      this.firstNameAr,
+      this.lastNameAr,
+      this.phoneNumber,
       //  this.certificate,
       // this.images,
       this.listOfDay,
-      this.email,
       this.password,
       this.nameService,
       this.descriptionService,
@@ -31,13 +34,17 @@ class UpdateProviderRequest {
       this.longitudeService,
       this.latitudeService});
   Map<String, dynamic> toJsonAccount() {
-    return {'first_name': firstName, 'last_name': lastName, '_method': 'PUT'};
+    return {
+      "first_name": firstName,
+      "last_name": lastName,
+      "first_name_ar": firstNameAr,
+      "last_name_ar": lastNameAr,
+      "phone": phoneNumber,
+      '_method': 'PUT',
+    };
   }
 
   Map<String, dynamic> toJsonJobDetails() {
-    //rint('the value of ');
-    //return
-    //Map<String,dynamic> ma=
     return {
       "service": {
         "name": nameService,
@@ -48,8 +55,6 @@ class UpdateProviderRequest {
       },
       '_method': 'PUT'
     };
-    //print(ma);
-    //return ma;
   }
 
   Map<String, dynamic> toJsonDateTime() {

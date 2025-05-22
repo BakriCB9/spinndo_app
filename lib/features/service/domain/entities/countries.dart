@@ -1,4 +1,3 @@
-import 'package:app/features/service/data/models/get_all_countries_response/city.dart';
 import 'package:app/features/service/domain/entities/cities.dart';
 
 class Countries {

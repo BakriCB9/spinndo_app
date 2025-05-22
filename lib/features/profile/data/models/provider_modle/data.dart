@@ -9,6 +9,7 @@ class Data extends ProviderProfile {
   String? firstName;
   String? lastName;
   String? email;
+  String? phoneNumber;
   dynamic imagePath;
   List<ProviderProfileSocialLinks?>? socialLinks;
   ProviderProfileDetailsJob? details;
@@ -18,6 +19,7 @@ class Data extends ProviderProfile {
   Data(
       {this.id,
       this.socialLinks,
+      this.phoneNumber,
       this.firstName,
       this.lastName,
       this.email,
@@ -27,16 +29,13 @@ class Data extends ProviderProfile {
       this.lastNameAr});
 
   factory Data.fromJson(Map<String, dynamic> json) {
-    print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-    print(
-        'the list is empty bakkakkaakakakaakakakaakaaar ${(json['socialLinks'] as List<dynamic>).isEmpty}');
-    print('************************************************');
     return Data(
       id: json['id'] as int?,
       firstNameAr: json['first_name_ar'] as String,
       lastNameAr: json['last_name_ar'] as String,
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
+      phoneNumber: json['phone'] as String?,
       email: json['email'] as String?,
       imagePath: json['image_path'] as dynamic,
       socialLinks: (json['socialLinks'] != null &&
@@ -46,24 +45,6 @@ class Data extends ProviderProfile {
               .map((e) => SocialLinks.fromJson(e as Map<String, dynamic>))
               .toList()
           : <SocialLinks>[],
-
-      //   socialLinks: (json['socialLinks'] != null)
-      // ? (json['socialLinks'] as List)
-      //     .map((e) => SocialLinks.fromJson(e as Map<String, dynamic>))
-      //     .cast<ProviderProfileSocialLinks>() // 👈 MAGIC HERE
-      //     .toList()
-      // : [],
-      // socialLinks: (json['socialLinks'] as List<dynamic>?)
-      //     ?.map((e) => SocialLinks.fromJson(e as Map<String, dynamic>))
-      //     .toList(),
-      //     (json['socialLinks'] != null && json['socialLinks'] is List && (json['socialLinks'] as List).isNotEmpty)
-      // ? (json['socialLinks'] as List)
-      //     .map((e) => SocialLinks.fromJson(e as Map<String, dynamic>))
-      //     .toList()
-      // : [],
-      // socialLinks: (json['socialLinks'] as List<dynamic>?)?.map((e) {
-      //   return SocialLinks.fromJson(e  as Map<String, dynamic>);
-      // }).toList(),
       details: json['details'] == null
           ? null
           : Details.fromJson(json['details'] as Map<String, dynamic>),

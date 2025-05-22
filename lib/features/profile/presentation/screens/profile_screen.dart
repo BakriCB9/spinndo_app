@@ -56,19 +56,12 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           if (state is GetProfileLoading) {
             return LoadingIndicator(Theme.of(context).primaryColor);
           } else if (state is GetProfileErrorr) {
-            
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Text(
-                  //   state.message,
-                  //   style: TextStyle(
-                  //       fontSize: 30.sp,
-                  //       color: Colors.black,
-                  //       fontWeight: FontWeight.w500),
-                  // ),
+                  
                   SizedBox(height: 20.h),
                   const Icon(
                     Icons.replay_outlined,
@@ -86,25 +79,12 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                           .copyWith(fontSize: 30.sp),
                     ),
                   ),
-                  // Lottie.asset('asset/animation/error.json'),
+
                   SizedBox(height: 30.h),
-                  // ElevatedButton(
-                  //     style: ButtonStyle(
-                  //         backgroundColor: WidgetStatePropertyAll(
-                  //       Theme.of(context).primaryColor,
-                  //     )),
-                  //     onPressed: () {
-                  //       _profileCubit.getUserRole();
-                  //     },
-                  //     child: Text(
-                  //       localization.reload,
-                  //       style: TextStyle(fontSize: 25.sp, color: Colors.white),
-                  //     ))
                 ],
               ),
             );
           } else if (state is GetProviderSuccess) {
-            
             return ProviderProfileScreen(providerProfile: state.provider);
           } else if (state is GetClientSuccess) {
             return ClientProfileScreen(clientProfile: state.client);

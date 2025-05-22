@@ -1,3 +1,5 @@
+import 'package:app/core/routes/routes.dart';
+import 'package:app/core/routes/routes_generator.dart';
 import 'package:app/core/utils/fcm.dart';
 import 'package:app/default_firebase_options.dart';
 import 'package:app/features/discount/presentation/view/add_discount_screen.dart';
@@ -24,11 +26,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:app/core/resources/theme_manager.dart';
 import 'package:app/features/auth/presentation/screens/deploma_protofile_image_screen.dart';
 import 'package:app/features/auth/presentation/screens/employee_details.dart';
-import 'package:app/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:app/features/auth/presentation/screens/map_screen.dart';
-import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
-import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
-import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
@@ -41,6 +39,8 @@ import 'features/packages/presentation/view/packages_screen.dart';
 import 'features/payment/keys.dart';
 
 late final SharedPreferences sharedPref;
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final navObserver = NavigationStackObserver();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = PublishableKey;
@@ -64,14 +64,14 @@ Future<void> main() async {
   runApp(DevicePreview(
       enabled: false,
       builder: (_) {
-        return  MyApp();
+        return MyApp();
       }));
 }
 
 class MyApp extends StatelessWidget {
   final userToken = sharedPref.getString(CacheConstant.tokenKey);
 
-   MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,11 @@ class MyApp extends StatelessWidget {
               return Builder(builder: (context) {
                 return BlocBuilder<DrawerCubit, DrawerStates>(
                   builder: (context, state) {
+                    // serviceLocator.registerSingleton(AppLocalizations.of(context)!);
+
                     return MaterialApp(
+                      navigatorObservers: [navObserver],
+                      navigatorKey: navigatorKey,
                       theme: ThemeManager.lightTheme,
                       darkTheme: ThemeManager.darkTheme,
                       themeMode:
@@ -107,7 +111,9 @@ class MyApp extends StatelessWidget {
                       supportedLocales: AppLocalizations.supportedLocales,
                       locale: Locale(
                           BlocProvider.of<DrawerCubit>(context).languageCode),
+                      onGenerateRoute: RoutesGenerator.getRoute,
                       //home: HomeScreen(),
+                      // initialRoute: Routes.verificationRoutes,
                       initialRoute: SplashScreen.routeName,
                       // sharedPref.getString(CacheConstant.tokenKey) == null
                       //     ? (sharedPref.getString(CacheConstant.emailKey) ==
@@ -131,24 +137,23 @@ class MyApp extends StatelessWidget {
                             const NotificationScreen(),
                         ServiceScreen.routeName: (context) => ServiceScreen(),
                         SplashScreen.routeName: (context) => SplashScreen(),
-                        ServiceMapScreen.routeName: (context) =>
-                            ServiceMapScreen(),
+                        // ServiceMapScreen.routeName: (context) =>
+                        //     ServiceMapScreen(),
                         // FilterResultScreen.routeName: (context) => FilterResultScreen(),
                         DeplomaProtofileImageScreen.routeName: (context) =>
-                             DeplomaProtofileImageScreen(),
-                        ForgotPasswordScreen.routeName: (context) =>
-                            ForgotPasswordScreen(),
-                        SignUpScreen.routeName: (context) => SignUpScreen(),
+                            DeplomaProtofileImageScreen(),
+                        // ForgotPasswordScreen.routeName: (context) =>
+                        //     ForgotPasswordScreen(),
+                        // SignUpScreen.routeName: (context) => SignUpScreen(),
                         MapScreen.routeName: (context) => MapScreen(),
-                        SignInScreen.routeName: (context) => SignInScreen(),
-                        VerficationCodeScreen.routeName: (context) =>
-                            VerficationCodeScreen(),
+                        // SignInScreen.routeName: (context) => SignInScreen(),
+                        // VerficationCodeScreen.routeName: (context) =>
+                        //     VerficationCodeScreen(),
                         Profile_Screen.routeName: (context) =>
                             const Profile_Screen(),
                         PackagesScreen.routeName: (context) =>
                             const PackagesScreen(),
-                        PaymentsScreen.routeName: (context) =>
-                            PaymentsScreen(),
+                        PaymentsScreen.routeName: (context) => PaymentsScreen(),
                       },
                       debugShowCheckedModeBanner: false,
                     );
@@ -156,5 +161,46 @@ class MyApp extends StatelessWidget {
                 );
               });
             }));
+  }
+}
+
+class NavigationStackObserver extends NavigatorObserver {
+  final List<Route<dynamic>> _stack = [];
+
+  int get stackSize => _stack.length;
+
+  printRouts() {
+    for (int i = 0; i < _stack.length; i++) {
+      print('******');
+      print(_stack[i].settings.name);
+      print('******');
+    }
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _stack.add(route);
+    super.didPush(route, previousRoute);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _stack.remove(route);
+    super.didPop(route, previousRoute);
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _stack.remove(route);
+    super.didRemove(route, previousRoute);
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    final index = _stack.indexOf(oldRoute!);
+    if (index != -1) {
+      _stack[index] = newRoute!;
+    }
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 }

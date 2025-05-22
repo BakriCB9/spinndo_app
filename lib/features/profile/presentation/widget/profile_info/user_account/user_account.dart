@@ -15,9 +15,11 @@ class UserAccount extends StatelessWidget {
   final String email;
   final bool? isApprovid;
   final String typeAccount;
+  final String phoneNumber;
   final int? userId;
   const UserAccount({
     this.userId,
+    required this.phoneNumber,
     required this.firstNameAr,
     required this.lastNameAr,
     required this.typeAccount,
@@ -45,6 +47,8 @@ class UserAccount extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => EditUserAccountScreen(
+                                phoneNumber: phoneNumber,
+                                email: email,
                                 firstNameAr: firstNameAr,
                                 lastNameAr: lastNameAr,
                                 typeAccount: 'Client',
@@ -58,10 +62,12 @@ class UserAccount extends StatelessWidget {
                     ))
                 : userId == myId
                     ? IconButton(
-                        onPressed: isApprovid == true
+                        onPressed: isApprovid == false
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
+                                        phoneNumber: phoneNumber,
+                                        email: email,
                                         typeAccount: 'Provider',
                                         firstNameAr: firstNameAr,
                                         lastNameAr: lastNameAr,
@@ -100,6 +106,10 @@ class UserAccount extends StatelessWidget {
             icon: Icons.email_outlined,
             title: localization.email,
             content: email),
+        InfoDetails(
+            icon: Icons.phone,
+            title: localization.phoneNumber,
+            content: phoneNumber),
       ],
     );
   }

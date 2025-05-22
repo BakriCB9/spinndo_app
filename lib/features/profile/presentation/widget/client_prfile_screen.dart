@@ -1,4 +1,6 @@
+import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/auth_states.dart';
@@ -25,6 +27,17 @@ final ScrollController _control = ScrollController();
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
+  final _sharedPreferencesUtils = serviceLocator.get<SharedPreferencesUtils>();
+  int? myid;
+  String? typeAccount;
+  @override
+  initState() {
+    super.initState();
+    myid = _sharedPreferencesUtils.getData(key: CacheConstant.userId) as int?;
+    typeAccount =
+        _sharedPreferencesUtils.getData(key: CacheConstant.userRole) as String?;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -41,7 +54,11 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         slivers: [
           SliverPersistentHeader(
             delegate: SliverPersistentDelegate(
-                widget.clientProfile.id, size, widget.clientProfile.imagePath),
+              myId: myid!,
+              image: widget.clientProfile.imagePath,
+              userId: widget.clientProfile.id,
+              size: size,
+            ),
             pinned: true,
           ),
           SliverFillRemaining(
@@ -53,9 +70,10 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                 children: [
                   SizedBox(height: 15.h),
                   UserAccount(
+                    phoneNumber: widget.clientProfile.phoneNumber,
                     lastNameAr: widget.clientProfile.lastNameAr,
                     firstNameAr: widget.clientProfile.firstNameAr,
-                    typeAccount: 'Client',
+                    typeAccount: typeAccount!,
                     firstName: widget.clientProfile.firstName,
                     lastName: widget.clientProfile.lastName,
                     email: widget.clientProfile.email,

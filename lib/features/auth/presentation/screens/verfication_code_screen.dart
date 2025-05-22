@@ -1,41 +1,47 @@
 import 'package:app/core/const_variable.dart';
+import 'package:app/core/routes/routes.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/login_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/verification_cubit.dart';
+import 'package:app/features/auth/presentation/cubit/cubit/verification_state.dart';
+import 'package:app/features/auth/presentation/widget/section_resend_code_timer.dart';
+import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app/core/constant.dart';
 import 'package:app/core/utils/ui_utils.dart';
-import 'package:app/features/auth/data/models/resend_code_request.dart';
 import 'package:app/features/auth/data/models/verify_code_request.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:app/features/auth/presentation/widget/custom_auth_form.dart';
-
 import 'package:app/features/service/presentation/screens/service_screen.dart';
-import 'package:app/main.dart';
-import '../../../../core/di/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../core/resources/color_manager.dart';
-import '../../../drawer/presentation/cubit/drawer_cubit.dart';
 
-class VerficationCodeScreen extends StatelessWidget {
-  static const String routeName = '/verfication';
-  AuthCubit? authCubit;
+class VerficationCodeScreen extends StatefulWidget {
+  String? email;
+  TypeVerificationComing? typeComing;
+  LoginCubit? loginCubit;
+  VerficationCodeScreen(
+      {this.email = 'user@gmail.come',
+      this.typeComing,
+      this.loginCubit,
+      super.key});
 
-  VerficationCodeScreen({this.authCubit, super.key});
+  @override
+  State<VerficationCodeScreen> createState() => _VerficationCodeScreenState();
+}
 
+class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
   final formKey = GlobalKey<FormState>();
 
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  @override
+  initState() {
+    super.initState();
+  }
 
-  // final authCubit! = serviceLocator.get<AuthCubit>()
-  //   ..timer?.cancel()
-  //   ..verifyCodeTime();
   @override
   Widget build(BuildContext context) {
-    authCubit?.timer?.cancel();
-    authCubit?.verifyCodeTime();
+    final verficyCubit = BlocProvider.of<VerificationCubit>(context);
+
     final localization = AppLocalizations.of(context)!;
-    final style = Theme.of(context).elevatedButtonTheme.style!;
+
     return CustomAuthForm(
       hasTitle: false,
       hasAvatar: false,
@@ -50,16 +56,11 @@ class VerficationCodeScreen extends StatelessWidget {
                   .textTheme
                   .titleLarge!
                   .copyWith(fontFamily: "WorkSans")),
-          SizedBox(
-            height: 20.h,
-          ),
-          Icon(
-            Icons.email,
-            size: 200.h,
-          ),
+          SizedBox(height: 20.h),
+          Icon(Icons.email, size: 200.h),
           SizedBox(height: 40.h),
           Text(
-            '${localization.enterVerificationCode} ${sharedPref.getString(CacheConstant.emailKey) ?? authCubit!.emailController.text}',
+            '${localization.enterVerificationCode} ${widget.email ?? ''}',
             style: Theme.of(context)
                 .textTheme
                 .bodySmall!
@@ -76,7 +77,7 @@ class VerficationCodeScreen extends StatelessWidget {
                 }
                 return null;
               },
-              controller: authCubit!.codeController,
+              controller: verficyCubit.codeController,
               maxLength: 6,
               maxLines: 1,
               textAlign: TextAlign.center,
@@ -90,88 +91,55 @@ class VerficationCodeScreen extends StatelessWidget {
               ),
             ),
           ),
-          BlocConsumer<AuthCubit, AuthState>(
-            bloc: authCubit!,
-            buildWhen: (previous, current) {
-              if (current is CanResendState) return true;
-              return false;
-            },
-            builder: (context, state) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                        authCubit!.canResend
-                            ? localization.didntReciveCode
-                            : '${localization.resendCodeIn} ${authCubit!.resendCodeTime} ${localization.seconds}',
-                        style: Theme.of(context).textTheme.titleMedium!),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: TextButton(
-                      onPressed: authCubit!.canResend
-                          ? () {
-                              authCubit!.resendCode(ResendCodeRequest(
-                                  email: authCubit!.emailController.text));
-                            }
-                          : null,
-                      child: Text(localization.resendCode,
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    fontSize: 25.sp,
-                                    color: authCubit!.canResend
-                                        ? ColorManager.primary
-                                        : ColorManager.grey,
-                                  )),
-                    ),
-                  ),
-                ],
-              );
-            },
-            listener: (BuildContext context, AuthState state) {
-              if (state is ResendCodeLoading) {
-                UIUtils.showLoading(context, 'asset/animation/loading.json');
-              } else if (state is ResendCodeError) {
-                UIUtils.hideLoading(context);
-                UIUtils.showMessage(state.message);
-              } else if (state is ResendCodeSuccess) {
-                UIUtils.hideLoading(context);
-                authCubit!.verifyCodeTime();
-              }
-            },
+          SectionResendCodeTimer(
+            email: widget.email!,
+            verificationCubit: verficyCubit,
           ),
           SizedBox(height: 50.h),
           SizedBox(
             width: double.infinity,
-            child: BlocListener<AuthCubit, AuthState>(
-              bloc: authCubit!,
+            child: BlocListener<VerificationCubit, VerificationState>(
+              bloc: verficyCubit,
+              listenWhen: (pre, cur) {
+                if (pre.verifyState != cur.verifyState) {
+                  return true;
+                }
+                return false;
+              },
               listener: (contexxt, state) {
-                if (state is VerifyCodeLoading) {
-                  UIUtils.showLoading(context);
-                } else if (state is VerifyCodeError) {
+                if (state.verifyState is BaseLoadingState) {
+                  UIUtils.showLoadingDialog(context);
+                } else if (state.verifyState is BaseErrorState) {
+                  final result = state.verifyState as BaseErrorState;
                   UIUtils.hideLoading(context);
 
-                  UIUtils.showMessage(state.message);
-                  // if (state.message == "The email has already been taken.") {
-                  //   Navigator.of(context).pushNamed(
-                  //     SignUpScreen.routeName,
-                  //   );
-                  //   authCubit!.resendCode(ResendCodeRequest(
-                  //       email: authCubit!.emailController.text));
-                  // }
-                } else if (state is VerifyCodeSuccess) {
+                  UIUtils.showMessage(result.error!);
+                } else if (state.verifyState is BaseSuccessState) {
                   UIUtils.hideLoading(context);
+                  if (widget.typeComing ==
+                      TypeVerificationComing.comeFromForgetPassword) {
+                    Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
+                        arguments: widget.loginCubit);
+                  } else {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil(ServiceScreen.routeName, (p) {
+                      return false;
+                    });
+                  }
 
-                  Navigator.of(context)
-                      .pushReplacementNamed(ServiceScreen.routeName);
                   //  authCubit!.close();
                 }
               },
               child: ElevatedButton(
-                onPressed: _verifyCode,
-                child: Text(localization.verify,
+                onPressed: () {
+                  if (formKey.currentState?.validate() == true) {
+                    verficyCubit.verifyCode(VerifyCodeRequest(
+                        fcmToken: fcmToken!,
+                        email: widget.email ?? '',
+                        code: verficyCubit.codeController.text));
+                  }
+                },
+                child: Text(localization.confirm,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
@@ -179,14 +147,5 @@ class VerficationCodeScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  _verifyCode() {
-    if (formKey.currentState?.validate() == true) {
-      authCubit!.verifyCode(VerifyCodeRequest(
-          fcmToken: fcmToken!,
-          email: authCubit!.emailController.text,
-          code: authCubit!.codeController.text));
-    }
   }
 }

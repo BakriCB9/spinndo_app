@@ -6,9 +6,11 @@ class ClientProfile {
   final String email;
   final dynamic imagePath;
   final int id;
+  final String phoneNumber;
 
   const ClientProfile({
     required this.id,
+    required this.phoneNumber,
     required this.firstNameAr,
     required this.lastNameAr,
     required this.firstName,

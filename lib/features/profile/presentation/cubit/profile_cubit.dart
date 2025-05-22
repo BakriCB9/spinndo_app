@@ -1,9 +1,4 @@
 import 'dart:io';
-
-import 'package:app/core/models/google_map_model.dart';
-import 'package:app/core/utils/map_helper/location_service.dart';
-import 'package:app/features/auth/domain/entities/country.dart';
-import 'package:app/features/auth/domain/use_cases/getCountryName.dart';
 import 'package:app/features/profile/data/models/client_update/update_account_profile.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
 import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
@@ -19,15 +14,13 @@ import 'package:app/features/service/domain/entities/categories.dart';
 
 import 'package:app/features/service/domain/use_cases/get_categories.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:app/features/profile/domain/use_cases/get_client_profile.dart';
 import 'package:app/features/profile/domain/use_cases/get_provider_profile.dart';
 import 'package:app/features/profile/domain/use_cases/get_user_role.dart';
 import 'package:app/features/profile/presentation/cubit/profile_states.dart';
-import 'package:location/location.dart';
 
 import '../../domain/use_cases/update_provider_profile.dart';
 
@@ -40,7 +33,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
       this._updateClientProfile,
       this._updateProviderProfile,
       this._getCategories,
-      this._getCountryCityName,
       this._addImagePhoto,
       this._deleteImage,
       this._addOrUpdateSocialUseCase,
@@ -51,15 +43,14 @@ class ProfileCubit extends Cubit<ProfileStates> {
   final GetUserRole _getUserRole;
   final UpdateClientProfile _updateClientProfile;
   final UpdateProviderProfile _updateProviderProfile;
-  final GetCategories _getCategories;
+  final GetCategoriesUseCase _getCategories;
   final AddImagePhoto _addImagePhoto;
   final DeleteImage _deleteImage;
   final AddOrUpdateSocialUseCase _addOrUpdateSocialUseCase;
   final DeleteSocialLinksUseCase _deleteSocialLinksUseCase;
 
   //variable
-  // Categories? parent;
-  // Categories? child;
+
   TextEditingController emailEditController = TextEditingController();
   TextEditingController firstNameEditController = TextEditingController();
   TextEditingController lastNameEditController = TextEditingController();
@@ -67,14 +58,15 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TextEditingController lastNameArEditController = TextEditingController();
   TextEditingController serviceNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController webSiteController = TextEditingController();
   Categories? selectedCategory;
   List<Categories>? categoriesList;
   List<Categories>? catChildren;
   String? selectedSubCategoryId;
   Categories? selectedSubCategory;
-  final Getcountryname _getCountryCityName;
+
   ProviderProfile? providerProfile;
-  String? latitu;
 
   String? longti;
   List<DateSelect> dateSelect = [
@@ -86,35 +78,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
     DateSelect(day: "Friday", start: "08:00", end: "15:00"),
     DateSelect(day: "Saturday", start: "08:00", end: "15:00"),
   ];
-  DateSelect? dateSelected;
-  LatLng? currentLocation;
-  String? cityName;
-  LatLng? myLocation;
-  LatLng? oldLocation;
-  Country? country;
-  List<Categories?> chosenCategories = [];
 
+  String? lat;
+  String? long;
+  DateSelect? dateSelected;
+  String? cityName;
+  List<Categories?> chosenCategories = [];
   ProviderProfileCity? city;
-//   void extractCategoryNames(ProviderProfileCategory? category,List<Categories>? categoriesListll) {
-//     List<Categories?> names = [];
-// Categories ?name;
-//     // Traverse up the parent hierarchy
-//     while (category != null) {
-//
-//       name = categoriesListll?.firstWhere(
-//             (element) => element.name == category?.name,
-//         orElse: () => Categories(name: "name", id: -50, children: []), // Return null if no match is found
-//       );
-//
-//       if (name != null&&name.id!=-50) {
-//         names.add(name);
-//       }
-//       category = category.parent ; // Move to the parent category
-//     }
-//
-//     // Reverse the list to start with the root category
-//     chosenCategories =names.reversed.toList();
-//   }
 
   void extractCategoryNames(
       ProviderProfileCategory? category, List<Categories>? categoriesList) {
@@ -152,10 +122,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   void slesctedProfileCat() {
-    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     print(selectedCategory?.id);
     print(providerProfile?.details?.category?.id);
-    print("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+
     selectedCategory?.id != providerProfile?.details?.category?.id
         ? emit(IsUpdated())
         : emit(IsNotUpdated());
@@ -183,13 +152,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
     final result = await _getProviderProfile();
     result.fold((failure) {
-      print(
-          'we emit error state in getProviderProfile now wwwwwwwwwwwwwwwwwwwwwwwwwwww');
       emit(
         GetProfileErrorr(failure.message),
       );
     }, (data) {
-      print('now i currently get provider profile');
       providerProfile = ProviderProfile(
           id: data.id,
           email: data.email,
@@ -204,8 +170,29 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-  void updateProviderProfile(
-      UpdateProviderRequest updateRequest, int typeEdit) async {
+  void updateProviderProfile(int typeEdit) async {
+    final updateRequest;
+    if (typeEdit == 1) {
+      updateRequest = UpdateProviderRequest(
+        phoneNumber: phoneNumberController.text,
+        firstNameAr: firstNameArEditController.text,
+        lastNameAr: lastNameArEditController.text,
+        firstName: firstNameEditController.text,
+        lastName: lastNameEditController.text,
+      );
+    } else if (typeEdit == 2) {
+      updateRequest = UpdateProviderRequest(
+          latitudeService: lat,
+          longitudeService: long,
+          cityNameService: cityName,
+          categoryIdService: selectedCategory?.id.toString(),
+          nameService: serviceNameController.text,
+          descriptionService: descriptionController.text,
+          websiteService: webSiteController.text);
+    } else {
+      updateRequest = UpdateProviderRequest(listOfDay: dateSelect);
+    }
+    //
     emit(UpdateLoading());
     final result = await _updateProviderProfile(updateRequest, typeEdit);
     result.fold((failure) => emit(UpdateError(failure.message)),
@@ -215,17 +202,15 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   void getUserRole() {
-    print('the user role is now bakkkkar aweja ');
     emit(GetProfileLoading());
 
     final result = _getUserRole();
-    print('the result of role is ${result}');
+
     result.fold(
         (failure) => emit(
               GetUserRoleErrorr(failure.message),
             ), (role) {
       if (role == "ServiceProvider") {
-        print('we stand in userProvider role now');
         getProviderProfile();
       } else if (role == "Client") {
         getClientProfile();
@@ -248,27 +233,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
     );
   }
 
-// Future<void> getCategories() async {
-//   // emit(CountryCategoryLoading());
-//   final result = await _getCategories();
-  //   result.fold((failure) {
-  //     failureMessegae = failure.message;
-  //     // emit(CountryCategoryError(failure.message)),
-  //   }, (categories) {
-  //     categoriesList = categories;
-  //     // for(int i=0;i<categoriesList!.length;i++){
-  //     //   var chid=categoriesList?[i].children;
-  //     //   for(int j=0;j<chid!.length;i++){
-  //     //     childCategoryList?[i].add(chid[j]);
-  //     //   }
-  //     // }
-  //     // }
-  //     // print('the final list is now of child ############################  ${childCategoryList}');
-  //     // emit(CountryCategorySuccess());
-  //   });
-  // }
-
-  void updateClientProfile(UpdateAccountProfile updateRequest) async {
+  void updateClientProfile() async {
+    final updateRequest = UpdateAccountProfile(
+        phoneNumber: phoneNumberController.text,
+        firstNameAr: firstNameArEditController.text,
+        lastNameAr: lastNameArEditController.text,
+        firstName: firstNameEditController.text,
+        lastName: lastNameEditController.text);
     emit(UpdateLoading());
     final result = await _updateClientProfile(updateRequest);
     result.fold((failure) => emit(UpdateError(failure.message)),
@@ -277,16 +248,23 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-  updateInfo(
-      {required String curFirst,
-       required String curFirstAr,
-       required String newFirstAr,
-       required String curLastAr,
-       required String newLastAr,
-      required String newFirst,
-      required String curLast,
-      required String newLast}) {
-    if (curFirst == newFirst && curFirstAr == newFirstAr&& curLast == newLast&& curLastAr == newLastAr) {
+  updateInfo({
+    required String curFirst,
+    required String curFirstAr,
+    required String newFirstAr,
+    required String curLastAr,
+    required String newLastAr,
+    required String newFirst,
+    required String curLast,
+    required String newLast,
+    required String curphoneNumber,
+    required String newPhoneNumber,
+  }) {
+    if (curphoneNumber == newPhoneNumber &&
+        curFirst == newFirst &&
+        curFirstAr == newFirstAr &&
+        curLast == newLast &&
+        curLastAr == newLastAr) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());
@@ -296,9 +274,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
   updateJobDetails(
       {required String curServiceName,
       required String newServiceName,
+      required String curWebSite,
+      required String newWebSite,
       required String curDescription,
       required String newDescription}) {
-    if (curServiceName == newServiceName && curDescription == newDescription) {
+    if (curServiceName == newServiceName &&
+        curDescription == newDescription &&
+        curWebSite == newWebSite) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());
@@ -332,93 +314,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
       }
     }
     return false;
-  }
-
-  bool isCurrent = true;
-
-  String? mapStyle;
-
-  Set<Marker> markers = {};
-  GoogleMapController? googleMapController;
-  List<GoogleMapModel> markerLocationData = [];
-  bool isCountySuccess = false;
-
-  void initMarkerAddress() {
-    markers.clear();
-    var myMarker = markerLocationData
-        .map(
-          (e) => Marker(
-            position: e.latLng,
-            icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
-            infoWindow: InfoWindow(title: e.name),
-            markerId: MarkerId(
-              e.id.toString(),
-            ),
-          ),
-        )
-        .toSet();
-    markers.addAll(myMarker);
-    markerLocationData.clear();
-  }
-
-  void initCurrentLocation() {
-    CameraPosition newLocation = CameraPosition(target: myLocation!, zoom: 15);
-    googleMapController!
-        .animateCamera(CameraUpdate.newCameraPosition(newLocation));
-
-    markerLocationData.add(GoogleMapModel(BitmapDescriptor.hueGreen,
-        id: 1, name: "your location", latLng: myLocation!));
-    emit(SelectedLocationUpdatedState());
-  }
-
-  Future<void> getCurrentLocation() async {
-    try {
-      emit(GetUpdatedLocationLoading());
-      LocationData getCurrentLocation = await LocationService.getLocationData();
-      currentLocation =
-          LatLng(getCurrentLocation.latitude!, getCurrentLocation.longitude!);
-      emit(GetUpdatedLocationSuccess());
-    } catch (e) {
-      emit(GetUpdatedLocationErrorr("Couldn't get your location"));
-    }
-  }
-
-  void selectLocation(LatLng onSelectedLocation) {
-    markerLocationData.add(GoogleMapModel(
-      BitmapDescriptor.hueGreen,
-      id: 1,
-      name: "your Location",
-      latLng: LatLng(onSelectedLocation.latitude, onSelectedLocation.longitude),
-    ));
-
-    emit(SelectedLocationUpdatedState());
-  }
-
-  void getCountryAndCityNameFromCrocd(double lat, double long) async {
-    lat != latitu && long != longti ? emit(IsUpdated()) : emit(IsNotUpdated());
-
-    emit(GetLocationCountryLoading());
-    isCountySuccess = false;
-    cityName = null;
-    final result = await _getCountryCityName(lat, long);
-
-    result.fold((failure) => emit(GetLocationCountryErrorr(failure.message)),
-        (response) {
-      cityName = response.cityName;
-      isCountySuccess = true;
-      country = response;
-      emit(GetLocationCountrySuccess());
-    });
-  }
-
-  Future<void> loadMapStyle(bool isDark) async {
-    try {
-      mapStyle = await rootBundle.loadString(
-          "asset/map_styles/${isDark ? "night_map_style.json" : "light_map_style.json"}");
-      // emit(MapStyleLoading());
-    } catch (e) {
-      // emit(MapStyleError("Failed to load map style."));
-    }
   }
 
   void addImagePhoto(File image) async {

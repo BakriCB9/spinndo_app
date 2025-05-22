@@ -42,7 +42,6 @@ class DiscountScreen extends StatelessWidget {
                   CustomTextFormField(
                       keyboardType: TextInputType.numberWithOptions(),
                       labelText: localization.discountLabel,
-                      // hintText: 'enter the discount',
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return localization.discountRequired;
@@ -52,12 +51,10 @@ class DiscountScreen extends StatelessWidget {
                         return null;
                       },
                       controller: discountController),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   CustomTextFormField(
                       labelText: localization.codeLabel,
-                      // hintText: 'enter the code',
+                      
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return localization.codeRequired;
@@ -84,7 +81,6 @@ class DiscountScreen extends StatelessWidget {
                               state.addDiscountState as BaseSuccessState;
                           UIUtils.hideLoading(context);
 
-                          ///checkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
                           Navigator.of(context).pop();
                           UIUtils.showMessage(text.data);
                         }

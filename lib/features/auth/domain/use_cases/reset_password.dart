@@ -6,11 +6,11 @@ import 'package:app/features/auth/data/models/reset_password_response.dart';
 import '../../../../core/error/failure.dart';
 import '../repository/auth_repository.dart';
 
-@singleton
-class ResetPassword {
+@injectable
+class ResetPasswordUseCase {
   final AuthRepository _authRepository;
 
-  ResetPassword(this._authRepository);
+  ResetPasswordUseCase(this._authRepository);
 
   Future<Either<Failure, ResetPasswordResponse>> call(
           ResetPasswordRequest requestData) =>

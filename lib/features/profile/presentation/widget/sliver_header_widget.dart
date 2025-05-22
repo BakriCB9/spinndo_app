@@ -1,278 +1,137 @@
-import 'package:app/core/constant.dart';
-import 'package:app/core/utils/image_functions.dart';
-
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:app/features/profile/presentation/cubit/profile_states.dart';
-
-import 'package:app/main.dart';
+import 'package:app/features/profile/presentation/widget/section_body_of_bottom_sheet.dart';
+import 'package:app/features/profile/presentation/widget/section_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:app/features/profile/presentation/widget/container_widget.dart';
-import 'package:app/features/profile/presentation/widget/icon_button.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'position_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final Size size;
   final String? image;
   final int userId;
+  final int myId;
 
-  SliverPersistentDelegate(this.userId, this.size, this.image);
+  const SliverPersistentDelegate(
+      {required this.userId,
+      required this.size,
+      required this.image,
+      required this.myId});
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final _profileCubit = serviceLocator.get<ProfileCubit>();
-    final localization = AppLocalizations.of(context)!;
-    final myId = sharedPref.getInt(CacheConstant.userId);
-    final double maxHeaderHeight = size.height * .3;
 
-    final double maxImageSize = size.height * 0.22;
-    final double minImageSize = size.height * 0.06;
+    // final _sharedPreferencesUtils =
+    //     serviceLocator.get<SharedPreferencesUtils>();
 
-    final percent = shrinkOffset / (maxHeaderHeight);
-    final currentImageSize =
-        (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
-    final currentImagePosition =
-        ((size.width / 2 - minImageSize) * (1 - percent))
-            .clamp(minImageSize, maxImageSize);
+    // final double maxHeaderHeight = size.height * .3;
+
+    // final double maxImageSize = size.height * 0.22;
+    // final double minImageSize = size.height * 0.06;
+
+    // final percent = shrinkOffset / (maxHeaderHeight);
+    // final currentImageSize =
+    //     (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
+    // final currentImagePosition =
+    //     ((size.width / 2 - minImageSize) * (1 - percent))
+    //         .clamp(minImageSize, maxImageSize);
     // final double currentPositionforText = (maxHeaderHeight / 2) * (1 - percent);
     // final double initPositionForText = size.height * 0.24;
 
-    final bool isImageBig = currentImageSize < maxHeaderHeight * .6;
-    final double topSpace = size.height * 0.04;
+    // final bool isImageBig = currentImageSize < maxHeaderHeight * .6;
+    // final double topSpace = size.height * 0.04;
     // final double topSPaceForImage = size.height * 0.05;
-    final double bottomSpaceForImage = size.height * 0.007;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    // final double bottomSpaceForImage = size.height * 0.007;
     //final double rightSpace = size.width * 0.03;
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+
     return Container(
-      color: _drawerCubit.themeMode == ThemeMode.dark
+      color: drawerCubit.themeMode == ThemeMode.dark
           ? Theme.of(context).primaryColorDark
           : ColorManager.primary,
       child: Stack(
+        fit: StackFit.expand,
         children: [
-          CustomPosition(
-              bottom: isImageBig ? bottomSpaceForImage : null,
-              top: isImageBig ? topSpace : null,
-              left: isImageBig ? currentImagePosition : null,
-              child: BlocBuilder<ProfileCubit, ProfileStates>(
-                  bloc: _profileCubit,
-                  buildWhen: (pre, cur) {
-                    if (cur is LoadImagePhotoError ||
-                        cur is LoadImagePhotoSuccess ||
-                        cur is LoadImagePhotoLoading) {
-                      return true;
-                    }
-                    return false;
-                  },
-                  builder: (context, state) {
-                    return CustomContainer(
-                        theId: userId,
-                        shape:
-                            isImageBig ? BoxShape.circle : BoxShape.rectangle,
-                        width: isImageBig ? currentImageSize : double.infinity,
-                        initialImage: image);
-                  })),
-          CustomPosition(
-              left: 0,
-              top: topSpace,
-              child: CustomIconButton(
-                  ontap: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icons.arrow_back)),
-          myId == userId
-              ? CustomPosition(
-                  right: 0,
-                  top: topSpace,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 20.w),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isImageBig
-                            ? Colors.transparent
-                            : ColorManager.primary),
-                    child: CustomIconButton(
-                        ontap: () {
-                          showModalBottomSheet(
-                              backgroundColor:
-                                  Theme.of(context).primaryColorDark,
-                              context: context,
-                              builder: (context) {
-                                return SafeArea(
-                                    child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 30.w),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Center(
-                                              child: Text(
-                                                  localization.profilePhoto),
-                                            ),
-                                          ),
-                                          BlocBuilder<ProfileCubit,
-                                                  ProfileStates>(
-                                              bloc: _profileCubit,
-                                              buildWhen: (pre, cur) {
-                                                if (cur is LoadImagePhotoError ||
-                                                    cur is LoadImagePhotoSuccess ||
-                                                    cur is LoadImagePhotoLoading) {
-                                                  return true;
-                                                }
-                                                return false;
-                                              },
-                                              builder: (context, state) {
-                                                final ans = sharedPref
-                                                    .getString('imageFile');
-                                                final imagePhotoLogin = sharedPref
-                                                    .getString(CacheConstant
-                                                        .imagePhotoFromLogin);
-                                                final imagePhotoGallery =
-                                                    sharedPref.getString(
-                                                        CacheConstant
-                                                            .imagePhoto);
-                                                return (ans != null &&
-                                                            imagePhotoGallery !=
-                                                                null) ||
-                                                        (imagePhotoLogin !=
-                                                            null)
-                                                    ? IconButton(
-                                                        icon: const Icon(
-                                                            Icons.delete),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          _profileCubit
-                                                              .deleteImage();
-                                                        },
-                                                      )
-                                                    : const SizedBox();
-                                              })
-                                        ],
-                                      ),
-                                      SizedBox(height: 30.h),
-                                      Row(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Navigator.of(context).pop();
-                                                  final image =
-                                                      await ImageFunctions
-                                                          .CameraPicker(true);
-                                                  if (image == null) {
-                                                    return;
-                                                  }
-                                                  _profileCubit
-                                                      .addImagePhoto(image);
-                                                },
-                                                child: Container(
-                                                  width: 100.w,
-                                                  height: 100.h,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  child: const Icon(
-                                                    Icons.camera_alt_outlined,
-                                                    color: ColorManager.primary,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 15.h),
-                                              Text(
-                                                'Camera',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge!
-                                                    .copyWith(fontSize: 25.sp),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(width: 35.w),
-                                          Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Navigator.of(context).pop();
-                                                  final image =
-                                                      await ImageFunctions
-                                                          .galleryPicker(true);
-                                                  if (image == null) {
-                                                    return;
-                                                  }
-                                                  _profileCubit
-                                                      .addImagePhoto(image);
-                                                },
-                                                child: Container(
-                                                  width: 100.w,
-                                                  height: 100.h,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  child: const Icon(
-                                                    Icons.image_outlined,
-                                                    color: ColorManager.primary,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 15.h),
-                                              Text(
-                                                'Gallery',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge!
-                                                    .copyWith(fontSize: 25.sp),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 50.h)
-                                    ],
-                                  ),
-                                ));
-                              });
-                        },
-                        icon: Icons.camera_alt_outlined),
-                  ))
-              : const SizedBox(),
-          // CustomPosition(child: IconButton(onPressed: (){}, icon:Icon(Icons.camera_alt_outlined,color: ColorManager.primary,))),
-          // CustomPosition(
-          //   top: isImageBig
-          //       ? max(currentPositionforText, topSPaceForImage)
-          //       : initPositionForText * (1 - percent),
-          //   left: isImageBig
-          //       ? max(((size.width / 1.1)) * (1 - percent), minImageSize * 8.5)
-          //       : rightSpace,
-          //   isAnimated: true,
-          //   child: Icon(Icons.camera_alt_outlined,color: Colors.white,)
-          // )
+          const SectionImage(),
+          Positioned(
+            child: SafeArea(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: ColorManager.white, shape: BoxShape.circle),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                  ),
+                  myId == userId
+                      ? Container(
+                          decoration: const BoxDecoration(
+                              color: ColorManager.white,
+                              shape: BoxShape.circle),
+                          child: IconButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorDark,
+                                    context: context,
+                                    builder: (context) {
+                                      return SectionBodyOfBottomSheet(
+                                          profileCubit: _profileCubit);
+                                    });
+                              },
+                              icon: const Icon(
+                                Icons.camera_alt_outlined,
+                              )),
+                        )
+                      : const SizedBox()
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
   @override
-  double get maxExtent => size.height * 0.3;
+  double get maxExtent => size.height * 0.4;
 
   @override
-  double get minExtent => size.height * .11;
+  double get minExtent => size.height * .12;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return false;
   }
 }
+
+
+ // BlocBuilder<ProfileCubit,
+                                                //         ProfileStates>(
+                                                //     builder: (context, state) {
+                                                //   return (imagePhotoGallery !=
+                                                //               null) ||
+                                                //           (imagePhotoLogin !=
+                                                //               null)
+                                                //       ? IconButton(
+                                                //           icon: const Icon(
+                                                //               Icons.delete),
+                                                //           onPressed: () {
+                                                //             Navigator.of(
+                                                //                     context)
+                                                //                 .pop();
+                                                //             _profileCubit
+                                                //                 .deleteImage();
+                                                //           },
+                                                //         )
+                                                //       : const SizedBox();
+                                                //   //    : const SizedBox();
+                                                // })

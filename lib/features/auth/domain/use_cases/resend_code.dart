@@ -7,10 +7,10 @@ import '../../../../core/error/failure.dart';
 import '../repository/auth_repository.dart';
 
 @singleton
-class ResendCode {
+class ResendCodeUseCase {
   final AuthRepository _authRepository;
 
-  ResendCode(this._authRepository);
+  ResendCodeUseCase(this._authRepository);
 
   Future<Either<Failure, ResendCodeResponse>> call(
           ResendCodeRequest requestData) =>

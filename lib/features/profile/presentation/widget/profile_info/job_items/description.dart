@@ -20,9 +20,11 @@ class CustomDescription extends StatelessWidget {
   final int userId;
   final bool? isApprovid;
   final String cityName;
+  final String? webSite;
   const CustomDescription(
       {required this.categoryName,
       required this.userId,
+      required this.webSite,
       this.isApprovid,
       required this.cityName,
       required this.serviceName,
@@ -35,7 +37,6 @@ class CustomDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
-    print('the value of isAprrovid is $isApprovid');
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
@@ -48,16 +49,17 @@ class CustomDescription extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             userId == myId
                 ? IconButton(
-                    onPressed: isApprovid == true
+                    onPressed: isApprovid == false
                         ? () {
                             _profileCubit.selectedSubCategory = null;
                             _profileCubit.selectedCategory = null;
                             _profileCubit.getCategories();
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => EditJobDetails(
+                                      webSite: webSite,
                                       lat: lat,
                                       lng: lng,
-                                      locationName: cityName,
+                                      cityName: cityName,
                                       categoryName: categoryName,
                                       description: description,
                                       serviceName: serviceName,
@@ -86,6 +88,12 @@ class CustomDescription extends StatelessWidget {
             icon: Icons.location_on_outlined,
             title: localization.location,
             content: cityName),
+        webSite != null
+            ? InfoDetails(
+                icon: Icons.link,
+                title: localization.webSite,
+                content: webSite!)
+            : const SizedBox(),
         SizedBox(
           height: 10.h,
         ),
