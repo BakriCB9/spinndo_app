@@ -42,10 +42,19 @@ class _SectionLocationState extends State<SectionLocation> {
           });
         },
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
             decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
-                borderRadius: BorderRadius.all(Radius.circular(AppSize.s28.r))),
+              color: Theme.of(context).primaryColorDark,
+              borderRadius: BorderRadius.circular(28.r),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
+
             child: Row(children: [
               const Icon(Icons.location_on_outlined),
               SizedBox(width: 24.w),

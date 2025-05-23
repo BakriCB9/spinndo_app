@@ -26,6 +26,7 @@ class SectionBodyOfBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SizedBox(height: 30.h,),
           Row(
             children: [
               Expanded(
@@ -45,8 +46,10 @@ class SectionBodyOfBottomSheet extends StatelessWidget {
           ),
           SizedBox(height: 30.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SectionItemsOfShowModelBottom(
+                
                   title: localization.camera,
                   select: () async {
                     Navigator.of(context).pop();
@@ -55,7 +58,7 @@ class SectionBodyOfBottomSheet extends StatelessWidget {
                       return;
                     }
                     profileCubit.addImagePhoto(image);
-                  }),
+                  }, icon: Icons.camera_alt_outlined,),
               SizedBox(width: 35.w),
               SectionItemsOfShowModelBottom(
                 title: localization.gallery,
@@ -66,7 +69,7 @@ class SectionBodyOfBottomSheet extends StatelessWidget {
                     return;
                   }
                   profileCubit.addImagePhoto(image);
-                },
+                }, icon: Icons.image_outlined,
               )
             ],
           ),

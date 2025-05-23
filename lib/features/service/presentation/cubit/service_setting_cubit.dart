@@ -11,7 +11,6 @@ import 'package:app/features/service/data/models/get_services_request.dart';
 import 'package:app/features/service/domain/entities/categories.dart';
 import 'package:app/features/service/domain/entities/cities.dart';
 import 'package:app/features/service/domain/entities/countries.dart';
-import 'package:app/features/service/domain/entities/google_map_marker.dart';
 import 'package:app/features/service/domain/entities/main_category/data_of_item_main_category.dart';
 import 'package:app/features/service/domain/entities/notifications.dart';
 import 'package:app/features/service/domain/entities/services.dart';
@@ -59,8 +58,7 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
             emit(state.copyWith(getCurrentLocation: BaseErrorState(null))),
         (location) {
       getCurrentLocation = location;
-      print('we get Location Now  *************************************** ${location.latitude} and lang ${location.longitude}');
-      
+
       getCountriesAndCategories();
       emit(state.copyWith(getCurrentLocation: BaseSuccessState()));
       
@@ -116,9 +114,6 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
         radius: selectedDistance?.toInt(),
         search: searchController.text.isEmpty ? null : searchController.text);
 
-    print('');
-    print(
-        'the categoryId ${requestData.categoryId} and cityId is ${requestData.cityId} and country ${requestData.countryId} and radius ${requestData.radius} and categorName is ${selectedCategory?.name}');
     emit(state.copyWith(
         getAllServiceState: BaseLoadingState(),
         getAllDiscountState: BaseLoadingState()));
@@ -193,6 +188,17 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
     });
   }
 
+  resetAllData() {
+    emit(state.copyWith(resetData: false));
+    searchController.clear();
+    selectedCity = null;
+    selectedCategory = null;
+    selectedCountry = null;
+    isCurrent = false;
+    isReset = true;
+    emit(state.copyWith(resetData: true));
+  }
+
   Countries? selectedCountry;
   Categories? selectedCategory;
   Cities? selectedCity;
@@ -205,5 +211,5 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
   bool? isReset = false;
   LocationData? getCurrentLocation;
   TextEditingController searchController = TextEditingController();
-  Set<Marker> listOfMarkers={};
+  Set<Marker> listOfMarkers = {};
 }

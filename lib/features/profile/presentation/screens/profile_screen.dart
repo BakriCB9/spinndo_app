@@ -22,7 +22,6 @@ class Profile_Screen extends StatefulWidget {
 
 class _Profile_ScreenState extends State<Profile_Screen> {
   final _profileCubit = serviceLocator.get<ProfileCubit>();
-  // final _drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   void initState() {
@@ -35,12 +34,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
         body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {

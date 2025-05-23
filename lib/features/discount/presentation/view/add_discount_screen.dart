@@ -10,6 +10,7 @@ import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DiscountScreen extends StatelessWidget {
   static const String routeName = 'discount';
@@ -27,8 +28,7 @@ class DiscountScreen extends StatelessWidget {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
         appBar: AppBar(title: Text(localization.disco)),
@@ -40,6 +40,7 @@ class DiscountScreen extends StatelessWidget {
               child: Column(
                 children: [
                   CustomTextFormField(
+                      icon: Icons.percent,
                       keyboardType: TextInputType.numberWithOptions(),
                       labelText: localization.discountLabel,
                       validator: (value) {
@@ -51,8 +52,10 @@ class DiscountScreen extends StatelessWidget {
                         return null;
                       },
                       controller: discountController),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 70.h),
                   CustomTextFormField(
+                      icon: Icons.discount_outlined,
+
                       labelText: localization.codeLabel,
                       
                       validator: (value) {
@@ -87,7 +90,12 @@ class DiscountScreen extends StatelessWidget {
                       },
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorManager.primary),
+                              backgroundColor: ColorManager.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  36),
+                            ),
+                          ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               discountCubit.addDiscount(AddDiscountRequest(
@@ -97,8 +105,8 @@ class DiscountScreen extends StatelessWidget {
                             }
                           },
                           child: Text(
+                            style: Theme.of(context).textTheme.bodyLarge,
                             localization.addDiscount,
-                            style: theme.bodyMedium,
                           )),
                     ),
                   )

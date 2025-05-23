@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FontConstants {
-  static const String fontFamily = 'ElMessiri';
+  static const String fontFamily = 'Lato';
 }
 
 class FontWeightManager {
@@ -18,6 +18,7 @@ class FontSize {
   static const double s13 = 13;
   static const double s16 = 16;
   static const double s20 = 20;
+  static const double s22 = 22;
   static const double s24 = 24;
   static const double s28 = 28;
   static const double s30 = 30;

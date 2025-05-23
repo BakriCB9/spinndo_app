@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/image_functions.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -122,6 +123,8 @@ class _SectionProtofileImageState extends State<SectionProtofileImage> {
   }
 
   void singleDialog(int type, bool hasImage) {
+    final localization = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -131,7 +134,7 @@ class _SectionProtofileImageState extends State<SectionProtofileImage> {
           children: [
             _imagePickerOption(
               icon: Icons.camera_alt_outlined,
-              label: drawerCubit.languageCode == "en" ? "Camera" : "الكاميرا",
+              label: localization.camera,
               onTap: () async {
                 final image = await ImageFunctions.CameraPicker(false);
                 if (image != null) {
@@ -193,13 +196,13 @@ class _SectionProtofileImageState extends State<SectionProtofileImage> {
             icon: Icon(
               icon,
               size: 40,
-              color: Theme.of(context).primaryColor,
+              color: ColorManager.primary,
             ),
             onPressed: onTap,
           ),
           Text(label,
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: ColorManager.primary,
               )),
         ],
       ),

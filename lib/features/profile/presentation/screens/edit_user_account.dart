@@ -1,5 +1,7 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/core/utils/validator.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +46,9 @@ class EditUserAccountScreen extends StatelessWidget {
     return Container(
       decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: Scaffold(
-        appBar: AppBar(),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w),
@@ -58,7 +58,10 @@ class EditUserAccountScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 15.h),
+                  SizedBox(
+                    height: 70.h,
+                  ),
+                  CustomAppbar(appBarText: localization.editPrincipalInfo),
                   SizedBox(
                     height: 70.h,
                   ),
@@ -68,7 +71,7 @@ class EditUserAccountScreen extends StatelessWidget {
                       return ans ? null : localization.nameLessThanTwo;
                     },
                     labelText: localization.firstNameAr,
-                    icon: Icons.person,
+                    icon: Icons.person_2_outlined,
                     controller: _profileCubit.firstNameArEditController,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
@@ -97,7 +100,7 @@ class EditUserAccountScreen extends StatelessWidget {
                     },
                     controller: _profileCubit.lastNameArEditController,
                     labelText: localization.lastNameAr,
-                    icon: Icons.person,
+                    icon: Icons.person_2_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
                           curphoneNumber: phoneNumber,
@@ -125,7 +128,7 @@ class EditUserAccountScreen extends StatelessWidget {
                     },
                     controller: _profileCubit.firstNameEditController,
                     labelText: localization.firstName,
-                    icon: Icons.person,
+                    icon: Icons.person_2_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
                           curphoneNumber: phoneNumber,
@@ -153,7 +156,7 @@ class EditUserAccountScreen extends StatelessWidget {
                     },
                     controller: _profileCubit.lastNameEditController,
                     labelText: localization.lastName,
-                    icon: Icons.person,
+                    icon: Icons.person_2_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
                           curphoneNumber: phoneNumber,
@@ -175,7 +178,7 @@ class EditUserAccountScreen extends StatelessWidget {
                   CustomTextFormField(
                     controller: _profileCubit.phoneNumberController,
                     labelText: localization.phoneNumber,
-                    icon: Icons.phone,
+                    icon: Icons.phone_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
                           curphoneNumber: phoneNumber,

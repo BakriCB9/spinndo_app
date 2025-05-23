@@ -55,14 +55,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: Scaffold(
           drawer: CustomDrawer(),
           body: SafeArea(
@@ -94,7 +93,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             bloc: _serviceSettingCubit,
                             buildWhen: (pre, cur) {
                               if (pre.getCountryAndCategory !=
-                                  cur.getCountryAndCategory) {
+                                  cur.getCountryAndCategory|| pre.resetData!=cur.resetData) {
                                 return true;
                               }
                               return false;
@@ -132,8 +131,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                         child: Center(
                                           child: Column(
                                             children: [
-                                              // Text(state.message,
-                                              //     style: Theme.of(context).textTheme.bodySmall),
                                               const Icon(
                                                 Icons.replay_outlined,
                                                 color: ColorManager.primary,
@@ -164,17 +161,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const SectionSearchAutoComplete(),
-                                              SizedBox(height: 30.h),
+                                               SectionSearchAutoComplete(serviceSettingCubit:_serviceSettingCubit),
+                                              SizedBox(height: 70.h),
                                               SectionSelectCountry(
                                                   serviceCubit:
                                                       _serviceSettingCubit),
+                                              SizedBox(height: 70.h),
                                               Text(
                                                 localization.chooseCategory,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium!
-                                                    .copyWith(fontSize: 36.sp),
+                                                style: theme.textTheme.titleMedium!,
                                               ),
                                               SizedBox(height: 8.h),
                                               CascadingDropdowns(
@@ -192,8 +187,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                       vertical: 8.h),
                                                   child: InkWell(
                                                       onTap: () {
-                                                        // _serviceSettingCubit
-                                                        //     .resetSetting();
+                                                        _serviceSettingCubit
+                                                            .resetAllData();
                                                       },
                                                       child: Text(
                                                           localization.resetAll,
@@ -209,6 +204,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               SizedBox(height: 60.h),
                                               ElevatedButton(
                                                 onPressed: () {
+                                                  print('Selected Country: ${_serviceSettingCubit.selectedCountry}');
+                                                  print('Selected Category: ${_serviceSettingCubit.selectedCategory?.name}');
+                                                  print('Is Current: ${_serviceSettingCubit.isCurrent}');
+                                                  print('Search Result${_serviceSettingCubit.searchController.text}');
                                                   if (_serviceSettingCubit.selectedCountry == null &&
                                                       _serviceSettingCubit
                                                               .selectedCategory ==

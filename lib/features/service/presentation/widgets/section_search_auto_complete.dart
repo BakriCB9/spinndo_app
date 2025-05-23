@@ -11,24 +11,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 
 typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
 
 class SectionSearchAutoComplete extends StatefulWidget {
-  const SectionSearchAutoComplete({super.key});
-
+  final   ServiceSettingCubit serviceSettingCubit;
+  const SectionSearchAutoComplete({required this.serviceSettingCubit, super.key});
   @override
   State<SectionSearchAutoComplete> createState() =>
       _SectionSearchAutoCompleteState();
 }
 
 class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
-  late ServiceCubit _serviceCubit;
 
   late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
+
   @override
   void initState() {
-    _serviceCubit = serviceLocator.get<ServiceCubit>();
 
     _debouncedSearch = _debounce<Iterable<String>?, String>(_search);
     super.initState();
@@ -37,11 +37,9 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
-    print('we build the autoCompletet now ##########################');
     final localization = AppLocalizations.of(context)!;
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) async {
-        print('the value of list search is ${textEditingValue.text}');
         final ans = await _debouncedSearch(textEditingValue.text);
         if (ans == null) {
           return [];
@@ -50,24 +48,58 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
         }
       },
       fieldViewBuilder: (context, text, focusNode, onFieldSubmitted) {
-        return TextField(
-          style: theme.bodyMedium,
-          controller: text, // ✅ Must use the passed controller
-          focusNode: focusNode, // ✅ Must use the passed focus node
-
-          decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search),
-            hintText: localization.serviceOrProviderName,
+        return Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).shadowColor,
+                blurRadius: 5,
+                offset: Offset(0, 1),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: TextField(
+            style: theme.bodyMedium?.copyWith(
+              fontSize: 28.sp,
+            ),
+            controller: text,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+              filled: true,
+              hintText: localization.serviceOrProviderName,
+              hintStyle: TextStyle(color: ColorManager.grey),
+              prefixIcon: AnimatedBuilder(
+                animation: focusNode!,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: focusNode!.hasFocus ? 1.3 : 1.0,
+                    child: Icon(
+                      Icons.search,
+                      color: focusNode!.hasFocus
+                          ? ColorManager.primary
+                          : Colors.grey[700],
+                    ),
+                  );
+                },
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: ColorManager.primary, width: 2),
+              ),
+            ),
           ),
         );
-
-        // return CustomTextFormField(
-        //   icon: Icons.search,
-        //   controller: text,
-        //   hintText: localization.serviceOrProviderName,
-
-        //   // padding: 20.w,
-        // );
       },
       optionsViewBuilder: (context, onSelected, options) {
         return Align(
@@ -81,15 +113,32 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
               itemBuilder: (context, index) {
                 final option = options.elementAt(index);
                 return Container(
-                  color: ColorManager.primary,
+                  margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorDark,
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).shadowColor,
+                        blurRadius: 6,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
                   child: ListTile(
                     title: Text(
                       option,
-                      style: theme.bodyMedium!.copyWith(fontSize: 27.sp),
+                      style: theme.bodyMedium!.copyWith(
+                        fontSize: 27.sp,
+                        color: ColorManager.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onTap: () => onSelected(option),
-                    tileColor: Colors.grey[100],
-                    hoverColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    hoverColor: Colors.amber.withOpacity(0.2),
                   ),
                 );
               },
@@ -98,7 +147,7 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
         );
       },
       onSelected: (selection) {
-        // _serviceCubit.searchController.text=selection;
+        widget.serviceSettingCubit.searchController.text=selection;
       },
     );
   }

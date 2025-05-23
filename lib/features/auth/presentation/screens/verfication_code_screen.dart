@@ -45,106 +45,114 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
     return CustomAuthForm(
       hasTitle: false,
       hasAvatar: false,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 60.h,
-          ),
-          Text(localization.resendCode,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 60.h,
+            ),
+            Text(localization.resendCode,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!),
+            SizedBox(height: 20.h),
+            Icon(Icons.email, size: 200.h),
+            SizedBox(height: 40.h),
+            Text(
+              '${localization.enterVerificationCode} ${widget.email ?? ''}',
               style: Theme.of(context)
                   .textTheme
-                  .titleLarge!
-                  .copyWith(fontFamily: "WorkSans")),
-          SizedBox(height: 20.h),
-          Icon(Icons.email, size: 200.h),
-          SizedBox(height: 40.h),
-          Text(
-            '${localization.enterVerificationCode} ${widget.email ?? ''}',
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall!
-                .copyWith(fontFamily: "WorkSans"),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 40.h),
-          Form(
-            key: formKey,
-            child: TextFormField(
-              validator: (p1) {
-                if (p1 == null || p1.length < 6) {
-                  return localization.enterCodeFrom6Digit;
-                }
-                return null;
-              },
-              controller: verficyCubit.codeController,
-              maxLength: 6,
-              maxLines: 1,
+                  .bodySmall!
+                  ,
               textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontSize: 32.sp),
-              decoration: InputDecoration(
-                hintText: localization.enterCode,
+            ),
+            SizedBox(height: 40.h),
+            Form(
+              key: formKey,
+              child: TextFormField(
+                validator: (p1) {
+                  if (p1 == null || p1.length < 6) {
+                    return localization.enterCodeFrom6Digit;
+                  }
+                  return null;
+                },
+                controller: verficyCubit.codeController,
+                maxLength: 6,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 32.sp),
+                decoration: InputDecoration(
+                  hintText: localization.enterCode,
+                ),
               ),
             ),
-          ),
-          SectionResendCodeTimer(
-            email: widget.email!,
-            verificationCubit: verficyCubit,
-          ),
-          SizedBox(height: 50.h),
-          SizedBox(
-            width: double.infinity,
-            child: BlocListener<VerificationCubit, VerificationState>(
-              bloc: verficyCubit,
-              listenWhen: (pre, cur) {
-                if (pre.verifyState != cur.verifyState) {
-                  return true;
-                }
-                return false;
-              },
-              listener: (contexxt, state) {
-                if (state.verifyState is BaseLoadingState) {
-                  UIUtils.showLoadingDialog(context);
-                } else if (state.verifyState is BaseErrorState) {
-                  final result = state.verifyState as BaseErrorState;
-                  UIUtils.hideLoading(context);
-
-                  UIUtils.showMessage(result.error!);
-                } else if (state.verifyState is BaseSuccessState) {
-                  UIUtils.hideLoading(context);
-                  if (widget.typeComing ==
-                      TypeVerificationComing.comeFromForgetPassword) {
-                    Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
-                        arguments: widget.loginCubit);
-                  } else {
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil(ServiceScreen.routeName, (p) {
-                      return false;
-                    });
+            SectionResendCodeTimer(
+              email: widget.email!,
+              verificationCubit: verficyCubit,
+            ),
+            SizedBox(height: 50.h),
+            SizedBox(
+              width: double.infinity,
+              child: BlocListener<VerificationCubit, VerificationState>(
+                bloc: verficyCubit,
+                listenWhen: (pre, cur) {
+                  if (pre.verifyState != cur.verifyState) {
+                    return true;
                   }
+                  return false;
+                },
+                listener: (contexxt, state) {
+                  if (state.verifyState is BaseLoadingState) {
+                    UIUtils.showLoadingDialog(context);
+                  } else if (state.verifyState is BaseErrorState) {
+                    final result = state.verifyState as BaseErrorState;
+                    UIUtils.hideLoading(context);
 
-                  //  authCubit!.close();
-                }
-              },
-              child: ElevatedButton(
-                onPressed: () {
-                  if (formKey.currentState?.validate() == true) {
-                    verficyCubit.verifyCode(VerifyCodeRequest(
-                        fcmToken: fcmToken!,
-                        email: widget.email ?? '',
-                        code: verficyCubit.codeController.text));
+                    UIUtils.showMessage(result.error!);
+                  } else if (state.verifyState is BaseSuccessState) {
+                    UIUtils.hideLoading(context);
+                    if (widget.typeComing ==
+                        TypeVerificationComing.comeFromForgetPassword) {
+                      Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
+                          arguments: widget.loginCubit);
+                    } else {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil(ServiceScreen.routeName, (p) {
+                        return false;
+                      });
+                    }
+
+                    //  authCubit!.close();
                   }
                 },
-                child: Text(localization.confirm,
-                    style: Theme.of(context).textTheme.bodyLarge),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          36),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (formKey.currentState?.validate() == true) {
+                      verficyCubit.verifyCode(VerifyCodeRequest(
+                          fcmToken: fcmToken!,
+                          email: widget.email ?? '',
+                          code: verficyCubit.codeController.text));
+                    }
+                  },
+                  child: Text(localization.confirm,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ import 'package:app/features/profile/presentation/widget/profile_info/job_items/
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomDescription extends StatelessWidget {
   final String categoryName;
@@ -36,6 +38,7 @@ class CustomDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     final _profileCubit = serviceLocator.get<ProfileCubit>();
     final myId = sharedPref.getInt(CacheConstant.userId);
@@ -70,41 +73,82 @@ class CustomDescription extends StatelessWidget {
                                 'You Have to wait to Accept Your Information');
                           },
                     icon: Icon(
-                      Icons.edit,
-                      color: isApprovid == true ? Colors.yellow : Colors.grey,
+                      Icons.edit_outlined,
+                      color: isApprovid == true ? ColorManager.primary: Colors.grey,
                     ))
                 : const SizedBox()
           ],
         ),
-        InfoDetails(
-            icon: Icons.work_outline_outlined,
-            title: localization.work,
-            content: categoryName),
-        InfoDetails(
-            icon: Icons.maps_home_work,
-            title: localization.title,
-            content: serviceName),
-        InfoDetails(
-            icon: Icons.location_on_outlined,
-            title: localization.location,
-            content: cityName),
-        webSite != null
-            ? InfoDetails(
-                icon: Icons.link,
-                title: localization.webSite,
-                content: webSite!)
-            : const SizedBox(),
+        SizedBox(height: 30.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/work.svg',
+              width: 28,
+              height: 28,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            Text(
+                '${categoryName}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
+        Row(
+          children: [
+            Icon(Icons.maps_home_work_outlined),
+            SizedBox(width: 24.w),
+            Text(
+                '${serviceName}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/location.svg',
+              width: 26,
+              height: 26,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            Text(
+                '${cityName}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/description.svg',
+              width: 26,
+              height: 26,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            ShowMoreAndShowLess(txt: description)
+          ],
+        ),
         SizedBox(
           height: 10.h,
         ),
-        Text(localization.description,
-            style: Theme.of(context).textTheme.labelLarge),
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-            child: ShowMoreAndShowLess(txt: description)),
-        SizedBox(
-          height: 10.h,
-        ),
+        SizedBox(height: 30.h),
+        Divider(color: Colors.grey, thickness: 0.2)
       ],
     );
   }

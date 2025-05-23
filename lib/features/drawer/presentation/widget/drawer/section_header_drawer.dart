@@ -71,9 +71,9 @@ class _SectionHeaderDrawerState extends State<SectionHeaderDrawer> {
                 child: Container(
                   width: 175.w,
                   height: 175.h,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.grey,
+                    color:Theme.of(context).primaryColorDark,
                   ),
                   child: ShowImage(
                     imageFromGallery: imageFromGallery,

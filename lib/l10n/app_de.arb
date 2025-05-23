@@ -11,7 +11,7 @@
   "login": "Anmelden",
   "next": "Weiter",
   "alreadyHaveAccount": "Ich habe bereits ein Konto",
-  "createNewAccount": "oder ein neues Konto erstellen",
+  "createNewAccount": "ein neues Konto erstellen",
   "enterName": "Bitte geben Sie Ihren Namen ein",
   "nameLessThanTwo": "Name darf nicht weniger als 2 Zeichen haben",
   "validEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
@@ -125,9 +125,9 @@
     "title": "Titel",
     "price": "Preis",
     "duration": "Dauer",
-    "enterTheTitle": "Geben Sie den Titel ein",
-    "enterTheDescrip": "Geben Sie die Beschreibung ein",
-    "entertheprice": "Geben Sie den Preis ein",
+    "enterTheTitle": "Titel ein",
+    "enterTheDescrip": "Beschreibung ein",
+    "entertheprice": "Preis ein",
     "entertheDuration": "Geben Sie die Dauer ein",
     "noitemAddYet": "Noch keine Artikel hinzugefügt!",
     "addRequest": "Anfrage hinzufügen",
@@ -159,8 +159,17 @@
   "anUnexpectedErrorOccurred": "Ein unerwarteter Fehler ist aufgetreten",
   "paymentDetails": "Zahlungsdetails",
   "addPaymentMethods": "Zahlungsmethoden hinzufügen",
-  "packages": "Pakete"
-
+  "packages": "Pakete",
+  "or": "Oder",
+  "rememberMe": "Angemeldet bleiben",
+  "passwordMustContainAtLeastOneLetter": "Das Passwort muss mindestens einen Buchstaben enthalten",
+  "passwordMustContainAtLeastOneNumber": "Das Passwort muss mindestens eine Zahl enthalten",
+  "tryToScroll": "Versuche zu scrollen",
+  "homePage": "Startseite",
+  "notSubscribedToThisPackage": "Sie sind für dieses Paket nicht abonniert",
+  "yourSubscriptionIsActive": "Dein Abonnement ist aktiv",
+  "editPrincipalInfo": "Hauptinformationen Bearbeiten",
+  "serviceRequests": "Serviceanfragen"
 }
 
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_state.dart';
@@ -27,17 +28,17 @@ class DeplomaProtofileImageScreen extends StatefulWidget {
 
 class _DeplomaProtofileImageScreenState
     extends State<DeplomaProtofileImageScreen> {
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  final drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final theme = Theme.of(context).textTheme;
+
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: CustomAuthForm(
         hasAvatar: false,
@@ -48,27 +49,24 @@ class _DeplomaProtofileImageScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(localization.uploadCertificateImage,
-                  style: theme.titleLarge!.copyWith(fontSize: 40.sp)),
-              SizedBox(height: 50.h),
+                  style:  theme.titleMedium!
+                  ),
+              SizedBox(height: 30.h),
               SectionCertificateImage(registerCubit: widget.registerCubit!),
-
-              SizedBox(height: 50.h),
+              SizedBox(height: 80.h),
 
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(localization.uploadProtofileImage,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(fontSize: 40.sp)),
+                    style:  theme.titleMedium!
+                ),
               ),
-              SizedBox(height: 50.h),
+              SizedBox(height: 25.h),
 
               SectionProtofileImage(registerCubit: widget.registerCubit!),
 
-              
-              SizedBox(height: 20.h),
-              SizedBox(height: 30.h),
+
+              SizedBox(height: 80.h),
               BlocListener<RegisterCubit, RegisterState>(
                 bloc: widget.registerCubit,
                 listener: (context, state) {
@@ -76,7 +74,7 @@ class _DeplomaProtofileImageScreenState
                     UIUtils.showLoadingDialog(context);
                   } else if (state.registerProviderState is BaseErrorState) {
                     final message =
-                        state.registerProviderState as BaseErrorState;
+                    state.registerProviderState as BaseErrorState;
                     UIUtils.hideLoading(context);
                     UIUtils.showMessage(message.error!);
                     widget.registerCubit!.listOfFileImagesProtofile
@@ -84,13 +82,21 @@ class _DeplomaProtofileImageScreenState
                   } else if (state.registerProviderState is BaseSuccessState) {
                     UIUtils.hideLoading(context);
                     Navigator.of(context).pushNamed(Routes.verificationRoutes,
-                        arguments: widget.registerCubit!.emailController.text);
+                        arguments: {
+                          'email': widget.registerCubit!.emailController.text
+                        });
                   }
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 20.h),
                   width: double.infinity,
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            36),
+                      ),
+                    ),
                     onPressed: () {
                       if (widget.registerCubit!.certificateImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -108,7 +114,7 @@ class _DeplomaProtofileImageScreenState
                       try {
                         widget.registerCubit!.registerService(RegisterServiceProviderRequest(
                             websiteService: widget.registerCubit!
-                                    .websiteController.text.isEmpty
+                                .websiteController.text.isEmpty
                                 ? null
                                 : widget.registerCubit!.websiteController.text,
                             phoneNumber: widget.registerCubit!.countryCode +
@@ -117,15 +123,15 @@ class _DeplomaProtofileImageScreenState
                             firstNameAr: widget
                                 .registerCubit!.firstNameArcontroller.text,
                             lastNameAr:
-                                widget.registerCubit!.lastNameArCOntroller.text,
+                            widget.registerCubit!.lastNameArCOntroller.text,
                             firstName:
-                                widget.registerCubit!.firstNameContoller.text,
+                            widget.registerCubit!.firstNameContoller.text,
                             lastName:
-                                widget.registerCubit!.lastNameContoller.text,
+                            widget.registerCubit!.lastNameContoller.text,
                             email: widget.registerCubit!.emailController.text,
                             listOfDay: widget.registerCubit!.dateSelect,
                             password:
-                                widget.registerCubit!.passwordController.text,
+                            widget.registerCubit!.passwordController.text,
                             nameService: widget
                                 .registerCubit!.serviceNameController.text,
                             descriptionService: widget.registerCubit!
@@ -138,7 +144,7 @@ class _DeplomaProtofileImageScreenState
                             latitudeService: widget.registerCubit!.lat!.toString(),
                             longitudeService: widget.registerCubit!.lang!.toString(),
                             images: widget.registerCubit!.listOfFileImagesProtofile));
-                      } catch (e) {
+                      }  catch (e) {
                         widget.registerCubit!.listOfFileImagesProtofile
                             .add(File(''));
                       }

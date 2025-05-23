@@ -22,81 +22,64 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final _profileCubit = serviceLocator.get<ProfileCubit>();
-
-    // final _sharedPreferencesUtils =
-    //     serviceLocator.get<SharedPreferencesUtils>();
-
-    // final double maxHeaderHeight = size.height * .3;
-
-    // final double maxImageSize = size.height * 0.22;
-    // final double minImageSize = size.height * 0.06;
-
-    // final percent = shrinkOffset / (maxHeaderHeight);
-    // final currentImageSize =
-    //     (maxImageSize * (1 - percent)).clamp(minImageSize, maxImageSize);
-    // final currentImagePosition =
-    //     ((size.width / 2 - minImageSize) * (1 - percent))
-    //         .clamp(minImageSize, maxImageSize);
-    // final double currentPositionforText = (maxHeaderHeight / 2) * (1 - percent);
-    // final double initPositionForText = size.height * 0.24;
-
-    // final bool isImageBig = currentImageSize < maxHeaderHeight * .6;
-    // final double topSpace = size.height * 0.04;
-    // final double topSPaceForImage = size.height * 0.05;
-    // final double bottomSpaceForImage = size.height * 0.007;
-    //final double rightSpace = size.width * 0.03;
     final drawerCubit = serviceLocator.get<DrawerCubit>();
 
-    return Container(
-      color: drawerCubit.themeMode == ThemeMode.dark
-          ? Theme.of(context).primaryColorDark
-          : ColorManager.primary,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          const SectionImage(),
-          Positioned(
-            child: SafeArea(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: ColorManager.white, shape: BoxShape.circle),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
+    return Scaffold(
+      body: Container(
+        color: drawerCubit.themeMode == ThemeMode.dark
+            ? Theme.of(context).primaryColorDark
+            : ColorManager.primary,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            const SectionImage(),
+            Positioned(
+              child: SafeArea(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Container(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Icon(Icons.arrow_back_ios_rounded,color: ColorManager.textColor,),
+                        ),
+                      ),
                     ),
-                  ),
-                  myId == userId
-                      ? Container(
-                          decoration: const BoxDecoration(
-                              color: ColorManager.white,
-                              shape: BoxShape.circle),
-                          child: IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColorDark,
-                                    context: context,
-                                    builder: (context) {
-                                      return SectionBodyOfBottomSheet(
-                                          profileCubit: _profileCubit);
-                                    });
-                              },
-                              icon: const Icon(
-                                Icons.camera_alt_outlined,
-                              )),
+                    myId == userId
+                        ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                  color: ColorManager.white2,
+                                  shape: BoxShape.circle),
+                              child: IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColorDark,
+                                        context: context,
+                                        builder: (context) {
+                                          return SectionBodyOfBottomSheet(
+                                              profileCubit: _profileCubit);
+                                        });
+                                  },
+                                  icon: const Icon(
+                                    Icons.camera_alt_outlined,
+                                  )),
+                            ),
                         )
-                      : const SizedBox()
-                ],
+                        : const SizedBox()
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

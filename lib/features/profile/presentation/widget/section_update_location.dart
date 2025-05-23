@@ -42,13 +42,18 @@ class _SectionUpdateLocationState extends State<SectionUpdateLocation> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColorDark,
-          borderRadius: BorderRadius.all(
-            Radius.circular(AppSize.s28.r),
-          ),
+          borderRadius: BorderRadius.circular(25.r),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
         child: Row(
           children: [
             const Icon(

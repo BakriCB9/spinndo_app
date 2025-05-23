@@ -1,4 +1,5 @@
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter/material.dart';
 
@@ -9,16 +10,14 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
 
     return isBackGround == true
         ? Container(
-            decoration: _drawerCubit.themeMode == ThemeMode.dark
-                ? const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("asset/images/bg.png"),
-                        fit: BoxFit.fill))
-                : null,
+      decoration: drawerCubit.themeMode == ThemeMode.dark
+          ? const BoxDecoration(
+        color: ColorManager.darkBg,)
+          : null,
             child: Center(
               child: CircularProgressIndicator(
                 color: color ?? Theme.of(context).primaryColor,

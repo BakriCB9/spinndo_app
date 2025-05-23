@@ -2,6 +2,7 @@ import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/features/drawer/data/model/languages.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
@@ -27,22 +28,22 @@ class SettingScreen extends StatelessWidget {
       Languages(name: 'Deutsch', code: 'de'),
       Languages(name: 'العربية', code: 'ar'),
     ];
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+              color: ColorManager.darkBg,
+            )
           : null,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(localization.setting),
-        ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 70.h,),
+              CustomAppbar(appBarText: localization.setting),
               SizedBox(
                 height: 50.h,
               ),
@@ -54,7 +55,9 @@ class SettingScreen extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
-                            .copyWith(fontSize: 30.sp)),
+                            .copyWith(
+                                fontSize: 30.sp,
+                                fontWeight: FontWeight.w400)),
                   ),
                   Expanded(
                     child: Align(
@@ -86,41 +89,63 @@ class SettingScreen extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge!
-                              .copyWith(fontSize: 30.sp))),
+                              .copyWith(
+                                  fontSize: 30.sp,
+                                  fontWeight: FontWeight.w400))),
                   Expanded(
                     child: SizedBox(
                       width: 90.w,
-                      child: DropdownButtonHideUnderline(
-                          child: DropdownButton<Languages>(
-                              value: languages.firstWhere(
-                                (lang) =>
-                                    lang.code == _drawerCubit.languageCode,
-                              ),
-                              style: Theme.of(context).textTheme.displayMedium,
-                              items: languages
-                                  .map(
-                                    (language) => DropdownMenuItem<Languages>(
-                                      value: language,
-                                      child: Text(language.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (selectedLanguage) {
-                                if (selectedLanguage != null) {
-                                  _drawerCubit
-                                      .changeLanguage(selectedLanguage.code);
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: drawerCubit.themeMode == ThemeMode.dark
+                              ? ColorManager.darkBlue
+                              : ColorManager.white,
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: DropdownButtonHideUnderline(
+                            child: DropdownButton<Languages>(
+                                icon: const Icon(Icons.language,
+                                    color: ColorManager.primary),
+                                value: languages.firstWhere(
+                                  (lang) =>
+                                      lang.code == _drawerCubit.languageCode,
+                                ),
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                                items: languages
+                                    .map(
+                                      (language) =>
+                                          DropdownMenuItem<Languages>(
+                                        value: language,
+                                        child: Text(language.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (selectedLanguage) {
+                                  if (selectedLanguage != null) {
+                                    _drawerCubit.changeLanguage(
+                                        selectedLanguage.code);
 
-                                  _serviceCubit.getCountriesAndCategories();
-                                }
-                              },
-                              borderRadius: BorderRadius.circular(25),
-                              dropdownColor:
-                                  _drawerCubit.themeMode == ThemeMode.dark
-                                      ? ColorManager.darkBlue
-                                      : ColorManager.white)),
+                                    _serviceCubit.getCountriesAndCategories();
+                                  }
+                                },
+                                borderRadius: BorderRadius.circular(25),
+                                dropdownColor:
+                                    _drawerCubit.themeMode == ThemeMode.dark
+                                        ? ColorManager.darkBlue
+                                        : ColorManager.white)),
+                      ),
                     ),
                   )
                 ],
@@ -131,14 +156,14 @@ class SettingScreen extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ChangePasswordScreen()));
+                      builder: (context) => const ChangePasswordScreen()));
                 },
                 child: Text(
                   localization.changePassword,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
-                      .copyWith(fontSize: 30.sp),
+                      .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400),
                 ),
               ),
               SizedBox(
@@ -178,8 +203,8 @@ class SettingScreen extends StatelessWidget {
                                         height: 100.h,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border:
-                                                Border.all(color: Colors.grey)),
+                                            border: Border.all(
+                                                color: Colors.grey)),
                                         child: const Icon(
                                           Icons.facebook,
                                           color: ColorManager.primary,
@@ -207,9 +232,9 @@ class SettingScreen extends StatelessWidget {
                                         height: 100.h,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border:
-                                                Border.all(color: Colors.grey)),
-                                        child:const  Icon(
+                                            border: Border.all(
+                                                color: Colors.grey)),
+                                        child: const Icon(
                                           Icons.message,
                                           color: ColorManager.primary,
                                         ),
@@ -239,16 +264,16 @@ class SettingScreen extends StatelessWidget {
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   minLeadingWidth: 0,
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded,color:ColorManager.grey),
                   title: Text(localization.connectwith,
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!
-                          .copyWith(fontSize: 30.sp)),
+                          .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
                 ),
               ),
               SizedBox(
-                height: 60.h,
+                height: 30.h,
               ),
               BlocListener<DrawerCubit, DrawerStates>(
                 bloc: _drawerCubit,
@@ -282,7 +307,7 @@ class SettingScreen extends StatelessWidget {
                                     localization.cancel,
                                     style: TextStyle(
                                         fontSize: 20.sp,
-                                        color: ColorManager.red),
+                                        color: ColorManager.textColor),
                                   )),
                               TextButton(
                                   onPressed: () {
@@ -293,7 +318,7 @@ class SettingScreen extends StatelessWidget {
                                     localization.ok,
                                     style: TextStyle(
                                         fontSize: 20.sp,
-                                        color: ColorManager.green),
+                                        color: ColorManager.primary),
                                   ))
                             ],
                           );
@@ -303,12 +328,12 @@ class SettingScreen extends StatelessWidget {
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     minLeadingWidth: 0,
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                    trailing: const Icon(Icons.arrow_forward_ios_rounded,color:ColorManager.grey,),
                     title: Text(localization.deleteAccount,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
-                            .copyWith(fontSize: 30.sp)),
+                            .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
                   ),
                 ),
               ),

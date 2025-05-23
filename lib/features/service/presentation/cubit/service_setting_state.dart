@@ -8,6 +8,8 @@ class ServiceSettingState extends Equatable {
   BaseState? getDetailsUserState;
   BaseState? getAllNotificationState;
   BaseState? getMainCategoryState;
+  bool? resetData;
+
   ServiceSettingState(
       {this.getCurrentLocation,
       this.getCountryAndCategory,
@@ -15,7 +17,8 @@ class ServiceSettingState extends Equatable {
       this.getAllDiscountState,
       this.getDetailsUserState,
       this.getAllNotificationState,
-      this.getMainCategoryState});
+      this.getMainCategoryState,
+      this.resetData});
 
   ServiceSettingState copyWith(
       {BaseState? getCurrentLocation,
@@ -24,7 +27,8 @@ class ServiceSettingState extends Equatable {
       BaseState? getAllDiscountState,
       BaseState? getDetailsUserState,
       BaseState? getAllNotificationState,
-      BaseState? getMainCategoryState}) {
+      BaseState? getMainCategoryState,
+      bool? resetData}) {
     return ServiceSettingState(
         getMainCategoryState: getMainCategoryState ?? this.getMainCategoryState,
         getCurrentLocation: getCurrentLocation ?? this.getCurrentLocation,
@@ -34,7 +38,8 @@ class ServiceSettingState extends Equatable {
         getAllDiscountState: getAllDiscountState ?? this.getAllDiscountState,
         getDetailsUserState: getDetailsUserState ?? this.getDetailsUserState,
         getAllNotificationState:
-            getAllNotificationState ?? this.getAllNotificationState);
+            getAllNotificationState ?? this.getAllNotificationState,
+        resetData: resetData ?? this.resetData);
   }
 
   @override
@@ -45,6 +50,7 @@ class ServiceSettingState extends Equatable {
         getAllDiscountState,
         getDetailsUserState,
         getAllNotificationState,
-        getMainCategoryState
+        getMainCategoryState,
+    resetData
       ];
 }

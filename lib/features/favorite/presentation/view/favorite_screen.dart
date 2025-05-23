@@ -44,21 +44,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+     decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
-          appBar: AppBar(
-            title: const FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  'Favorite',
-                )),
-          ),
           body: BlocBuilder<FavoriteCubit, FavoriteCubitState>(
             bloc: favCubit,
             builder: (context, state) {
@@ -115,13 +107,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   duration: const Duration(milliseconds: 3000),
                                   child: GestureDetector(
                                     onTap: () {
-                                      // if (sharedPref.getString(
-                                      //         CacheConstant.tokenKey) ==
-                                      //     null) {
-                                      //   UIUtils.showMessage(
-                                      //       "You have to Sign in first");
-                                      //   return;
-                                      // }
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => ShowDetails(
@@ -139,8 +124,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                             service!.providerImage != null
                                                 ? CircleAvatar(
                                                     radius: 60.r,
-                                                    // backgroundImage:
-                                                    //     NetworkImage(service.providerImage!),
                                                     child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius

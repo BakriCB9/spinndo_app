@@ -1,5 +1,6 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/resources/values_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/profile/data/models/provider_update/update_provider_request.dart';
@@ -51,10 +52,15 @@ class _WorkingSchedulePageState extends State<WorkingSchedulePage> {
     }
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new,color: ColorManager.grey, ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text(
           localization.editTime,
-          style: TextStyle(fontSize: 35.sp, color: Colors.black),
-        ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),        ),
         actions: [
           IconButton(
               onPressed: () {

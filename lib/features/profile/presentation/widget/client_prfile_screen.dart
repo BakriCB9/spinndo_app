@@ -28,6 +28,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
   final _sharedPreferencesUtils = serviceLocator.get<SharedPreferencesUtils>();
+  final drawerCubit = serviceLocator.get<DrawerCubit>();
+
   int? myid;
   String? typeAccount;
   @override
@@ -42,13 +44,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
-            ),
+      decoration:
+      drawerCubit.themeMode == ThemeMode.dark ? const BoxDecoration(color: ColorManager.darkBg) : null,
       child: CustomScrollView(
         controller: _control,
         slivers: [

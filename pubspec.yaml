@@ -108,6 +108,9 @@ flutter:
     - asset/images/aaaa.png
     - asset/images/logo.svg
     - asset/animation/
+    - asset/fonts/
+    - asset/icons/
+    - asset/icons/social/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -121,19 +124,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # spinndo:
   fonts:
-    - family: ElMessiri
+    - family: Lato
       fonts:
-        - asset: asset/fonts/ElMessiri-Regular.ttf
-        - asset: asset/fonts/ElMessiri-VariableFont_wght.ttf
-    - family: WorkSans
-      fonts:
-        - asset: asset/fonts/WorkSans-VariableFont_wght.ttf
-    - family: Poppins
-      fonts:
-        - asset: asset/fonts/Poppins-Regular.ttf
-    - family: Raleway
-      fonts:
-        - asset: asset/fonts/Raleway-Regular.ttf
+        - asset: asset/fonts/Lato-Regular.ttf
+        - asset: asset/fonts/Lato-Bold.ttf
+          weight: 600
+        - asset: asset/fonts/Lato-Light.ttf
+          weight: 400
+        - asset: asset/fonts/Lato-Thin.ttf
+          weight: 300
 #         - asset: fonts/Schyler-Italic.ttf
 #           style: italic
 #     - family: Trajan Pro

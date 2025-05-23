@@ -1,4 +1,5 @@
 import 'package:app/core/constant.dart';
+import 'package:app/core/resources/color_manager.dart';
 
 import 'package:app/core/utils/app_shared_prefrence.dart';
 
@@ -51,11 +52,8 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
-            ),
+          color: ColorManager.darkBg
+      ): null,
       child: CustomScrollView(
         // controller: _control,
         slivers: [
@@ -70,7 +68,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 5.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -100,7 +98,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     description: widget.providerProfile.details?.description ??
                         "No description",
                     serviceName:
-                        widget.providerProfile.details?.name ?? "No emial yet",
+                        widget.providerProfile.details?.name ?? "No email yet",
                   ),
                   SizedBox(height: 10.h),
                   CustomDayActive(
@@ -111,9 +109,11 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 30.h),
 
                   SectionSocialLinks(
-                      profileCubit: _profileCubit,
+                    profileCubit: _profileCubit,
                       listOfSoicalFromApi: widget.providerProfile.socialLinks,
-                      providerId: widget.providerProfile.id!)
+                      providerId: widget.providerProfile.id!,
+                    issAprrovid: widget.providerProfile.details!.isApproved,
+                  )
 
                   //TODO:
 

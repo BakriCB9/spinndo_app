@@ -1,3 +1,4 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +25,7 @@ class CustomDayActive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final _authCubit = serviceLocator.get<AuthCubit>();
+    final theme = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
     final drawerCubit = serviceLocator.get<DrawerCubit>();
 
@@ -51,129 +52,101 @@ class CustomDayActive extends StatelessWidget {
                           },
                     icon: Icon(
                       Icons.edit_calendar_outlined,
-                      color: Theme.of(context).primaryColorLight,
+                      color:issAprrovid == false? ColorManager.grey:ColorManager.primary,
                     ))
                 : const SizedBox()
           ],
         ),
+        SizedBox(width: 30.h),
+
         Column(
           children: listOfworkday
               .map((e) => Padding(
-                  padding: EdgeInsets.only(top: 10.h),
-                  child: drawerCubit.languageCode == 'en'
-                      ? Row(
-                          children: [
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(e.day!,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                                flex: 4,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: BoxFromDateToDate(
-                                      time: 'From ${e.start} Am',
-                                      type: 1,
-                                    )),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Expanded(
-                                        child: BoxFromDateToDate(
-                                      time: 'To ${e.end} Pm',
-                                      type: 2,
-                                    ))
-                                  ],
-                                ))
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: BoxFromDateToDate(
-                                      time: 'To ${e.end} Pm',
-                                      type: 2,
-                                    )),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Expanded(
-                                        child: BoxFromDateToDate(
-                                      time: 'From ${e.start} Am',
-                                      type: 1,
-                                    )),
-                                  ],
-                                )),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(e.day!,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )))
+              padding: EdgeInsets.only(top: 30.h),
+              child: drawerCubit.languageCode == 'en'
+                  ? Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(e.day!,
+                            style: theme.textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.w600,color: Theme.of(context).primaryColorLight)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 30.w),
+                  Expanded(
+                      flex: 4,
+                      child: Row(
+                        children: [
+                          Text('From',style: Theme.of(context).textTheme.labelMedium),
+
+                          BoxFromDateToDate(
+                            time: ' ${e.start} ',
+                            type: 1,
+                          ),
+                          Text('AM',style: Theme.of(context).textTheme.labelMedium),
+
+                          SizedBox(
+                            width: 50.w,
+                          ),
+                          Text('To',style: Theme.of(context).textTheme.labelMedium),
+
+                          BoxFromDateToDate(
+                            time: ' ${e.end} ',
+                            type: 1,
+                          ),
+                          Text('PM',style: Theme.of(context).textTheme.labelMedium),
+
+                        ],
+                      )
+                  )
+                ],
+              )
+                  : Row(
+                children: [
+                  Expanded(
+                      flex: 4,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: BoxFromDateToDate(
+                                time: 'To ${e.end} Pm',
+                                type: 2,
+                              )),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Expanded(
+                              child: BoxFromDateToDate(
+                                time: 'From ${e.start} Am',
+                                type: 1,
+                              )),
+                        ],
+                      )),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(e.day!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.h),
+                  Divider(color: Colors.grey, thickness: 0.2)
+                ],
+              )))
               .toList(),
         ),
-        //    days
-        //       .map((e) => Padding(
-        //             padding: EdgeInsets.only(top: 10.h),
-        //             child: Row(
-        //               children: [
-        //                 Expanded(
-        //                   child: Align(
-        //                     alignment: Alignment.topLeft,
-        //                     child: FittedBox(
-        //                       fit: BoxFit.scaleDown,
-        //                       child: Text(
-        //                         e,
-        //                         style: TextStyle(
-        //                             fontSize: 25.sp, color: Colors.grey),
-        //                       ),
-        //                     ),
-        //                   ),
-        //                 ),
-        //                 SizedBox(width: 10.w),
-        //                 Expanded(
-        //                     flex: 4,
-        //                     child: Row(
-        //                       children: [
-        //                         Expanded(
-        //                             child: BoxFromDateToDate(
-        //                                 time: 'From 9:00 Am', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 1,)),
-        //                         SizedBox(
-        //                           width: 10.w,
-        //                         ),
-        //                         Expanded(
-        //                             child:
-        //                                 BoxFromDateToDate(time: 'To 6:00 Pm', dateSelect: DateSelect(day: "day", start: "start", end: "end"), type: 2,))
-        //                       ],
-        //                     ))
-        //               ],
-        //             ),
-        //           ))
-        //       .toList(),
-        // ),
+        SizedBox(height: 50.h),
+        Divider(color: Colors.grey, thickness: 0.2)
       ],
     );
   }

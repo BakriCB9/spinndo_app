@@ -1,6 +1,7 @@
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/error_network_widget.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -29,48 +30,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
     _serviceCubit.getAllNotification();
   }
+  final drawerCubit = serviceLocator.get<DrawerCubit>();
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+          color: ColorManager.darkBg
+      ): null,
       child: Scaffold(
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Icon(
-                          Icons.arrow_back_sharp,
-                          color: Theme.of(context).primaryColorLight,
-                          size: 45.sp,
-                        )),
-                    SizedBox(width: 40.w),
-                    Expanded(
-                      child: FittedBox(
-                        alignment:
-                            Directionality.of(context) == TextDirection.rtl
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          localization.notifications,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                CustomAppbar(appBarText: localization.notifications,),
                 SizedBox(height: 40.h),
                 BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
                     bloc: _serviceCubit,
@@ -100,8 +76,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         return Expanded(
                           child: AnimationLimiter(
                             child: ListView.builder(
-                                // physics: BouncingScrollPhysics(
-                                //     parent: AlwaysScrollableScrollPhysics()),
                                 itemCount: listNotification!.length,
                                 itemBuilder: (context, index) {
                                   return listNotification.isEmpty

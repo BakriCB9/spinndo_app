@@ -14,11 +14,13 @@ class SectionSocialLinks extends StatefulWidget {
   final ProfileCubit profileCubit;
   final int providerId;
   final List<ProviderProfileSocialLinks?>? listOfSoicalFromApi;
+  final bool issAprrovid;
+
   const SectionSocialLinks(
       {required this.profileCubit,
       required this.listOfSoicalFromApi,
       required this.providerId,
-      super.key});
+      super.key, required this.issAprrovid});
 
   @override
   State<SectionSocialLinks> createState() => _SectionSocialLinksState();
@@ -41,17 +43,19 @@ class _SectionSocialLinksState extends State<SectionSocialLinks> {
         : Expanded(
             child: ShowSocialLinksForMyProfileWithOptions(
                 profileCubit: widget.profileCubit,
-                listOfSocialFromApi: widget.listOfSoicalFromApi));
+                listOfSocialFromApi: widget.listOfSoicalFromApi, issAprrovid: widget.issAprrovid,));
   }
 }
 
 class ShowSocialLinksForMyProfileWithOptions extends StatefulWidget {
   final List<ProviderProfileSocialLinks?>? listOfSocialFromApi;
   final ProfileCubit profileCubit;
+  final bool issAprrovid;
+
   const ShowSocialLinksForMyProfileWithOptions(
       {required this.profileCubit,
       required this.listOfSocialFromApi,
-      super.key});
+      super.key, required this.issAprrovid});
 
   @override
   State<ShowSocialLinksForMyProfileWithOptions> createState() =>
@@ -116,7 +120,7 @@ class _ShowSocialLinksForMyProfileWithOptionsState
                     },
                   );
                 },
-                icon: const Icon(Icons.add))
+                icon: Icon(Icons.add,color: widget.issAprrovid?ColorManager.primary:ColorManager.grey,))
           ],
         ),
         const SizedBox(height: 20),
@@ -217,56 +221,72 @@ class ShowSocialLinksForUsers extends StatelessWidget {
 class SectionBodySheetAddLink extends StatefulWidget {
   final List<String> listofSocialAvailable;
   final ProfileCubit profileCubit;
-  const SectionBodySheetAddLink(
-      {required this.listofSocialAvailable,
-      required this.profileCubit,
-      super.key});
+  const SectionBodySheetAddLink({
+    required this.listofSocialAvailable,
+    required this.profileCubit,
+    super.key,
+  });
 
   @override
-  State<SectionBodySheetAddLink> createState() =>
-      _SectionBodySheetAddLinkState();
+  State<SectionBodySheetAddLink> createState() => _SectionBodySheetAddLinkState();
 }
 
 class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
-  TextEditingController textSelectedPlatform = TextEditingController();
-  TextEditingController textSelectUrl = TextEditingController();
+  TextEditingController platformController = TextEditingController();
+  TextEditingController urlController = TextEditingController();
 
   @override
-  dispose() {
+  void dispose() {
+    platformController.dispose();
+    urlController.dispose();
     super.dispose();
-    textSelectUrl;
-    textSelectedPlatform;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom, //Push above keyboard
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Wrap content
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            DropdownMenu(
-              hintText: 'choose your social',
-              controller: textSelectedPlatform,
-              dropdownMenuEntries: widget.listofSocialAvailable.map((e) {
-                return DropdownMenuEntry(value: e, label: e);
-              }).toList(),
+            Text(
+              'Add Social Link',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 20),
+
+            // Platform Input Field
             TextFormField(
-              style: Theme.of(context).textTheme.bodyMedium,
-              controller: textSelectUrl,
-              decoration: const InputDecoration(
-                hintText: "Enter your link",
-                border: OutlineInputBorder(),
+              controller: platformController,
+              decoration: InputDecoration(
+                hintText: "Enter platform (e.g., facebook, twitter)",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                prefixIcon: const Icon(Icons.public),
               ),
             ),
-            const SizedBox(height: 40),
+
+            const SizedBox(height: 20),
+
+            // URL Input Field
+            TextFormField(
+              controller: urlController,
+              decoration: InputDecoration(
+                hintText: "Enter your social link URL",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                prefixIcon: const Icon(Icons.link),
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
             BlocListener<ProfileCubit, ProfileStates>(
               listener: (context, state) {
                 if (state is AddorUpdateSoicalLinksLoading) {
@@ -280,28 +300,299 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
                   widget.profileCubit.getUserRole();
                 }
               },
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.save),
+                label: const Text('Save'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorManager.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: const TextStyle(fontSize: 16),
+                ),
                 onPressed: () {
-                  if (textSelectUrl.text.contains(textSelectedPlatform.text)) {
-                    widget.profileCubit.addOrupdateSoical(
-                        SocialMediaLinksRequest(
-                            platform: textSelectedPlatform.text,
-                            url: textSelectUrl.text));
+                  if (platformController.text.isNotEmpty &&
+                      urlController.text.isNotEmpty) {
+                    widget.profileCubit.addOrupdateSoical(SocialMediaLinksRequest(
+                      platform: platformController.text.toLowerCase(),
+                      url: urlController.text,
+                    ));
                   } else {
                     UIUtils.showMessage(
-                        'Ther url that enter is not same type of platform');
+                      'Please fill in both fields',
+                    );
                   }
                 },
-                child: const Text('Save'),
               ),
             ),
-            const SizedBox(height: 20)
+            const SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
 }
+
+class _SectionBodySheetAddLinkStateCustom extends State<SectionBodySheetAddLink> {
+  // باقي الكود كما هو
+  TextEditingController textSelectedPlatform = TextEditingController();
+  TextEditingController textSelectUrl = TextEditingController();
+
+  @override
+  dispose() {
+    textSelectUrl.dispose();
+    textSelectedPlatform.dispose();
+    super.dispose();
+  }
+
+  IconData _getIconForPlatform(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'facebook':
+        return Icons.facebook;
+      case 'twitter':
+        return Icons.facebook;
+      case 'linkedin':
+        return Icons.linked_camera;
+      default:
+        return Icons.link;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Add Social Link',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 20),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                ),
+                value: widget.listofSocialAvailable.isNotEmpty
+                    ? widget.listofSocialAvailable.first
+                    : null,
+                items: widget.listofSocialAvailable.map((platform) {
+                  return DropdownMenuItem<String>(
+                    value: platform,
+                    child: Row(
+                      children: [
+                        Icon(_getIconForPlatform(platform), color: Colors.grey),
+                        const SizedBox(width: 10),
+                        Text(platform.toUpperCase()),
+                      ],
+                    ),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  textSelectedPlatform.text = value!;
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              style: Theme.of(context).textTheme.bodyMedium,
+              controller: textSelectUrl,
+              decoration: InputDecoration(
+                hintText: "Enter your social link",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                prefixIcon: const Icon(Icons.link),
+              ),
+            ),
+            const SizedBox(height: 30),
+            BlocListener<ProfileCubit, ProfileStates>(
+              listener: (context, state) {
+                if (state is AddorUpdateSoicalLinksLoading) {
+                  UIUtils.showLoadingDialog(context);
+                } else if (state is AddorUpdateSoicalLinksError) {
+                  UIUtils.hideLoading(context);
+                  UIUtils.showMessage(state.message);
+                } else if (state is AddorUpdateSoicalLinksSuccess) {
+                  UIUtils.hideLoading(context);
+                  Navigator.of(context).pop();
+                  widget.profileCubit.getUserRole();
+                }
+              },
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.save),
+                label: const Text('Save'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorManager.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: const TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  if (textSelectUrl.text.contains(textSelectedPlatform.text)) {
+                    widget.profileCubit.addOrupdateSoical(SocialMediaLinksRequest(
+                      platform: textSelectedPlatform.text,
+                      url: textSelectUrl.text,
+                    ));
+                  } else {
+                    UIUtils.showMessage(
+                      'The URL must match the selected platform.',
+                    );
+                  }
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
+//   TextEditingController textSelectedPlatform = TextEditingController();
+//   TextEditingController textSelectUrl = TextEditingController();
+//   IconData _getIconForPlatform(String platform) {
+//     switch (platform.toLowerCase()) {
+//       case 'facebook':
+//         return Icons.facebook;
+//       case 'twitter':
+//         return Icons.facebook;
+//       case 'linkedin':
+//         return Icons.linked_camera; // يمكنك تغييرها إلى أيقونة لينكدإن مناسبة
+//       case 'instagram':
+//         return Icons.camera_alt; // مثال لأيقونة إنستغرام
+//       default:
+//         return Icons.link;
+//     }
+//   }
+//
+//   @override
+//   dispose() {
+//     super.dispose();
+//     textSelectUrl;
+//     textSelectedPlatform;
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.only(
+//         bottom: MediaQuery.of(context).viewInsets.bottom,
+//       ),
+//       child: SingleChildScrollView(
+//         padding: const EdgeInsets.all(20),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             Text(
+//               'Add Social Link',
+//               style: Theme.of(context).textTheme.titleMedium,
+//             ),
+//             const SizedBox(height: 20),
+//
+//             /// Custom Dropdown Style using ListTile
+//             Container(
+//               decoration: BoxDecoration(
+//                 border: Border.all(color: Colors.grey.shade300),
+//                 borderRadius: BorderRadius.circular(10),
+//               ),
+//               child: DropdownButtonFormField<String>(
+//                 decoration: const InputDecoration(
+//                   border: InputBorder.none,
+//                   contentPadding: EdgeInsets.symmetric(horizontal: 12),
+//                 ),
+//                 value: widget.listofSocialAvailable.isNotEmpty
+//                     ? widget.listofSocialAvailable.first
+//                     : null,
+//                 items: widget.listofSocialAvailable.map((platform) {
+//                   return DropdownMenuItem<String>(
+//                     value: platform,
+//                     child: Row(
+//                       children: [
+//                         Icon(_getIconForPlatform(platform), color: Colors.grey),
+//                         const SizedBox(width: 10),
+//                         Text(platform.toUpperCase()),
+//                       ],
+//                     ),
+//                   );
+//                 }).toList(),
+//                 onChanged: (value) {
+//                   textSelectedPlatform.text = value!;
+//                 },
+//               ),
+//             ),
+//
+//             const SizedBox(height: 20),
+//
+//             /// URL Input
+//             TextFormField(
+//               style: Theme.of(context).textTheme.bodyMedium,
+//               controller: textSelectUrl,
+//               decoration: InputDecoration(
+//                 hintText: "Enter your social link",
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(10),
+//                 ),
+//                 prefixIcon: const Icon(Icons.link),
+//               ),
+//             ),
+//
+//             const SizedBox(height: 30),
+//
+//             /// Save Button with BlocListener
+//             BlocListener<ProfileCubit, ProfileStates>(
+//               listener: (context, state) {
+//                 if (state is AddorUpdateSoicalLinksLoading) {
+//                   UIUtils.showLoadingDialog(context);
+//                 } else if (state is AddorUpdateSoicalLinksError) {
+//                   UIUtils.hideLoading(context);
+//                   UIUtils.showMessage(state.message);
+//                 } else if (state is AddorUpdateSoicalLinksSuccess) {
+//                   UIUtils.hideLoading(context);
+//                   Navigator.of(context).pop();
+//                   widget.profileCubit.getUserRole();
+//                 }
+//               },
+//               child: ElevatedButton.icon(
+//                 icon: const Icon(Icons.save),
+//                 label: const Text('Save'),
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: ColorManager.primary,
+//                   padding: const EdgeInsets.symmetric(vertical: 14),
+//                   textStyle: const TextStyle(fontSize: 16),
+//                 ),
+//                 onPressed: () {
+//                   if (textSelectUrl.text.contains(textSelectedPlatform.text)) {
+//                     widget.profileCubit.addOrupdateSoical(SocialMediaLinksRequest(
+//                       platform: textSelectedPlatform.text,
+//                       url: textSelectUrl.text,
+//                     ));
+//                   } else {
+//                     UIUtils.showMessage(
+//                       'The URL must match the selected platform.',
+//                     );
+//                   }
+//                 },
+//               ),
+//             ),
+//             const SizedBox(height: 10),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+// }
 
 class SectionBodySheetEditLink extends StatefulWidget {
   final String url;
@@ -384,3 +675,5 @@ class _SectionBodySheetEditLinkState extends State<SectionBodySheetEditLink> {
         ));
   }
 }
+
+

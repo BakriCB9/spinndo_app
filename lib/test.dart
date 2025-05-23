@@ -1,4 +1,5 @@
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/auth/presentation/cubit/cubit/register_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/service/data/models/get_all_category_response/data.dart';
@@ -130,42 +131,59 @@ class _CascadingDropdownsState extends State<CascadingDropdowns> {
 
       dropdowns.add(Column(
         children: [
-          DropdownButtonFormField<Categories>(
-            dropdownColor: Theme.of(context).primaryColorDark,
-            menuMaxHeight: 200,
-            isExpanded: false,
-            value: i < selectedCategories.length ? selectedCategories[i] : null,
-            hint: Padding(
-              padding: EdgeInsets.only(left: 12.w),
-              child: Row(
-                children: [
-                  const Icon(Icons.category),
-                  SizedBox(
-                    width: 24.w,
-                  ),
-                  Text(
-                      '${i == 0 ? "${localization.category}" : "${localization.subCategory}"}',
-                      style: Theme.of(context).textTheme.displayMedium),
-                ],
-              ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
-            decoration: const InputDecoration(errorBorder: InputBorder.none),
-            items: currentList
-                .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                        child: Text(
-                          category.name,
-                          style: Theme.of(context).textTheme.displayMedium,
+            child: DropdownButtonFormField<Categories>(
+              icon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Icon(Icons.keyboard_arrow_down),
+              ),
+              iconEnabledColor: ColorManager.primary,
+              dropdownColor: Theme.of(context).primaryColorDark,
+              menuMaxHeight: 200,
+              isExpanded: false,
+              value: i < selectedCategories.length ? selectedCategories[i] : null,
+              hint: Padding(
+                padding: EdgeInsets.only(left: 12.w),
+                child: Row(
+                  children: [
+                    const Icon(Icons.category),
+                    SizedBox(
+                      width: 24.w,
+                    ),
+                    Text(
+                        '${i == 0 ? "${localization.category}" : "${localization.subCategory}"}',
+                        style: Theme.of(context).textTheme.labelMedium),
+                  ],
+                ),
+              ),
+              decoration: const InputDecoration(errorBorder: InputBorder.none),
+              items: currentList
+                  .map((category) => DropdownMenuItem(
+                        value: category,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                          child: Text(
+                            category.name,
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
                         ),
-                      ),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              _serviceCubit.isReset = false;
-              updateSelectedCategory(i, value);
-            },
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                _serviceCubit.isReset = false;
+                updateSelectedCategory(i, value);
+              },
+            ),
           ),
           SizedBox(height: 30.h),
         ],

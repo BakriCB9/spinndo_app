@@ -57,7 +57,7 @@ class _MapScreenState extends State<MapScreen> {
                       authCubit.selectedLocation!.longitude);
                 }
               },
-              child: const Icon(Icons.save)),
+              child: const Icon(Icons.save,color: ColorManager.primary,)),
         ),
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
@@ -68,11 +68,11 @@ class _MapScreenState extends State<MapScreen> {
                     authCubit.initCurrentLocation();
                   }
                 },
-                icon: const Icon(Icons.location_on))
+                icon: const Icon(Icons.location_on_outlined))
           ],
           title: Text(
             localization.googleMap,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         body: BlocBuilder<AuthCubit, AuthState>(
@@ -129,7 +129,7 @@ class _MapScreenState extends State<MapScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                Icons.location_off_rounded,
+                                Icons.location_off_outlined,
                                 color: ColorManager.primary,
                                 size: 300.w,
                               ),

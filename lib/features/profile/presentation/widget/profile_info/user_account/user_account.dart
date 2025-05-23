@@ -1,3 +1,5 @@
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/utils/ui_utils.dart';
@@ -6,6 +8,8 @@ import 'package:app/features/profile/presentation/screens/edit_user_account.dart
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UserAccount extends StatelessWidget {
   final String firstNameAr;
@@ -33,6 +37,7 @@ class UserAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
@@ -40,8 +45,8 @@ class UserAccount extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(localization.account,
-                style: Theme.of(context).textTheme.labelLarge),
+            Text("${firstName} ${lastName} / ${firstNameAr} ${lastNameAr}",
+                style: theme.textTheme.labelLarge!.copyWith(fontSize: FontSize.s20)),
             typeAccount == 'Client'
                 ? IconButton(
                     onPressed: () {
@@ -79,37 +84,52 @@ class UserAccount extends StatelessWidget {
                                     "You have to wait to Accept Your Informations");
                               },
                         icon: Icon(
-                          Icons.edit,
+                          Icons.edit_outlined,
                           color:
-                              isApprovid == true ? Colors.yellow : Colors.grey,
+                              isApprovid == true ?ColorManager.primary : Colors.grey,
                         ))
                     : const SizedBox()
           ],
         ),
-        InfoDetails(
-            icon: Icons.person_2_outlined,
-            title: "First Name Ar",
-            content: firstNameAr),
-        InfoDetails(
-            icon: Icons.person_2_outlined,
-            title: "Last Name Ar",
-            content: lastNameAr),
-        InfoDetails(
-            icon: Icons.person_2_outlined,
-            title: localization.firstName,
-            content: firstName),
-        InfoDetails(
-            icon: Icons.person_2_outlined,
-            title: localization.lastName,
-            content: lastName),
-        InfoDetails(
-            icon: Icons.email_outlined,
-            title: localization.email,
-            content: email),
-        InfoDetails(
-            icon: Icons.phone,
-            title: localization.phoneNumber,
-            content: phoneNumber),
+        SizedBox(height: 30.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/email.svg',
+              height: 23,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            Text(
+                '${email}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/phone.svg',
+              width: 25,
+              height: 28,
+              colorFilter: ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            Text(
+                '${phoneNumber}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 30.h),
+        Divider(color: Colors.grey, thickness: 0.2)
       ],
     );
   }

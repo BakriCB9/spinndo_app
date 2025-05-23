@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/theme_manager.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/packages/data/model/subscription/subscribe_model.dart';
 import 'package:app/features/payment/data/model/payments_model.dart';
@@ -13,7 +14,9 @@ import 'package:app/features/payment/presentation/view_model/payments_state.dart
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:lottie/lottie.dart';
 import '../view_model/packages_cubit.dart';
 import '../view_model/packages_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,6 +46,9 @@ class _PackagesScreenState extends State<PackagesScreen> {
   http.Response? responseFromStripeAPI;
   Map<String, dynamic>? paymentIntentData;
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
+  late Size size= MediaQuery.of(context).size;
+
+
 
   Future<Map<String, dynamic>?> makeIntentForPayment(
       int amountToBeCharged, String currency, String paymentMethodType) async {
@@ -110,7 +116,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
         return AlertDialog(
           title: Text(localization.paymentConfirmation),
           content:
-              Text('${localization.areYouSureYouWantToProceedWithThePayment}?'),
+          Text('${localization.areYouSureYouWantToProceedWithThePayment}?'),
           actions: [
             TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
@@ -122,76 +128,8 @@ class _PackagesScreenState extends State<PackagesScreen> {
         );
       },
     );
-
-    // this must be moved to the first page
     // this function must only return true/false
     return result ?? false;
-    // if (result == true) {
-    //   final localization = AppLocalizations.of(context)!;
-    //   final cubit = context.read<PackagesCubit>();
-    //   final int userId = cubit.getUserId();
-    //
-    //   try {
-    //     final List<dynamic>? paymentTypes =
-    //         paymentIntentData?['payment_method_types'];
-    //     final String? methodType =
-    //         (paymentTypes != null && paymentTypes.isNotEmpty)
-    //             ? paymentTypes[0]
-    //             : null;
-    //     final String? intentId = paymentIntentData?['id']?.toString();
-    //
-    //     if (methodType != null && intentId != null) {
-    //       print('نوع الدفع: $methodType - Stripe ID: $intentId');
-    //
-    //       final method = PaymentMethodModel(
-    //         userId: userId,
-    //         methodType: methodType,
-    //         stripePaymentMethodId: intentId,
-    //       );
-    //
-    //       await context.read<PaymentsCubit>().addPayment(method);
-    //
-    //       if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
-    //         await Stripe.instance.confirmPaymentSheetPayment();
-    //         if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
-    //           final subscription = SubscribeModel(
-    //             userId: userId,
-    //             packageId: package.id!,
-    //           );
-    //           await cubit.addSubscription(subscription);
-    //           await cubit.getAllPackages();
-    //
-    //           ScaffoldMessenger.of(context).showSnackBar(
-    //             SnackBar(content: Text('${localization.paymentSuccessful} 🎉')),
-    //           );
-    //         } else if (context.read<PaymentsCubit>().state is PaymentAddError) {
-    //           final errorState =
-    //               context.read<PaymentsCubit>().state as PaymentAddError;
-    //           print("فشل إضافة وسيلة الدفع: ${errorState.message}");
-    //         }
-    //       }
-    //     } else {
-    //       print("خطأ: البيانات غير كاملة من Stripe");
-    //     }
-    //   } on StripeException catch (e) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //           content: Text(
-    //               '${localization.errorStripe}: ${e.error.localizedMessage}')),
-    //     );
-    //   } catch (e) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //           content: Text('${localization.anUnexpectedErrorOccurred} $e')),
-    //     );
-    //   }
-    //   cubit.getAllPackages();
-    // } else if (result == false && paymentIntentData != null) {
-    //   String? id = paymentIntentData!['id']?.toString();
-    //   if (id != null && id.isNotEmpty) {
-    //     await context.read<PaymentsCubit>().addRefund(id);
-    //   }
-    // }
   }
 
   Future<bool> showPaymentSheet() async {
@@ -223,15 +161,15 @@ class _PackagesScreenState extends State<PackagesScreen> {
     final allMethods = PaymentMethodType.values.map((e) => e.name).toList();
 
     final existingMethods =
-        context.read<PaymentsCubit>().state is PaymentsSuccess
-            ? (context.read<PaymentsCubit>().state as PaymentsSuccess)
-                .payments
-                .map((p) => p?.methodType ?? '')
-                .toList()
-            : [];
+    context.read<PaymentsCubit>().state is PaymentsSuccess
+        ? (context.read<PaymentsCubit>().state as PaymentsSuccess)
+        .payments
+        .map((p) => p?.methodType ?? '')
+        .toList()
+        : [];
 
     final availableMethods =
-        allMethods.where((m) => !existingMethods.contains(m)).toList();
+    allMethods.where((m) => !existingMethods.contains(m)).toList();
 
     var result = await showDialog<bool>(
       context: context,
@@ -282,234 +220,357 @@ class _PackagesScreenState extends State<PackagesScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
+    final theme = Theme.of(context);
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(localization.packages),
-          backgroundColor: Colors.yellow[700],
-        ),
-        body: BlocBuilder<PackagesCubit, PackagesState>(
-          builder: (context, state) {
-            if (state is PackagesLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is PackagesSuccess) {
-              return ListView.builder(
-                padding: EdgeInsets.all(12),
-                itemCount: state.packages.length,
-                itemBuilder: (context, index) {
-                  final package = state.packages[index];
-                  final isSubscribed = package?.is_subscribed ?? false;
-                  return material.Card(
-                    color: _drawerCubit.themeMode == ThemeMode.dark
-                        ? Colors.indigo[950]
-                        : Colors.yellow[50],
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 12),
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+      decoration:
+      isDarkMode ? const BoxDecoration(color: ColorManager.darkBg) : null,
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 30.h),
+              CustomAppbar(appBarText: localization.packages),
+              SizedBox(height:120.h),
+
+              Expanded(
+                child: BlocBuilder<PackagesCubit, PackagesState>(
+                  builder: (context, state) {
+                    if (state is PackagesLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state is PackagesSuccess) {
+                      return ListView.builder(
+                        padding: EdgeInsets.all(12),
+                        itemCount: state.packages.length,
+                        itemBuilder: (context, index) {
+                          final package = state.packages[index];
+                          final isSubscribed = package?.is_subscribed ?? false;
+                          return Stack(
+                            clipBehavior: Clip.none,
                             children: [
-                              Icon(
-                                isSubscribed
-                                    ? Icons.circle
-                                    : Icons.circle_outlined,
-                                size: 16,
-                                color: ColorManager.primary,
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
+                              material.Card(
+                                color: _drawerCubit.themeMode == ThemeMode.dark
+                                    ? Colors.indigo[950]
+                                    : Colors.white,
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 16),
+                                child: Container(
+
+                                  padding: const EdgeInsets.all(20),
                                   child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    package!.name!,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "${localization.price} ${package?.price}",
-                                    style: TextStyle(
-                                        fontSize: 16),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "${localization.duration} ${package?.duration}",
-                                    style: TextStyle(
-                                        fontSize: 16),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        if (package == null) return;
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
 
-                                        final cubit =
+
+                                      SizedBox(    width: 200.w,
+                                        height: 200.h,),
+                                      // Subscription Info
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            isSubscribed
+                                                ? Icons.check_circle
+                                                : Icons.circle_outlined,
+                                            size: 20,
+                                            color: ColorManager.primary,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Text(
+                                            isSubscribed
+                                                ? localization
+                                                .yourSubscriptionIsActive
+                                                : localization
+                                                .notSubscribedToThisPackage,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: _drawerCubit.themeMode ==
+                                                  ThemeMode.dark
+                                                  ? Colors.white
+                                                  : Colors.black87,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 16),
+
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+
+                                        children: [
+                                          Icon(
+                                            Icons.access_time_filled_rounded,
+                                            size: 20,
+                                            color: ColorManager.primary,
+                                          ),
+                                          Text(
+                                            " ${package?.duration} months",
+                                            style: TextStyle(
+                                              fontSize: 16,
+
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 20),
+
+                                      // Subscribe/Unsubscribe Button
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            if (package == null) return;
+
+                                            final cubit =
                                             context.read<PackagesCubit>();
-                                        final int userId = cubit.getUserId();
+                                            final int userId = cubit.getUserId();
 
-                                        if (isSubscribed) {
-                                          // المستخدم مشترك بالفعل - عرض خيار الإلغاء
-                                          final result = await showDialog<bool>(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              title: Text(localization
-                                                  .cancelSubscription),
-                                              content: Text(localization
-                                                      .doYouWantToUnsubscribeFromThisPackage +
-                                                  "?"),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context)
-                                                          .pop(false),
-                                                  child: Text(localization.no),
+                                            if (isSubscribed) {
+                                              // The user is already subscribed – show the cancellation option
+                                              final result = await showDialog<bool>(
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                  title: Text(localization
+                                                      .cancelSubscription),
+                                                  content: Text(
+                                                      "${localization.doYouWantToUnsubscribeFromThisPackage}?"),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(false),
+                                                      child: Text(localization.no),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(true),
+                                                      child: Text(localization.yes),
+                                                    ),
+                                                  ],
                                                 ),
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context)
-                                                          .pop(true),
-                                                  child: Text(localization.yes),
-                                                ),
-                                              ],
-                                            ),
-                                          );
+                                              );
+                                              if (result == true) {
+                                                await cubit
+                                                    .cancelSubscription(userId);
+                                                cubit
+                                                    .getAllPackages(); // Refresh the list after cancellation
+                                              }
+                                            } else {
+                                              // Check if the user has an active subscription to any other package
 
-                                          if (result == true) {
-                                            await cubit
-                                                .cancelSubscription(userId);
-                                            cubit
-                                                .getAllPackages(); // تحديث القائمة بعد الإلغاء
-                                          }
-                                        } else {
-                                          // تحقق إن كان لديه اشتراك نشط في أي باقة أخرى
-                                          bool hasActiveSubscription =
+                                              bool hasActiveSubscription =
                                               state.packages.any(
-                                            (pkg) => pkg?.is_subscribed == true,
-                                          );
+                                                    (pkg) => pkg?.is_subscribed == true,
+                                              );
 
-                                          if (hasActiveSubscription) {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: Text(localization
-                                                    .subscriptionError),
-                                                content: Text(localization
+                                              if (hasActiveSubscription) {
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (context) => AlertDialog(
+                                                    title: Text(localization
+                                                        .subscriptionError),
+                                                    content: Text(localization
                                                         .youCannotSubscribeToMoreThanOnePackageAtATime +
-                                                    "."),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(),
-                                                    child:
+                                                        "."),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(context)
+                                                                .pop(),
+                                                        child:
                                                         Text(localization.ok),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                            );
-                                            return; // خروج إذا لديه اشتراك
-                                          }
+                                                );
+                                                return; // Logout if the user has a subscription
+                                              }
 
-                                          // عرض تأكيد الاشتراك
-                                          final confirmResult =
+                                              // Show subscription confirmation
+
+                                              final confirmResult =
                                               await showDialog<bool>(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              title: Text(localization
-                                                  .confirmSubscription),
-                                              content: Text(localization
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                  title: Text(localization
+                                                      .confirmSubscription),
+                                                  content: Text(localization
                                                       .doYouWantToSubscribeToThisPackage +
-                                                  "?"),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context)
-                                                          .pop(false),
-                                                  child: Text(localization.no),
+                                                      "?"),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(false),
+                                                      child: Text(localization.no),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(true),
+                                                      child: Text(localization.yes,style: TextStyle(color: ColorManager.primary),),
+                                                    ),
+                                                  ],
                                                 ),
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context)
-                                                          .pop(true),
-                                                  child: Text(localization.yes),
-                                                ),
-                                              ],
-                                            ),
-                                          );
+                                              );
 
-                                          if (confirmResult != true) return;
+                                              if (confirmResult != true) return;
 
-                                          // عملية الدفع
-                                          var isPaid =
+                                              //paymentProcess
+                                              var isPaid =
                                               await showAvailablePaymentMethods(
                                                   context,
                                                   package.price ?? 0.0);
 
-                                          if (isPaid != true) {
-                                            print("لم تتم عملية الدفع");
-                                            return;
-                                          }
+                                              if (isPaid != true) {
+                                                print("payment was not done");
+                                                return;
+                                              }
 
-                                          // تنفيذ الاشتراك بعد الدفع
-                                          final subscription = SubscribeModel(
-                                            userId: userId,
-                                            packageId: package.id,
-                                          );
+                                              //subscribe process after paying
+                                              final subscription = SubscribeModel(
+                                                userId: userId,
+                                                packageId: package.id,
+                                              );
 
-                                          await cubit
-                                              .addSubscription(subscription);
-                                          cubit
-                                              .getAllPackages(); // تحديث القائمة بعد الاشتراك
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: isSubscribed
-                                            ? Colors.grey
-                                            : Colors.yellow[700],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          isSubscribed
-                                              ? '${localization.subscribed} ✅'
-                                              : '${localization.subscribe}',
-                                          style: const TextStyle(
-                                              color: Colors.black),
+                                              await cubit
+                                                  .addSubscription(subscription);
+                                              cubit
+                                                  .getAllPackages(); //update UI after subscibe
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(30),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 12,
+                                              horizontal: 24,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            isSubscribed ? localization.subscribed : localization.subscribe,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: -50,
+                                left: 0,
+                                right: 0,
+                                child:  // Header Circle + Title
+                                Center(
+                                  child: Container(
+                                    width: 300.w,
+                                    height: 300.h,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Colors.orange,
+                                          ColorManager.primary
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color:
+                                          Colors.orange.withOpacity(0.4),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 6),
+                                        ),
+                                      ],
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          package!.name!.toUpperCase(),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          "\$${package?.price.toStringAsFixed(0)}",
+                                          style: TextStyle(fontSize: 27),
+                                        ),
+                                        Text(
+                                            "per month",
+                                            style:Theme.of(context)
+                                                .textTheme
+                                                .labelMedium!
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ))
+                                ),)
                             ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            } else if (state is PackagesError) {
-              return Center(child: Text(state.message));
-            } else {
-              return Center(child: Text("no pacs"));
-            }
-          },
+                          );
+
+
+                        },
+                      );
+                    } else if (state is PackagesError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      return Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20.h,),
+                            CustomAppbar(appBarText: localization.fav,),
+
+                            const Spacer(),
+                            SizedBox(
+                              height: size.height / 3.5,
+                              child: Lottie.asset(
+                                'asset/animation/empty.json',
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Text(
+                              'No items add yet!',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontSize: 30.sp),
+                            ),
+                            const Spacer(
+                              flex: 2,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

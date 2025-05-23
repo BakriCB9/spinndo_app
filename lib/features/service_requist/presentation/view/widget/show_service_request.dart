@@ -157,13 +157,10 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                             return ListView.builder(
                                 itemCount: list.length,
                                 itemBuilder: (context, index) {
-                                  // print(
-                                  //     'we print the data of card now my darling %%%%%%%%%%%%%%%%%%%%%%%% ${successState.data!.length} and the state is ${state}');
                                   return Card(
                                     color: theme.primaryColorDark,
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 10),
+                                      padding: const EdgeInsets.all(16),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -192,12 +189,17 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                                                       ),
                                                     ),
 
-                                              // Icon(
-                                              //   Icons.person,
-                                              //   color: theme.primaryColor,
-                                              // ),
-                                              Spacer(),
-                                              widget.userId != null
+                                              const SizedBox(width: 12),
+
+                                              Expanded(
+                                                child: Text(
+                                                  list[index].userName ?? '',
+                                                  style: theme.textTheme.bodyLarge!.copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Theme.of(context).primaryColorLight,
+                                                  ),
+                                                ),
+                                              ),                                              widget.userId != null
                                                   ? Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment.end,
@@ -223,7 +225,7 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                                                               }));
                                                             },
                                                             icon: const Icon(
-                                                                Icons.edit)),
+                                                                Icons.edit_outlined)),
                                                         IconButton(
                                                             onPressed: () {
                                                               showDialog(
@@ -250,7 +252,7 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                                                                               Navigator.of(context).pop();
                                                                             },
                                                                             child:
-                                                                                Text(localization.cancel, style: theme.textTheme.bodySmall!.copyWith(color: ColorManager.red))),
+                                                                                Text(localization.cancel, style: theme.textTheme.bodySmall!.copyWith(color: ColorManager.textColor))),
                                                                         TextButton(
                                                                             onPressed:
                                                                                 () {
@@ -260,14 +262,14 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                                                                             child:
                                                                                 Text(
                                                                               localization.ok,
-                                                                              style: theme.textTheme.bodySmall!.copyWith(color: ColorManager.green),
+                                                                              style: theme.textTheme.bodySmall!.copyWith(color: ColorManager.primary),
                                                                             )),
                                                                       ],
                                                                     );
                                                                   });
                                                             },
                                                             icon: const Icon(
-                                                                Icons.delete))
+                                                                Icons.delete_outline,color: ColorManager.grey))
                                                       ],
                                                     )
                                                   : const SizedBox()
@@ -275,117 +277,19 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                                               // Text()
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
-                                          Row(children: [
-                                            Icon(
-                                              Icons.person,
-                                              color: theme.primaryColor,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                '${list[index].userName}',
-                                                style: theme
-                                                    .textTheme.bodyMedium!
-                                                    .copyWith(fontSize: 30.sp),
-                                              ),
-                                            ),
-                                          ]),
-                                          const SizedBox(height: 10),
-                                          Row(
+                                          const SizedBox(height: 12),
+
+                                          Wrap(
+                                            runSpacing: 10,
                                             children: [
-                                              Icon(
-                                                Icons.info,
-                                                color: theme.primaryColor,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Text(
-                                                  '${list[index].title}',
-                                                  style: theme
-                                                      .textTheme.bodyMedium!
-                                                      .copyWith(
-                                                          fontSize: 30.sp),
-                                                ),
-                                              ),
+                                              _buildInfoRow(Icons.title, list[index].title, theme),
+                                              _buildInfoRow(Icons.description_outlined, list[index].desCription, theme),
+                                              _buildInfoRow(Icons.timelapse, list[index].status, theme),
+                                              _buildInfoRow(Icons.attach_money_sharp, list[index].price.toString(), theme),
+                                              _buildInfoRow(Icons.access_time_outlined, '${list[index].dayDuration} day', theme),
                                             ],
                                           ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.description,
-                                                color: theme.primaryColor,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Text(
-                                                  '${list[index].desCription}',
-                                                  style: theme
-                                                      .textTheme.bodyMedium!
-                                                      .copyWith(
-                                                          fontSize: 30.sp),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.timelapse,
-                                                color: theme.primaryColor,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Text(
-                                                  '${list[index].status}',
-                                                  style: theme
-                                                      .textTheme.bodyMedium!
-                                                      .copyWith(
-                                                          fontSize: 30.sp),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.attach_money_sharp,
-                                                color: theme.primaryColor,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Text(
-                                                  '${list[index].price}',
-                                                  style: theme
-                                                      .textTheme.labelSmall!
-                                                      .copyWith(
-                                                          fontSize: 25.sp),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                  Icons.access_time_filled),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                  child: Text(
-                                                '${list[index].dayDuration} day',
-                                                style:
-                                                    theme.textTheme.labelSmall,
-                                              ))
-                                            ],
-                                          ),
+
                                         ],
                                       ),
                                     ),
@@ -415,4 +319,20 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
       ),
     );
   }
+}
+Widget _buildInfoRow(IconData icon, String? text, ThemeData theme) {
+  return Row(
+    children: [
+      Icon(icon, color: theme.primaryColor, size: 20),
+      const SizedBox(width: 10),
+      Expanded(
+        child: Text(
+          text ?? '',
+          style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    ],
+  );
 }

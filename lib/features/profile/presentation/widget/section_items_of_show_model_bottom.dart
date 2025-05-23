@@ -5,8 +5,9 @@ typedef OnChooseType =void Function()?;
 class SectionItemsOfShowModelBottom extends StatelessWidget {
  final  String title;
  final  OnChooseType select;
-  
-  const SectionItemsOfShowModelBottom({required this.select,required this.title,super.key});
+ final IconData icon;
+
+  const SectionItemsOfShowModelBottom({required this.select, required this.icon,required this.title,super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +16,13 @@ class SectionItemsOfShowModelBottom extends StatelessWidget {
         GestureDetector(
           onTap: select,
           child: Container(
-            width: 100.w,
-            height: 100.h,
+            width: 150.w,
+            height: 150.h,
             decoration: BoxDecoration(
                 shape: BoxShape.circle, border: Border.all(color: Colors.grey)),
-            child: const Icon(
-              Icons.image_outlined,
+            child: Icon(
+             icon,
+              size: 30,
               color: ColorManager.primary,
             ),
           ),

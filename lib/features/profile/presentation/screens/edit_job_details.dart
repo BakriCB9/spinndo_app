@@ -1,5 +1,7 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/core/utils/validator.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/core/widgets/loading_indicator.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
@@ -50,17 +52,10 @@ class EditJobDetails extends StatelessWidget {
     return Container(
       decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              localization.editJobDetails,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            iconTheme: const IconThemeData(color: Colors.white),
-          ),
+
           body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
             if (cur is GetCategoryLoading ||
                 cur is GetCategoryError ||
@@ -85,14 +80,16 @@ class EditJobDetails extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 100.h),
+                      SizedBox(height: 70.h),
+                      CustomAppbar(appBarText: localization.editJobDetails),
+                      SizedBox(height: 70.h),
                       CustomTextFormField(
                         validator: (value) {
                           return Validator.hasMinLength(value)
                               ? null
                               : localization.nameLessThanTwo;
                         },
-                        icon: Icons.home_repair_service_sharp,
+                        icon: Icons.home_repair_service_outlined,
                         labelText: localization.titleService,
                         controller: profileCubit.serviceNameController,
                         onChanged: (value) {
@@ -116,7 +113,7 @@ class EditJobDetails extends StatelessWidget {
                               ? null
                               : localization.nameLessThanTwo;
                         },
-                        icon: Icons.description,
+                        icon: Icons.description_outlined,
                         labelText: localization.description,
                         controller: profileCubit.descriptionController,
                         onChanged: (value) {
@@ -151,7 +148,7 @@ class EditJobDetails extends StatelessWidget {
                                   profileCubit.descriptionController.text);
                         },
                       ),
-                      SizedBox(height: 50.h),
+                      SizedBox(height: 100.h),
                       BlocBuilder<ProfileCubit, ProfileStates>(
                         bloc: profileCubit,
                         builder: (context, state) {

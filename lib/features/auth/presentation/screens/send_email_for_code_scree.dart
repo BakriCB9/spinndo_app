@@ -91,6 +91,7 @@ class _SendEmailForCodeScreenState extends State<SendEmailForCodeScreen> {
                     }
                   },
                   child: ElevatedButton(
+
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           loginCubit.resendCode(

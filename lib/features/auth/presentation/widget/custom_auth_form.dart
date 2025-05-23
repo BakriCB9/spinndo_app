@@ -1,3 +1,4 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,17 +28,16 @@ class CustomAuthForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
-    final _drawerCubit = serviceLocator.get<DrawerCubit>();
+    final drawerCubit = serviceLocator.get<DrawerCubit>();
 
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
-          : null,
+        decoration: drawerCubit.themeMode == ThemeMode.dark
+            ? const BoxDecoration(
+          color: ColorManager.darkBg,)
+            : null,
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric( vertical: 20.h),
           child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -49,10 +49,13 @@ class CustomAuthForm extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Icon(
-                                Icons.arrow_back_sharp,
-                                color: Theme.of(context).primaryColorLight,
-                                size: 45.sp,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                child: Icon(
+                                  Icons.arrow_back_ios_rounded,
+                                  color: Theme.of(context).primaryColorLight,
+                                  size: 45.sp,
+                                ),
                               ))
                           : const SizedBox(),
                       const Spacer(),

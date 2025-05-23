@@ -1,4 +1,5 @@
 import 'package:app/core/di/service_locator.dart';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/routes/routes.dart';
 import 'package:app/core/utils/error_network_widget.dart';
 import 'package:app/core/widgets/cash_network.dart';
@@ -20,12 +21,12 @@ class GetMainCategoryScreen extends StatefulWidget {
 
 class _GetMainCategoryScreenState extends State<GetMainCategoryScreen> {
   late ServiceSettingCubit _serviceCubit;
-  late DrawerCubit _drawerCubit;
+  late DrawerCubit drawerCubit;
   @override
   void initState() {
     _serviceCubit = serviceLocator.get<ServiceSettingCubit>()
       ..getAllMainCategory();
-    _drawerCubit = serviceLocator.get<DrawerCubit>();
+    drawerCubit = serviceLocator.get<DrawerCubit>();
     super.initState();
   }
 
@@ -33,10 +34,9 @@ class _GetMainCategoryScreenState extends State<GetMainCategoryScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
     return Container(
-      decoration: _drawerCubit.themeMode == ThemeMode.dark
+     decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
         body: BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
