@@ -28,86 +28,91 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   @override
   Future<ClientProfileRespoonse> getClientProfile(
       int user_id, String user_token) async {
-    try {
-      // final String userToken = _authLocalDataSource.getToken();
-      // final int user_id = _authLocalDataSource.getUserId();
+    final response = await _dio.get(
+        '${ApiConstant.profilCelientEndPotint}/$user_id',
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $user_token"
+        }));
 
-      final response = await _dio.get(
-          '${ApiConstant.profilCelientEndPotint}/$user_id',
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $user_token"
-          }));
+    return ClientProfileRespoonse.fromJson(response.data);
 
-      return ClientProfileRespoonse.fromJson(response.data);
-    } catch (exciption) {
-      throw RemoteAppException("Failed to get client");
-    }
+    // try {
+    //   // final String userToken = _authLocalDataSource.getToken();
+    //   // final int user_id = _authLocalDataSource.getUserId();
+
+    // } catch (exciption) {
+    //   throw RemoteAppException("Failed to get client");
+    // }
   }
 
   @override
   Future<ProviderProfileResponse> getServiceProviderProfile(
       int user_id, String user_token) async {
-    try {
-      // final String userToken = _authLocalDataSource.getToken();
-      // final int user_id = _authLocalDataSource.getUserId();
-      // var userRole=_authLocalDataSource.getUserRole();
-      // print('the token is from api is ${user_token}');
-      // print('the user id is now ${user_id}');
+    final lang = _sharedPreferences.getString('language');
+    final response =
+        await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$user_id',
+            options: Options(headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $user_token",
+            }));
 
-      final lang = _sharedPreferences.getString('language');
-      final response = await _dio.get(
-          '${ApiConstant.profileServiceProviderEndPoint}/$user_id',
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $user_token",
-            "Accept-Language": '$lang'
-          }));
+    return ProviderProfileResponse.fromJson(response.data);
 
-      return ProviderProfileResponse.fromJson(response.data);
-    } catch (exciption) {
-      throw RemoteAppException("Failed to get client");
-    }
+    // try {
+    //   // final String userToken = _authLocalDataSource.getToken();
+    //   // final int user_id = _authLocalDataSource.getUserId();
+    //   // var userRole=_authLocalDataSource.getUserRole();
+    //   // print('the token is from api is ${user_token}');
+    //   // print('the user id is now ${user_id}');
+
+    // } catch (exciption) {
+    //   throw RemoteAppException("Failed to get client");
+    // }
   }
 
   @override
   Future<UpdateClientResponse> updateClientProfile(
       UpdateAccountProfile updateRequest) async {
-    try {
-      final userToken = sharedPref.getString(CacheConstant.tokenKey);
-      final response = await _dio.post(ApiConstant.updateClientProfile,
-          data: updateRequest.toJson(),
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $userToken"
-          }));
+    final userToken = sharedPref.getString(CacheConstant.tokenKey);
+    final response = await _dio.post(ApiConstant.updateClientProfile,
+        data: updateRequest.toJson(),
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $userToken"
+        }));
 
-      return UpdateClientResponse.fromJson(response.data);
-    } catch (e) {
-      throw RemoteAppException('Failed to update info');
-    }
+    return UpdateClientResponse.fromJson(response.data);
+    // try {
+
+    // } catch (e) {
+    //   throw RemoteAppException('Failed to update info');
+    // }
   }
 
   @override
   Future<UpdateProviderResponse> updateProviderProfile(
       UpdateProviderRequest updateRequest, int typeEdit) async {
-    try {
-      final userToken = sharedPref.getString(CacheConstant.tokenKey);
-      final response = await _dio.post(ApiConstant.updateProviderProfile,
-          data: typeEdit == 1
-              ? updateRequest.toJsonAccount()
-              : (typeEdit == 2
-                  ? updateRequest.toJsonJobDetails()
-                  : (updateRequest.toJsonDateTime())),
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $userToken"
-          }));
+    print('we stand in provider profile now ');
+    final userToken = sharedPref.getString(CacheConstant.tokenKey);
+    final response = await _dio.post(ApiConstant.updateProviderProfile,
+        data: typeEdit == 1
+            ? updateRequest.toJsonAccount()
+            : (typeEdit == 2
+                ? updateRequest.toJsonJobDetails()
+                : (updateRequest.toJsonDateTime())),
+        options: Options(headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $userToken"
+        }));
+    print('the data back from data source is ${response.data}');
+    return UpdateProviderResponse.fromJson(response.data);
 
-      return UpdateProviderResponse.fromJson(response.data);
-    } catch (e) {
-      throw RemoteAppException('Failed to Update info');
-    }
+    // try {
+
+    // } catch (e) {
+    //   throw RemoteAppException('Failed to Update info');
+    // }
   }
 
   @override
@@ -153,38 +158,40 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   @override
   Future<SocialMediaLinksResponse> addOrupdateLinkSocial(
       SocialMediaLinksRequest socialMediaLinksRequest) async {
-    try {
-      final userToken = sharedPref.getString(CacheConstant.tokenKey);
-      final userid = sharedPref.getInt(CacheConstant.userId);
+    final userToken = sharedPref.getString(CacheConstant.tokenKey);
+    final userid = sharedPref.getInt(CacheConstant.userId);
 
-      final response = await _dio.post(
-          '${ApiConstant.addOrupdateLinkSocial}/$userid',
-          options: Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $userToken"
-          }),
-          data: socialMediaLinksRequest.toJson());
-      return SocialMediaLinksResponse.fromJson(response.data);
-    } catch (e) {
-      throw RemoteAppException('Failed to add link of social');
-    }
-  }
-
-  @override
-  Future<String> deleteSocialLinks(int idOfSocial) async {
-    try {
-      final userToken = sharedPref.getString(CacheConstant.tokenKey);
-
-      final response = await _dio.delete(
-        '${ApiConstant.deleteSocialLinks}/$idOfSocial',
+    final response = await _dio.post(
+        '${ApiConstant.addOrupdateLinkSocial}/$userid',
         options: Options(headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $userToken"
         }),
-      );
-      return response.data["message"];
-    } catch (e) {
-      throw RemoteAppException('Failed to add link of social');
-    }
+        data: socialMediaLinksRequest.toJson());
+    return SocialMediaLinksResponse.fromJson(response.data);
+    // try {
+
+    // } catch (e) {
+    //   throw RemoteAppException('Failed to add link of social');
+    // }
+  }
+
+  @override
+  Future<String> deleteSocialLinks(int idOfSocial) async {
+    final userToken = sharedPref.getString(CacheConstant.tokenKey);
+
+    final response = await _dio.delete(
+      '${ApiConstant.deleteSocialLinks}/$idOfSocial',
+      options: Options(headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $userToken"
+      }),
+    );
+    return response.data["message"];
+    // try {
+
+    // } catch (e) {
+    //   throw RemoteAppException('Failed to add link of social');
+    // }
   }
 }

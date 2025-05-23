@@ -41,8 +41,9 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final clientResponse =
           await _profileRemoteDataSource.getClientProfile(user_id, user_token);
       return Right(clientResponse.data!);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -52,8 +53,9 @@ class ProfileRepositoryImpl extends ProfileRepository {
     try {
       final response = _profileLocalDataSource.getUserRole();
       return Right(response);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -64,8 +66,9 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final response =
           await _profileRemoteDataSource.updateClientProfile(updateRequest);
       return Right(response);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -73,11 +76,18 @@ class ProfileRepositoryImpl extends ProfileRepository {
   Future<Either<Failure, UpdateProviderResponse>> updateProviderProfile(
       UpdateProviderRequest updateRequest, int typeEdit) async {
     try {
+      print(
+          'the id of of user is $typeEdit and data is ${updateRequest.nameService} and descrp ${updateRequest.descriptionService} and web site is  ${updateRequest.websiteService} and category ${updateRequest.categoryIdService} and city ${updateRequest.cityNameService}');
       final response = await _profileRemoteDataSource.updateProviderProfile(
           updateRequest, typeEdit);
+
       return Right(response);
-    } on AppException catch (exception) {
-      return left(Failure(exception.message));
+    } catch (e) {
+      print('');
+      print('the eception is $e');
+      print('');
+      final exception = HandleException.exceptionType(e);
+      return left(Failure(exception));
     }
   }
 
@@ -88,13 +98,6 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final response = await _profileRemoteDataSource.addImagePhoto(iamge);
       // Convert the image to bytes
       final bytes = await iamge.readAsBytes();
-
-      // Convert bytes to Base64 string
-      //final base64String = base64Encode(bytes);
-      // _sharedPreferencesUtils.saveData(
-      //     key: CacheConstant.imagePhotoFromFile, value: base64String);
-      //await _profileLocalDataSource.imagePhoto(base64String);
-
       final directory = await getApplicationDocumentsDirectory();
       final filePath = '${directory.path}/bb';
       final file = File(filePath);
@@ -120,8 +123,9 @@ class ProfileRepositoryImpl extends ProfileRepository {
           user_id, user_token);
 
       return Right(response.data!);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -149,8 +153,9 @@ class ProfileRepositoryImpl extends ProfileRepository {
           .addOrupdateLinkSocial(socialMediaLinksRequest);
 
       return Right(response.data!.toAddOrUpdateSocialEntity());
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 
@@ -161,8 +166,9 @@ class ProfileRepositoryImpl extends ProfileRepository {
           await _profileRemoteDataSource.deleteSocialLinks(idOfSocial);
 
       return Right(response);
-    } on AppException catch (exception) {
-      return Left(Failure(exception.message));
+    } catch (e) {
+      final exception = HandleException.exceptionType(e);
+      return Left(Failure(exception));
     }
   }
 }

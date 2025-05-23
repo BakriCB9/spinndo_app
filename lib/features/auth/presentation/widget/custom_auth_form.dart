@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:app/core/di/service_locator.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomAuthForm extends StatelessWidget {
   CustomAuthForm({
@@ -23,21 +21,20 @@ class CustomAuthForm extends StatelessWidget {
   final bool hasTitle;
   final Widget child;
   final bool canBack;
-  final _authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
     final drawerCubit = serviceLocator.get<DrawerCubit>();
 
     return Container(
-        decoration: drawerCubit.themeMode == ThemeMode.dark
-            ? const BoxDecoration(
-          color: ColorManager.darkBg,)
-            : null,
+      decoration: drawerCubit.themeMode == ThemeMode.dark
+          ? const BoxDecoration(
+              color: ColorManager.darkBg,
+            )
+          : null,
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric( vertical: 20.h),
+          padding: EdgeInsets.symmetric(vertical: 20.h),
           child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -50,7 +47,8 @@ class CustomAuthForm extends StatelessWidget {
                                 Navigator.of(context).pop();
                               },
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
                                 child: Icon(
                                   Icons.arrow_back_ios_rounded,
                                   color: Theme.of(context).primaryColorLight,
@@ -59,36 +57,7 @@ class CustomAuthForm extends StatelessWidget {
                               ))
                           : const SizedBox(),
                       const Spacer(),
-                      // isGuest
-                      //     ? InkWell(
-                      //         onTap: () {
-                      //           // _authCubit.emailController.clear();
-                      //           // _authCubit.passwordController.clear();
-                      //           // _authCubit.firstNameContoller.clear();
-                      //           // _authCubit.lastNameContoller.clear();
-                      //           // _authCubit.passwordController.clear();
-                      //           // _authCubit.confirmPasswordController.clear();
-
-                      //           // Navigator.of(context).pushNamedAndRemoveUntil(
-                      //           //     ServiceScreen.routeName, (p) {
-
-                      //           //   return p.settings.name !=
-                      //           //       ServiceScreen.routeName||p.settings.name!=SignInScreen.routeName;
-                      //           // });
-                      // Navigator.of(context).pushNamedAndRemoveUntil(ServiceScreen.routeName, (p)=>false);
-
-                      // Navigator.of(context).pushReplacementNamed(
-                      //   ServiceScreen.routeName,
-                      // );
-                      //   navObserver.printRouts();
-                      //   print(
-                      //       'the current size is SignIn Scrfeeeeeeeeeeeeeeeeeeeeeeen ${navObserver.stackSize}');
-                      // },
-                      //     child: Text(localization.guest,
-                      //         style:
-                      //             Theme.of(context).textTheme.titleSmall),
-                      //   )
-                      // : const SizedBox(),
+                      
                     ],
                   ),
                   SizedBox(height: 80.h),

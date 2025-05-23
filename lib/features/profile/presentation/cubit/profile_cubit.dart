@@ -173,6 +173,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   void updateProviderProfile(int typeEdit) async {
     final updateRequest;
     if (typeEdit == 1) {
+      print('edit in 1 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
       updateRequest = UpdateProviderRequest(
         phoneNumber: phoneNumberController.text,
         firstNameAr: firstNameArEditController.text,
@@ -181,6 +182,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
         lastName: lastNameEditController.text,
       );
     } else if (typeEdit == 2) {
+      print('edit in 2 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
       updateRequest = UpdateProviderRequest(
           latitudeService: lat,
           longitudeService: long,
@@ -190,6 +192,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
           descriptionService: descriptionController.text,
           websiteService: webSiteController.text);
     } else {
+      print('edit in 3 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
       updateRequest = UpdateProviderRequest(listOfDay: dateSelect);
     }
     //

@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class UpdateProviderRequest {
   final String? firstName;
   final String? lastName;
@@ -44,17 +46,30 @@ class UpdateProviderRequest {
     };
   }
 
-  Map<String, dynamic> toJsonJobDetails() {
-    return {
+  toJsonJobDetails() {
+    print(
+        'the data is ${nameService} and description  is ${descriptionService} ');
+    return FormData.fromMap({
       "service": {
         "name": nameService,
         'description': descriptionService,
-        'latitude': latitudeService,
-        'longitude': longitudeService,
-        'category_id': categoryIdService
+        // 'latitude': latitudeService,
+        // 'longitude': longitudeService,
+        // 'category_id': categoryIdService
       },
-      '_method': 'PUT'
-    };
+      // '_method': 'PUT'
+    });
+
+    // {
+    //   "service": {
+    //     "name": nameService,
+    //     'description': descriptionService,
+    //     // 'latitude': latitudeService,
+    //     // 'longitude': longitudeService,
+    //     // 'category_id': categoryIdService
+    //   },
+    //   '_method': 'PUT'
+    // };
   }
 
   Map<String, dynamic> toJsonDateTime() {

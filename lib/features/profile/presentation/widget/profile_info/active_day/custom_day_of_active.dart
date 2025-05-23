@@ -39,7 +39,7 @@ class CustomDayActive extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelLarge),
             myId == userId
                 ? IconButton(
-                    onPressed: issAprrovid == false
+                    onPressed: issAprrovid == true
                         ? () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => WorkingSchedulePage(
@@ -140,13 +140,13 @@ class CustomDayActive extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30.h),
-                  Divider(color: Colors.grey, thickness: 0.2)
+                 const  Divider(color: Colors.grey, thickness: 0.2)
                 ],
               )))
               .toList(),
         ),
         SizedBox(height: 50.h),
-        Divider(color: Colors.grey, thickness: 0.2)
+      const  Divider(color: Colors.grey, thickness: 0.2)
       ],
     );
   }

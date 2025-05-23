@@ -184,8 +184,6 @@ import 'package:app/features/service/domain/use_cases/get_notifications.dart'
     as _i302;
 import 'package:app/features/service/domain/use_cases/get_services.dart'
     as _i590;
-import 'package:app/features/service/presentation/cubit/service_cubit.dart'
-    as _i254;
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart'
     as _i225;
 import 'package:app/features/service_requist/data/dataSource/remote/service_request_remote_dataSouce_impl.dart'
@@ -279,7 +277,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i306.RemoteDatasource>(),
           gh<_i460.SharedPreferences>(),
         ));
-    gh.singleton<_i856.AuthRemoteDataSource>(() => _i27.AuthAPIRemoteDataSource(
+    gh.factory<_i856.AuthRemoteDataSource>(() => _i27.AuthAPIRemoteDataSource(
           gh<_i361.Dio>(),
           gh<_i279.SharedPreferencesUtils>(),
         ));
@@ -430,14 +428,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i35.AddServiceRequestUseCase>(),
           gh<_i457.UpdateServiceRequestUseCase>(),
           gh<_i600.DeleteServiceRequestUseCase>(),
-        ));
-    gh.singleton<_i254.ServiceCubit>(() => _i254.ServiceCubit(
-          gh<_i590.GetServicesUseCase>(),
-          gh<_i538.GetCountriesUseCase>(),
-          gh<_i779.GetCategoriesUseCase>(),
-          gh<_i302.GetNotificationsUseCase>(),
-          gh<_i762.GetAllDiscountUseCase>(),
-          gh<_i785.GetMainCategoryUseCase>(),
         ));
     gh.lazySingleton<_i649.DrawerCubit>(() => _i649.DrawerCubit(
           changePasswordUseCase: gh<_i35.ChangePasswordUseCase>(),

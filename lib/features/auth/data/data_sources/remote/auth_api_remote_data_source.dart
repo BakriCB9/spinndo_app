@@ -20,7 +20,7 @@ import '../../models/login_response.dart';
 import '../../models/register_request.dart';
 import 'auth_remote_data_source.dart';
 
-@Singleton(as: AuthRemoteDataSource)
+@Injectable(as: AuthRemoteDataSource)
 class AuthAPIRemoteDataSource implements AuthRemoteDataSource {
   final Dio _dio;
   final SharedPreferencesUtils? _sharedPreferencesUtils;

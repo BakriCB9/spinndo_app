@@ -67,7 +67,7 @@ class UserAccount extends StatelessWidget {
                     ))
                 : userId == myId
                     ? IconButton(
-                        onPressed: isApprovid == false
+                        onPressed: isApprovid == true
                             ? () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
