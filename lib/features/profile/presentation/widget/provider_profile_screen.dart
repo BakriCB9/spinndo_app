@@ -112,7 +112,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     profileCubit: _profileCubit,
                       listOfSoicalFromApi: widget.providerProfile.socialLinks,
                       providerId: widget.providerProfile.id!,
-                    issAprrovid: widget.providerProfile.details!.isApproved,
+                    isApproved: widget.providerProfile.details!.isApproved,
                   )
 
                   //TODO:

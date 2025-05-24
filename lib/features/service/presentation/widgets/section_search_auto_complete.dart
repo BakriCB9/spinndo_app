@@ -5,8 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
 
 import 'package:app/core/di/service_locator.dart';
-
-import 'package:app/features/service/presentation/cubit/service_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -104,45 +102,42 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
       optionsViewBuilder: (context, onSelected, options) {
         return Align(
           alignment: Alignment.topLeft,
-          child: Material(
-            elevation: 2,
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: options.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final option = options.elementAt(index);
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorDark,
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: options.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final option = options.elementAt(index);
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 0.w),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.circular(16.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).shadowColor,
+                      blurRadius: 6,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  title: Text(
+                    option,
+                    style: theme.bodyMedium!.copyWith(
+                      fontSize: 27.sp,
+                      color: ColorManager.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: () => onSelected(option),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).shadowColor,
-                        blurRadius: 6,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
                   ),
-                  child: ListTile(
-                    title: Text(
-                      option,
-                      style: theme.bodyMedium!.copyWith(
-                        fontSize: 27.sp,
-                        color: ColorManager.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onTap: () => onSelected(option),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    hoverColor: Colors.amber.withOpacity(0.2),
-                  ),
-                );
-              },
-            ),
+                  hoverColor: Colors.amber.withOpacity(0.2),
+                ),
+              );
+            },
           ),
         );
       },
@@ -198,6 +193,9 @@ class _CancelException implements Exception {
 }
 
 Future<Iterable<String>?> _search(String query) async {
+  if (query.trim().isEmpty) {
+    return [];
+  }
   print(
       'we are in shared prefrence now **********************************************');
   final Dio _dio = serviceLocator.get<Dio>();

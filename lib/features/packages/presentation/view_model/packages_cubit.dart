@@ -89,14 +89,24 @@ class PackagesCubit extends Cubit<PackagesState> {
 
   SubscribeModel createSubscribeModel(PackageModel package, int userId) {
     return SubscribeModel(
-      id: 0, // عادةً لما بتعمل اشتراك جديد ما بيكون له id، السيرفر بيرجعه بعدين
+      id: 0,
       userId: userId,
-      packageId: package.id ?? 0, // إذا package.id ممكن يكون null ضمنت الصفر بداله
-      startDate: '', // بتعبيه حسب حاجتك أو بوقت الارسال
-      endDate: '',   // نفس الشي
-      status: 'active', // أو أي حالة أنت معتمدها
+      packageId: package.id ?? 0,
+      startDate: '',
+      endDate: '',
+      status: 'active',
     );
   }
+
+  bool isUserSubscribed(int userId) {
+    if (state is PackagesSuccess) {
+      final packages = (state as PackagesSuccess).packages;
+      return packages.any((pkg) => pkg?.is_subscribed == true);
+    }
+    return false;
+  }
+
+
 
 
 }

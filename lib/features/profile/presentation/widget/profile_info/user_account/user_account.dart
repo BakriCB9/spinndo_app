@@ -1,5 +1,6 @@
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/font_manager.dart';
+import 'package:app/features/packages/presentation/view_model/packages_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/utils/ui_utils.dart';
@@ -7,6 +8,7 @@ import 'package:app/core/utils/ui_utils.dart';
 import 'package:app/features/profile/presentation/screens/edit_user_account.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,6 +23,7 @@ class UserAccount extends StatelessWidget {
   final String typeAccount;
   final String phoneNumber;
   final int? userId;
+
   const UserAccount({
     this.userId,
     required this.phoneNumber,
@@ -36,17 +39,34 @@ class UserAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final localization = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-
     final myId = sharedPref.getInt(CacheConstant.userId);
+
+    final packagesCubit = context.read<PackagesCubit>();
+    final isSubscribed = packagesCubit.isUserSubscribed(myId!);
+
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("${firstName} ${lastName} / ${firstNameAr} ${lastNameAr}",
-                style: theme.textTheme.labelLarge!.copyWith(fontSize: FontSize.s20)),
+            Row(
+              children: [
+                Text("${firstName} ${lastName} / ${firstNameAr} ${lastNameAr}",
+                    style: theme.textTheme.labelLarge!.copyWith(fontSize: FontSize.s20)),
+                if (isSubscribed)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Icon(
+                      Icons.verified,
+                      color: ColorManager.primary,
+                      size: 20,
+                    ),
+                  ),
+              ],
+            ),
             typeAccount == 'Client'
                 ? IconButton(
                     onPressed: () {
