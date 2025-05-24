@@ -19,7 +19,6 @@ class CustomAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final drawerCubit = serviceLocator.get<DrawerCubit>();
-    final isDarkMode = drawerCubit.themeMode == ThemeMode.dark;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,

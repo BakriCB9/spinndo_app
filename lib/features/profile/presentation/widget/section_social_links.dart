@@ -3,6 +3,7 @@ import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
 import 'package:app/features/profile/domain/entities/provider_profile_social_links.dart';
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
@@ -35,6 +36,7 @@ class _SectionSocialLinksState extends State<SectionSocialLinks> {
 
   @override
   Widget build(BuildContext context) {
+
     return myid != widget.providerId
         ? (widget.listOfSoicalFromApi!.isNotEmpty
         ? Expanded(
@@ -327,8 +329,9 @@ class ShowSocialLinksForUsers extends StatelessWidget {
 class SectionBodySheetAddLink extends StatefulWidget {
   final List<String> listofSocialAvailable;
   final ProfileCubit profileCubit;
+  final drawerCubit = serviceLocator.get<DrawerCubit>();
 
-  const SectionBodySheetAddLink({
+   SectionBodySheetAddLink({
     required this.listofSocialAvailable,
     required this.profileCubit,
     super.key,
@@ -340,6 +343,7 @@ class SectionBodySheetAddLink extends StatefulWidget {
 
 class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
   late Map<String, TextEditingController> controllers;
+
 
   @override
   void initState() {
@@ -421,6 +425,8 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = widget.drawerCubit.themeMode == ThemeMode.dark;
+
     return BlocListener<ProfileCubit, ProfileStates>(
       bloc: widget.profileCubit,
       listener: (context, state) {
@@ -451,7 +457,7 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   decoration: BoxDecoration(
                     color: controller.text.isNotEmpty
-                        ? color.withOpacity(0.15)
+                        ? color.withOpacity(0.80)
                         : Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -469,9 +475,11 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
                           ),
                           style: Theme.of(context).textTheme.displayMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: controller.text.isNotEmpty
+                            color: isDarkMode?
+                            (   controller.text.isNotEmpty? ColorManager.white2:ColorManager.grey3):
+                            controller.text.isNotEmpty
                                 ? color.darken(0.2)
-                                : Colors.black,
+                                : Colors.grey,
                           ),
                           onChanged: (_) => setState(() {}),
                         ),
@@ -480,7 +488,7 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.check, color: color),
+                              icon: Icon(Icons.check, color: Colors.lightGreen),
                               onPressed: () => onSave(platform),
                             ),
                             IconButton(

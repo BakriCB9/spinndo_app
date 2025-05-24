@@ -242,8 +242,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                     if (state is PackagesLoading) {
                       return Center(child: CircularProgressIndicator());
                     } else if (state is PackagesSuccess) {
-                      return ListView.builder(
-                        padding: EdgeInsets.all(12),
+                      return ListView.separated(
                         itemCount: state.packages.length,
                         itemBuilder: (context, index) {
                           final package = state.packages[index];
@@ -260,7 +259,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 margin: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 16),
+                                    vertical: 10, horizontal: 30),
                                 child: Container(
 
                                   padding: const EdgeInsets.all(20),
@@ -517,12 +516,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                           "\$${package?.price.toStringAsFixed(0)}",
                                           style: TextStyle(fontSize: 27),
                                         ),
-                                        Text(
-                                            "per month",
-                                            style:Theme.of(context)
-                                                .textTheme
-                                                .labelMedium!
-                                        ),
+
                                       ],
                                     ),
                                   ),
@@ -531,6 +525,9 @@ class _PackagesScreenState extends State<PackagesScreen> {
                           );
 
 
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 150.h);
                         },
                       );
                     } else if (state is PackagesError) {

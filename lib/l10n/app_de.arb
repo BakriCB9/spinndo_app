@@ -169,7 +169,9 @@
   "notSubscribedToThisPackage": "Sie sind für dieses Paket nicht abonniert",
   "yourSubscriptionIsActive": "Dein Abonnement ist aktiv",
   "editPrincipalInfo": "Hauptinformationen Bearbeiten",
-  "serviceRequests": "Serviceanfragen"
+  "serviceRequests": "Serviceanfragen",
+  "day": "Tag"
+
 }
 
 

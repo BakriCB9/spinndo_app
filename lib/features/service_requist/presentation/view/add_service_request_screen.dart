@@ -159,7 +159,7 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
                       },
                       keyboardType: const TextInputType.numberWithOptions(),
                       controller: _serviceRequestCubit.durationController,
-                      labelText: localization.entertheDuration,
+                      labelText: "${localization.duration} / ${localization.day}",
                     ),
                     const SizedBox(height: 50),
                     SizedBox(

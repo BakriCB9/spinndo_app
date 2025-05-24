@@ -201,5 +201,7 @@
   "yourSubscriptionIsActive": "اشتراكك فعّال",
   "notSubscribedToThisPackage": "أنت غير مشترك في هذه الباقة",
   "editPrincipalInfo": "تعديل المعلومات الرئيسية",
-  "serviceRequests": "طلبات الخدمة"
+  "serviceRequests": "طلبات الخدمة",
+  "day": "يوم"
+
 }

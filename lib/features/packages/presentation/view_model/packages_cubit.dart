@@ -10,6 +10,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/error/apiResult.dart';
 import '../../domain/usecase/get_all_packages_usecase.dart';
 import 'packages_state.dart';
+import 'package:uuid/uuid.dart';
+
 
 @injectable
 class PackagesCubit extends Cubit<PackagesState> {
@@ -87,6 +89,7 @@ class PackagesCubit extends Cubit<PackagesState> {
     }
   }
 
+  final uuid = Uuid();
   SubscribeModel createSubscribeModel(PackageModel package, int userId) {
     return SubscribeModel(
       id: 0,

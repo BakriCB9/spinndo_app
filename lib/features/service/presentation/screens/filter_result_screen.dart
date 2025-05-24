@@ -1,3 +1,4 @@
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/error_network_widget.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/google_map/domain/entity/marker_location.dart';
@@ -70,8 +71,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("asset/images/bg.png"), fit: BoxFit.fill))
+        color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
           body: SafeArea(
@@ -96,7 +96,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                   ValueNotifier(list.data);
 
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
                     child: Column(
                       children: [
                         SectionHeaderResultFilter(services: listOfService),

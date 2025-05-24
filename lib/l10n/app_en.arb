@@ -205,5 +205,6 @@
   "yourSubscriptionIsActive": "Subscribe",
   "editPrincipalInfo": "editPrincipalInfo",
   "notSubscribedToThisPackage": "UnSubscribe",
-  "serviceRequests": "Service Requests"
+  "serviceRequests": "Service Requests",
+  "day": "Day"
 }
