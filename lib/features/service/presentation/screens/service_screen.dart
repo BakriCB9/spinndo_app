@@ -66,7 +66,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
           drawer: CustomDrawer(),
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              padding: EdgeInsets.all(20.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

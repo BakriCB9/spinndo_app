@@ -42,67 +42,65 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ): null,
       child: Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-            child: Column(
-              children: [
-                CustomAppbar(appBarText: localization.notifications,),
-                SizedBox(height: 40.h),
-                BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
-                    bloc: _serviceCubit,
-                    builder: (context, state) {
-                      if (state.getAllNotificationState is BaseLoadingState) {
-                        return const Expanded(
-                          child: Center(
-                            child: LoadingIndicator(ColorManager.primary),
-                          ),
-                        );
-                      } else if (state.getAllNotificationState
-                          is BaseErrorState) {
-                        return Expanded(
-                          child: ErrorNetworkWidget(
-                              message: (state.getAllNotificationState
-                                      as BaseErrorState)
-                                  .error!,
-                              onTap: () {
-                                _serviceCubit.getAllNotification();
+          child: Column(
+            children: [
+
+              CustomAppbar(appBarText: localization.notifications,),
+              SizedBox(height: 40.h),
+              BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
+                  bloc: _serviceCubit,
+                  builder: (context, state) {
+                    if (state.getAllNotificationState is BaseLoadingState) {
+                      return const Expanded(
+                        child: Center(
+                          child: LoadingIndicator(ColorManager.primary),
+                        ),
+                      );
+                    } else if (state.getAllNotificationState
+                        is BaseErrorState) {
+                      return Expanded(
+                        child: ErrorNetworkWidget(
+                            message: (state.getAllNotificationState
+                                    as BaseErrorState)
+                                .error!,
+                            onTap: () {
+                              _serviceCubit.getAllNotification();
+                            }),
+                      );
+                    } else if (state.getAllNotificationState
+                        is BaseSuccessState) {
+                      final listNotification = (state.getAllNotificationState
+                              as BaseSuccessState<List<Notifications>>)
+                          .data;
+                      return Expanded(
+                        child: AnimationLimiter(
+                          child: ListView.builder(
+                              itemCount: listNotification!.length,
+                              itemBuilder: (context, index) {
+                                return listNotification.isEmpty
+                                    ? Center(
+                                        child: Row(
+                                          children: [
+                                            Text(localization
+                                                .noNotificationRecived),
+                                            SizedBox(width: 10.w),
+                                            const Icon(Icons.error_outline)
+                                          ],
+                                        ),
+                                      )
+                                    : SectionCardOfNotification(
+                                        index: index,
+                                        notificationItem:
+                                            listNotification[index],
+                                      );
                               }),
-                        );
-                      } else if (state.getAllNotificationState
-                          is BaseSuccessState) {
-                        final listNotification = (state.getAllNotificationState
-                                as BaseSuccessState<List<Notifications>>)
-                            .data;
-                        return Expanded(
-                          child: AnimationLimiter(
-                            child: ListView.builder(
-                                itemCount: listNotification!.length,
-                                itemBuilder: (context, index) {
-                                  return listNotification.isEmpty
-                                      ? Center(
-                                          child: Row(
-                                            children: [
-                                              Text(localization
-                                                  .noNotificationRecived),
-                                              SizedBox(width: 10.w),
-                                              const Icon(Icons.error_outline)
-                                            ],
-                                          ),
-                                        )
-                                      : SectionCardOfNotification(
-                                          index: index,
-                                          notificationItem:
-                                              listNotification[index],
-                                        );
-                                }),
-                          ),
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
-              ],
-            ),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
+            ],
           ),
         ),
       ),

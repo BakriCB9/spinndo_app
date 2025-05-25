@@ -15,6 +15,8 @@ class UpdateProviderRequest {
   final String? lastNameAr;
   List<DateSelect>? listOfDay;
   final String? phoneNumber;
+  final String? email;
+
   // final File certificate;
   // final List<File> images;
 
@@ -24,6 +26,7 @@ class UpdateProviderRequest {
       this.firstNameAr,
       this.lastNameAr,
       this.phoneNumber,
+      this.email,
       //  this.certificate,
       // this.images,
       this.listOfDay,
@@ -35,6 +38,7 @@ class UpdateProviderRequest {
       this.websiteService,
       this.longitudeService,
       this.latitudeService});
+
   Map<String, dynamic> toJsonAccount() {
     return {
       "first_name": firstName,
@@ -42,6 +46,7 @@ class UpdateProviderRequest {
       "first_name_ar": firstNameAr,
       "last_name_ar": lastNameAr,
       "phone": phoneNumber,
+      "email":email,
       '_method': 'PUT',
     };
   }
@@ -60,16 +65,6 @@ class UpdateProviderRequest {
       // '_method': 'PUT'
     });
 
-    // {
-    //   "service": {
-    //     "name": nameService,
-    //     'description': descriptionService,
-    //     // 'latitude': latitudeService,
-    //     // 'longitude': longitudeService,
-    //     // 'category_id': categoryIdService
-    //   },
-    //   '_method': 'PUT'
-    // };
   }
 
   Map<String, dynamic> toJsonDateTime() {
@@ -95,11 +90,13 @@ class DateSelect {
   String? start;
   String? end;
   bool arrowSelect;
+
   DateSelect(
       {required this.day,
       this.start,
       this.end,
       this.daySelect = false,
       this.arrowSelect = true});
+
   Map<String, String?> toJson() => {"day": day, "start": start, "end": end};
 }

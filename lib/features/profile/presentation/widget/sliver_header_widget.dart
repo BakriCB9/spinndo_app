@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final Size size;
@@ -40,7 +41,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: EdgeInsets.all(30.w),
                       child: Container(
                         child: InkWell(
                           onTap: () {

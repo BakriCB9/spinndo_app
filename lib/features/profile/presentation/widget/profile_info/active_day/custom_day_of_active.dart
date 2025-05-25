@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/resources/font_manager.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,11 +19,13 @@ import 'box_of_from_to.dart';
 class CustomDayActive extends StatelessWidget {
   final int userId;
   final bool issAprrovid;
+  final bool isOpen;
   final List<ProviderPriofileWorkingday> listOfworkday;
   const CustomDayActive(
       {required this.listOfworkday,
       required this.userId,
       required this.issAprrovid,
+      required this.isOpen,
       super.key});
 
   @override
@@ -65,6 +70,8 @@ class CustomDayActive extends StatelessWidget {
               padding: EdgeInsets.only(top: 30.h),
               child: drawerCubit.languageCode == 'en'
                   ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                 children: [
                   Expanded(
                     child: Align(
@@ -73,22 +80,21 @@ class CustomDayActive extends StatelessWidget {
                         fit: BoxFit.scaleDown,
                         child: Text(e.day!,
                             style: theme.textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w600,color: Theme.of(context).primaryColorLight)),
+                                fontWeight: FontWeight.w700,color: Theme.of(context).primaryColorLight)),
                       ),
                     ),
                   ),
-                  SizedBox(width: 30.w),
                   Expanded(
                       flex: 4,
                       child: Row(
                         children: [
-                          Text('From',style: Theme.of(context).textTheme.labelMedium),
+                          Text('From',style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13)),
 
                           BoxFromDateToDate(
                             time: ' ${e.start} ',
                             type: 1,
                           ),
-                          Text('AM',style: Theme.of(context).textTheme.labelMedium),
+                          Text('am',style: Theme.of(context).textTheme.labelMedium),
 
                           SizedBox(
                             width: 50.w,
@@ -99,7 +105,7 @@ class CustomDayActive extends StatelessWidget {
                             time: ' ${e.end} ',
                             type: 1,
                           ),
-                          Text('PM',style: Theme.of(context).textTheme.labelMedium),
+                          Text('pm',style: Theme.of(context).textTheme.labelMedium),
 
                         ],
                       )
@@ -107,24 +113,33 @@ class CustomDayActive extends StatelessWidget {
                 ],
               )
                   : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
                       flex: 4,
                       child: Row(
                         children: [
-                          Expanded(
-                              child: BoxFromDateToDate(
-                                time: 'To ${e.end} Pm',
-                                type: 2,
-                              )),
-                          SizedBox(
-                            width: 10.w,
+
+
+                          Text('pm',style: Theme.of(context).textTheme.labelMedium),
+
+                          BoxFromDateToDate(
+                            time: ' ${e.end} ',
+                            type: 1,
                           ),
-                          Expanded(
-                              child: BoxFromDateToDate(
-                                time: 'From ${e.start} Am',
-                                type: 1,
-                              )),
+                          Text('To',style: Theme.of(context).textTheme.labelMedium),
+                          SizedBox(
+                            width: 50.w,
+                          ),
+                          Text('am',style: Theme.of(context).textTheme.labelMedium),
+
+                          BoxFromDateToDate(
+                            time: ' ${e.start} ',
+                            type: 1,
+                          ),
+                          Text('From',style: Theme.of(context).textTheme.labelMedium),
+
+
                         ],
                       )),
                   Expanded(
@@ -146,7 +161,28 @@ class CustomDayActive extends StatelessWidget {
               .toList(),
         ),
         SizedBox(height: 50.h),
-      const  Divider(color: Colors.grey, thickness: 0.2)
+        Row(
+          children: [
+            const Icon(Icons.location_on_outlined),
+            SizedBox(
+              width: 20.w,
+            ),
+            Text(
+               isOpen
+                    ? 'Open Now'
+                    : 'Close Now',
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(
+                    color:  isOpen
+                        ? Colors.green
+                        : Colors.red)),
+          ],
+        ),
+        SizedBox(height: 50.h),
+
+        const  Divider(color: Colors.grey, thickness: 0.2)
       ],
     );
   }

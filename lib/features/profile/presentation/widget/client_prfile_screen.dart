@@ -73,7 +73,6 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     typeAccount: typeAccount!,
                     firstName: widget.clientProfile.firstName,
                     lastName: widget.clientProfile.lastName,
-                    email: widget.clientProfile.email,
                   ),
                   const SizedBox(height: 20),
                   BlocListener<AuthCubit, AuthState>(

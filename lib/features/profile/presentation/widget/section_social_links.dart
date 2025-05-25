@@ -200,7 +200,7 @@ class _ShowSocialLinksForMyProfileWithOptionsState
                                       url: e.url!);
                                 });
                           },
-                          icon: const Icon(Icons.edit)),
+                          icon: const Icon(Icons.edit_outlined)),
                       BlocListener<ProfileCubit, ProfileStates>(
                           listener: (context, state) {
                             if (state is DeleteSocialLinkLoading) {

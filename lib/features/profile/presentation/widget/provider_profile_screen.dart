@@ -1,12 +1,17 @@
+import 'package:app/core/const_variable.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/resources/color_manager.dart';
 
 import 'package:app/core/utils/app_shared_prefrence.dart';
+import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/features/profile/data/models/social_media_link/social_media_links_request.dart';
 
 import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 
 import 'package:app/features/profile/presentation/widget/section_social_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,6 +23,8 @@ import 'package:app/features/profile/presentation/widget/profile_info/job_items/
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
 
 import 'package:app/features/profile/presentation/widget/sliver_header_widget.dart';
+
+import 'protofile_and_diploma/custom_diploma_and_protofile.dart';
 
 class ProviderProfileScreen extends StatefulWidget {
   final ProviderProfile providerProfile;
@@ -81,7 +88,6 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                     isApprovid: widget.providerProfile.details!.isApproved,
                     firstName: widget.providerProfile.firstName!,
                     lastName: widget.providerProfile.lastName!,
-                    email: widget.providerProfile.email!,
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
@@ -102,11 +108,24 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 10.h),
                   CustomDayActive(
+                    isOpen:widget.providerProfile.details!.isopen!,
                     userId: widget.providerProfile.id!,
                     issAprrovid: widget.providerProfile.details!.isApproved,
                     listOfworkday: widget.providerProfile.details!.workingDays!,
                   ),
+
                   SizedBox(height: 30.h),
+
+                  CustomDiplomaAndProtofile(
+                    isApprovid: widget.providerProfile.details!.isApproved,
+                    userId: widget.providerProfile.id!,
+                    imageCertificate:
+                    widget.providerProfile.details?.certificatePath ??
+                        listImage[0],
+                    images: widget.providerProfile.details?.images ?? [],
+                  ),
+                  SizedBox(height: 20.h),
+
 
                   SectionSocialLinks(
                     profileCubit: _profileCubit,

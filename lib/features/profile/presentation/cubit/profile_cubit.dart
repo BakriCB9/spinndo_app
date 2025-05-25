@@ -158,7 +158,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
     }, (data) {
       providerProfile = ProviderProfile(
           id: data.id,
-          email: data.email,
           firstName: data.firstName,
           imagePath: data.imagePath,
           lastName: data.lastName,
@@ -242,7 +241,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
         firstNameAr: firstNameArEditController.text,
         lastNameAr: lastNameArEditController.text,
         firstName: firstNameEditController.text,
-        lastName: lastNameEditController.text);
+        lastName: lastNameEditController.text,
+    );
     emit(UpdateLoading());
     final result = await _updateClientProfile(updateRequest);
     result.fold((failure) => emit(UpdateError(failure.message)),
@@ -267,7 +267,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
         curFirst == newFirst &&
         curFirstAr == newFirstAr &&
         curLast == newLast &&
-        curLastAr == newLastAr) {
+        curLastAr == newLastAr
+    ) {
       emit(IsNotUpdated());
     } else {
       emit(IsUpdated());

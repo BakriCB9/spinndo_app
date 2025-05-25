@@ -227,14 +227,15 @@ class _PackagesScreenState extends State<PackagesScreen> {
     return Container(
       decoration:
       isDarkMode ? const BoxDecoration(color: ColorManager.darkBg) : null,
-      child: SafeArea(
-        child: Scaffold(
-          body: Column(
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 30.h),
-              CustomAppbar(appBarText: localization.packages),
-              SizedBox(height:120.h),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomAppbar(appBarText: localization.packages),
+              ),
 
               Expanded(
                 child: BlocBuilder<PackagesCubit, PackagesState>(
@@ -538,7 +539,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                           children: [
                             SizedBox(height: 20.h,),
                             CustomAppbar(appBarText: localization.fav,),
-
+                
                             const Spacer(),
                             SizedBox(
                               height: size.height / 3.5,

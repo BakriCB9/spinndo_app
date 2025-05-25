@@ -79,13 +79,31 @@ class CustomDescription extends StatelessWidget {
                 : const SizedBox()
           ],
         ),
-        SizedBox(height: 30.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/globe.svg',
+              width: 24,
+              height: 24,
+              colorFilter:const  ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            Text(
+                '${webSite??'/'}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
         Row(
           children: [
             SvgPicture.asset(
               'asset/icons/work.svg',
-              width: 28,
-              height: 28,
+              width: 25,
+              height: 26,
               colorFilter:const  ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
@@ -115,7 +133,7 @@ class CustomDescription extends StatelessWidget {
             SvgPicture.asset(
               'asset/icons/location.svg',
               width: 26,
-              height: 26,
+              height: 25,
               colorFilter:const  ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
@@ -134,7 +152,7 @@ class CustomDescription extends StatelessWidget {
             SvgPicture.asset(
               'asset/icons/description.svg',
               width: 26,
-              height: 26,
+              height: 25,
               colorFilter:const  ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
@@ -145,7 +163,7 @@ class CustomDescription extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 10.h,
+          height: 20.h,
         ),
         SizedBox(height: 30.h),
        const  Divider(color: Colors.grey, thickness: 0.2)
