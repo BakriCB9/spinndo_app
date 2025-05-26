@@ -273,6 +273,7 @@ class _GoogleMapMarkerState extends State<GoogleMapMarker> {
   }
 
   initMarkers() {
+    final localization = AppLocalizations.of(context)!;
     markers = markerLocationData.map((e) {
       return Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(e.color),
@@ -280,7 +281,7 @@ class _GoogleMapMarkerState extends State<GoogleMapMarker> {
         infoWindow: InfoWindow(title: e.name),
         onTap: () {
           if (isLogIn() == null) {
-            UIUtils.showMessage("You have to Sign in first");
+            UIUtils.showMessage(localization.youHaveToSignFirst);
             return;
           }
           Navigator.of(context).push(

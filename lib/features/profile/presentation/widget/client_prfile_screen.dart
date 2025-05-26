@@ -13,6 +13,8 @@ import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/profile/domain/entities/client_profile.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/user_account/user_account.dart';
 import 'package:app/features/profile/presentation/widget/sliver_header_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ClientProfileScreen extends StatefulWidget {
   final ClientProfile clientProfile;
@@ -25,10 +27,10 @@ class ClientProfileScreen extends StatefulWidget {
 final ScrollController _control = ScrollController();
 
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
-  final _drawerCubit = serviceLocator.get<DrawerCubit>();
   final _authCubit = serviceLocator.get<AuthCubit>();
   final _sharedPreferencesUtils = serviceLocator.get<SharedPreferencesUtils>();
   final drawerCubit = serviceLocator.get<DrawerCubit>();
+
 
   int? myid;
   String? typeAccount;
@@ -43,6 +45,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final localization = AppLocalizations.of(context)!;
+
     return Container(
       decoration:
       drawerCubit.themeMode == ThemeMode.dark ? const BoxDecoration(color: ColorManager.darkBg) : null,
@@ -101,7 +105,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                           // }));
                         },
                         child: Text(
-                          'Updgrade account',
+                          localization.upgradedAccount,
                           style: Theme.of(context)
                               .textTheme
                               .labelLarge!

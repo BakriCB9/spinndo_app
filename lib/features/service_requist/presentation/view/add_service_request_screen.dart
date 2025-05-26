@@ -191,7 +191,7 @@ class _AddServiceRequestScreenState extends State<AddServiceRequestScreen> {
                               state.updateServiceState is BaseSuccessState) {
                             UIUtils.hideLoading(context);
 
-                            UIUtils.showMessage('Successs');
+                            UIUtils.showMessage('${localization.success}!');
                             Navigator.of(context).pop();
                           }
                         },

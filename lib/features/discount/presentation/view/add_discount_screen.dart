@@ -52,7 +52,7 @@ class DiscountScreen extends StatelessWidget {
                              if (value == null || value.isEmpty) {
                                return localization.discountRequired;
                              } else if (int.parse(value) > 100) {
-                               return "it must be less than 100";
+                               return localization.discountPercentageLess100;
                              }
                              return null;
                            },

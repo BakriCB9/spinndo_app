@@ -96,26 +96,3 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
-
-
- // BlocBuilder<ProfileCubit,
-                                                //         ProfileStates>(
-                                                //     builder: (context, state) {
-                                                //   return (imagePhotoGallery !=
-                                                //               null) ||
-                                                //           (imagePhotoLogin !=
-                                                //               null)
-                                                //       ? IconButton(
-                                                //           icon: const Icon(
-                                                //               Icons.delete),
-                                                //           onPressed: () {
-                                                //             Navigator.of(
-                                                //                     context)
-                                                //                 .pop();
-                                                //             _profileCubit
-                                                //                 .deleteImage();
-                                                //           },
-                                                //         )
-                                                //       : const SizedBox();
-                                                //   //    : const SizedBox();
-                                                // })

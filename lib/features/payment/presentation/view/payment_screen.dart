@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/core/resources/color_manager.dart';
 import 'package:app/features/packages/presentation/view_model/packages_cubit.dart';
 import 'package:app/features/payment/data/model/payments_model.dart';
 import 'package:app/features/payment/keys.dart';
@@ -208,40 +209,6 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     if (result == true) {
       await confirmPayment(); // أكّد الدفع فقط إذا نجحت الإضافة
 
-      // final cubit = context.read<PackagesCubit>();
-      // final int userId = cubit.getUserId();
-      //
-      // final List<dynamic>? paymentTypes = paymentIntentData?['payment_method_types'];
-      // final String? methodType = (paymentTypes != null && paymentTypes.isNotEmpty)
-      //     ? paymentTypes[0]
-      //     : null;
-      //
-      //
-      // final String? intentId = paymentIntentData?['id']?.toString();
-      //
-      // if (methodType != null && intentId != null) {
-      //   print('نوع الدفع: $methodType - Stripe ID: $intentId');
-      //
-      //   final method = PaymentMethodModel(
-      //     id:0,
-      //     userId: userId,
-      //     methodType: methodType,
-      //     stripePaymentMethodId: intentId,
-      //   );
-      //
-      //   //final result = await context.read<PaymentsCubit>().addPayment(method);
-      //
-      //   // نتحقق إذا تمت إضافة طريقة الدفع بنجاح
-      //   if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
-      //     await confirmPayment(); // أكّد الدفع فقط إذا نجحت الإضافة
-      //     await context.read<PaymentsCubit>().getAllPayments();
-      //   } else if (context.read<PaymentsCubit>().state is PaymentAddError) {
-      //     final errorState = context.read<PaymentsCubit>().state as PaymentAddError;
-      //     print("فشل إضافة وسيلة الدفع: ${errorState.message}");
-      //   }
-      // } else {
-      //   print("خطأ: البيانات غير كاملة من Stripe");
-      // }
     }
 
     else if (result == false && paymentIntentData != null) {
@@ -323,7 +290,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localization.paymentDetails, style: const TextStyle(color: Colors.black)),
-        backgroundColor: Colors.amber,
+        backgroundColor: ColorManager.primary,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Column(
@@ -393,7 +360,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
+                  backgroundColor: ColorManager.primary,
                   foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

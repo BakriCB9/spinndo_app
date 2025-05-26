@@ -52,8 +52,7 @@ class CustomDayActive extends StatelessWidget {
                                     )));
                           }
                         : () {
-                            UIUtils.showMessage(
-                                "You Have to wait to Accept your Informations");
+                            UIUtils.showMessage(localization.plsWaitAccepted);
                           },
                     icon: Icon(
                       Icons.edit_calendar_outlined,
@@ -88,7 +87,10 @@ class CustomDayActive extends StatelessWidget {
                       flex: 4,
                       child: Row(
                         children: [
-                          Text('From',style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13)),
+                          Text(
+                            '${localization.from}',
+                            style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13),
+                          ),
 
                           BoxFromDateToDate(
                             time: ' ${e.start} ',
@@ -99,7 +101,7 @@ class CustomDayActive extends StatelessWidget {
                           SizedBox(
                             width: 50.w,
                           ),
-                          Text('To',style: Theme.of(context).textTheme.labelMedium),
+                          Text('${localization.to}',style: Theme.of(context).textTheme.labelMedium),
 
                           BoxFromDateToDate(
                             time: ' ${e.end} ',
@@ -127,7 +129,7 @@ class CustomDayActive extends StatelessWidget {
                             time: ' ${e.end} ',
                             type: 1,
                           ),
-                          Text('To',style: Theme.of(context).textTheme.labelMedium),
+                          Text('${localization.to}',style: Theme.of(context).textTheme.labelMedium),
                           SizedBox(
                             width: 50.w,
                           ),
@@ -137,7 +139,7 @@ class CustomDayActive extends StatelessWidget {
                             time: ' ${e.start} ',
                             type: 1,
                           ),
-                          Text('From',style: Theme.of(context).textTheme.labelMedium),
+                          Text('${localization.from}',style: Theme.of(context).textTheme.labelMedium),
 
 
                         ],
@@ -169,8 +171,8 @@ class CustomDayActive extends StatelessWidget {
             ),
             Text(
                isOpen
-                    ? 'Open Now'
-                    : 'Close Now',
+                    ? localization.openNow
+                    : localization.closeNow,
                 style: Theme.of(context)
                     .textTheme
                     .labelSmall!

@@ -8,12 +8,13 @@ import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/discount/domain/entity/all_discount_entity.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
-import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:app/features/service/presentation/screens/show_details.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ShowDiscount extends StatefulWidget {
   @override
@@ -138,13 +139,15 @@ class _RotatingDiscountCardState extends State<_RotatingDiscountCard>
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     final theme = Theme.of(context).textTheme;
     final discount = widget.discount;
 
     return GestureDetector(
       onTap: () {
         if (sharedPref.getString(CacheConstant.tokenKey) == null) {
-          UIUtils.showMessage("You have to Sign in first");
+          UIUtils.showMessage(localization.youHaveToSignFirst);
           return;
         }
         Navigator.of(context).push(
@@ -217,7 +220,7 @@ class _RotatingDiscountCardState extends State<_RotatingDiscountCard>
                                 Row(
                                   children: [
                                     Text(
-                                      'Discount Code:',
+                                      '${localization.discountCode}',
                                       style: theme.labelMedium!.copyWith(
                                         fontSize: 26.sp,
                                         color: Colors.grey.shade800,

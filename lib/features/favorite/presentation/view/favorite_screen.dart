@@ -82,7 +82,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                       height: 20.h,
                                     ),
                                     Text(
-                                      'No items add yet!',
+                                      localization.noItemsYet,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleLarge!
@@ -289,7 +289,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               text: TextSpan(
                                   children: [
                             TextSpan(
-                                text: 'Try Againg',
+                                text: localization.tryAgain,
                                 style: TextStyle(
                                     color: ColorManager.amber, fontSize: 28.sp),
                                 recognizer: TapGestureRecognizer()
@@ -297,7 +297,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                     favCubit.getAllFav();
                                   })
                           ],
-                                  text: 'Failed to get data',
+                                  text: localization.failedData,
                                   style: TextStyle(
                                       color: ColorManager.black, fontSize: 30.sp)))
                           //  Column(

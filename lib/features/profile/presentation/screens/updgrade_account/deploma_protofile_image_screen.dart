@@ -126,7 +126,7 @@ class _DeplomaProtofileImageScreenState
                             Row(
                               children: [
                                 Text(
-                                  "try scroll",
+                                  localization.tryToScroll,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleSmall!
@@ -347,38 +347,6 @@ class _DeplomaProtofileImageScreenState
                                       .toString(),
                               images:
                                   widget.authCubit!.listOfFileImagesProtofile));
-                      // widget.authCubit!.registerService(
-                      //     RegisterServiceProviderRequest(
-                      //         websiteService: widget
-                      //                 .authCubit!.websiteController.text.isEmpty
-                      //             ? null
-                      //             : widget.authCubit!.websiteController.text,
-
-                      //         listOfDay: widget.authCubit!.dateSelect,
-
-                      //         nameService:
-                      //             widget.authCubit!.serviceNameController.text,
-                      //         descriptionService: widget
-                      //             .authCubit!.serviceDescriptionController.text,
-                      //         categoryIdService: widget
-                      //             .authCubit!.selectedCategory!.id
-                      //             .toString(),
-                      //         cityNameService: widget.authCubit!.cityName!,
-
-                      //         certificate: widget.authCubit!.certificateImage!,
-                      //         latitudeService: widget.authCubit!.isCurrent
-                      //             ? widget.authCubit!.currentLocation!.latitude
-                      //                 .toString()
-                      //             : widget.authCubit!.selectedLocation!.latitude
-                      //                 .toString(),
-                      //         longitudeService: widget.authCubit!.isCurrent
-                      //             ? widget.authCubit!.currentLocation!.longitude
-                      //                 .toString()
-                      //             : widget
-                      //                 .authCubit!.selectedLocation!.longitude
-                      //                 .toString(),
-                      //         images:
-                      //             widget.authCubit!.listOfFileImagesProtofile));
                     },
                     child: Text(localization.signUp,
                         style: Theme.of(context).textTheme.bodyLarge),
@@ -393,6 +361,8 @@ class _DeplomaProtofileImageScreenState
   }
 
   void singleDialog(int type, bool hasImage) {
+    final localization = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -403,8 +373,7 @@ class _DeplomaProtofileImageScreenState
             children: [
               _imagePickerOption(
                 icon: Icons.camera_alt_outlined,
-                label:
-                    _drawerCubit.languageCode == "en" ? "Camera" : "الكاميرا",
+                label:localization.camera,
                 onTap: () async {
                   final image = await ImageFunctions.CameraPicker(false);
                   if (image != null) {
@@ -422,7 +391,7 @@ class _DeplomaProtofileImageScreenState
               ),
               _imagePickerOption(
                 icon: Icons.image,
-                label: _drawerCubit.languageCode == "en" ? "Gallery" : "المعرض",
+                label: localization.gallery,
                 onTap: () async {
                   final image = await ImageFunctions.galleryPicker(false);
                   if (image != null) {
@@ -441,7 +410,7 @@ class _DeplomaProtofileImageScreenState
               if (type == 1 && widget.authCubit!.certificateImage != null)
                 _imagePickerOption(
                   icon: Icons.delete,
-                  label: _drawerCubit.languageCode == "en" ? "Delete" : "حذف",
+                  label:localization.delete,
                   onTap: () {
                     _deleteImage(type);
                     widget.authCubit!.updateCertificateImage(null);

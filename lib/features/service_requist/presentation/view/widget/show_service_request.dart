@@ -23,32 +23,12 @@ class ShowServiceRequest extends StatefulWidget {
 }
 
 class _ShowServiceRequestState extends State<ShowServiceRequest> {
-  //late ServiceRequestCubit serviceCubit;
   ValueNotifier<List<ServiceRequestEntity>> listOfService = ValueNotifier([]);
-  // List<ServiceRequestEntity> listHelper = [
-  //   ServiceRequestEntity(
-  //       dayDuration: 20,
-  //       desCription: 'bakdjsjsjsb',
-  //       price: 154,
-  //       title: 'bakkar',
-  //       id: 1,
-  //       userName: 'bakri haitham'),
-  //   ServiceRequestEntity(
-  //       dayDuration: 20,
-  //       desCription: 'play every day',
-  //       price: 154,
-  //       title: 'amjad',
-  //       id: 1,
-  //       userName: 'Amjad haitham')
-  // ];
   late ThemeData theme;
   late Size size;
   @override
   void initState() {
     widget.serviceCubit.getServiceRequest(widget.userId);
-    // serviceCubit = serviceLocator.get<ServiceRequestCubit>()
-    //   ..getServiceRequest(widget.userId);
-
     super.initState();
   }
 
@@ -120,7 +100,7 @@ class _ShowServiceRequestState extends State<ShowServiceRequest> {
                         height: 20.h,
                       ),
                       Text(
-                        'No items add yet!',
+                        localization.noItemsYet,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!

@@ -183,8 +183,6 @@ class _PackagesScreenState extends State<PackagesScreen> {
                   leading: Icon(getIconForPlan(method)),
                   title: Text(method.toUpperCase()),
                   onTap: () async {
-                    print("the priccce is${price}");
-                    //Navigator.of(context).pop();
 
                     String paymentType = 'card';
 
@@ -313,7 +311,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                             color: ColorManager.primary,
                                           ),
                                           Text(
-                                            " ${package?.duration} months",
+                                            " ${package?.duration} ${localization.months}",
                                             style: TextStyle(
                                               fontSize: 16,
 
@@ -551,7 +549,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                               height: 20.h,
                             ),
                             Text(
-                              'No items add yet!',
+                              localization.noItemsYet,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleLarge!

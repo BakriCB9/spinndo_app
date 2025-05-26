@@ -97,7 +97,7 @@ class UserAccount extends StatelessWidget {
                               }
                             : () {
                                 UIUtils.showMessage(
-                                    "You have to wait to Accept Your Informations");
+                                    localization.plsWaitAccepted);
                               },
                         icon: Icon(
                           Icons.edit_outlined,
