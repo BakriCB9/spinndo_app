@@ -5,10 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/utils/ui_utils.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/profile/presentation/screens/edit_job_details.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/job_items/show_more_and_show_less_text.dart';
-import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,6 +21,7 @@ class CustomDescription extends StatelessWidget {
   final bool? isApprovid;
   final String cityName;
   final String? webSite;
+  final String accountStatus;
   const CustomDescription(
       {required this.categoryName,
       required this.userId,
@@ -33,7 +32,9 @@ class CustomDescription extends StatelessWidget {
       required this.description,
       super.key,
       required this.lat,
-      required this.lng});
+      required this.lng,
+        required this.accountStatus
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +147,7 @@ class CustomDescription extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 50.h),
-        Row(
+        SizedBox(height: 50.h), Row(
           children: [
             SvgPicture.asset(
               'asset/icons/description.svg',
@@ -159,7 +159,7 @@ class CustomDescription extends StatelessWidget {
               ),
             ),
             SizedBox(width: 24.w),
-            ShowMoreAndShowLess(txt: description)
+            ShowMoreAndShowLess(txt: description,status:accountStatus)
           ],
         ),
         SizedBox(

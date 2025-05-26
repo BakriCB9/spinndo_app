@@ -15,6 +15,7 @@ class Data extends ProviderProfile {
   ProviderProfileDetailsJob? details;
   String? firstNameAr;
   String? lastNameAr;
+  String? accountStatus;
 
   Data(
       {this.id,
@@ -26,7 +27,9 @@ class Data extends ProviderProfile {
       this.imagePath,
       this.details,
       this.firstNameAr,
-      this.lastNameAr});
+      this.lastNameAr,
+        this.accountStatus
+      });
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
@@ -37,6 +40,7 @@ class Data extends ProviderProfile {
       lastName: json['last_name'] as String?,
       phoneNumber: json['phone'] as String?,
       email: json['email'] as String?,
+      accountStatus: json['account_status'] as String?,
       imagePath: json['image_path'] as dynamic,
       socialLinks: (json['socialLinks'] != null &&
               json['socialLinks'] is List &&

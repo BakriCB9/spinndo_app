@@ -85,31 +85,34 @@ class CustomDayActive extends StatelessWidget {
                   ),
                   Expanded(
                       flex: 4,
-                      child: Row(
-                        children: [
-                          Text(
-                            '${localization.from}',
-                            style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13),
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              '${localization.from}',
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13),
+                            ),
 
-                          BoxFromDateToDate(
-                            time: ' ${e.start} ',
-                            type: 1,
-                          ),
-                          Text('am',style: Theme.of(context).textTheme.labelMedium),
+                            BoxFromDateToDate(
+                              time: ' ${e.start} ',
+                              type: 1,
+                            ),
+                            Text('am',style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13)),
 
-                          SizedBox(
-                            width: 50.w,
-                          ),
-                          Text('${localization.to}',style: Theme.of(context).textTheme.labelMedium),
+                            SizedBox(
+                              width: 50.w,
+                            ),
+                            Text('${localization.to}',style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13)),
 
-                          BoxFromDateToDate(
-                            time: ' ${e.end} ',
-                            type: 1,
-                          ),
-                          Text('pm',style: Theme.of(context).textTheme.labelMedium),
+                            BoxFromDateToDate(
+                              time: ' ${e.end} ',
+                              type: 1,
+                            ),
+                            Text('pm',style: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: FontSize.s13)),
 
-                        ],
+                          ],
+                        ),
                       )
                   )
                 ],

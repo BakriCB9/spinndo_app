@@ -10,6 +10,7 @@ class ProviderProfile {
   String? email;
   dynamic imagePath;
   String?phoneNumber;
+  String?accountStatus;
   List<ProviderProfileSocialLinks?>? socialLinks;
   ProviderProfileDetailsJob? details;
   ProviderProfile({
@@ -22,7 +23,8 @@ class ProviderProfile {
     this.imagePath,
     this.socialLinks,
     this.details,
-    this.phoneNumber
+    this.phoneNumber,
+    this.accountStatus
   }) {
     // print('the social linke of list is ${socialLinks?[0].platform}');
   }

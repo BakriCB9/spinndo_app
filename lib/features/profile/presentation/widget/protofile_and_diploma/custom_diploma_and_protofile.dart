@@ -17,11 +17,13 @@ class CustomDiplomaAndProtofile extends StatefulWidget {
   final int userId;
   final bool isApprovid;
   final List<ProviderProfileImage> images;
+  final String accountStatus;
   const CustomDiplomaAndProtofile(
       {required this.images,
       required this.imageCertificate,
       required this.userId,
       required this.isApprovid,
+        required this.accountStatus,
       super.key});
 
   @override
@@ -36,8 +38,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
-    // print(
-    //     'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
+
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
@@ -101,6 +102,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
             );
           },
           child: RowOfImages(
+            status:widget.accountStatus,
             key: ValueKey<int>(typeSelect), // مهم للتمييز بين التابين
             userId: widget.userId,
             typeSelect: typeSelect,

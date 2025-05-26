@@ -226,5 +226,7 @@
   "noSocialLinksAvailable": "No social links available",
   "discountCode": "Discount Code",
   "searchByName": "Search By Name",
-  "success": "Success"
+  "success": "Success",
+  "showLess": "Show Less",
+  "showMore": "Show More"
 }

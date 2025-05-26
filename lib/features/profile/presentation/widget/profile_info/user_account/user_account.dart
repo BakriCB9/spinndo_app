@@ -22,6 +22,7 @@ class UserAccount extends StatelessWidget {
   final String typeAccount;
   final String phoneNumber;
   final int? userId;
+  final String? accountStatus;
 
   const UserAccount({
     this.userId,
@@ -32,6 +33,7 @@ class UserAccount extends StatelessWidget {
     this.isApprovid,
     required this.firstName,
     required this.lastName,
+    this.accountStatus,
     super.key,
   });
 
@@ -43,7 +45,6 @@ class UserAccount extends StatelessWidget {
     final myId = sharedPref.getInt(CacheConstant.userId);
 
     final packagesCubit = context.read<PackagesCubit>();
-    final isSubscribed = packagesCubit.isUserSubscribed(myId!);
 
     return Column(
       children: [
@@ -54,7 +55,7 @@ class UserAccount extends StatelessWidget {
               children: [
                 Text("${firstName} ${lastName} / ${firstNameAr} ${lastNameAr}",
                     style: theme.textTheme.labelLarge!.copyWith(fontSize: FontSize.s20)),
-                if (isSubscribed)
+                if (accountStatus=='premium')
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Icon(
@@ -79,8 +80,8 @@ class UserAccount extends StatelessWidget {
                               )));
                     },
                     icon: const Icon(
-                      Icons.edit,
-                      color: Colors.yellow,
+                      Icons.edit_outlined,
+                      color: ColorManager.primary,
                     ))
                 : userId == myId
                     ? IconButton(
@@ -107,7 +108,7 @@ class UserAccount extends StatelessWidget {
                     : const SizedBox()
           ],
         ),
-        SizedBox(height: 50.h),
+        SizedBox(height: 30.h),
         Row(
           children: [
             SvgPicture.asset(

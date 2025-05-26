@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:app/core/constant.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
@@ -11,23 +13,26 @@ class RowOfImages extends StatelessWidget {
   List<ProviderProfileImage>? moreImage;
   int typeSelect;
   int userId;
+  String status;
 
   RowOfImages(
       {required this.userId,
       required this.typeSelect,
       this.imagePic,
       this.moreImage,
+      required this.status,
       super.key});
 
   ///here i have to take list of images for protofile or diploma
   final myId = sharedPref.getInt(CacheConstant.userId);
+
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     if (myId != userId) {
       typeSelect = 2;
     }
-       return typeSelect == 2
+    return typeSelect == 2
         ? moreImage!.isEmpty
             ? SizedBox(
                 height: 200.w,
@@ -41,20 +46,48 @@ class RowOfImages extends StatelessWidget {
             : Builder(builder: (context) {
                 // Get screen width
                 double screenWidth = MediaQuery.of(context).size.width;
-                double widt = (screenWidth / 2) - 20;
-                return Wrap(
-                    spacing: 20.0, // Spacing between items horizontally
-                    runSpacing: 10.0, // Spacing between rows
-                    alignment: WrapAlignment.start,
-                    children: List.generate(
-                        moreImage!.length, // Number of images
-                        (index) => SizedBox(
-                              width: widt,
-                              height: widt,
-                              child: Center(
-                                  child:
-                                      CashImage(path: moreImage![index].path!)),
-                            )));
+                double widt = (screenWidth / 2) - 50.w;
+                bool isPremium = status == 'premium';
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Wrap(
+                          spacing: 20.0, // Spacing between items horizontally
+                          runSpacing: 10.0, // Spacing between rows
+                          alignment: WrapAlignment.start,
+                          children: List.generate(
+                              moreImage!.length, // Number of images
+                              (index) => SizedBox(
+                                width: widt,
+                                height: widt,
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    CashImage(
+                                      path: moreImage![index].path!,
+                                    ),
+                                    if (!isPremium && index != 0)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+                                          child: Container(
+                                            color: Colors.grey.withOpacity(0.9),
+                                            child: const Center(
+                                              child: Icon(Icons.lock, color: Colors.white, size: 30),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                  ],
+                                ),
+                              ),)),
+                    ],
+                  ),
+                );
               })
         : myId == userId
             ? imagePic == null

@@ -226,7 +226,9 @@
   "noSocialLinksAvailable": "Keine sozialen Links verfügbar",
   "discountCode": "Rabattcode",
   "searchByName": "Nach Namen suchen",
-  "success": "Erfolg"
+  "success": "Erfolg",
+  "showLess": "Weniger anzeigen",
+  "showMore": "Mehr anzeigen"
 
 
 

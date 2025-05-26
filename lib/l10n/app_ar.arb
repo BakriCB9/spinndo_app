@@ -226,7 +226,9 @@
   "noSocialLinksAvailable": "لا توجد روابط اجتماعية متاحة",
   "discountCode": "كود الخصم",
   "searchByName": "البحث بالاسم",
-  "success": "تم بنجاح"
+  "success": "تم بنجاح",
+  "showLess": "إظهار أقل",
+  "showMore": "إظهار المزيد"
 
 
 

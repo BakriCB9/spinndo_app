@@ -75,11 +75,12 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 5.h),
+              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 30.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UserAccount(
+                    accountStatus:widget.providerProfile.accountStatus!,
                     phoneNumber: widget.providerProfile.phoneNumber!,
                     firstNameAr: widget.providerProfile.firstNameAr!,
                     lastNameAr: widget.providerProfile.lastNameAr!,
@@ -91,6 +92,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   ),
                   SizedBox(height: 15.h),
                   CustomDescription(
+                    accountStatus:widget.providerProfile.accountStatus!,
                     webSite: widget.providerProfile.details!.website,
                     lat: widget.providerProfile.details!.latitude!,
                     lng: widget.providerProfile.details!.longitude!,
@@ -117,6 +119,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 30.h),
 
                   CustomDiplomaAndProtofile(
+                    accountStatus:widget.providerProfile.accountStatus!,
                     isApprovid: widget.providerProfile.details!.isApproved,
                     userId: widget.providerProfile.id!,
                     imageCertificate:
