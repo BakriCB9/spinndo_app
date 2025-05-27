@@ -75,16 +75,26 @@ class PackagesCubit extends Cubit<PackagesState> {
   Future<void> cancelSubscription(int? userId) async {
     if (userId == null) return;
 
+    emit(PackagesLoading()); // إظهار حالة التحميل
     ApiResult<UnSubscribeResponse> result = await addUnSubscribeUseCase(userId);
 
     switch (result) {
       case ApiResultSuccess():
         {
           print('Unsubscription successful: ${result.data}');
+          // ✅ تحديث جميع الحزم بعد الإلغاء
+          if (state is PackagesSuccess) {
+            final currentState = state as PackagesSuccess;
+            final updatedPackages = currentState.packages.map((pkg) {
+              return pkg?.copyWith(is_subscribed: false);
+            }).toList();
+            emit(PackagesSuccess(updatedPackages)); // إعادة بناء الواجهة
+          }
         }
       case ApiresultError(message: final message, error: final error):
         {
           print('Failed to cancel subscription: $message');
+          getAllPackages(); // إعادة تحميل البيانات في حالة الخطأ
         }
     }
   }
@@ -92,7 +102,6 @@ class PackagesCubit extends Cubit<PackagesState> {
   final uuid = Uuid();
   SubscribeModel createSubscribeModel(PackageModel package, int userId) {
     return SubscribeModel(
-      id: 0,
       userId: userId,
       packageId: package.id ?? 0,
       startDate: '',
@@ -101,13 +110,7 @@ class PackagesCubit extends Cubit<PackagesState> {
     );
   }
 
-  bool isUserSubscribed(int userId) {
-    if (state is PackagesSuccess) {
-      final packages = (state as PackagesSuccess).packages;
-      return packages.any((pkg) => pkg?.is_subscribed == true);
-    }
-    return false;
-  }
+
 
 
 
