@@ -34,9 +34,10 @@ class _GetMainCategoryScreenState extends State<GetMainCategoryScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
     return Container(
-     decoration: drawerCubit.themeMode == ThemeMode.dark
+      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-        color: ColorManager.darkBg,)
+              color: ColorManager.darkBg,
+            )
           : null,
       child: Scaffold(
         body: BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
@@ -74,11 +75,12 @@ class _GetMainCategoryScreenState extends State<GetMainCategoryScreen> {
                       return InkWell(
                         splashColor: Colors.transparent,
                         onTap: () {
+                          _serviceCubit.idOfMainCategory =
+                              listOfMainCategory[index].id;
                           Navigator.of(context).pushNamed(
                               Routes.serviceFilterScreen,
                               arguments: _serviceCubit);
-                          _serviceCubit.getServiceAndDiscount(
-                              idOfCategory: listOfMainCategory[index].id);
+                          _serviceCubit.getServiceAndDiscount();
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

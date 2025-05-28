@@ -1,9 +1,12 @@
+import 'package:app/core/const_variable.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/resources/font_manager.dart';
 import 'package:app/core/routes/routes.dart';
+import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/google_map/presentation/view/google_map_screen.dart';
 import 'package:app/features/service/domain/entities/services.dart';
+
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,9 +14,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SectionHeaderResultFilter extends StatefulWidget {
-  final ValueNotifier<List<Services>?> services;
-
-  const SectionHeaderResultFilter({required this.services, super.key});
+  //final ValueNotifier<List<Services>?> services;
+  final ServiceSettingCubit serviceSettingCubit;
+  final bool isNotEmpty;
+  const SectionHeaderResultFilter(
+      {required this.serviceSettingCubit,required this.isNotEmpty ,super.key});
 
   @override
   State<SectionHeaderResultFilter> createState() =>
@@ -39,7 +44,7 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
             'asset/icons/back.svg',
             width: 20,
             height: 20,
-            colorFilter: ColorFilter.mode(
+            colorFilter: const ColorFilter.mode(
               ColorManager.grey,
               BlendMode.srcIn,
             ),
@@ -54,7 +59,8 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
                 : Alignment.centerLeft,
             child: Text(
               localization.filterResults,
-              style: theme.textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
+              style: theme.textTheme.titleLarge?.copyWith(
+                  fontSize: FontSize.s22, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -77,7 +83,8 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
             ),
             child: IconButton(
               onPressed: () async {
-                Navigator.of(context).pushNamed(Routes.googleMapSccren, arguments: {
+                Navigator.of(context)
+                    .pushNamed(Routes.googleMapSccren, arguments: {
                   "type": MapType.showMarkers,
                   "countryName": servceSettingCubit.selectedCity?.name ??
                       servceSettingCubit.selectedCountry?.name,
@@ -87,13 +94,13 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
               },
               icon: Icon(
                 Icons.map,
-                color:ColorManager.primary,
+                color: ColorManager.primary,
                 size: 40.sp,
               ),
             ),
           ),
         ),
-        widget.services.value!.isNotEmpty
+        widget.isNotEmpty
             ? PopupMenuButton(
                 icon: Icon(
                     sortByName
@@ -112,9 +119,13 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
                           title: localization.sortByName,
                           theme: theme,
                           onClick: () {
-                            widget.services.value = List.from(
-                                widget.services.value!
-                                  ..sort((a, b) => a.name!.compareTo(b.name!)));
+                            final result =
+                                sortType(SortTheListServcieBy.alphabet);
+                            widget.serviceSettingCubit
+                                .getServiceAndDiscount(sortType: result);
+                            // widget.services.value = List.from(
+                            //     widget.services.value!
+                            //       ..sort((a, b) => a.name!.compareTo(b.name!)));
 
                             setState(() {
                               sortByDistance = false;
@@ -127,12 +138,16 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
                           title: localization.sortByDistance,
                           theme: theme,
                           onClick: () {
-                            widget.services.value =
-                                List.from(widget.services.value!
-                                  ..sort(
-                                    (a, b) =>
-                                        a.distance!.compareTo(b.distance!),
-                                  ));
+                            final result =
+                                sortType(SortTheListServcieBy.distance);
+                            widget.serviceSettingCubit
+                                .getServiceAndDiscount(sortType: result);
+                            // widget.services.value =
+                            //     List.from(widget.services.value!
+                            //       ..sort(
+                            //         (a, b) =>
+                            //             a.distance!.compareTo(b.distance!),
+                            //       ));
 
                             setState(() {
                               sortByDistance = true;
@@ -145,12 +160,16 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
                           title: localization.sortByVisitor,
                           theme: theme,
                           onClick: () {
-                            widget.services.value =
-                                List.from(widget.services.value!
-                                  ..sort(
-                                    (a, b) => a.numberOfvisitors!
-                                        .compareTo(b.numberOfvisitors!),
-                                  ));
+                            final result =
+                                sortType(SortTheListServcieBy.visitors);
+                            widget.serviceSettingCubit
+                                .getServiceAndDiscount(sortType: result);
+                            // widget.services.value =
+                            //     List.from(widget.services.value!
+                            //       ..sort(
+                            //         (a, b) => a.numberOfvisitors!
+                            //             .compareTo(b.numberOfvisitors!),
+                            //       ));
 
                             setState(() {
                               sortByDistance = false;
@@ -208,4 +227,12 @@ class CircelWidget extends StatelessWidget {
   }
 }
 
-
+String sortType(SortTheListServcieBy sort) {
+  if (sort == SortTheListServcieBy.alphabet) {
+    return 'alphabet';
+  } else if (sort == SortTheListServcieBy.distance) {
+    return 'distance';
+  } else {
+    return 'visitors';
+  }
+}

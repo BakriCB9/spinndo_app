@@ -29,3 +29,9 @@ enum TypeVerificationComing {
   comeFromForgetPassword,
   comeFromChangeEmail,
 }
+
+enum SortTheListServcieBy {
+  alphabet,
+  visitors,
+  distance,
+}

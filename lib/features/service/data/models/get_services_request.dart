@@ -7,16 +7,18 @@ class GetServicesRequest {
   final int? cityId;
   final String? search;
   final String? userId;
-
-  GetServicesRequest(
-      {this.latitude,
-      this.longitude,
-      this.radius,
-      this.categoryId,
-      this.countryId,
-      this.cityId,
-      this.search,
-      this.userId});
+  final String? sort;
+  GetServicesRequest({
+    this.latitude,
+    this.longitude,
+    this.radius,
+    this.categoryId,
+    this.countryId,
+    this.cityId,
+    this.search,
+    this.userId,
+    this.sort,
+  });
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     if (latitude != null) data['latitude'] = latitude;
@@ -27,6 +29,7 @@ class GetServicesRequest {
     if (cityId != null) data['city_id'] = cityId;
     if (search != null) data['search'] = search;
     if (userId != null) data['user_id'] = userId;
+    if (sort != null) data['sortby'] = sort;
 
     return data;
   }

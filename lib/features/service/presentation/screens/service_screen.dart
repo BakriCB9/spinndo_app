@@ -225,6 +225,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                         .pushNamed(Routes
                                                             .getMainCategoryScreen);
                                                   } else {
+                                                    _serviceSettingCubit.idOfMainCategory=null;
                                                     _serviceSettingCubit
                                                         .getServiceAndDiscount();
                                                     Navigator.of(context).pushNamed(

@@ -13,13 +13,8 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
-
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
-import 'package:app/features/service/domain/entities/google_map_marker.dart';
 import 'package:app/features/service/domain/entities/services.dart';
-import 'package:app/features/service/presentation/cubit/service_cubit.dart';
-import 'package:app/features/service/presentation/screens/service_map_screen.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lottie/lottie.dart';
@@ -49,13 +44,6 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
   @override
   Widget build(BuildContext context) {
     final serviceSettingCubit = BlocProvider.of<ServiceSettingCubit>(context);
-    // print('the location of country is ${_serviceCubit.selectedCountryId}');
-    // print('the selected country name ${_serviceCubit.selectedCountry?.name}');
-    // print('the selected city name  is ${_serviceCubit.selectedCity?.name}');
-    // if (_serviceCubit.selectedCity?.name == 'All Cities') {
-    // _serviceCubit.selectedCity!.name = null;
-    //  _serviceCubit.isCity = false;
-    //}
 
     markerLocationData.clear();
     final localization = AppLocalizations.of(context)!;
@@ -99,7 +87,10 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
                 child: Column(
                   children: [
-                    SectionHeaderResultFilter(services: listOfService),
+                    SectionHeaderResultFilter(
+                      serviceSettingCubit: serviceSettingCubit,
+                      isNotEmpty: list.data!.isNotEmpty,
+                    ),
 
                     SizedBox(height: 20.h),
 

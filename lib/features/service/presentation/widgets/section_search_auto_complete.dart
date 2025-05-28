@@ -14,20 +14,19 @@ import 'package:app/features/service/presentation/cubit/service_setting_cubit.da
 typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
 
 class SectionSearchAutoComplete extends StatefulWidget {
-  final   ServiceSettingCubit serviceSettingCubit;
-  const SectionSearchAutoComplete({required this.serviceSettingCubit, super.key});
+  final ServiceSettingCubit serviceSettingCubit;
+  const SectionSearchAutoComplete(
+      {required this.serviceSettingCubit, super.key});
   @override
   State<SectionSearchAutoComplete> createState() =>
       _SectionSearchAutoCompleteState();
 }
 
 class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
-
   late final _Debounceable<Iterable<String>?, String> _debouncedSearch;
 
   @override
   void initState() {
-
     _debouncedSearch = _debounce<Iterable<String>?, String>(_search);
     super.initState();
   }
@@ -142,7 +141,7 @@ class _SectionSearchAutoCompleteState extends State<SectionSearchAutoComplete> {
         );
       },
       onSelected: (selection) {
-        widget.serviceSettingCubit.searchController.text=selection;
+        widget.serviceSettingCubit.searchController.text = selection;
       },
     );
   }
@@ -196,8 +195,7 @@ Future<Iterable<String>?> _search(String query) async {
   if (query.trim().isEmpty) {
     return [];
   }
-  print(
-      'we are in shared prefrence now **********************************************');
+
   final Dio _dio = serviceLocator.get<Dio>();
   final SharedPreferences _sharedPreferences =
       serviceLocator.get<SharedPreferences>();
@@ -215,13 +213,11 @@ Future<Iterable<String>?> _search(String query) async {
     for (int i = 0; i < list.length; i++) {
       listOfitem.add(list[i]);
     }
-    print(
-        'the list is now ################################################# ${list}');
+
     return listOfitem.map((e) {
       return e;
     });
   } catch (e) {
-    print('there are are there ******************** $e');
     return null;
   }
 }

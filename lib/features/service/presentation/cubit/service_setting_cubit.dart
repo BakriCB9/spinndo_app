@@ -1,3 +1,4 @@
+import 'package:app/core/const_variable.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/error/apiResult.dart';
@@ -79,12 +80,12 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
         throw Exception(failure.message);
       }, (countries) {
         countriesList = countries;
-        DataCountries addAllCountry = DataCountries(
-            id: -1,
-            name:
-                AppLocalizations.of(navigatorKey.currentContext!)!.allCountries,
-            cities: []);
-        countriesList?.add(addAllCountry);
+        // DataCountries addAllCountry = DataCountries(
+        //     id: -1,
+        //     name:
+        //         AppLocalizations.of(navigatorKey.currentContext!)!.allCountries,
+        //     cities: []);
+        // countriesList?.add(addAllCountry);
       });
 
       result2.fold((failure) {
@@ -105,13 +106,14 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
     }
   }
 
-  getServiceAndDiscount({int? idOfCategory}) async {
+  getServiceAndDiscount({String? sortType}) async {
     final int? userId = serviceLocator
         .get<SharedPreferencesUtils>()
         .getData(key: CacheConstant.userId) as int?;
     markerLocationData.clear();
     final requestData = GetServicesRequest(
-        categoryId: idOfCategory ?? selectedCategory?.id,
+        sort: sortType,
+        categoryId: idOfMainCategory ?? selectedCategory?.id,
         cityId: selectedCity?.id == -1 ? null : selectedCity?.id,
         countryId: selectedCountry?.id == -1 ? null : selectedCountry?.id,
         latitude: getCurrentLocation?.latitude,
@@ -207,6 +209,7 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
 
   Countries? selectedCountry;
   Categories? selectedCategory;
+  int? idOfMainCategory;
   Cities? selectedCity;
   List<Cities>? citiesList;
   List<Countries>? countriesList;
