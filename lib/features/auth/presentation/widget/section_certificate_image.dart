@@ -102,7 +102,7 @@ class _SectionCertificateImageState extends State<SectionCertificateImage> {
             ),
             _imagePickerOption(
               icon: Icons.image,
-              label: drawerCubit.languageCode == "en" ? "Gallery" : "المعرض",
+              label: localization.gallery,
               onTap: () async {
                 final image = await ImageFunctions.galleryPicker(false);
                 if (image != null) {
@@ -121,7 +121,7 @@ class _SectionCertificateImageState extends State<SectionCertificateImage> {
             if (type == 1 && widget.registerCubit.certificateImage != null)
               _imagePickerOption(
                 icon: Icons.delete,
-                label: drawerCubit.languageCode == "en" ? "Delete" : "حذف",
+                label: localization.delete,
                 onTap: () {
                   _deleteImage(type);
                   updateCertificateImage(null);

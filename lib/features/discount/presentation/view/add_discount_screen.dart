@@ -2,6 +2,7 @@ import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
 import 'package:app/core/utils/ui_utils.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/core/widgets/custom_text_form_field.dart';
 import 'package:app/features/discount/data/model/discount_request/add_discount_request.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
@@ -31,85 +32,92 @@ class DiscountScreen extends StatelessWidget {
         color: ColorManager.darkBg,)
           : null,
       child: Scaffold(
-        appBar: AppBar(title: Text(localization.disco)),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
+        body: SafeArea(
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
                 children: [
-                  CustomTextFormField(
-                      icon: Icons.percent,
-                      keyboardType: TextInputType.numberWithOptions(),
-                      labelText: localization.discountLabel,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.discountRequired;
-                        } else if (int.parse(value) > 100) {
-                          return "it must be less than 100";
-                        }
-                        return null;
-                      },
-                      controller: discountController),
-                   SizedBox(height: 70.h),
-                  CustomTextFormField(
-                      icon: Icons.discount_outlined,
+                  CustomAppbar(appBarText: localization.disco),
+                 SizedBox(height: 50.h,),
+                 Padding(
+                   padding:  EdgeInsets.symmetric(horizontal: 46.h),
+                   child: Column(
+                     children: [
+                       CustomTextFormField(
+                           icon: Icons.percent,
+                           keyboardType: TextInputType.numberWithOptions(),
+                           labelText: localization.discountLabel,
+                           validator: (value) {
+                             if (value == null || value.isEmpty) {
+                               return localization.discountRequired;
+                             } else if (int.parse(value) > 100) {
+                               return localization.discountPercentageLess100;
+                             }
+                             return null;
+                           },
+                           controller: discountController),
+                       SizedBox(height: 70.h),
+                       CustomTextFormField(
+                           icon: Icons.discount_outlined,
 
-                      labelText: localization.codeLabel,
-                      
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localization.codeRequired;
-                        }
-                      },
-                      controller: discountCodeController),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: BlocListener<DiscountViewModelCubit,
-                        DiscountViewModelState>(
-                      bloc: discountCubit,
-                      listener: (context, state) {
-                        if (state.addDiscountState is BaseLoadingState) {
-                          UIUtils.showLoading(context);
-                        } else if (state.addDiscountState is BaseErrorState) {
-                          final text = state.addDiscountState as BaseErrorState;
-                          UIUtils.hideLoading(context);
-                          UIUtils.showMessage(text.error!);
-                        } else if (state.addDiscountState is BaseSuccessState) {
-                          final text =
-                              state.addDiscountState as BaseSuccessState;
-                          UIUtils.hideLoading(context);
+                           labelText: localization.codeLabel,
 
-                          Navigator.of(context).pop();
-                          UIUtils.showMessage(text.data);
-                        }
-                      },
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorManager.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  36),
-                            ),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              discountCubit.addDiscount(AddDiscountRequest(
-                                  discount: int.parse(discountController.text),
-                                  discountCode: discountCodeController.text,
-                                  userId: myId!));
-                            }
-                          },
-                          child: Text(
-                            style: Theme.of(context).textTheme.bodyLarge,
-                            localization.addDiscount,
-                          )),
-                    ),
-                  )
+                           validator: (value) {
+                             if (value == null || value.isEmpty) {
+                               return localization.codeRequired;
+                             }
+                           },
+                           controller: discountCodeController),
+                       const SizedBox(
+                         height: 50,
+                       ),
+                       SizedBox(
+                         width: double.infinity,
+                         child: BlocListener<DiscountViewModelCubit,
+                             DiscountViewModelState>(
+                           bloc: discountCubit,
+                           listener: (context, state) {
+                             if (state.addDiscountState is BaseLoadingState) {
+                               UIUtils.showLoading(context);
+                             } else if (state.addDiscountState is BaseErrorState) {
+                               final text = state.addDiscountState as BaseErrorState;
+                               UIUtils.hideLoading(context);
+                               UIUtils.showMessage(text.error!);
+                             } else if (state.addDiscountState is BaseSuccessState) {
+                               final text =
+                               state.addDiscountState as BaseSuccessState;
+                               UIUtils.hideLoading(context);
+
+                               Navigator.of(context).pop();
+                               UIUtils.showMessage(text.data);
+                             }
+                           },
+                           child: ElevatedButton(
+                               style: ElevatedButton.styleFrom(
+                                 backgroundColor: ColorManager.primary,
+                                 shape: RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(
+                                       36),
+                                 ),
+                               ),
+                               onPressed: () {
+                                 if (_formKey.currentState!.validate()) {
+                                   discountCubit.addDiscount(AddDiscountRequest(
+                                       discount: int.parse(discountController.text),
+                                       discountCode: discountCodeController.text,
+                                       userId: myId!));
+                                 }
+                               },
+                               child: Text(
+                                 style: Theme.of(context).textTheme.bodyLarge,
+                                 localization.addDiscount,
+                               )),
+                         ),
+                       )
+                     ],
+                   ),
+                 )
                 ],
               ),
             ),

@@ -58,6 +58,12 @@ class SignInScreen extends StatelessWidget {
                         if (!Validator.isPassword(value)) {
                           return localization.passwordLessThanSix;
                         }
+                        if (!RegExp(r'[A-Za-z]').hasMatch(value!)) {
+                          return localization.passwordMustContainAtLeastOneLetter;
+                        }
+                        if (!RegExp(r'\d').hasMatch(value)) {
+                          return localization.passwordMustContainAtLeastOneNumber;
+                        }
                         return null;
                       },
                       controller: _loginCubit.passwordController,

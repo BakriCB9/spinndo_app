@@ -1,16 +1,16 @@
 class PackageModel {
-  final int id;
-  final String name;
-  final double price;
-  final int duration;
-  final bool is_subscribed;
+  final int? id;
+  final String? name;
+  final double? price;
+  final int? duration;
+  final bool? is_subscribed;
 
   PackageModel({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.duration,
-    required this.is_subscribed,
+     this.id,
+     this.name,
+     this.price,
+     this.duration,
+     this.is_subscribed,
   });
 
   factory PackageModel.fromJson(Map<String, dynamic> json) {

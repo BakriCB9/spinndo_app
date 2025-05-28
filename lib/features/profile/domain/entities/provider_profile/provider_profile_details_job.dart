@@ -15,6 +15,7 @@ class ProviderProfileDetailsJob {
   String? certificatePath;
   ProviderProfileCategory? category;
   bool? isopen;
+  String? accountStatus;
 //  dynamic city;
   List<ProviderPriofileWorkingday>? workingDays;
   List<ProviderProfileImage>? images;
@@ -35,5 +36,6 @@ class ProviderProfileDetailsJob {
     this.certificatePath,
     this.isopen,
     this.workingDays,
+    this.accountStatus
   });
 }

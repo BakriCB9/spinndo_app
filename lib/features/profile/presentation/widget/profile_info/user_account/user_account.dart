@@ -18,11 +18,11 @@ class UserAccount extends StatelessWidget {
   final String lastNameAr;
   final String firstName;
   final String lastName;
-  final String email;
   final bool? isApprovid;
   final String typeAccount;
   final String phoneNumber;
   final int? userId;
+  final String? accountStatus;
 
   const UserAccount({
     this.userId,
@@ -33,7 +33,7 @@ class UserAccount extends StatelessWidget {
     this.isApprovid,
     required this.firstName,
     required this.lastName,
-    required this.email,
+    this.accountStatus,
     super.key,
   });
 
@@ -45,7 +45,6 @@ class UserAccount extends StatelessWidget {
     final myId = sharedPref.getInt(CacheConstant.userId);
 
     final packagesCubit = context.read<PackagesCubit>();
-    final isSubscribed = packagesCubit.isUserSubscribed(myId!);
 
     return Column(
       children: [
@@ -56,7 +55,7 @@ class UserAccount extends StatelessWidget {
               children: [
                 Text("${firstName} ${lastName} / ${firstNameAr} ${lastNameAr}",
                     style: theme.textTheme.labelLarge!.copyWith(fontSize: FontSize.s20)),
-                if (isSubscribed)
+                if (accountStatus=='premium')
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Icon(
@@ -73,7 +72,6 @@ class UserAccount extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => EditUserAccountScreen(
                                 phoneNumber: phoneNumber,
-                                email: email,
                                 firstNameAr: firstNameAr,
                                 lastNameAr: lastNameAr,
                                 typeAccount: 'Client',
@@ -82,8 +80,8 @@ class UserAccount extends StatelessWidget {
                               )));
                     },
                     icon: const Icon(
-                      Icons.edit,
-                      color: Colors.yellow,
+                      Icons.edit_outlined,
+                      color: ColorManager.primary,
                     ))
                 : userId == myId
                     ? IconButton(
@@ -92,7 +90,6 @@ class UserAccount extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditUserAccountScreen(
                                         phoneNumber: phoneNumber,
-                                        email: email,
                                         typeAccount: 'Provider',
                                         firstNameAr: firstNameAr,
                                         lastNameAr: lastNameAr,
@@ -101,7 +98,7 @@ class UserAccount extends StatelessWidget {
                               }
                             : () {
                                 UIUtils.showMessage(
-                                    "You have to wait to Accept Your Informations");
+                                    localization.plsWaitAccepted);
                               },
                         icon: Icon(
                           Icons.edit_outlined,
@@ -115,27 +112,9 @@ class UserAccount extends StatelessWidget {
         Row(
           children: [
             SvgPicture.asset(
-              'asset/icons/email.svg',
-              height: 23,
-              colorFilter: ColorFilter.mode(
-                ColorManager.primary,
-                BlendMode.srcIn,
-              ),
-            ),
-            SizedBox(width: 24.w),
-            Text(
-                '${email}',
-                style: theme.textTheme.displayMedium!
-            ),
-          ],
-        ),
-        SizedBox(height: 50.h),
-        Row(
-          children: [
-            SvgPicture.asset(
               'asset/icons/phone.svg',
               width: 25,
-              height: 28,
+              height: 25,
               colorFilter: ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,

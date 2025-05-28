@@ -20,34 +20,37 @@ class CustomAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final drawerCubit = serviceLocator.get<DrawerCubit>();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        canBack
-            ? Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child:Icon(Icons.arrow_back_ios_rounded,color: ColorManager.grey,)
+    return Padding(
+      padding:  EdgeInsets.all(20.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          canBack
+              ? InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                child:Padding(
+                  padding:  EdgeInsets.symmetric(horizontal:15.w,vertical: 20.h),
+                  child: Icon(Icons.arrow_back_ios_rounded,color: ColorManager.grey,),
+                )
 
-          ),
-        )
-            : const SizedBox(width: 20),
-        SizedBox(width: 20.w),
-        Expanded(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Directionality.of(context) == TextDirection.rtl
-                ? Alignment.centerRight
-                : Alignment.centerLeft,
-            child: Text(
-              appBarText ?? 'AppBar',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
+              )
+              : const SizedBox(width: 20),
+          SizedBox(width: 20.w),
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Directionality.of(context) == TextDirection.rtl
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Text(
+                appBarText ?? 'AppBar',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: FontSize.s22,fontWeight: FontWeight.w600),
 
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

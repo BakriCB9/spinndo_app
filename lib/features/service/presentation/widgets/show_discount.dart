@@ -8,12 +8,13 @@ import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/discount/domain/entity/all_discount_entity.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
-import 'package:app/features/service/presentation/cubit/service_states.dart';
 import 'package:app/features/service/presentation/screens/show_details.dart';
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ShowDiscount extends StatefulWidget {
   @override
@@ -35,13 +36,8 @@ class _ShowDiscountState extends State<ShowDiscount> {
     _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (_) {
       if (!_pageController.hasClients) return;
       final nextPage = _pageController.page!.round() + 1;
-      final totalPages = serviceCubit.state.getAllDiscountState
-      is BaseSuccessState<List<AllDiscountEntity>>
-          ? (serviceCubit.state.getAllDiscountState
-      as BaseSuccessState<List<AllDiscountEntity>>)
-          .data
-          ?.length ??
-          0
+      final totalPages = serviceCubit.state.getAllDiscountState is BaseSuccessState<List<AllDiscountEntity>>
+          ? (serviceCubit.state.getAllDiscountState as BaseSuccessState<List<AllDiscountEntity>>).data?.length ?? 0
           : 0;
 
       if (nextPage < totalPages) {
@@ -69,108 +65,34 @@ class _ShowDiscountState extends State<ShowDiscount> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).textTheme;
+
     return BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
-      buildWhen: (cur, pre) => pre.getAllDiscountState != cur.getAllDiscountState,
       bloc: serviceCubit,
+      buildWhen: (cur, pre) => pre.getAllDiscountState != cur.getAllDiscountState,
       builder: (context, state) {
         if (state.getAllDiscountState is BaseLoadingState) {
           return const Center(
-              child: CircularProgressIndicator(color: ColorManager.primary));
+            child: CircularProgressIndicator(color: ColorManager.primary),
+          );
         } else if (state.getAllDiscountState is BaseErrorState) {
           return const SizedBox();
         } else if (state.getAllDiscountState is BaseSuccessState) {
           final listAllDiscount =
-              (state.getAllDiscountState as BaseSuccessState<List<AllDiscountEntity>>)
-                  .data;
-          return listAllDiscount!.isEmpty
-              ? const SizedBox()
-              : SizedBox(
+              (state.getAllDiscountState as BaseSuccessState<List<AllDiscountEntity>>).data;
+
+          if (listAllDiscount == null || listAllDiscount.isEmpty) {
+            return const SizedBox();
+          }
+
+          return SizedBox(
             height: 300.h,
             child: PageView.builder(
               controller: _pageController,
               itemCount: listAllDiscount.length,
               itemBuilder: (context, index) {
-                final discount = listAllDiscount[index];
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (sharedPref.getString(CacheConstant.tokenKey) == null) {
-                        UIUtils.showMessage("You have to Sign in first");
-                        return;
-                      }
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ShowDetails(id: discount.providerId!),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      color: ColorManager.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.r),
-                      ),
-                      elevation: 6,
-                      shadowColor: Colors.black12,
-                      child: Padding(
-                        padding: EdgeInsets.all(16.r),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                discount.image != null
-                                    ? CircleAvatar(
-                                  radius: 40.r,
-                                  backgroundColor: Colors.grey.shade200,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(40.r),
-                                    child: CashImage(path: discount.image!),
-                                  ),
-                                )
-                                    : CircleAvatar(
-                                  radius: 40.r,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.person, size: 40.r, color: ColorManager.primary),
-                                ),
-                                SizedBox(width: 12.w),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        discount.providerName ?? '',
-                                        style: theme.titleLarge?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        'Code: ${discount.discountCode ?? ''}',
-                                        style: theme.labelMedium?.copyWith(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(height: 2.h),
-                                      Text(
-                                        '${discount.discount}% OFF',
-                                        style: theme.labelMedium?.copyWith(
-                                          color: Colors.yellow.shade100,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: _RotatingDiscountCard(discount: listAllDiscount[index]),
                 );
               },
             ),
@@ -182,3 +104,180 @@ class _ShowDiscountState extends State<ShowDiscount> {
     );
   }
 }
+
+class _RotatingDiscountCard extends StatefulWidget {
+  final AllDiscountEntity discount;
+  const _RotatingDiscountCard({required this.discount});
+
+  @override
+  State<_RotatingDiscountCard> createState() => _RotatingDiscountCardState();
+}
+
+class _RotatingDiscountCardState extends State<_RotatingDiscountCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _rotation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 7),
+    )..repeat(reverse: true);
+
+    _rotation = Tween<double>(begin: -0.015, end: 0.015).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
+    final theme = Theme.of(context).textTheme;
+    final discount = widget.discount;
+
+    return GestureDetector(
+      onTap: () {
+        if (sharedPref.getString(CacheConstant.tokenKey) == null) {
+          UIUtils.showMessage(localization.youHaveToSignFirst);
+          return;
+        }
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ShowDetails(id: discount.providerId!),
+          ),
+        );
+      },
+      child: AnimatedBuilder(
+        animation: _rotation,
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _rotation.value,
+            child: child,
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          elevation: 8,
+          shadowColor: Colors.black12,
+          child: Stack(
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.all(28.r),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          discount.image != null
+                              ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              radius: 40.r,
+                              backgroundColor: Colors.grey.shade200,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40.r),
+                                child: CashImage(path: discount.image!),
+                              ),
+                            ),
+                          )
+                              : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              radius: 40.r,
+                              backgroundColor: ColorManager.primary.withOpacity(0.9),
+                              child: Icon(Icons.person,
+                                  size: 40.r, color: Colors.white),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  discount.providerName ?? '',
+                                  style: theme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 34.sp,
+                                    color: Colors.black87,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${localization.discountCode}',
+                                      style: theme.labelMedium!.copyWith(
+                                        fontSize: 26.sp,
+                                        color: Colors.grey.shade800,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(width: 6.w),
+                                    Flexible(
+                                      child: Text(
+                                        discount.discountCode ?? '',
+                                        style: theme.labelMedium!.copyWith(
+                                          fontSize: 32.sp,
+                                          color: Colors.grey.shade800,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 30.h),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 15,
+                right: -25,
+                child: Transform.rotate(
+                  angle: 0.785,
+                  child: Container(
+                    width: 200.w,
+                    color: ColorManager.primary,
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${discount.discount}% OFF',
+                      style: theme.labelSmall!.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+

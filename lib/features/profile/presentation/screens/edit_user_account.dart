@@ -18,15 +18,14 @@ class EditUserAccountScreen extends StatelessWidget {
   final String firstNameAr;
   final String lastNameAr;
   final String typeAccount;
-  final String email;
   final String phoneNumber;
+
   const EditUserAccountScreen(
       {required this.firstName,
       required this.firstNameAr,
       required this.lastNameAr,
       required this.lastName,
       required this.typeAccount,
-      required this.email,
       required this.phoneNumber,
       super.key});
 
@@ -45,9 +44,8 @@ class EditUserAccountScreen extends StatelessWidget {
 
     return Container(
       decoration: drawerCubit.themeMode == ThemeMode.dark
-          ? const BoxDecoration(
-          color: ColorManager.darkBg
-      ): null,
+          ? const BoxDecoration(color: ColorManager.darkBg)
+          : null,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
@@ -103,19 +101,19 @@ class EditUserAccountScreen extends StatelessWidget {
                     icon: Icons.person_2_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
-                          curphoneNumber: phoneNumber,
-                          newPhoneNumber:
-                              _profileCubit.phoneNumberController.text,
-                          curFirst: firstName,
-                          curFirstAr: firstNameAr,
-                          newFirstAr:
-                              _profileCubit.firstNameArEditController.text,
-                          curLastAr: lastNameAr,
-                          newLastAr:
-                              _profileCubit.lastNameArEditController.text,
-                          newFirst: _profileCubit.firstNameEditController.text,
-                          curLast: lastName,
-                          newLast: _profileCubit.lastNameEditController.text);
+                        curphoneNumber: phoneNumber,
+                        newPhoneNumber:
+                            _profileCubit.phoneNumberController.text,
+                        curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text,
+                      );
                     },
                   ),
                   SizedBox(
@@ -131,19 +129,19 @@ class EditUserAccountScreen extends StatelessWidget {
                     icon: Icons.person_2_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
-                          curphoneNumber: phoneNumber,
-                          newPhoneNumber:
-                              _profileCubit.phoneNumberController.text,
-                          curFirst: firstName,
-                          curFirstAr: firstNameAr,
-                          newFirstAr:
-                              _profileCubit.firstNameArEditController.text,
-                          curLastAr: lastNameAr,
-                          newLastAr:
-                              _profileCubit.lastNameArEditController.text,
-                          newFirst: _profileCubit.firstNameEditController.text,
-                          curLast: lastName,
-                          newLast: _profileCubit.lastNameEditController.text);
+                        curphoneNumber: phoneNumber,
+                        newPhoneNumber:
+                            _profileCubit.phoneNumberController.text,
+                        curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text,
+                      );
                     },
                   ),
                   SizedBox(
@@ -159,19 +157,19 @@ class EditUserAccountScreen extends StatelessWidget {
                     icon: Icons.person_2_outlined,
                     onChanged: (value) {
                       _profileCubit.updateInfo(
-                          curphoneNumber: phoneNumber,
-                          newPhoneNumber:
-                              _profileCubit.phoneNumberController.text,
-                          curFirst: firstName,
-                          curFirstAr: firstNameAr,
-                          newFirstAr:
-                              _profileCubit.firstNameArEditController.text,
-                          curLastAr: lastNameAr,
-                          newLastAr:
-                              _profileCubit.lastNameArEditController.text,
-                          newFirst: _profileCubit.firstNameEditController.text,
-                          curLast: lastName,
-                          newLast: _profileCubit.lastNameEditController.text);
+                        curphoneNumber: phoneNumber,
+                        newPhoneNumber:
+                            _profileCubit.phoneNumberController.text,
+                        curFirst: firstName,
+                        curFirstAr: firstNameAr,
+                        newFirstAr:
+                            _profileCubit.firstNameArEditController.text,
+                        curLastAr: lastNameAr,
+                        newLastAr: _profileCubit.lastNameArEditController.text,
+                        newFirst: _profileCubit.firstNameEditController.text,
+                        curLast: lastName,
+                        newLast: _profileCubit.lastNameEditController.text,
+                      );
                     },
                   ),
                   SizedBox(height: 50.h),
@@ -193,7 +191,8 @@ class EditUserAccountScreen extends StatelessWidget {
                               _profileCubit.lastNameArEditController.text,
                           newFirst: _profileCubit.firstNameEditController.text,
                           curLast: lastName,
-                          newLast: _profileCubit.lastNameEditController.text);
+                          newLast: _profileCubit.lastNameEditController.text,
+                       );
                     },
                   ),
                   SizedBox(height: 30.h),

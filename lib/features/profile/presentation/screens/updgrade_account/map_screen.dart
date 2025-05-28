@@ -104,7 +104,7 @@ class MapScreen extends StatelessWidget {
             );
           } else if (state is GetCurrentLocationErrorr) {
             return Center(
-              child: Text('state.message'),
+              child: Text('${state.message}'),
               // child: Text(state.message),
             );
           } else {

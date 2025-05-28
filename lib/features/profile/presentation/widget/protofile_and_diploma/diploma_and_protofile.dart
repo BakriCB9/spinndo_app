@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,8 +26,11 @@ class DiplomaAndProtofile extends StatelessWidget {
                       color: Theme.of(context).primaryColor, width: 2.w)
                   : BorderSide.none)),
       child: Text(text,
+
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelMedium),
+          style:active? Theme.of(context).textTheme.labelMedium?.copyWith(color:ColorManager.primary,fontWeight: FontWeight.w700):
+          Theme.of(context).textTheme.labelMedium?.copyWith(color:ColorManager.grey)
+      ),
     );
   }
 }

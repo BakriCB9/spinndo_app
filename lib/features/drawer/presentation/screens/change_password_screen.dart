@@ -39,7 +39,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final localization = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Change password'),
+        title:  Text(localization.changePassword),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 25.w),
@@ -64,7 +64,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       isPassword: true,
                       keyboardType: TextInputType.visiblePassword,
                       controller: _currentPasswordController,
-                      labelText: 'Current Password',
+                      labelText: localization.currentPassword,
                     ),
                     SizedBox(height: 50.h),
                     CustomTextFormField(
@@ -78,7 +78,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       isPassword: true,
                       keyboardType: TextInputType.visiblePassword,
                       controller: _newPasswordController,
-                      labelText: 'New Passwrod',
+                      labelText: localization.newPassword,
                     ),
                     SizedBox(height: 50.h),
                     CustomTextFormField(
@@ -95,7 +95,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       isPassword: true,
                       keyboardType: TextInputType.visiblePassword,
                       controller: _newConfirmPasswordController,
-                      labelText: 'Confirm new Password',
+                      labelText: localization.confirmNewPassword,
                     ),
                   ],
                 ),
@@ -129,7 +129,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             newConfrimPassword: _newPasswordController.text,
                             newPassword: _newConfirmPasswordController.text));
                       },
-                      child: const Text('Save Password')),
+                      child:  Text(localization.save)),
                 ),
               )
             ],

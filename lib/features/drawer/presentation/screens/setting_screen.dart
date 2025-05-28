@@ -37,321 +37,318 @@ class SettingScreen extends StatelessWidget {
               color: ColorManager.darkBg,
             )
           : null,
+
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w),
+        body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 70.h,
-              ),
               CustomAppbar(appBarText: localization.setting),
               SizedBox(
                 height: 50.h,
               ),
-              Row(
+
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 46.h),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(localization.themeMood,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontSize: 30.sp, fontWeight: FontWeight.w400)),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Switch(
-                        activeColor: ColorManager.primary,
-                        activeTrackColor: ColorManager.black,
-                        value: _drawerCubit.themeMode == ThemeMode.dark,
-                        onChanged: (value) {
-                          if (value) {
-                            _drawerCubit.changeTheme(ThemeMode.dark);
-                          } else {
-                            _drawerCubit.changeTheme(ThemeMode.light);
-                          }
-                        },
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Text(localization.themeMood,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                fontSize: 30.sp,
+                                fontWeight: FontWeight.w400)),
                       ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 60.h,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 2,
-                      child: Text(localization.language,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Switch(
+                            activeColor: ColorManager.primary,
+                            activeTrackColor: ColorManager.black,
+                            value: _drawerCubit.themeMode == ThemeMode.dark,
+                            onChanged: (value) {
+                              if (value) {
+                                _drawerCubit.changeTheme(ThemeMode.dark);
+                              } else {
+                                _drawerCubit.changeTheme(ThemeMode.light);
+                              }
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 60.h,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          child: Text(localization.language,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
                                   fontSize: 30.sp,
                                   fontWeight: FontWeight.w400))),
-                  Expanded(
-                    child: SizedBox(
-                      width: 90.w,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: drawerCubit.themeMode == ThemeMode.dark
-                              ? ColorManager.darkBlue
-                              : ColorManager.white,
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 6,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: DropdownButtonHideUnderline(
-                            child: DropdownButton<Languages>(
-                                isExpanded: true,
-                                icon: const Icon(Icons.language,
-                                    color: ColorManager.primary),
-                                value: languages.firstWhere(
-                                  (lang) =>
-                                      lang.code == _drawerCubit.languageCode,
+                      Expanded(
+                        child: SizedBox(
+                          width: 90.w,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: drawerCubit.themeMode == ThemeMode.dark
+                                  ? ColorManager.darkBlue
+                                  : ColorManager.white,
+                              borderRadius: BorderRadius.circular(25),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
                                 ),
-                                style:
+                              ],
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: DropdownButtonHideUnderline(
+                                child: DropdownButton<Languages>(
+                                    icon: const Icon(Icons.language,
+                                        color: ColorManager.primary),
+                                    value: languages.firstWhere(
+                                          (lang) =>
+                                      lang.code == _drawerCubit.languageCode,
+                                    ),
+                                    style:
                                     Theme.of(context).textTheme.displayMedium,
-                                items: languages
-                                    .map(
-                                      (language) => DropdownMenuItem<Languages>(
-                                        value: language,
-                                        child: Text(language.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium),
-                                      ),
+                                    items: languages
+                                        .map(
+                                          (language) =>
+                                          DropdownMenuItem<Languages>(
+                                            value: language,
+                                            child: Text(language.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayMedium),
+                                          ),
                                     )
-                                    .toList(),
-                                onChanged: (selectedLanguage) {
-                                  if (selectedLanguage != null) {
-                                    _drawerCubit
-                                        .changeLanguage(selectedLanguage.code);
+                                        .toList(),
+                                    onChanged: (selectedLanguage) {
+                                      if (selectedLanguage != null) {
+                                        _drawerCubit.changeLanguage(
+                                            selectedLanguage.code);
 
-                                    _serviceCubit.getCountriesAndCategories();
-                                  }
-                                },
-                                borderRadius: BorderRadius.circular(25),
-                                dropdownColor:
+                                        _serviceCubit.getCountriesAndCategories();
+                                      }
+                                    },
+                                    borderRadius: BorderRadius.circular(25),
+                                    dropdownColor:
                                     _drawerCubit.themeMode == ThemeMode.dark
                                         ? ColorManager.darkBlue
                                         : ColorManager.white)),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 60.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ChangePasswordScreen()));
+                    },
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        localization.changePassword,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400),
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 60.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                          backgroundColor: Theme.of(context).primaryColorDark,
+                          context: context,
+                          builder: (context) {
+                            return SafeArea(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 30.w),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      Text(
+                                        localization.ourlinks,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(fontSize: 30.sp),
+                                      ),
+                                      SizedBox(
+                                        height: 100.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Container(
+                                                width: 100.w,
+                                                height: 100.h,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                        color: Colors.grey)),
+                                                child: const Icon(
+                                                  Icons.facebook,
+                                                  color: ColorManager.primary,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.h,
+                                              ),
+                                              Text(
+                                                localization.facebook,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge!
+                                                    .copyWith(fontSize: 25.sp),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 30.w,
+                                          ),
+                                          Column(
+                                            children: [
+                                              Container(
+                                                width: 100.w,
+                                                height: 100.h,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                        color: Colors.grey)),
+                                                child: const Icon(
+                                                  Icons.message,
+                                                  color: ColorManager.primary,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10.h,
+                                              ),
+                                              Text(
+                                                localization.sms,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge!
+                                                    .copyWith(fontSize: 25.sp),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 40.h,
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                          });
+                    },
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      minLeadingWidth: 0,
+                      trailing: const Icon(Icons.arrow_forward_ios_rounded,color:ColorManager.grey),
+                      title: Text(localization.connectwith,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  BlocListener<DrawerCubit, DrawerStates>(
+                    bloc: _drawerCubit,
+                    listener: (context, state) {
+                      if (state is DeleteAccountLoading) {
+                        UIUtils.showLoading(context);
+                      } else if (state is DeleteAccountError) {
+                        UIUtils.hideLoading(context);
+                        UIUtils.showMessage(state.message);
+                      } else if (state is DeleteAccountSuccess) {
+                        UIUtils.hideLoading(context);
+                        Navigator.of(context).pop();
+                        Navigator.of(context)
+                            .pushReplacementNamed(Routes.loginRoute);
+                      }
+                    },
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content:
+                                Text(localization.areYouSureToDeleteAccount),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        localization.cancel,
+                                        style: TextStyle(
+                                            fontSize: 20.sp,
+                                            color: ColorManager.textColor),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        _drawerCubit.deleteAccount();
+                                      },
+                                      child: Text(
+                                        localization.ok,
+                                        style: TextStyle(
+                                            fontSize: 20.sp,
+                                            color: ColorManager.primary),
+                                      ))
+                                ],
+                              );
+                            });
+                        // _drawerCubit.deleteAccount();
+                      },
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        minLeadingWidth: 0,
+                        trailing: const Icon(Icons.arrow_forward_ios_rounded,color:ColorManager.grey,),
+                        title: Text(localization.deleteAccount,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 60.h,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ChangePasswordScreen()));
-                },
-                child: Text(
-                  localization.changePassword,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontSize: 30.sp, fontWeight: FontWeight.w400),
-                ),
-              ),
-              SizedBox(
-                height: 60.h,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ChangeEmailScreen()));
-                },
-                child: Text(
-                  'change Email',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontSize: 30.sp, fontWeight: FontWeight.w400),
-                ),
-              ),
-              SizedBox(
-                height: 60.h,
-              ),
-              InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      backgroundColor: Theme.of(context).primaryColorDark,
-                      context: context,
-                      builder: (context) {
-                        return SafeArea(
-                            child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 30.w),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              Text(
-                                localization.ourlinks,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(fontSize: 30.sp),
-                              ),
-                              SizedBox(
-                                height: 100.h,
-                              ),
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 100.w,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border:
-                                                Border.all(color: Colors.grey)),
-                                        child: const Icon(
-                                          Icons.facebook,
-                                          color: ColorManager.primary,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        localization.facebook,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(fontSize: 25.sp),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 30.w,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 100.w,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border:
-                                                Border.all(color: Colors.grey)),
-                                        child: const Icon(
-                                          Icons.message,
-                                          color: ColorManager.primary,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        localization.sms,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(fontSize: 25.sp),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 40.h,
-                              ),
-                            ],
-                          ),
-                        ));
-                      });
-                },
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  minLeadingWidth: 0,
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      color: ColorManager.grey),
-                  title: Text(localization.connectwith,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontSize: 30.sp, fontWeight: FontWeight.w400)),
-                ),
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
-              BlocListener<DrawerCubit, DrawerStates>(
-                bloc: _drawerCubit,
-                listener: (context, state) {
-                  if (state is DeleteAccountLoading) {
-                    UIUtils.showLoading(context);
-                  } else if (state is DeleteAccountError) {
-                    UIUtils.hideLoading(context);
-                    UIUtils.showMessage(state.message);
-                  } else if (state is DeleteAccountSuccess) {
-                    UIUtils.hideLoading(context);
-                    Navigator.of(context).pop();
-                    Navigator.of(context)
-                        .pushReplacementNamed(Routes.loginRoute);
-                  }
-                },
-                child: InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content:
-                                Text(localization.areYouSureToDeleteAccount),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    localization.cancel,
-                                    style: TextStyle(
-                                        fontSize: 20.sp,
-                                        color: ColorManager.textColor),
-                                  )),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    _drawerCubit.deleteAccount();
-                                  },
-                                  child: Text(
-                                    localization.ok,
-                                    style: TextStyle(
-                                        fontSize: 20.sp,
-                                        color: ColorManager.primary),
-                                  ))
-                            ],
-                          );
-                        });
-                    // _drawerCubit.deleteAccount();
-                  },
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    minLeadingWidth: 0,
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: ColorManager.grey,
-                    ),
-                    title: Text(localization.deleteAccount,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontSize: 30.sp, fontWeight: FontWeight.w400)),
-                  ),
-                ),
-              ),
+            )
             ],
           ),
         ),

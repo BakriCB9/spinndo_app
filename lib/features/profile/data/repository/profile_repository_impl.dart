@@ -30,6 +30,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
   final ProfileRemoteDataSource _profileRemoteDataSource;
   final ProfileLocalDataSource _profileLocalDataSource;
   final SharedPreferencesUtils _sharedPreferencesUtils;
+
   ProfileRepositoryImpl(this._sharedPreferencesUtils,
       this._profileRemoteDataSource, this._profileLocalDataSource);
 

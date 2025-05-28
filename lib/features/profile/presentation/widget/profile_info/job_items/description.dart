@@ -5,10 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/utils/ui_utils.dart';
-import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/profile/presentation/screens/edit_job_details.dart';
 import 'package:app/features/profile/presentation/widget/profile_info/job_items/show_more_and_show_less_text.dart';
-import 'package:app/features/profile/presentation/widget/profile_info/user_account/details_info.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,6 +21,7 @@ class CustomDescription extends StatelessWidget {
   final bool? isApprovid;
   final String cityName;
   final String? webSite;
+  final String accountStatus;
   const CustomDescription(
       {required this.categoryName,
       required this.userId,
@@ -33,7 +32,9 @@ class CustomDescription extends StatelessWidget {
       required this.description,
       super.key,
       required this.lat,
-      required this.lng});
+      required this.lng,
+        required this.accountStatus
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class CustomDescription extends StatelessWidget {
                           }
                         : () {
                             UIUtils.showMessage(
-                                'You Have to wait to Accept Your Information');
+                                localization.plsWaitAccepted);
                           },
                     icon: Icon(
                       Icons.edit_outlined,
@@ -81,14 +82,32 @@ class CustomDescription extends StatelessWidget {
                 : const SizedBox()
           ],
         ),
-        SizedBox(height: 30.h),
+        Row(
+          children: [
+            SvgPicture.asset(
+              'asset/icons/globe.svg',
+              width: 24,
+              height: 24,
+              colorFilter:const  ColorFilter.mode(
+                ColorManager.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(width: 24.w),
+            Text(
+                '${webSite??'/'}',
+                style: theme.textTheme.displayMedium!
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
         Row(
           children: [
             SvgPicture.asset(
               'asset/icons/work.svg',
-              width: 28,
-              height: 28,
-              colorFilter: const ColorFilter.mode(
+              width: 25,
+              height: 26,
+              colorFilter:const  ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
               ),
@@ -111,8 +130,8 @@ class CustomDescription extends StatelessWidget {
             SvgPicture.asset(
               'asset/icons/location.svg',
               width: 26,
-              height: 26,
-              colorFilter: const ColorFilter.mode(
+              height: 25,
+              colorFilter:const  ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
               ),
@@ -121,24 +140,23 @@ class CustomDescription extends StatelessWidget {
             Text('${cityName}', style: theme.textTheme.displayMedium!),
           ],
         ),
-        SizedBox(height: 50.h),
-        Row(
+        SizedBox(height: 50.h), Row(
           children: [
             SvgPicture.asset(
               'asset/icons/description.svg',
               width: 26,
-              height: 26,
-              colorFilter: const ColorFilter.mode(
+              height: 25,
+              colorFilter:const  ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
               ),
             ),
             SizedBox(width: 24.w),
-            ShowMoreAndShowLess(txt: description)
+            ShowMoreAndShowLess(txt: description,status:accountStatus)
           ],
         ),
         SizedBox(
-          height: 10.h,
+          height: 20.h,
         ),
         SizedBox(height: 30.h),
         const Divider(color: Colors.grey, thickness: 0.2)
@@ -146,7 +164,3 @@ class CustomDescription extends StatelessWidget {
     );
   }
 }
-
-// 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don'
-//                     't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn'
-//                     't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.'

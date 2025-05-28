@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SectionSocialLinks extends StatefulWidget {
   final ProfileCubit profileCubit;
@@ -126,13 +128,15 @@ class _ShowSocialLinksForMyProfileWithOptionsState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localization = AppLocalizations.of(context)!;
+
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Your social links',
+              localization.yourSocialLinks,
               style: theme.textTheme.labelLarge,
             ),
             IconButton(
@@ -200,7 +204,7 @@ class _ShowSocialLinksForMyProfileWithOptionsState
                                       url: e.url!);
                                 });
                           },
-                          icon: const Icon(Icons.edit)),
+                          icon: const Icon(Icons.edit_outlined)),
                       BlocListener<ProfileCubit, ProfileStates>(
                           listener: (context, state) {
                             if (state is DeleteSocialLinkLoading) {
@@ -279,12 +283,13 @@ class ShowSocialLinksForUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Your Social links',
+          localization.yourSocialLinks,
           style: theme.textTheme.labelLarge,
         ),
         const SizedBox(height: 10),
@@ -320,7 +325,7 @@ class ShowSocialLinksForUsers extends StatelessWidget {
             );
           }).toList()
         else
-          Text('No social links available.', style: theme.textTheme.bodySmall),
+          Text(localization.noSocialLinksAvailable, style: theme.textTheme.bodySmall),
       ],
     );
   }
@@ -426,6 +431,7 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = widget.drawerCubit.themeMode == ThemeMode.dark;
+    final localization = AppLocalizations.of(context)!;
 
     return BlocListener<ProfileCubit, ProfileStates>(
       bloc: widget.profileCubit,
@@ -508,7 +514,7 @@ class _SectionBodySheetAddLinkState extends State<SectionBodySheetAddLink> {
                 onPressed: () {
                   widget.listofSocialAvailable.forEach(onSave);
                 },
-                child: const Text('Save All'),
+                child:  Text(localization.save),
               ),
             ],
           ),
@@ -559,6 +565,8 @@ class _SectionBodySheetEditLinkState extends State<SectionBodySheetEditLink> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Padding(
         padding:
         EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -601,7 +609,7 @@ class _SectionBodySheetEditLinkState extends State<SectionBodySheetEditLink> {
                                   url: urlText.text));
                         }
                       },
-                      child: const Text('Save')),
+                      child:  Text(localization.save)),
                 ),
               ],
             ),

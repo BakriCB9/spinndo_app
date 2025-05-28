@@ -592,7 +592,7 @@ class EmployeeDetails extends StatelessWidget {
                 SizedBox(height: 40.h),
                 CustomTextFormField(
                   controller: _authCubit.websiteController,
-                  labelText: 'WebSite',
+                  labelText:localization.webSite,
                   icon: Icons.web,
                 ),
                 SizedBox(height: 40.h),
@@ -752,8 +752,6 @@ class EmployeeDetails extends StatelessWidget {
                               ),
                             );
                           }));
-                          // Navigator.of(context)
-                          //     .pushNamed(DeplomaProtofileImageScreen.routeName);
                           return;
                         } else {
                           if (_authCubit.selectedCategory == null) {

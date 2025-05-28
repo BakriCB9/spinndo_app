@@ -3,7 +3,6 @@ import 'package:app/core/utils/error_location_widget.dart';
 import 'package:app/core/utils/error_network_widget.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
-import 'package:app/features/service/presentation/screens/get_main_category_screen.dart';
 import 'package:app/features/service/presentation/screens/notification_screen.dart';
 import 'package:app/features/service/presentation/widgets/section_header_service_screen.dart';
 import 'package:app/features/service/presentation/widgets/section_search_auto_complete.dart';
@@ -65,7 +64,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
           drawer: CustomDrawer(),
           body: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              padding: EdgeInsets.all(20.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

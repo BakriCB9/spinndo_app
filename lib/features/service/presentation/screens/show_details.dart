@@ -39,15 +39,6 @@ class _ShowDetailsState extends State<ShowDetails> {
               return ErrorNetworkWidget(message:message.error! , onTap: (){
                 _serviceCubit.showDetailsUser(widget.id);
               });
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Center(
-              //       child: Text(state.message),
-              //     )
-              //   ],
-              // );
             } else if (state.getDetailsUserState is BaseSuccessState) {
               return ProviderProfileScreen(
                   providerProfile: (state.getDetailsUserState as BaseSuccessState).data);

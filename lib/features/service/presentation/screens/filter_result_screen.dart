@@ -34,7 +34,6 @@ class FilterResultScreen extends StatefulWidget {
 }
 
 final _drawerCubit = serviceLocator.get<DrawerCubit>();
-final _authCubit = serviceLocator.get<AuthCubit>();
 bool sortByName = false;
 bool sortByDistance = false;
 bool sortByNumberOfvisitor = false;

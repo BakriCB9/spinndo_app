@@ -17,11 +17,13 @@ class CustomDiplomaAndProtofile extends StatefulWidget {
   final int userId;
   final bool isApprovid;
   final List<ProviderProfileImage> images;
+  final String accountStatus;
   const CustomDiplomaAndProtofile(
       {required this.images,
       required this.imageCertificate,
       required this.userId,
       required this.isApprovid,
+        required this.accountStatus,
       super.key});
 
   @override
@@ -36,8 +38,7 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
 
-    // print(
-    //     'the list of provider profile imaghe is ${widget.images[0].path} and second is ${widget.images[1].path}');
+
     final myId = sharedPref.getInt(CacheConstant.userId);
     return Column(
       children: [
@@ -46,23 +47,6 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
           children: [
             Text(localization.images,
                 style: Theme.of(context).textTheme.labelLarge),
-            // myId == widget.userId
-            //     ? IconButton(
-            //         onPressed: widget.isApprovid == 1
-            //             ? () {
-            //                 Navigator.of(context).push(MaterialPageRoute(
-            //                     builder: (context) => EditImageScreen()));
-            //               }
-            //             : () {
-            //                 UIUtils.showMessage(
-            //                     'You Have to wait to Accept your Informations');
-            //               },
-            //         icon: Icon(
-            //           Icons.edit,
-            //           color:
-            //               widget.isApprovid == 1 ? Colors.yellow : Colors.grey,
-            //         ))
-            //     : const SizedBox()
           ],
         ),
         SizedBox(
@@ -100,19 +84,37 @@ class _CustomDiplomaAndProtofileState extends State<CustomDiplomaAndProtofile> {
                 ],
               )
             : const SizedBox(),
-        // SizedBox(height: 15.h),
-
-        // ///here i have to pass the list of diploma or protofile
-        // ///depend on the typeSelect (using if to choose which list)
         SizedBox(
           height: 30.h,
         ),
-        RowOfImages(
-          userId: widget.userId,
-          typeSelect: typeSelect,
-          moreImage: widget.images,
-          imagePic: widget.imageCertificate,
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0.0, 0.1),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
+            );
+          },
+          child: RowOfImages(
+            status:widget.accountStatus,
+            key: ValueKey<int>(typeSelect), // مهم للتمييز بين التابين
+            userId: widget.userId,
+            typeSelect: typeSelect,
+            moreImage: widget.images,
+            imagePic: widget.imageCertificate,
+          ),
         ),
+
+        SizedBox(height: 75.h),
+
+        const  Divider(color: Colors.grey, thickness: 0.2),
+
       ],
     );
   }

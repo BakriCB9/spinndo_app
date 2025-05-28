@@ -36,20 +36,11 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
         }));
 
     return ClientProfileRespoonse.fromJson(response.data);
-
-    // try {
-    //   // final String userToken = _authLocalDataSource.getToken();
-    //   // final int user_id = _authLocalDataSource.getUserId();
-
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get client");
-    // }
   }
 
   @override
   Future<ProviderProfileResponse> getServiceProviderProfile(
       int user_id, String user_token) async {
-    final lang = _sharedPreferences.getString('language');
     final response =
         await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$user_id',
             options: Options(headers: {
@@ -59,16 +50,6 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
 
     return ProviderProfileResponse.fromJson(response.data);
 
-    // try {
-    //   // final String userToken = _authLocalDataSource.getToken();
-    //   // final int user_id = _authLocalDataSource.getUserId();
-    //   // var userRole=_authLocalDataSource.getUserRole();
-    //   // print('the token is from api is ${user_token}');
-    //   // print('the user id is now ${user_id}');
-
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get client");
-    // }
   }
 
   @override
@@ -83,11 +64,6 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
         }));
 
     return UpdateClientResponse.fromJson(response.data);
-    // try {
-
-    // } catch (e) {
-    //   throw RemoteAppException('Failed to update info');
-    // }
   }
 
   @override
@@ -107,12 +83,6 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
         }));
     
     return UpdateProviderResponse.fromJson(response.data);
-
-    // try {
-
-    // } catch (e) {
-    //   throw RemoteAppException('Failed to Update info');
-    // }
   }
 
   @override
@@ -130,11 +100,6 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
         }));
 
     return ImageProfileResponse.fromJson(response.data);
-    // try {
-
-    // } catch (e) {
-    //   throw RemoteAppException('Failed to add Image');
-    // }
   }
 
   @override
@@ -148,11 +113,6 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
         data: {'for_delete': '1'});
     return DeleteImageResponse.fromJson(response.data);
 
-    // try {
-
-    // } catch (e) {
-    //   throw RemoteAppException('Failed to delete image,try again');
-    // }
   }
 
   @override
@@ -169,11 +129,6 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
         }),
         data: socialMediaLinksRequest.toJson());
     return SocialMediaLinksResponse.fromJson(response.data);
-    // try {
-
-    // } catch (e) {
-    //   throw RemoteAppException('Failed to add link of social');
-    // }
   }
 
   @override
@@ -188,10 +143,5 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
       }),
     );
     return response.data["message"];
-    // try {
-
-    // } catch (e) {
-    //   throw RemoteAppException('Failed to add link of social');
-    // }
   }
 }

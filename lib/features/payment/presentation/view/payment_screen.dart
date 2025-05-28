@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:app/core/resources/color_manager.dart';
+import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/features/packages/presentation/view_model/packages_cubit.dart';
 import 'package:app/features/payment/data/model/payments_model.dart';
 import 'package:app/features/payment/keys.dart';
@@ -22,7 +24,6 @@ enum PaymentMethodType {
   maestro,
 }
 
-// Get icon for each payment method
 IconData getIconForPlan(String? methodType) {
   switch (methodType?.toLowerCase()) {
     case 'visa':
@@ -44,7 +45,6 @@ IconData getIconForPlan(String? methodType) {
   }
 }
 
-// Get color for each payment method
 Color getColorForPlan(String? methodType) {
   switch (methodType?.toLowerCase()) {
     case 'visa':
@@ -68,7 +68,6 @@ Color getColorForPlan(String? methodType) {
 
 class PaymentsScreen extends StatefulWidget {
   static const String routeName = '/payments';
-
   const PaymentsScreen({Key? key}) : super(key: key);
 
   @override
@@ -98,12 +97,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
         },
       );
       paymentIntentData = jsonDecode(responseFromStripeAPI!.body);
-      print("pppi${paymentIntentData}");
       return paymentIntentData;
     } catch (errorMsg) {
-      if (kDebugMode) {
-        print(errorMsg);
-      }
+      if (kDebugMode) print(errorMsg);
       return null;
     }
   }
@@ -111,7 +107,6 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   void showAvailablePaymentMethods(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final allMethods = PaymentMethodType.values.map((e) => e.name).toList();
-
     final existingMethods = context.read<PaymentsCubit>().state is PaymentsSuccess
         ? (context.read<PaymentsCubit>().state as PaymentsSuccess).payments.map((p) => p?.methodType ?? '').toList()
         : [];
@@ -183,9 +178,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
         builder: (c) => AlertDialog(content: Text(localization.theOperationHasBeenCancelled)),
       );
     } catch (errorMsg) {
-      if (kDebugMode) {
-        print(errorMsg);
-      }
+      if (kDebugMode) print(errorMsg);
     }
   }
 
@@ -196,7 +189,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
       builder: (context) {
         return AlertDialog(
           title: Text(localization.paymentConfirmation),
-          content: Text('${localization.areYouSureYouWantToProceedWithThePayment}?'),
+          content: Text('${localization.areYouSureYouWantToProceedWithThePayment} ?'),
           actions: [
             TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(localization.no)),
             TextButton(onPressed: () => Navigator.of(context).pop(true), child: Text(localization.yes)),
@@ -206,45 +199,8 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     );
 
     if (result == true) {
-      await confirmPayment(); // أكّد الدفع فقط إذا نجحت الإضافة
-
-      // final cubit = context.read<PackagesCubit>();
-      // final int userId = cubit.getUserId();
-      //
-      // final List<dynamic>? paymentTypes = paymentIntentData?['payment_method_types'];
-      // final String? methodType = (paymentTypes != null && paymentTypes.isNotEmpty)
-      //     ? paymentTypes[0]
-      //     : null;
-      //
-      //
-      // final String? intentId = paymentIntentData?['id']?.toString();
-      //
-      // if (methodType != null && intentId != null) {
-      //   print('نوع الدفع: $methodType - Stripe ID: $intentId');
-      //
-      //   final method = PaymentMethodModel(
-      //     id:0,
-      //     userId: userId,
-      //     methodType: methodType,
-      //     stripePaymentMethodId: intentId,
-      //   );
-      //
-      //   //final result = await context.read<PaymentsCubit>().addPayment(method);
-      //
-      //   // نتحقق إذا تمت إضافة طريقة الدفع بنجاح
-      //   if (context.read<PaymentsCubit>().state is PaymentAddSuccess) {
-      //     await confirmPayment(); // أكّد الدفع فقط إذا نجحت الإضافة
-      //     await context.read<PaymentsCubit>().getAllPayments();
-      //   } else if (context.read<PaymentsCubit>().state is PaymentAddError) {
-      //     final errorState = context.read<PaymentsCubit>().state as PaymentAddError;
-      //     print("فشل إضافة وسيلة الدفع: ${errorState.message}");
-      //   }
-      // } else {
-      //   print("خطأ: البيانات غير كاملة من Stripe");
-      // }
-    }
-
-    else if (result == false && paymentIntentData != null) {
+      await confirmPayment();
+    } else if (result == false && paymentIntentData != null) {
       String? id = paymentIntentData!['id']?.toString();
       if (id != null && id.isNotEmpty) {
         await context.read<PaymentsCubit>().addRefund(id);
@@ -252,82 +208,25 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     }
   }
 
-  void showPreviouslyUsedPaymentMethods(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-
-    final state = context.read<PaymentsCubit>().state;
-    if (state is! PaymentsSuccess) return;
-
-    final usedMethods = state.payments
-        .where((p) => p?.methodType != null)
-        .map((p) => p!.methodType!)
-        .toSet()
-        .toList(); // إزالة التكرارات
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('ss'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: usedMethods.map((method) {
-                return ListTile(
-                  leading: Icon(getIconForPlan(method)),
-                  title: Text(method.toUpperCase()),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    String paymentType = ['klarna', 'paypal'].contains(method.toLowerCase()) ? method.toLowerCase() : 'card';
-                    paymentSheetInitialization(amount, "eur", paymentType);
-                  },
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-
   Future<void> confirmPayment() async {
     final localization = AppLocalizations.of(context)!;
     try {
       await Stripe.instance.confirmPaymentSheetPayment();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${localization.paymentSuccessful}🎉')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${localization.paymentSuccessful} 🎉')));
     } on StripeException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${localization.errorStripe}:${e.error.localizedMessage}')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${localization.errorStripe}: ${e.error.localizedMessage}')));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${localization.anUnexpectedErrorOccurred}$e')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${localization.anUnexpectedErrorOccurred} $e')));
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // context.read<PaymentsCubit>().getAllPayments();
-    // showPreviouslyUsedPaymentMethods();
-
   }
 
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(localization.paymentDetails, style: const TextStyle(color: Colors.black)),
-        backgroundColor: Colors.amber,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
       body: Column(
         children: [
+          CustomAppbar(appBarText: localization.paymentDetails),
           Expanded(
             child: BlocBuilder<PaymentsCubit, PaymentsState>(
               builder: (context, state) {
@@ -393,8 +292,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  foregroundColor: Colors.black,
+                  backgroundColor: ColorManager.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
