@@ -265,7 +265,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                               FavoriteWidget(
                                                                 userId: service
                                                                     .providerId
-                                                                    .toString(),
+                                                                    .toString(), isFavorite: service.isFavorite,
                                                               )
                                                             ],
                                                           ),
