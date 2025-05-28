@@ -22,9 +22,9 @@ class Validator {
 
   final String text = 'bababab';
 
- static  bool  isWebsite(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return false;
+  static bool isWebsite(String? value) {
+    if (value == null || value.isEmpty) {
+      return true;
     }
     return RegExp(
       r"^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}([\/\w\-\.\?=&%]*)?$",

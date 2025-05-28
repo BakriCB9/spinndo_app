@@ -1,5 +1,5 @@
 class ApiConstant {
-  static const String baseUrl = 'https://countquik.eu';
+  static const String baseUrl = 'https://countquik.eu/api';
   static const String loginEndPoint = '/login';
   static const String registerClientEndPotint = '/registerClient';
   static const String verifyCodeEndPoint = '/verifyCode';
@@ -38,6 +38,7 @@ class ApiConstant {
   static const String addSubscribe = '/subscriptions/subscribe';
   static const String addPaymentMethod = '/payment_method/add';
   static const String changePassword = '/changePassword';
+  static const String changeEmail = '/changeEmail';
 }
 
 class CacheConstant {
@@ -48,8 +49,8 @@ class CacheConstant {
   static const String userId = 'user_id';
   static const String userRole = 'user_role';
   static const String imagePhoto = 'Image_photo';
-  static const String imagePhotoFromFile='image_photo_file';
+  static const String imagePhotoFromFile = 'image_photo_file';
   static const String imagePhotoFromLogin = 'image_phot';
   static const String userAccountStatus = 'account_status';
-  static const String  googleMapKey = 'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
+  static const String googleMapKey = 'AIzaSyDLKgjHRJUu_v5A0GLTIddfD-B0tXAiKoQ';
 }

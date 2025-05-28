@@ -37,6 +37,18 @@ class _SectionUpdateLocationState extends State<SectionUpdateLocation> {
                 widget.profileCubit.cityName = value[2];
                 address = value[3];
               }
+              widget.profileCubit.updateJobDetails(
+                  curServiceName: widget.profileCubit.providerProfile!.details!.name!,
+                  newServiceName: widget.profileCubit.serviceNameController.text,
+                  curWebSite: widget.profileCubit.providerProfile?.details?.website,
+                  newWebSite: widget.profileCubit.webSiteController.text,
+                  curDescription: widget.profileCubit.providerProfile!.details!.description!,
+                  newDescription: widget.profileCubit.descriptionController.text,
+                  curLat:widget.profileCubit.providerProfile!.details!.latitude!,
+                              newLat: widget.profileCubit.lat!,
+                              curLong:widget. profileCubit.providerProfile!.details!.longitude!,
+                              newLong: widget.profileCubit.long!,
+                  );
             });
           }
         });

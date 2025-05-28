@@ -6,6 +6,7 @@ import 'package:app/core/widgets/custom_appbar.dart';
 import 'package:app/features/drawer/data/model/languages.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
+import 'package:app/features/drawer/presentation/screens/change_email_screen.dart';
 import 'package:app/features/drawer/presentation/screens/change_password_screen.dart';
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,9 @@ class SettingScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 70.h,),
+              SizedBox(
+                height: 70.h,
+              ),
               CustomAppbar(appBarText: localization.setting),
               SizedBox(
                 height: 50.h,
@@ -52,12 +55,8 @@ class SettingScreen extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Text(localization.themeMood,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(
-                                fontSize: 30.sp,
-                                fontWeight: FontWeight.w400)),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontSize: 30.sp, fontWeight: FontWeight.w400)),
                   ),
                   Expanded(
                     child: Align(
@@ -112,6 +111,7 @@ class SettingScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: DropdownButtonHideUnderline(
                             child: DropdownButton<Languages>(
+                                isExpanded: true,
                                 icon: const Icon(Icons.language,
                                     color: ColorManager.primary),
                                 value: languages.firstWhere(
@@ -122,8 +122,7 @@ class SettingScreen extends StatelessWidget {
                                     Theme.of(context).textTheme.displayMedium,
                                 items: languages
                                     .map(
-                                      (language) =>
-                                          DropdownMenuItem<Languages>(
+                                      (language) => DropdownMenuItem<Languages>(
                                         value: language,
                                         child: Text(language.name,
                                             style: Theme.of(context)
@@ -134,8 +133,8 @@ class SettingScreen extends StatelessWidget {
                                     .toList(),
                                 onChanged: (selectedLanguage) {
                                   if (selectedLanguage != null) {
-                                    _drawerCubit.changeLanguage(
-                                        selectedLanguage.code);
+                                    _drawerCubit
+                                        .changeLanguage(selectedLanguage.code);
 
                                     _serviceCubit.getCountriesAndCategories();
                                   }
@@ -163,7 +162,23 @@ class SettingScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
-                      .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400),
+                      .copyWith(fontSize: 30.sp, fontWeight: FontWeight.w400),
+                ),
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ChangeEmailScreen()));
+                },
+                child: Text(
+                  'change Email',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontSize: 30.sp, fontWeight: FontWeight.w400),
                 ),
               ),
               SizedBox(
@@ -203,8 +218,8 @@ class SettingScreen extends StatelessWidget {
                                         height: 100.h,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: Colors.grey)),
+                                            border:
+                                                Border.all(color: Colors.grey)),
                                         child: const Icon(
                                           Icons.facebook,
                                           color: ColorManager.primary,
@@ -232,8 +247,8 @@ class SettingScreen extends StatelessWidget {
                                         height: 100.h,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: Colors.grey)),
+                                            border:
+                                                Border.all(color: Colors.grey)),
                                         child: const Icon(
                                           Icons.message,
                                           color: ColorManager.primary,
@@ -264,12 +279,11 @@ class SettingScreen extends StatelessWidget {
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   minLeadingWidth: 0,
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded,color:ColorManager.grey),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                      color: ColorManager.grey),
                   title: Text(localization.connectwith,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 30.sp, fontWeight: FontWeight.w400)),
                 ),
               ),
               SizedBox(
@@ -328,12 +342,13 @@ class SettingScreen extends StatelessWidget {
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     minLeadingWidth: 0,
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded,color:ColorManager.grey,),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: ColorManager.grey,
+                    ),
                     title: Text(localization.deleteAccount,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400)),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontSize: 30.sp, fontWeight: FontWeight.w400)),
                   ),
                 ),
               ),

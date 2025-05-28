@@ -54,7 +54,7 @@ class CustomDescription extends StatelessWidget {
                 ? IconButton(
                     onPressed: isApprovid == true
                         ? () {
-                            _profileCubit.selectedSubCategory = null;
+                            // _profileCubit.selectedSubCategory = null;
                             _profileCubit.selectedCategory = null;
                             _profileCubit.getCategories();
                             Navigator.of(context).push(MaterialPageRoute(
@@ -74,7 +74,9 @@ class CustomDescription extends StatelessWidget {
                           },
                     icon: Icon(
                       Icons.edit_outlined,
-                      color: isApprovid == true ? ColorManager.primary: Colors.grey,
+                      color: isApprovid == true
+                          ? ColorManager.primary
+                          : Colors.grey,
                     ))
                 : const SizedBox()
           ],
@@ -86,27 +88,21 @@ class CustomDescription extends StatelessWidget {
               'asset/icons/work.svg',
               width: 28,
               height: 28,
-              colorFilter:const  ColorFilter.mode(
+              colorFilter: const ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
               ),
             ),
             SizedBox(width: 24.w),
-            Text(
-                '${categoryName}',
-                style: theme.textTheme.displayMedium!
-            ),
+            Text('${categoryName}', style: theme.textTheme.displayMedium!),
           ],
         ),
         SizedBox(height: 50.h),
         Row(
           children: [
-          const   Icon(Icons.maps_home_work_outlined),
+            const Icon(Icons.maps_home_work_outlined),
             SizedBox(width: 24.w),
-            Text(
-                '${serviceName}',
-                style: theme.textTheme.displayMedium!
-            ),
+            Text('${serviceName}', style: theme.textTheme.displayMedium!),
           ],
         ),
         SizedBox(height: 50.h),
@@ -116,16 +112,13 @@ class CustomDescription extends StatelessWidget {
               'asset/icons/location.svg',
               width: 26,
               height: 26,
-              colorFilter:const  ColorFilter.mode(
+              colorFilter: const ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
               ),
             ),
             SizedBox(width: 24.w),
-            Text(
-                '${cityName}',
-                style: theme.textTheme.displayMedium!
-            ),
+            Text('${cityName}', style: theme.textTheme.displayMedium!),
           ],
         ),
         SizedBox(height: 50.h),
@@ -135,7 +128,7 @@ class CustomDescription extends StatelessWidget {
               'asset/icons/description.svg',
               width: 26,
               height: 26,
-              colorFilter:const  ColorFilter.mode(
+              colorFilter: const ColorFilter.mode(
                 ColorManager.primary,
                 BlendMode.srcIn,
               ),
@@ -148,7 +141,7 @@ class CustomDescription extends StatelessWidget {
           height: 10.h,
         ),
         SizedBox(height: 30.h),
-       const  Divider(color: Colors.grey, thickness: 0.2)
+        const Divider(color: Colors.grey, thickness: 0.2)
       ],
     );
   }

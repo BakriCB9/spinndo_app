@@ -23,7 +23,9 @@ List<String> listImage = [
   'asset/images/info.png'
 ];
 List<int> number = [1, 2, 3];
-enum TypeVerificationComing{
+
+enum TypeVerificationComing {
   comeFromRegisterOfLogin,
-  comeFromForgetPassword;
+  comeFromForgetPassword,
+  comeFromChangeEmail,
 }

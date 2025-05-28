@@ -1,4 +1,7 @@
+import 'package:app/core/constant.dart';
+import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/error/apiResult.dart';
+import 'package:app/core/utils/app_shared_prefrence.dart';
 import 'package:app/core/utils/map_helper/location_service.dart';
 import 'package:app/features/discount/domain/entity/all_discount_entity.dart';
 import 'package:app/features/discount/domain/useCase/get_discount.dart';
@@ -61,7 +64,6 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
 
       getCountriesAndCategories();
       emit(state.copyWith(getCurrentLocation: BaseSuccessState()));
-      
     });
   }
 
@@ -104,6 +106,9 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
   }
 
   getServiceAndDiscount({int? idOfCategory}) async {
+    final int? userId = serviceLocator
+        .get<SharedPreferencesUtils>()
+        .getData(key: CacheConstant.userId) as int?;
     markerLocationData.clear();
     final requestData = GetServicesRequest(
         categoryId: idOfCategory ?? selectedCategory?.id,
@@ -112,7 +117,8 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
         latitude: getCurrentLocation?.latitude,
         longitude: getCurrentLocation?.longitude,
         radius: selectedDistance?.toInt(),
-        search: searchController.text.isEmpty ? null : searchController.text);
+        search: searchController.text.isEmpty ? null : searchController.text,
+        userId: userId?.toString());
 
     emit(state.copyWith(
         getAllServiceState: BaseLoadingState(),

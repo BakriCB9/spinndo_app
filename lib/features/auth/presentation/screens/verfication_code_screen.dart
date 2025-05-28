@@ -5,6 +5,7 @@ import 'package:app/features/auth/presentation/cubit/cubit/verification_cubit.da
 import 'package:app/features/auth/presentation/cubit/cubit/verification_state.dart';
 import 'package:app/features/auth/presentation/widget/section_resend_code_timer.dart';
 import 'package:app/features/discount/presentation/view_model/cubit/discount_view_model_cubit.dart';
+import 'package:app/features/drawer/presentation/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,18 +55,13 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
               height: 60.h,
             ),
             Text(localization.resendCode,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!),
+                style: Theme.of(context).textTheme.titleLarge!),
             SizedBox(height: 20.h),
             Icon(Icons.email, size: 200.h),
             SizedBox(height: 40.h),
             Text(
               '${localization.enterVerificationCode} ${widget.email ?? ''}',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  ,
+              style: Theme.of(context).textTheme.bodySmall!,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 40.h),
@@ -119,11 +115,19 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
                     UIUtils.hideLoading(context);
                     if (widget.typeComing ==
                         TypeVerificationComing.comeFromForgetPassword) {
-                      Navigator.of(context).pushNamed(Routes.forgetPasswordRoute,
+                      Navigator.of(context).pushNamed(
+                          Routes.forgetPasswordRoute,
                           arguments: widget.loginCubit);
+                    } else if (widget.typeComing ==
+                        TypeVerificationComing.comeFromChangeEmail) {
+                      Navigator.of(context).popUntil(
+                        (route) {
+                          return route.settings.name == SettingScreen.routeName;
+                        },
+                      );
                     } else {
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil(ServiceScreen.routeName, (p) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          ServiceScreen.routeName, (p) {
                         return false;
                       });
                     }
@@ -134,8 +138,7 @@ class _VerficationCodeScreenState extends State<VerficationCodeScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          36),
+                      borderRadius: BorderRadius.circular(36),
                     ),
                   ),
                   onPressed: () {

@@ -1,3 +1,5 @@
+import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
+
 abstract class DrawerStates {}
 
 class DrawerInitial extends DrawerStates {}
@@ -33,4 +35,16 @@ class ChangePasswordSuccessState extends DrawerStates {
 class ChangePasswordErrorState extends DrawerStates {
   String message;
   ChangePasswordErrorState(this.message);
+}
+
+class ChangeEmailLoadingState extends DrawerStates {}
+
+class ChangeEmailSuccessState extends DrawerStates {
+  String data;
+  ChangeEmailSuccessState(this.data);
+}
+
+class ChangeEmailErrorState extends DrawerStates {
+  String message;
+  ChangeEmailErrorState(this.message);
 }

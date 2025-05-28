@@ -221,7 +221,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   } else if (state.registerClientState is BaseSuccessState) {
                     UIUtils.hideLoading(context);
                     Navigator.of(context).pushNamed(Routes.verificationRoutes,
-                        arguments: _registerCubit.emailController.text);
+                        arguments: {'email':_registerCubit.emailController.text});
                   } else if (state.registerClientState is BaseErrorState &&
                       previousState?.registerClientState !=
                           state.registerClientState) {

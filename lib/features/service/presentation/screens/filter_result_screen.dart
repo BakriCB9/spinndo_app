@@ -71,187 +71,108 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
     return Container(
       decoration: _drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-        color: ColorManager.darkBg,)
+              color: ColorManager.darkBg,
+            )
           : null,
       child: Scaffold(
           body: SafeArea(
-            child: BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
-              bloc: serviceSettingCubit,
-              builder: (context, state) {
-                if (state.getAllServiceState is BaseLoadingState) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state.getAllServiceState is BaseErrorState) {
-                  final message = state.getAllServiceState as BaseErrorState;
-                  return ErrorNetworkWidget(
-                    message: message.error.toString(),
-                    onTap: () => serviceSettingCubit.getServiceAndDiscount(),
-                  );
-                } else if (state.getAllServiceState is BaseSuccessState) {
-                  final list = (state.getAllServiceState
+        child: BlocBuilder<ServiceSettingCubit, ServiceSettingState>(
+          bloc: serviceSettingCubit,
+          builder: (context, state) {
+            if (state.getAllServiceState is BaseLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state.getAllServiceState is BaseErrorState) {
+              final message = state.getAllServiceState as BaseErrorState;
+              return ErrorNetworkWidget(
+                message: message.error.toString(),
+                onTap: () => serviceSettingCubit.getServiceAndDiscount(),
+              );
+            } else if (state.getAllServiceState is BaseSuccessState) {
+              final list = (state.getAllServiceState
                   as BaseSuccessState<List<Services>>);
 
-                  ValueNotifier<List<Services>?> listOfService =
+              ValueNotifier<List<Services>?> listOfService =
                   ValueNotifier(list.data);
 
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
-                    child: Column(
-                      children: [
-                        SectionHeaderResultFilter(services: listOfService),
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+                child: Column(
+                  children: [
+                    SectionHeaderResultFilter(services: listOfService),
 
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.start,
-                        //   children: [
-                        //     InkWell(
-                        //         onTap: () {
-                        //           Navigator.of(context).pop();
-                        //         },
-                        //         child: Icon(
-                        //           Icons.arrow_back_sharp,
-                        //           color: Theme.of(context).primaryColorLight,
-                        //           size: 45.sp,
-                        //         )),
-                        //     SizedBox(width: 40.w),
-                        //     Expanded(
-                        //       child: FittedBox(
-                        //         fit: BoxFit.scaleDown,
-                        //         alignment:
-                        //             Directionality.of(context) == TextDirection.rtl
-                        //                 ? Alignment.centerRight
-                        //                 : Alignment.centerLeft,
-                        //         child: Text(
-                        //           localization.filterResults,
-                        //           style: Theme.of(context).textTheme.titleLarge,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     //google map
-                        //     IconButton(
-                        //       onPressed: () async {
+                    SizedBox(height: 20.h),
 
-                        //         _serviceCubit.filterLocation =
-                        //             await (_serviceCubit.selectedCountry?.id != -1
-                        //                 ? GeocodingService.getCountryLatLng(
-                        //                     _serviceCubit.selectedCity?.name ??
-                        //                         _serviceCubit.selectedCountry!.name)
-                        //                 : LatLng(
-                        //                     _serviceCubit
-                        //                         .getCurrentLocation!.latitude!,
-                        //                     _serviceCubit
-                        //                         .getCurrentLocation!.longitude!));
+                    //Discount widget
+                    ShowDiscount(),
 
-                        // _serviceCubit.filterBounds =
-                        //     _serviceCubit.selectedCountryId != -1
-                        //         ? await (GeocodingService.getCountryBounds(
-                        //             _serviceCubit.selectedCityName ??
-                        //                 _serviceCubit.selectedCountryName!))
-                        //         : null;
-
-                        // await (_serviceCubit.selectedCountryId != -1
-                        //     ? GeocodingService.getCountryBounds(
-                        //         _serviceCubit.selectedCityName ??
-                        //             _serviceCubit.selectedCountryName!)
-                        //     : GeocodingService.getCurrentLocationBounds(
-                        //         _serviceCubit.getCurrentLocation!.latitude!,
-                        //         _serviceCubit
-                        //             .getCurrentLocation!.longitude!));
-
-                        //         _authCubit.loadMapStyle(
-                        //             _drawerCubit.themeMode == ThemeMode.dark
-                        //                 ? true
-                        //                 : false);
-
-                        //         Navigator.of(context).push(MaterialPageRoute(
-                        //           builder: (context) => const ServiceMapScreen(),
-                        //         ));
-                        //       },
-                        //       icon: Icon(
-                        //         Icons.map,
-                        //         color: Theme.of(context).primaryColorLight,
-                        //         size: 45.sp,
-                        //       ),
-                        //     ),
-
-                        //                     },
-                        //                   ),
-                        //                 ])
-                        //         : const SizedBox(),
-                        //   ],
-                        // ),
-
-                        SizedBox(height: 20.h),
-
-                        //Discount widget
-                        ShowDiscount(),
-
-                        //Card item of Service
-                        listOfService.value!.isEmpty
-                            ? Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Spacer(),
-                              SizedBox(
-                                height: size.height / 3.5,
-                                child: Lottie.asset(
-                                  'asset/animation/empty.json',
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                localization.noServicesFoundedinlocation,
-                                style: TextStyle(fontSize: 30.sp),
-                              ),
-                              const Spacer(flex: 2)
-                            ],
-                          ),
-                        )
-                            : Expanded(
-                          child: ValueListenableBuilder(
-                              valueListenable: listOfService,
-                              builder: (context, listOfitem, _) {
-                                return AnimationLimiter(
-                                  child: ListView.builder(
-                                    physics: const BouncingScrollPhysics(
-                                        parent:
-                                        AlwaysScrollableScrollPhysics()),
-                                    padding: EdgeInsets.all(16.w),
-                                    itemCount: listOfitem!.length,
-                                    itemBuilder: (context, index) {
-                                      markerLocationData.add(GoogleMapMarker(
-                                        providerId:
-                                        listOfitem[index].providerId!,
-                                        BitmapDescriptor.hueRed,
-                                        id: listOfitem[index].id!,
-                                        name: listOfitem[index].name!,
-                                        latLng: LatLng(
-                                          double.parse(
-                                              listOfitem[index].latitude!),
-                                          double.parse(
-                                              listOfitem[index].longitude!),
-                                        ),
-                                      ));
-
-                                      final service = listOfitem[index];
-                                      return SectionItemOfService(
-                                          index: index, service: service);
-                                    },
+                    //Card item of Service
+                    listOfService.value!.isEmpty
+                        ? Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Spacer(),
+                                SizedBox(
+                                  height: size.height / 3.5,
+                                  child: Lottie.asset(
+                                    'asset/animation/empty.json',
                                   ),
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              },
-            ),
-          )),
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  localization.noServicesFoundedinlocation,
+                                  style: TextStyle(fontSize: 30.sp),
+                                ),
+                                const Spacer(flex: 2)
+                              ],
+                            ),
+                          )
+                        : Expanded(
+                            child: ValueListenableBuilder(
+                                valueListenable: listOfService,
+                                builder: (context, listOfitem, _) {
+                                  return AnimationLimiter(
+                                    child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(
+                                          parent:
+                                              AlwaysScrollableScrollPhysics()),
+                                      padding: EdgeInsets.all(16.w),
+                                      itemCount: listOfitem!.length,
+                                      itemBuilder: (context, index) {
+                                        markerLocationData.add(GoogleMapMarker(
+                                          providerId:
+                                              listOfitem[index].providerId!,
+                                          BitmapDescriptor.hueRed,
+                                          id: listOfitem[index].id!,
+                                          name: listOfitem[index].providerName!,
+                                          latLng: LatLng(
+                                            double.parse(
+                                                listOfitem[index].latitude!),
+                                            double.parse(
+                                                listOfitem[index].longitude!),
+                                          ),
+                                        ));
+
+                                        final service = listOfitem[index];
+                                        return SectionItemOfService(
+                                            index: index, service: service);
+                                      },
+                                    ),
+                                  );
+                                }),
+                          ),
+                  ],
+                ),
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
+      )),
     );
   }
 }

@@ -45,170 +45,188 @@ class EditJobDetails extends StatelessWidget {
     final drawerCubit = serviceLocator.get<DrawerCubit>();
     profileCubit.descriptionController.text = description;
     profileCubit.serviceNameController.text = serviceName;
-    if(webSite!=null){
-      profileCubit.webSiteController.text=webSite!;
+    profileCubit.lat = profileCubit.providerProfile!.details!.latitude;
+    profileCubit.long = profileCubit.providerProfile!.details!.longitude;
+    if (webSite != null) {
+      profileCubit.webSiteController.text = webSite!;
     }
 
     return Container(
       decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
-        color: ColorManager.darkBg,)
+              color: ColorManager.darkBg,
+            )
           : null,
       child: Scaffold(
-
           body: BlocBuilder<ProfileCubit, ProfileStates>(buildWhen: (pre, cur) {
-            if (cur is GetCategoryLoading ||
-                cur is GetCategoryError ||
-                cur is SelectedCategoryState ||
-                cur is GetCategorySuccess) {
-              return true;
-            }
-            return false;
-          }, builder: (context, state) {
-            if (state is GetCategoryLoading) {
-              return const LoadingIndicator(Colors.yellow);
-            } else if (state is GetCategoryError) {
-              return Center(
-                child: Text(state.message),
-              );
-            } else {
-              return SingleChildScrollView(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 70.h),
-                      CustomAppbar(appBarText: localization.editJobDetails),
-                      SizedBox(height: 70.h),
-                      CustomTextFormField(
-                        validator: (value) {
-                          return Validator.hasMinLength(value)
-                              ? null
-                              : localization.nameLessThanTwo;
-                        },
-                        icon: Icons.home_repair_service_outlined,
-                        labelText: localization.titleService,
-                        controller: profileCubit.serviceNameController,
-                        onChanged: (value) {
-                          profileCubit.updateJobDetails(
-                              curWebSite: webSite??'',
-                              newWebSite: profileCubit.webSiteController.text,
-                              curServiceName: serviceName,
-                              newServiceName:
-                                  profileCubit.serviceNameController.text,
-                              curDescription: description,
-                              newDescription:
-                                  profileCubit.descriptionController.text);
-                        },
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      CustomTextFormField(
-                        validator: (value) {
-                          return Validator.hasMinLength(value)
-                              ? null
-                              : localization.nameLessThanTwo;
-                        },
-                        icon: Icons.description_outlined,
-                        labelText: localization.description,
-                        controller: profileCubit.descriptionController,
-                        onChanged: (value) {
-                          profileCubit.updateJobDetails(
-                              curWebSite: webSite??'',
-                              newWebSite: profileCubit.webSiteController.text,
-                              curServiceName: serviceName,
-                              newServiceName:
-                                  profileCubit.serviceNameController.text,
-                              curDescription: description,
-                              newDescription:
-                                  profileCubit.descriptionController.text);
-                        },
-                      ),
-                      SizedBox(height: 50.h),
-                      CustomTextFormField(
-                        validator: (value) {
-                          return Validator.isWebsite(value)?null:localization.webSiteInvalide;
-                        },
-                        icon: Icons.link,
-                        labelText: localization.webSite ,
-                        controller: profileCubit.webSiteController,
-                        onChanged: (value) {
-                          profileCubit.updateJobDetails(
-                              curWebSite: webSite??'',
-                              newWebSite: profileCubit.webSiteController.text,
-                              curServiceName: serviceName,
-                              newServiceName:
-                                  profileCubit.serviceNameController.text,
-                              curDescription: description,
-                              newDescription:
-                                  profileCubit.descriptionController.text);
-                        },
-                      ),
-                      SizedBox(height: 100.h),
-                      BlocBuilder<ProfileCubit, ProfileStates>(
-                        bloc: profileCubit,
-                        builder: (context, state) {
-                          return CascadingDropdowns(
-                            categories: profileCubit.categoriesList,
-                            isProfile: true,
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      SectionUpdateLocation(
-                        cityName: cityName,
-                        profileCubit: profileCubit,
-                      ),
-                      SizedBox(height: 40.h),
-                      BlocBuilder<ProfileCubit, ProfileStates>(
-                          buildWhen: (pre, cur) {
-                        if (cur is IsUpdated || cur is IsNotUpdated)
-                          return true;
-                        return false;
-                      }, builder: (context, state) {
-                        if (state is IsUpdated) {
-                          return BlocListener(
-                            bloc: profileCubit,
-                            listener: (context, state) {
-                              if (state is UpdateLoading) {
-                                UIUtils.showLoading(context);
-                              } else if (state is UpdateError) {
-                                UIUtils.hideLoading(context);
-                                UIUtils.showMessage(state.message);
-                              } else if (state is UpdateSuccess) {
-                                UIUtils.hideLoading(context);
-                                profileCubit.getUserRole();
-                                Navigator.of(context).pop();
-                              }
-                            },
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    profileCubit.updateProviderProfile(2);
-                                    return;
-                                  }
-                                  return;
-                                },
-                                child: Text(localization.save)),
-                          );
-                        } else if (state is IsNotUpdated) {
-                          return const SizedBox();
-                        } else {
-                          return const SizedBox();
-                        }
-                      })
-                    ],
+        if (cur is GetCategoryLoading ||
+            cur is GetCategoryError ||
+            cur is SelectedCategoryState ||
+            cur is GetCategorySuccess) {
+          return true;
+        }
+        return false;
+      }, builder: (context, state) {
+        if (state is GetCategoryLoading) {
+          return const LoadingIndicator(Colors.yellow);
+        } else if (state is GetCategoryError) {
+          return Center(
+            child: Text(state.message),
+          );
+        } else {
+          return SingleChildScrollView(
+              child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 70.h),
+                  CustomAppbar(appBarText: localization.editJobDetails),
+                  SizedBox(height: 70.h),
+                  CustomTextFormField(
+                    validator: (value) {
+                      return Validator.hasMinLength(value)
+                          ? null
+                          : localization.nameLessThanTwo;
+                    },
+                    icon: Icons.home_repair_service_outlined,
+                    labelText: localization.titleService,
+                    controller: profileCubit.serviceNameController,
+                    onChanged: (value) {
+                      profileCubit.updateJobDetails(
+                        curWebSite: webSite ?? '',
+                        newWebSite: profileCubit.webSiteController.text,
+                        curServiceName: serviceName,
+                        newServiceName: profileCubit.serviceNameController.text,
+                        curDescription: description,
+                        newDescription: profileCubit.descriptionController.text,
+                        curLat:
+                            profileCubit.providerProfile!.details!.latitude!,
+                        newLat: profileCubit.lat!,
+                        curLong:
+                            profileCubit.providerProfile!.details!.longitude!,
+                        newLong: profileCubit.long!,
+                      );
+                    },
                   ),
-                ),
-              ));
-            }
-          })),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  CustomTextFormField(
+                    validator: (value) {
+                      return Validator.hasMinLength(value)
+                          ? null
+                          : localization.nameLessThanTwo;
+                    },
+                    icon: Icons.description_outlined,
+                    labelText: localization.description,
+                    controller: profileCubit.descriptionController,
+                    onChanged: (value) {
+                      profileCubit.updateJobDetails(
+                        curWebSite: webSite ?? '',
+                        newWebSite: profileCubit.webSiteController.text,
+                        curServiceName: serviceName,
+                        newServiceName: profileCubit.serviceNameController.text,
+                        curDescription: description,
+                        newDescription: profileCubit.descriptionController.text,
+                        curLat:
+                            profileCubit.providerProfile!.details!.latitude!,
+                        newLat: profileCubit.lat!,
+                        curLong:
+                            profileCubit.providerProfile!.details!.longitude!,
+                        newLong: profileCubit.long!,
+                      );
+                    },
+                  ),
+                  SizedBox(height: 50.h),
+                  CustomTextFormField(
+                    validator: (value) {
+                      return Validator.isWebsite(value)
+                          ? null
+                          : localization.webSiteInvalide;
+                    },
+                    icon: Icons.link,
+                    labelText: localization.webSite,
+                    controller: profileCubit.webSiteController,
+                    onChanged: (value) {
+                      profileCubit.updateJobDetails(
+                        curWebSite: webSite ?? '',
+                        newWebSite: profileCubit.webSiteController.text,
+                        curServiceName: serviceName,
+                        newServiceName: profileCubit.serviceNameController.text,
+                        curDescription: description,
+                        newDescription: profileCubit.descriptionController.text,
+                        curLat:
+                            profileCubit.providerProfile!.details!.latitude!,
+                        newLat: profileCubit.lat!,
+                        curLong:
+                            profileCubit.providerProfile!.details!.longitude!,
+                        newLong: profileCubit.long!,
+                      );
+                    },
+                  ),
+                  SizedBox(height: 100.h),
+                  BlocBuilder<ProfileCubit, ProfileStates>(
+                    bloc: profileCubit,
+                    builder: (context, state) {
+                      return CascadingDropdowns(
+                        categories: profileCubit.categoriesList,
+                        isProfile: true,
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  SectionUpdateLocation(
+                    cityName: cityName,
+                    profileCubit: profileCubit,
+                  ),
+                  SizedBox(height: 40.h),
+                  BlocBuilder<ProfileCubit, ProfileStates>(
+                      buildWhen: (pre, cur) {
+                    if (cur is IsUpdated || cur is IsNotUpdated) return true;
+                    return false;
+                  }, builder: (context, state) {
+                    if (state is IsUpdated) {
+                      return BlocListener(
+                        bloc: profileCubit,
+                        listener: (context, state) {
+                          if (state is UpdateLoading) {
+                            UIUtils.showLoading(context);
+                          } else if (state is UpdateError) {
+                            UIUtils.hideLoading(context);
+                            UIUtils.showMessage(state.message);
+                          } else if (state is UpdateSuccess) {
+                            UIUtils.hideLoading(context);
+                            profileCubit.getUserRole();
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: ElevatedButton(
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                profileCubit.updateProviderProfile(2);
+                                return;
+                              }
+                              return;
+                            },
+                            child: Text(localization.save)),
+                      );
+                    } else if (state is IsNotUpdated) {
+                      return const SizedBox();
+                    } else {
+                      return const SizedBox();
+                    }
+                  })
+                ],
+              ),
+            ),
+          ));
+        }
+      })),
     );
   }
 }

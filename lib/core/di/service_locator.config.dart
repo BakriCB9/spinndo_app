@@ -66,6 +66,8 @@ import 'package:app/features/drawer/data/repository/drawer_repository_impl.dart'
     as _i97;
 import 'package:app/features/drawer/domain/repository/drawer_repository.dart'
     as _i193;
+import 'package:app/features/drawer/domain/use_cases/change_email_use_case.dart'
+    as _i1000;
 import 'package:app/features/drawer/domain/use_cases/change_password_use_case.dart'
     as _i35;
 import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart'
@@ -243,8 +245,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i361.Dio>(),
           gh<_i460.SharedPreferences>(),
         ));
-    gh.factory<_i535.DrawerRemoteDataSource>(
-        () => _i543.DrawerRemoteDataSourceImpl(gh<_i361.Dio>()));
     gh.factory<_i1054.ServiceRepository>(
         () => _i1038.ServiceRepositoryImpl(gh<_i328.ServiceDataSource>()));
     gh.factory<_i278.ServiceRequistRemoteDatasource>(
@@ -271,8 +271,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i40.PaymentsRemoteDatasourceImpl(dio: gh<_i361.Dio>()));
     gh.factory<_i292.DiscountRepo>(
         () => _i206.DiscountRepoImpl(gh<_i678.DiscountRemoteDataSource>()));
-    gh.factory<_i193.DrawerRepository>(
-        () => _i97.DrawerRepositoryImpl(gh<_i535.DrawerRemoteDataSource>()));
     gh.factory<_i258.FavRepositry>(() => _i983.FavRepositryImpl(
           gh<_i306.RemoteDatasource>(),
           gh<_i460.SharedPreferences>(),
@@ -287,8 +285,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i595.DeleteDiscountUseCase(gh<_i292.DiscountRepo>()));
     gh.factory<_i762.GetAllDiscountUseCase>(
         () => _i762.GetAllDiscountUseCase(gh<_i292.DiscountRepo>()));
-    gh.factory<_i35.ChangePasswordUseCase>(
-        () => _i35.ChangePasswordUseCase(gh<_i193.DrawerRepository>()));
     gh.factory<_i757.PaymentsRepository>(() => _i246.PaymentsMethodImpl(
           gh<_i124.PaymentsRemoteDatasource>(),
           gh<_i460.SharedPreferences>(),
@@ -336,6 +332,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i437.ProfileRemoteDataSource>(),
           gh<_i597.ProfileLocalDataSource>(),
         ));
+    gh.factory<_i535.DrawerRemoteDataSource>(
+        () => _i543.DrawerRemoteDataSourceImpl(
+              gh<_i361.Dio>(),
+              gh<_i279.SharedPreferencesUtils>(),
+            ));
     gh.factory<_i456.AddPaymentMethodUseCase>(
         () => _i456.AddPaymentMethodUseCase(gh<_i757.PaymentsRepository>()));
     gh.factory<_i23.AddSubscribeUseCase>(
@@ -392,6 +393,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i508.GoogleMapUsecase>(),
           gh<_i259.GetLatlngCountryUseCase>(),
         ));
+    gh.factory<_i193.DrawerRepository>(
+        () => _i97.DrawerRepositoryImpl(gh<_i535.DrawerRemoteDataSource>()));
     gh.singleton<_i225.ServiceSettingCubit>(() => _i225.ServiceSettingCubit(
           gh<_i538.GetCountriesUseCase>(),
           gh<_i779.GetCategoriesUseCase>(),
@@ -429,10 +432,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i457.UpdateServiceRequestUseCase>(),
           gh<_i600.DeleteServiceRequestUseCase>(),
         ));
-    gh.lazySingleton<_i649.DrawerCubit>(() => _i649.DrawerCubit(
-          changePasswordUseCase: gh<_i35.ChangePasswordUseCase>(),
-          sharedPreferencesUtils: gh<_i279.SharedPreferencesUtils>(),
-        ));
+    gh.factory<_i35.ChangePasswordUseCase>(
+        () => _i35.ChangePasswordUseCase(gh<_i193.DrawerRepository>()));
+    gh.factory<_i1000.ChangeEmailUseCase>(
+        () => _i1000.ChangeEmailUseCase(gh<_i193.DrawerRepository>()));
     gh.lazySingleton<_i392.GetAllPackagesUseCase>(
         () => _i392.GetAllPackagesUseCase(gh<_i673.PackageRepository>()));
     gh.factory<_i594.PackagesCubit>(() => _i594.PackagesCubit(
@@ -454,6 +457,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i619.AddFavUseCase>(),
           gh<_i614.GetAllFavUsecase>(),
           gh<_i654.RemoveFromFavUsecase>(),
+        ));
+    gh.lazySingleton<_i649.DrawerCubit>(() => _i649.DrawerCubit(
+          changePasswordUseCase: gh<_i35.ChangePasswordUseCase>(),
+          sharedPreferencesUtils: gh<_i279.SharedPreferencesUtils>(),
+          changeEmailUseCase: gh<_i1000.ChangeEmailUseCase>(),
         ));
     gh.factory<_i113.RegisterCubit>(() => _i113.RegisterCubit(
           gh<_i156.RegisterServiceUseCase>(),

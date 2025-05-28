@@ -11,7 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SectionImage extends StatefulWidget {
-  const SectionImage({super.key});
+  final String? pathImage;
+  final int myId;
+  final int userId;
+  const SectionImage(
+      {required this.myId,
+      required this.userId,
+      required this.pathImage,
+      super.key});
 
   @override
   State<SectionImage> createState() => _SectionImageState();
@@ -32,9 +39,8 @@ class _SectionImageState extends State<SectionImage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileStates>(
-      
-      listener: (context,state){
-        if(state is LoadImagePhotoError){
+      listener: (context, state) {
+        if (state is LoadImagePhotoError) {
           UIUtils.showMessage(state.message);
         }
       },
@@ -51,9 +57,9 @@ class _SectionImageState extends State<SectionImage> {
                   File(imageFromStudio!),
                   fit: BoxFit.cover,
                 )
-              : imageFromLogin != null
+              : widget.pathImage != null
                   ? CashImage(
-                      path: imageFromLogin!,
+                      path: widget.pathImage!,
                       color: ColorManager.white,
                     )
                   : Image.asset(
@@ -61,13 +67,20 @@ class _SectionImageState extends State<SectionImage> {
                       fit: BoxFit.cover,
                     );
         } else {
-          return imageFromStudio != null
-              ? Image.file(
-                  File(imageFromStudio!),
-                  fit: BoxFit.cover,
-                )
-              : imageFromLogin != null
-                  ? CashImage(path: imageFromLogin!)
+          return widget.myId == widget.userId
+              ? (imageFromStudio != null
+                  ? Image.file(
+                      File(imageFromStudio!),
+                      fit: BoxFit.cover,
+                    )
+                  : widget.pathImage != null
+                      ? CashImage(path: widget.pathImage!)
+                      : Image.asset(
+                          'asset/images/aaaa.png',
+                          fit: BoxFit.cover,
+                        ))
+              : widget.pathImage != null
+                  ? CashImage(path: widget.pathImage!)
                   : Image.asset(
                       'asset/images/aaaa.png',
                       fit: BoxFit.cover,

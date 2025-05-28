@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class FavoriteWidget extends StatefulWidget {
   final String userId;
-  const FavoriteWidget({super.key, required this.userId});
+  final bool isFavorite;
+  const FavoriteWidget({required this.isFavorite,super.key, required this.userId});
 
   @override
   State<FavoriteWidget> createState() => _FavoriteWidgetState();
@@ -13,7 +14,13 @@ class FavoriteWidget extends StatefulWidget {
 
 class _FavoriteWidgetState extends State<FavoriteWidget> {
   final favViewModel = serviceLocator.get<FavoriteCubit>();
-  bool isSelected = false;
+ late bool isSelected ;
+  @override
+  initState(){
+    super.initState();
+   isSelected=widget.isFavorite;
+
+  }
   @override
   Widget build(BuildContext context) {
     return InkWell(

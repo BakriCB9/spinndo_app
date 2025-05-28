@@ -266,6 +266,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                               userId: service
                                                                   .providerId
                                                                   .toString(),
+                                                                isFavorite:service.isFavorite ,  
                                                             )
                                                           ],
                                                         ),

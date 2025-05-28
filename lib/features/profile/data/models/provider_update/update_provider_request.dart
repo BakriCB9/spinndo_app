@@ -42,23 +42,31 @@ class UpdateProviderRequest {
       "first_name_ar": firstNameAr,
       "last_name_ar": lastNameAr,
       "phone": phoneNumber,
-      '_method': 'PUT',
     };
   }
 
   toJsonJobDetails() {
-    print(
-        'the data is ${nameService} and description  is ${descriptionService} ');
-    return FormData.fromMap({
-      "service": {
-        "name": nameService,
-        'description': descriptionService,
-        // 'latitude': latitudeService,
-        // 'longitude': longitudeService,
-        // 'category_id': categoryIdService
-      },
+    final Map<String, dynamic> map = {};
+    if (categoryIdService != null) map['category_id'] = categoryIdService;
+    if (cityNameService != null) map['city_name'] = cityNameService;
+    if (nameService != null) map['name'] = nameService;
+    if (descriptionService != null) map['description'] = descriptionService;
+    if (latitudeService != null) map['latitude'] = latitudeService;
+    if (longitudeService != null) map['longitude'] = longitudeService;
+    if (websiteService != null) map['website'] = websiteService;
+    print('the map is now $map');
+    return {
+      "service":
+          // "name": nameService,
+          // 'description': descriptionService,
+          // 'latitude': latitudeService,
+          // 'longitude': longitudeService,
+          //'category_id': categoryIdService,
+          // 'city_name': cityNameService,
+          //'website': websiteService,
+          map,
       // '_method': 'PUT'
-    });
+    };
 
     // {
     //   "service": {
@@ -84,7 +92,6 @@ class UpdateProviderRequest {
       "service": {
         "working_days": days,
       },
-      '_method': 'PUT'
     };
   }
 }

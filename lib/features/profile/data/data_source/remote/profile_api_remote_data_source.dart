@@ -93,7 +93,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
   @override
   Future<UpdateProviderResponse> updateProviderProfile(
       UpdateProviderRequest updateRequest, int typeEdit) async {
-    print('we stand in provider profile now ');
+    
     final userToken = sharedPref.getString(CacheConstant.tokenKey);
     final response = await _dio.post(ApiConstant.updateProviderProfile,
         data: typeEdit == 1
@@ -105,7 +105,7 @@ class ProfileApiRemoteDataSource implements ProfileRemoteDataSource {
           "Content-Type": "application/json",
           "Authorization": "Bearer $userToken"
         }));
-    print('the data back from data source is ${response.data}');
+    
     return UpdateProviderResponse.fromJson(response.data);
 
     // try {

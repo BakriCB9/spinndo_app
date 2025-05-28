@@ -32,7 +32,11 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            const SectionImage(),
+            SectionImage(
+              pathImage: image,
+              myId:myId,
+              userId:userId
+            ),
             Positioned(
               child: SafeArea(
                 child: Row(
@@ -46,14 +50,17 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Icon(Icons.arrow_back_ios_rounded,color: ColorManager.textColor,),
+                          child: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: ColorManager.textColor,
+                          ),
                         ),
                       ),
                     ),
                     myId == userId
                         ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
                               decoration: const BoxDecoration(
                                   color: ColorManager.white2,
                                   shape: BoxShape.circle),
@@ -72,7 +79,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                                     Icons.camera_alt_outlined,
                                   )),
                             ),
-                        )
+                          )
                         : const SizedBox()
                   ],
                 ),

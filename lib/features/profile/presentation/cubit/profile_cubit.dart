@@ -122,9 +122,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   void slesctedProfileCat() {
-    print(selectedCategory?.id);
-    print(providerProfile?.details?.category?.id);
-
     selectedCategory?.id != providerProfile?.details?.category?.id
         ? emit(IsUpdated())
         : emit(IsNotUpdated());
@@ -173,7 +170,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
   void updateProviderProfile(int typeEdit) async {
     final updateRequest;
     if (typeEdit == 1) {
-      print('edit in 1 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
       updateRequest = UpdateProviderRequest(
         phoneNumber: phoneNumberController.text,
         firstNameAr: firstNameArEditController.text,
@@ -182,7 +178,6 @@ class ProfileCubit extends Cubit<ProfileStates> {
         lastName: lastNameEditController.text,
       );
     } else if (typeEdit == 2) {
-      print('edit in 2 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
       updateRequest = UpdateProviderRequest(
           latitudeService: lat,
           longitudeService: long,
@@ -190,9 +185,9 @@ class ProfileCubit extends Cubit<ProfileStates> {
           categoryIdService: selectedCategory?.id.toString(),
           nameService: serviceNameController.text,
           descriptionService: descriptionController.text,
-          websiteService: webSiteController.text);
+          websiteService:
+              webSiteController.text.isEmpty ? null : webSiteController.text);
     } else {
-      print('edit in 3 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
       updateRequest = UpdateProviderRequest(listOfDay: dateSelect);
     }
     //
@@ -277,12 +272,18 @@ class ProfileCubit extends Cubit<ProfileStates> {
   updateJobDetails(
       {required String curServiceName,
       required String newServiceName,
-      required String curWebSite,
-      required String newWebSite,
+      required String? curWebSite,
+      required String? newWebSite,
       required String curDescription,
+      required String curLat,
+      required String newLat,
+      required String curLong,
+      required String newLong,
       required String newDescription}) {
     if (curServiceName == newServiceName &&
         curDescription == newDescription &&
+        curLat == newLat &&
+        curLong == newLong &&
         curWebSite == newWebSite) {
       emit(IsNotUpdated());
     } else {

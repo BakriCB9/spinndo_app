@@ -157,6 +157,7 @@ class SectionItemOfService extends StatelessWidget {
                                     ],
                                   )),
                               FavoriteWidget(
+                                isFavorite: service.isFavorite, 
                                 userId: service.providerId.toString(),
                               ),
                             ],

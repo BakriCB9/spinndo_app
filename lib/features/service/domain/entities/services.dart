@@ -11,8 +11,10 @@ class Services {
   final dynamic providerImage;
   final double? distance;
   final int? numberOfvisitors;
+  final bool isFavorite;
 
   Services({
+    required this.isFavorite,
     required this.numberOfvisitors,
     required this.id,
     required this.providerId,

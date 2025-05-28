@@ -2,7 +2,9 @@ import 'package:app/features/service/domain/entities/services.dart';
 
 class Data extends Services {
   Data(
-      {required super.numberOfvisitors,
+      {
+      required super.isFavorite,
+      required super.numberOfvisitors,
       required super.name,
       required super.description,
       required super.website,
@@ -28,5 +30,7 @@ class Data extends Services {
         providerName: json['provider_name'] as String?,
         providerImage: json['provider_image'] as dynamic,
         distance: json['distance'] as double?,
+        isFavorite: json['is_favorite'] as bool,
+
       );
 }

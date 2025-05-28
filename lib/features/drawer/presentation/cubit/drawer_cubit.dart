@@ -1,7 +1,9 @@
 import 'package:app/core/error/apiResult.dart';
 import 'package:app/core/network/remote/handle_dio_exception.dart';
 import 'package:app/core/utils/app_shared_prefrence.dart';
+import 'package:app/features/drawer/data/model/change_email/change_email_request.dart';
 import 'package:app/features/drawer/data/model/change_password_request.dart';
+import 'package:app/features/drawer/domain/use_cases/change_email_use_case.dart';
 import 'package:app/features/drawer/domain/use_cases/change_password_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +18,12 @@ import 'package:app/features/drawer/presentation/cubit/drawer_states.dart';
 class DrawerCubit extends Cubit<DrawerStates> {
   DrawerCubit(
       {required this.changePasswordUseCase,
-      required this.sharedPreferencesUtils})
+      required this.sharedPreferencesUtils,
+      required this.changeEmailUseCase})
       : super(DrawerInitial());
   ChangePasswordUseCase changePasswordUseCase;
   SharedPreferencesUtils sharedPreferencesUtils;
+  ChangeEmailUseCase changeEmailUseCase;
   ThemeMode themeMode = ThemeMode.light;
 
   String languageCode = 'en';
@@ -57,6 +61,17 @@ class DrawerCubit extends Cubit<DrawerStates> {
         emit(ChangePasswordSuccessState(ans.data));
       case ApiresultError():
         emit(ChangePasswordErrorState(ans.message));
+    }
+  }
+
+  changeEmail(ChangeEmailRequest request) async {
+    emit(ChangeEmailLoadingState());
+    final ans = await changeEmailUseCase(request);
+    switch (ans) {
+      case ApiResultSuccess():
+        emit(ChangeEmailSuccessState(ans.data));
+      case ApiresultError():
+        emit(ChangeEmailErrorState(ans.message));
     }
   }
 
@@ -110,7 +125,19 @@ class DrawerCubit extends Cubit<DrawerStates> {
 
       // Check the response status
       if (response.statusCode == 200) {
-        await sharedPreferencesUtils.clearAllData();
+        sharedPreferencesUtils.removeData(key: CacheConstant.emailKey);
+        sharedPreferencesUtils.removeData(key: CacheConstant.userId);
+        sharedPreferencesUtils.removeData(key: CacheConstant.userAccountStatus);
+        sharedPreferencesUtils.removeData(key: CacheConstant.imagePhoto);
+        sharedPreferencesUtils.removeData(
+            key: CacheConstant.imagePhotoFromFile);
+        sharedPreferencesUtils.removeData(key: CacheConstant.userAccountStatus);
+        sharedPreferencesUtils.removeData(key: CacheConstant.tokenKey);
+        sharedPreferencesUtils.removeData(key: CacheConstant.userRole);
+        sharedPreferencesUtils.removeData(key: CacheConstant.nameKey);
+        print(
+            'the code of language now is ${sharedPreferencesUtils.getString('language')}');
+        // await sharedPreferencesUtils.clearAllData();
         emit(LogOutSuccess());
       }
     } catch (e) {

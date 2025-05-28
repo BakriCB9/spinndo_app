@@ -10,7 +10,6 @@ import 'package:app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:app/features/auth/presentation/screens/send_email_for_code_scree.dart';
 import 'package:app/features/auth/presentation/screens/verfication_code_screen.dart';
-import 'package:app/features/drawer/presentation/cubit/drawer_cubit.dart';
 import 'package:app/features/google_map/presentation/view/google_map_screen.dart';
 import 'package:app/features/service/presentation/cubit/service_setting_cubit.dart';
 import 'package:app/features/service/presentation/screens/filter_result_screen.dart';
@@ -20,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RoutesGenerator {
   static Route<dynamic>? getRoute(RouteSettings settings) {
-    final drawerCubit = serviceLocator.get<DrawerCubit>();
     final args = settings.arguments;
     switch (settings.name) {
       case Routes.loginRoute:
