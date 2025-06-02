@@ -218,12 +218,13 @@ class _RotatingDiscountCardState extends State<_RotatingDiscountCard>
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
                                   children: [
                                     Text(
-                                      '${localization.discountCode}',
+                                      '${localization.discountCode}: ',
                                       style: theme.labelMedium!.copyWith(
-                                        fontSize: 26.sp,
-                                        color: Colors.grey.shade800,
+                                        fontSize: 24.sp,
                                         fontWeight: FontWeight.w400,
                                       ),
                                       overflow: TextOverflow.ellipsis,

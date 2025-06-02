@@ -82,6 +82,8 @@ class CustomDescription extends StatelessWidget {
                 : const SizedBox()
           ],
         ),
+        SizedBox(height: 30.h),
+
         Row(
           children: [
             SvgPicture.asset(

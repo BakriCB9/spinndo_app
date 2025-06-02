@@ -7,10 +7,12 @@ import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/favorite/presentation/view/favorite.dart';
 import 'package:app/features/service/domain/entities/services.dart';
 import 'package:app/features/service/presentation/screens/show_details.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SectionItemOfService extends StatelessWidget {
   final int index;
@@ -22,6 +24,7 @@ class SectionItemOfService extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+
     return AnimationConfiguration.staggeredList(
       position: index,
       delay: const Duration(milliseconds: 200),
@@ -45,24 +48,47 @@ class SectionItemOfService extends StatelessWidget {
               );
             },
             child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              elevation: 10,
+              shadowColor: Colors.black38,
               child: Padding(
-                padding: EdgeInsets.all(16.w),
+                padding: EdgeInsets.all(32.w),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     service.providerImage != null
                         ? CircleAvatar(
-                            radius: 60.r,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(60.r),
-                                child: CashImage(path: service.providerImage)),
-                          )
+                      radius: 50.r,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60.r),
+                        child: service.providerImage!.toLowerCase().endsWith('.svg')
+                            ? SvgPicture.network(
+                          service.providerImage!,
+                          width: 100.w,
+                          height: 100.h,
+                          placeholderBuilder: (context) =>
+                          const CircularProgressIndicator(),
+                        )
+                            : CachedNetworkImage(
+                          imageUrl: service.providerImage!,
+                          width: 100.w,
+                          height: 100.h,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                        ),
+                      ),
+                    )
                         : CircleAvatar(
-                            radius: 60.r,
-                            backgroundColor: ColorManager.primary,
-                            child: Icon(Icons.person,
-                                size: 60.r, color: ColorManager.white),
-                          ),
+                      radius: 50.r,
+                      backgroundColor: ColorManager.primary,
+                      child: Icon(Icons.person, size: 60.r, color: ColorManager.white),
+                    ),
+
                     SizedBox(width: 20.w),
                     Expanded(
                       child: Column(
@@ -75,7 +101,7 @@ class SectionItemOfService extends StatelessWidget {
                                 flex: 2,
                                 child: Text(
                                   service.name ?? "Service Name",
-                                  style: theme.textTheme.labelSmall!
+                                  style: theme.textTheme.labelMedium!
                                       .copyWith(color: theme.primaryColorLight),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -106,22 +132,22 @@ class SectionItemOfService extends StatelessWidget {
                               ))
                             ],
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 20.h),
                           Text(
                             "${localization.provider}: ${service.providerName ?? "Unknown"}",
                             style: theme.textTheme.labelMedium!
-                                .copyWith(fontSize: 24.sp),
+                                .copyWith(fontSize: 26.sp),
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 20.h),
                           Text(
                             "${localization.description} : ${service.description}" ??
                                 '',
                             style: theme.textTheme.labelMedium!
-                                .copyWith(fontSize: 24.sp),
+                                .copyWith(fontSize: 26.sp),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 20.h),
                           Row(
                             children: [
                               Icon(Icons.category,
@@ -132,7 +158,7 @@ class SectionItemOfService extends StatelessWidget {
                                 child: Text(
                                   service.categoryName ?? "Category",
                                   style: theme.textTheme.labelMedium!.copyWith(
-                                      fontSize: 24.sp,
+                                      fontSize: 26.sp,
                                       overflow: TextOverflow.ellipsis),
                                 ),
                               ),

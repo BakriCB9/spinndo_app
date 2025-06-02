@@ -84,7 +84,10 @@ class _GetMainCategoryScreenState extends State<GetMainCategoryScreen> {
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                          elevation: 8,
+                          shadowColor: Colors.black26,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: ListTile(

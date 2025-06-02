@@ -38,19 +38,22 @@ class _SectionHeaderResultFilterState extends State<SectionHeaderResultFilter> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        InkWell(
-          onTap: () => Navigator.of(context).pop(),
-          child: SvgPicture.asset(
-            'asset/icons/back.svg',
-            width: 20,
-            height: 20,
-            colorFilter: const ColorFilter.mode(
-              ColorManager.grey,
-              BlendMode.srcIn,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () => Navigator.of(context).pop(),
+            child: SvgPicture.asset(
+              'asset/icons/back.svg',
+              width: 20,
+              height: 20,
+              colorFilter: const ColorFilter.mode(
+                ColorManager.grey,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),
-        SizedBox(width: 40.w),
+        SizedBox(width: 20.w),
         Expanded(
           child: FittedBox(
             fit: BoxFit.scaleDown,

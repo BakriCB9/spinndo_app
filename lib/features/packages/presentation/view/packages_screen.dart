@@ -236,11 +236,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomAppbar(appBarText: localization.packages),
-              ),
-              SizedBox(height: 80.h,),
+              CustomAppbar(appBarText: localization.packages),
               Expanded(
                 child: BlocBuilder<PackagesCubit, PackagesState>(
                   builder: (context, state) {
@@ -248,6 +244,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                       return Center(child: CircularProgressIndicator());
                     } else if (state is PackagesSuccess) {
                       return ListView.separated(
+                        padding: const EdgeInsets.symmetric(vertical: 70),
                         itemCount: state.packages.length,
                         itemBuilder: (context, index) {
                           final package = state.packages[index];
@@ -261,7 +258,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                     color: _drawerCubit.themeMode == ThemeMode.dark
                                         ? Colors.indigo[950]
                                         : Colors.white,
-                                    elevation: 10,
+                                    elevation: 3,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
@@ -274,8 +271,6 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-
-
                                           SizedBox(    width: 200.w,
                                             height: 200.h,),
                                           // Subscription Info
@@ -478,7 +473,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                                     ),
                                   ),
                                   Positioned(
-                                    top: -50,
+                                    top: -60,
                                     left: 0,
                                     right: 0,
                                     child:  // Header Circle + Title

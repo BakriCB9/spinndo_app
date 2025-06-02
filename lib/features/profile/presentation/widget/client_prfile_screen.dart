@@ -99,10 +99,6 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     child: TextButton(
                         onPressed: () {
                           _authCubit.getCategories();
-                          // Navigator.of(context)
-                          //     .push(MaterialPageRoute(builder: (conetxt) {
-                          //   return EmployeeDetails();
-                          // }));
                         },
                         child: Text(
                           localization.upgradedAccount,

@@ -46,6 +46,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final drawerCubit = serviceLocator.get<DrawerCubit>();
+    final theme = Theme.of(context);
+
     return Container(
      decoration: drawerCubit.themeMode == ThemeMode.dark
           ? const BoxDecoration(
@@ -121,158 +123,142 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                 ),
                                               );
                                             },
-                                            child: Card(
-                                              child: Padding(
-                                                padding: EdgeInsets.all(16.w),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    service!.providerImage != null
-                                                        ? CircleAvatar(
-                                                            radius: 60.r,
-                                                            child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(60.r),
-                                                                child: CashImage(
-                                                                  path: service
-                                                                      .providerImage,
-                                                                )),
-                                                          )
-                                                        : CircleAvatar(
-                                                            radius: 60.r,
-                                                            backgroundColor:
-                                                                ColorManager.primary,
-                                                            child: Icon(Icons.person,
-                                                                size: 60.r,
-                                                                color:
-                                                                    ColorManager.white),
-                                                          ),
-                                                    SizedBox(width: 20.w),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Expanded(
-                                                                flex: 2,
-                                                                child: Text(
-                                                                  service.name ??
-                                                                      "Service Name",
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .labelSmall!
-                                                                      .copyWith(
-                                                                          color: Theme.of(
-                                                                                  context)
-                                                                              .primaryColorLight),
-                                                                  maxLines: 1,
-                                                                  overflow: TextOverflow
-                                                                      .ellipsis,
+                                            child: Padding(
+                                              padding: EdgeInsets.all(16.w),
+                                              child: Card(
+                                                elevation: 10,
+                                                shadowColor: Colors.black38,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(32.w),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      service!.providerImage != null
+                                                          ?   CircleAvatar(
+                                                    radius: 50.r,
+                                                    child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(60.r),
+                                                        child: CashImage(path: service.providerImage)),
+                                                  )
+                                                      : CircleAvatar(
+                                                  radius: 50.r,
+                                                  backgroundColor: ColorManager.primary,
+                                                  child: Icon(Icons.person,
+                                                      size: 60.r, color: ColorManager.white),
+                                                ),
+                                                      SizedBox(width: 20.w),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.start,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 2,
+                                                                  child: Text(
+                                                                    service.name ??
+                                                                        "Service Name",
+                                                                    style: theme.textTheme.labelMedium!
+                                                                        .copyWith(color: theme.primaryColorLight),
+                                                                    maxLines: 1,
+                                                                    overflow: TextOverflow
+                                                                        .ellipsis,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Expanded(
-                                                                  child: FittedBox(
-                                                                fit: BoxFit.scaleDown,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    CircleAvatar(
-                                                                      radius: 12.r,
-                                                                      backgroundColor:
-                                                                          ColorManager
-                                                                              .primary,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 10.w,
-                                                                    ),
-                                                                    Text(
-                                                                      service.distance !=
-                                                                              null
-                                                                          ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
-                                                                          : '',
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .labelSmall!
-                                                                          .copyWith(
-                                                                              color: Theme.of(
-                                                                                      context)
-                                                                                  .primaryColorLight),
-                                                                      textAlign:
-                                                                          TextAlign.end,
-                                                                    ),
-                                                                  ],
+                                                                Expanded(
+                                                                    child: FittedBox(
+                                                                  fit: BoxFit.scaleDown,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      CircleAvatar(
+                                                                        radius: 12.r,
+                                                                        backgroundColor:
+                                                                            ColorManager
+                                                                                .primary,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.w,
+                                                                      ),
+                                                                      Text(
+                                                                        service.distance != null
+                                                                            ? '${service.distance!.toStringAsFixed(2)} ${localization.km}'
+                                                                            : '',
+                                                                        style: theme.textTheme.labelSmall!
+                                                                            .copyWith(
+                                                                            color: theme.primaryColorLight),
+                                                                        textAlign: TextAlign.end,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ))
+                                                              ],
+                                                            ),
+                                                            SizedBox(height: 20.h),
+                                                            Text(
+                                                              "${localization.provider}: ${service.providerName ?? "Unknown"}",
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .labelMedium!
+                                                                  .copyWith(
+                                                                      fontSize: 26.sp),
+                                                            ),
+                                                            SizedBox(height: 20.h),
+                                                            Text(
+                                                              "${localization.description} : ${service.description}" ??
+                                                                  "No description available",
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .labelMedium!
+                                                                  .copyWith(
+                                                                      fontSize: 26.sp),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow.ellipsis,
+                                                            ),
+                                                            SizedBox(height: 20.h),
+                                                            Row(
+                                                              children: [
+                                                                Icon(Icons.category,
+                                                                    size: 34.r,
+                                                                    color: ColorManager
+                                                                        .primary),
+                                                                SizedBox(width: 10.w),
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    service.categoryName ??
+                                                                        "Category",
+                                                                    style: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .labelMedium!
+                                                                        .copyWith(
+                                                                            fontSize:
+                                                                            26.sp,
+                                                                            overflow:
+                                                                                TextOverflow
+                                                                                    .ellipsis),
+                                                                  ),
                                                                 ),
-                                                              ))
-                                                            ],
-                                                          ),
-                                                          SizedBox(height: 8.h),
-                                                          Text(
-                                                            "${localization.provider}: ${service.providerName ?? "Unknown"}",
-                                                            style: Theme.of(context)
-                                                                .textTheme
-                                                                .labelMedium!
-                                                                .copyWith(
-                                                                    fontSize: 24.sp),
-                                                          ),
-                                                          SizedBox(height: 8.h),
-                                                          Text(
-                                                            "${localization.description} : ${service.description}" ??
-                                                                "No description available",
-                                                            style: Theme.of(context)
-                                                                .textTheme
-                                                                .labelMedium!
-                                                                .copyWith(
-                                                                    fontSize: 24.sp),
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow.ellipsis,
-                                                          ),
-                                                          SizedBox(height: 8.h),
-                                                          Row(
-                                                            children: [
-                                                              Icon(Icons.category,
-                                                                  size: 34.r,
-                                                                  color: ColorManager
-                                                                      .primary),
-                                                              SizedBox(width: 10.w),
-                                                              Expanded(
-                                                                child: Text(
-                                                                  service.categoryName ??
-                                                                      "Category",
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .labelMedium!
-                                                                      .copyWith(
-                                                                          fontSize:
-                                                                              24.sp,
-                                                                          overflow:
-                                                                              TextOverflow
-                                                                                  .ellipsis),
-                                                                ),
-                                                              ),
-                                                              FavoriteWidget(
-                                                                userId: service
-                                                                    .providerId
-                                                                    .toString(), isFavorite: service.isFavorite,
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ],
+                                                                FavoriteWidget(
+                                                                  userId: service
+                                                                      .providerId
+                                                                      .toString(), isFavorite: service.isFavorite,
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),

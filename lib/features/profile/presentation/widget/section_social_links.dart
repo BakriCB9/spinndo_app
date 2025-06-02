@@ -10,6 +10,7 @@ import 'package:app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:app/features/profile/presentation/cubit/profile_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -301,16 +302,18 @@ class ShowSocialLinksForUsers extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  getPlatformIcon(e.platform!),
-                  Text(
-                    e.platform!,
-                    style: theme.textTheme.labelMedium,
-                  ),
-                  const SizedBox(height: 5),
+
                   Row(
                     children: [
+                      getPlatformIcon(e.platform!),
 
-                      const SizedBox(width: 8),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 20.h),
+                        child: Text(
+                          '${e.platform!}:',
+                          style: theme.textTheme.labelMedium,
+                        ),
+                      ),
                       Expanded(
                         child: SelectableText(
                           e.url!,
