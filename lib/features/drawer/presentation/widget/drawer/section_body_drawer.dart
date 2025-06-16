@@ -79,7 +79,10 @@ class _SectionBodyDrawerState extends State<SectionBodyDrawer> {
         ItemOfbodyDrawer(
             onClick: () {
               Scaffold.of(context).closeDrawer();
-              Navigator.of(context).pushNamed(FavoriteScreen.routeName);
+              Navigator.of(context).pushNamed(FavoriteScreen.routeName,arguments: {
+                'lat': 33.5138,
+                'lang': 36.2765,
+              },);
             },
             title: localization.fav,
             icon: Icons.favorite),

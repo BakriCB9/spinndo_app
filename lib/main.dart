@@ -37,6 +37,7 @@ import 'package:app/features/service/presentation/screens/service_screen.dart';
 import 'core/constant.dart';
 import 'features/packages/presentation/view/packages_screen.dart';
 import 'features/payment/keys.dart';
+import 'features/service/presentation/cubit/service_setting_cubit.dart';
 
 late final SharedPreferences sharedPref;
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -59,6 +60,9 @@ Future<void> main() async {
   final _drawerCubit = serviceLocator.get<DrawerCubit>();
   await _drawerCubit.loadLanguage();
   await _drawerCubit.loadThemeData();
+  final serviceCubit = serviceLocator.get<ServiceSettingCubit>();
+  serviceCubit.saveCurrentLatLngToPrefs();
+
 
   Bloc.observer = AppBlocObserver();
   runApp(DevicePreview(

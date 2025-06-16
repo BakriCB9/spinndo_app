@@ -35,6 +35,7 @@ bool sortByNumberOfvisitor = false;
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
   late Size size;
+
   @override
   didChangeDependencies() {
     super.didChangeDependencies();
@@ -166,3 +167,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
     );
   }
 }
+
+
+
+

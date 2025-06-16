@@ -196,6 +196,14 @@ class ServiceSettingCubit extends Cubit<ServiceSettingState> {
     });
   }
 
+  void saveCurrentLatLngToPrefs() {
+    final location = serviceLocator.get<ServiceSettingCubit>().getCurrentLocation;
+    if (location?.latitude != null && location?.longitude != null) {
+      sharedPref.setString(CacheConstant.lat, location!.latitude.toString());
+      sharedPref.setString(CacheConstant.long, location.longitude.toString());
+    }
+  }
+
   resetAllData() {
     emit(state.copyWith(resetData: false));
     searchController.clear();

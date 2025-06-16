@@ -7,8 +7,8 @@ import 'package:injectable/injectable.dart';
 class GetAllFavUsecase {
   FavRepositry favRepositry;
   GetAllFavUsecase(this.favRepositry);
-  Future<ApiResult<List<Data?>>> call() async {
-    ApiResult<List<Data?>> ans = await favRepositry.getAllFav();
+  Future<ApiResult<List<Data?>>> call(double latitude, double longitude) async {
+    ApiResult<List<Data?>> ans = await favRepositry.getAllFav(latitude,longitude);
 
     return ans;
   }

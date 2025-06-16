@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 @Injectable(as: RemoteDatasource)
 class RemoteDatasourceImpl extends RemoteDatasource {
   final Dio _dio;
+
   RemoteDatasourceImpl({required Dio dio}) : _dio = dio;
   @override
   Future<String?> addToFav(String userId, String userToken) async {
@@ -35,12 +36,14 @@ class RemoteDatasourceImpl extends RemoteDatasource {
   }
 
   @override
-  Future<GetServicesResponse> getAllFav(String userToken) async {
+  Future<GetServicesResponse> getAllFav(String userToken,double latitude, double longitude) async {
     final ans = await _dio.get(ApiConstant.getAllFavorite,
         options: Options(headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $userToken"
-        }));
+        }),
+        data: {"latitude": latitude,"longitude":longitude}
+    );
 
     return GetServicesResponse.fromJson(ans.data);
   }

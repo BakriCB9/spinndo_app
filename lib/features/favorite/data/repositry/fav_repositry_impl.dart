@@ -35,10 +35,10 @@ class FavRepositryImpl extends FavRepositry {
   }
 
   @override
-  Future<ApiResult<List<Data?>>> getAllFav() async {
+  Future<ApiResult<List<Data?>>> getAllFav(double latitude, double longitude) async {
     try {
       final userToken = sharedPreferences.getString(CacheConstant.tokenKey);
-      final ans = await remoteDatasource.getAllFav(userToken!);
+      final ans = await remoteDatasource.getAllFav(userToken!, latitude,  longitude);
       print('');
       print('the value of favorite in respositry is ${ans.data}');
       print('');

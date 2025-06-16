@@ -109,6 +109,8 @@ class UserAccount extends StatelessWidget {
           ],
         ),
         SizedBox(height: 30.h),
+        phoneNumber==''?
+        SizedBox():
         Row(
           children: [
             SvgPicture.asset(

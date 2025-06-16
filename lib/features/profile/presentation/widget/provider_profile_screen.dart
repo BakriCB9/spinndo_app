@@ -81,7 +81,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                 children: [
                   UserAccount(
                     accountStatus:widget.providerProfile.accountStatus!,
-                    phoneNumber: widget.providerProfile.phoneNumber!,
+                    phoneNumber: widget.providerProfile.phoneNumber??'',
                     firstNameAr: widget.providerProfile.firstNameAr!,
                     lastNameAr: widget.providerProfile.lastNameAr!,
                     userId: widget.providerProfile.id,
@@ -93,7 +93,7 @@ class _ProviderProfileScreenState extends State<ProviderProfileScreen> {
                   SizedBox(height: 15.h),
                   CustomDescription(
                     accountStatus:widget.providerProfile.accountStatus!,
-                    webSite: widget.providerProfile.details!.website,
+                    webSite: widget.providerProfile.details!.website??'',
                     lat: widget.providerProfile.details!.latitude!,
                     lng: widget.providerProfile.details!.longitude!,
                     cityName:

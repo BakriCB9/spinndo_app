@@ -40,9 +40,9 @@ class FavoriteCubit extends Cubit<FavoriteCubitState> {
     }
   }
 
-  Future<void> getAllFav() async {
+  Future<void> getAllFav(double latitude, double longitude) async {
     emit(FavoriteCubitLoading());
-    ApiResult<List<Data?>> result = await getAllFavUsecase();
+    ApiResult<List<Data?>> result = await getAllFavUsecase(latitude,longitude);
     switch (result) {
       case ApiResultSuccess():
         {

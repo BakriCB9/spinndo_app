@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app/core/constant.dart';
 import 'package:app/core/di/service_locator.dart';
 import 'package:app/core/resources/color_manager.dart';
@@ -25,12 +27,14 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final ans = sharedPref.getString(CacheConstant.tokenKey);
+  final lat = sharedPref.getString(CacheConstant.lat);
+  final long = sharedPref.getString(CacheConstant.long);
   final favCubit = serviceLocator.get<FavoriteCubit>();
   late Size size;
   @override
   void initState() {
     if (ans != null) {
-      favCubit.getAllFav();
+      favCubit.getAllFav(double.parse(lat!),double.parse(long!));
     }
     super.initState();
   }
@@ -280,7 +284,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                     color: ColorManager.amber, fontSize: 28.sp),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    favCubit.getAllFav();
+                                    favCubit.getAllFav(double.parse(lat!),double.parse(long!));
                                   })
                           ],
                                   text: localization.failedData,

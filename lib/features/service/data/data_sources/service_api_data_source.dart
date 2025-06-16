@@ -38,29 +38,6 @@ class ServiceApiDataSource implements ServiceDataSource {
     );
 
     return GetServicesResponse.fromJson(response.data);
-    // try {
-    //   // final response = await _dio.get(
-    //   //   // data: requestBody.toJson(),
-    //   //   ApiConstant.getServices,
-    //   // );
-    //   final lang = _sharedPreferences.getString('language');
-    //   final response = await _dio.request(
-    //     ApiConstant.getServices,
-    //     data: requestBody.toJson(), // Include the body here
-    //     options: Options(
-    //       method: 'GET', // Specify GET explicitly
-    //       headers: {
-    //         "Accept-Language": '$lang',
-    //         'Content-Type':
-    //             'application/json', // Optional: Set headers if needed
-    //       },
-    //     ),
-    //   );
-
-    //   return GetServicesResponse.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get services");
-    // }
   }
 
   @override
@@ -106,21 +83,6 @@ class ServiceApiDataSource implements ServiceDataSource {
             }));
 
     return ProviderProfileResponse.fromJson(response.data);
-    // try {
-    //   final lang = _sharedPreferences.getString('language');
-    //   String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    //   final response =
-    //       await _dio.get('${ApiConstant.profileServiceProviderEndPoint}/$id',
-    //           options: Options(headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization": "Bearer $user_token",
-    //             "Accept-Language": '$lang',
-    //           }));
-
-    //   return ProviderProfileResponse.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get Details");
-    // }
   }
 
   @override
@@ -135,21 +97,6 @@ class ServiceApiDataSource implements ServiceDataSource {
         }));
 
     return NotificationModel.fromJson(response.data);
-
-    // try {
-    //   final lang = _sharedPreferences.getString('language');
-    //   String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    //   final response = await _dio.get(ApiConstant.getAllNotification,
-    //       options: Options(headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": "Bearer $user_token",
-    //         "Accept-Language": '$lang',
-    //       }));
-
-    //   return NotificationModel.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get Notification");
-    // }
   }
 
   @override
@@ -168,21 +115,5 @@ class ServiceApiDataSource implements ServiceDataSource {
       );
 
       return GetCategoryMain.fromJson(response.data);
-    // try {
-    //   final lang = _sharedPreferences.getString('language');
-    //   String user_token = _sharedPreferences.getString(CacheConstant.tokenKey)!;
-    //   final response = await _dio.get(
-    //     ApiConstant.getAllMainCategory,
-    //     options: Options(headers: {
-    //       "Content-Type": "application/json",
-    //       "Authorization": "Bearer $user_token",
-    //       "Accept-Language": '$lang',
-    //     })
-    //   );
-
-    //   return GetCategoryMain.fromJson(response.data);
-    // } catch (exciption) {
-    //   throw RemoteAppException("Failed to get data");
-    // }
   }
 }

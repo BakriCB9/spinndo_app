@@ -47,6 +47,8 @@ class CacheConstant {
   // static const String semailKey = 'semail';
   static const String nameKey = 'name';
   static const String userId = 'user_id';
+  static const String lat = 'latitude';
+  static const String long = 'longitude';
   static const String userRole = 'user_role';
   static const String imagePhoto = 'Image_photo';
   static const String imagePhotoFromFile = 'image_photo_file';

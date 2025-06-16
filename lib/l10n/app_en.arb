@@ -228,5 +228,6 @@
   "searchByName": "Search By Name",
   "success": "Success",
   "showLess": "Show Less",
-  "showMore": "Show More"
+  "showMore": "Show More",
+  "changeEmail":"Change Email"
 }

@@ -157,7 +157,26 @@ class SettingScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 60.h,
+                    height: 80.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ChangeEmailScreen()));
+                    },
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        localization.changeEmail,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontSize: 30.sp,fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100.h,
                   ),
                   InkWell(
                     onTap: () {
