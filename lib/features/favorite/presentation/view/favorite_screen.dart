@@ -27,15 +27,22 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   final ans = sharedPref.getString(CacheConstant.tokenKey);
-  final lat = sharedPref.getString(CacheConstant.lat);
-  final long = sharedPref.getString(CacheConstant.long);
+  String? lat;
+  String? long;
   final favCubit = serviceLocator.get<FavoriteCubit>();
   late Size size;
   @override
   void initState() {
-    if (ans != null) {
-      favCubit.getAllFav(double.parse(lat!),double.parse(long!));
+    lat = sharedPref.getString(CacheConstant.lat);
+    long = sharedPref.getString(CacheConstant.long);
+
+    print('lat from sharedPref: $lat');
+    print('long from sharedPref: $long');
+
+    if (ans != null && lat != null && long != null) {
+      favCubit.getAllFav(double.parse(lat!), double.parse(long!));
     }
+
     super.initState();
   }
 
@@ -254,7 +261,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                                 FavoriteWidget(
                                                                   userId: service
                                                                       .providerId
-                                                                      .toString(), isFavorite: service.isFavorite,
+                                                                      .toString(), isFavorite: service.isFavorite, onPressed: () {
+                                                                  saveServiceLocationToPrefs(service.latitude!, service.longitude!);
+                                                                },
                                                                 )
                                                               ],
                                                             ),
@@ -290,14 +299,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   text: localization.failedData,
                                   style: TextStyle(
                                       color: ColorManager.black, fontSize: 30.sp)))
-                          //  Column(
-                          //   // mainAxisAlignment: MainAxisAlignment.center,
-                          //   // crossAxisAlignment: CrossAxisAlignment.center,
-                          //   children: [
-                          //     Text('Hello bakri'),
-
-                          //   ],
-                          // ),
                           );
                     },
                   ),
@@ -307,4 +308,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           )),
     );
   }
+
+  Future<void> saveServiceLocationToPrefs(String latitude, String longitude) async {
+    await sharedPref.setString(CacheConstant.lat, latitude);
+    await sharedPref.setString(CacheConstant.long, longitude);
+  }
+
+
 }

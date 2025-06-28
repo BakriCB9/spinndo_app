@@ -18,6 +18,7 @@ import 'package:app/features/service/domain/entities/services.dart';
 import 'package:app/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FilterResultScreen extends StatefulWidget {
   FilterResultScreen({
@@ -35,6 +36,13 @@ bool sortByNumberOfvisitor = false;
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
   late Size size;
+
+  Future<void> saveServiceLocationToPrefs(String latitude, String longitude) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setString('lat', latitude);
+    await sharedPref.setString('long', longitude);
+  }
+
 
   @override
   didChangeDependencies() {
@@ -167,6 +175,7 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
     );
   }
 }
+
 
 
 

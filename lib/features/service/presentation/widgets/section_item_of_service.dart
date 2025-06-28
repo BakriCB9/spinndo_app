@@ -7,6 +7,7 @@ import 'package:app/core/widgets/cash_network.dart';
 import 'package:app/features/favorite/presentation/view/favorite.dart';
 import 'package:app/features/service/domain/entities/services.dart';
 import 'package:app/features/service/presentation/screens/show_details.dart';
+import 'package:app/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -183,7 +184,9 @@ class SectionItemOfService extends StatelessWidget {
                                     ],
                                   )),
                               FavoriteWidget(
-                                isFavorite: service.isFavorite, 
+                                  onPressed: () async {
+                                      await saveServiceLocationToPrefs(service.latitude!, service.longitude!);},
+                                isFavorite: service.isFavorite,
                                 userId: service.providerId.toString(),
                               ),
                             ],
@@ -205,4 +208,11 @@ class SectionItemOfService extends StatelessWidget {
     final sharedPrefrence = serviceLocator.get<SharedPreferencesUtils>();
     return sharedPrefrence.getData(key: CacheConstant.tokenKey) as String?;
   }
+
+  Future<void> saveServiceLocationToPrefs(String latitude, String longitude) async {
+    await sharedPref.setString(CacheConstant.lat, latitude);
+    await sharedPref.setString(CacheConstant.long, longitude);
+  }
+
+
 }

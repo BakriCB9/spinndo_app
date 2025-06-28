@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class FavoriteWidget extends StatefulWidget {
   final String userId;
   final bool isFavorite;
-  const FavoriteWidget({required this.isFavorite,super.key, required this.userId});
+  final VoidCallback onPressed;
+  const FavoriteWidget({required this.isFavorite,super.key, required this.userId,required this.onPressed});
 
   @override
   State<FavoriteWidget> createState() => _FavoriteWidgetState();
@@ -34,6 +35,7 @@ class _FavoriteWidgetState extends State<FavoriteWidget> {
         } else {
           favViewModel.removeFromFav(widget.userId);
         }
+          widget.onPressed();
       },
       child: isSelected
           ? const Icon(
